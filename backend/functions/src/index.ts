@@ -6,13 +6,19 @@
  *
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
-
 import express from 'express';
-import './database/sequelize';
 import CloudFunctions, { THttpsFunction } from './lib/cloud-functions';
 import RouteMiddleware from './middleware/response-handlers';
 
 const app = express();
+
+app.get('/', async (req, res, next) => {
+  try {
+    res.status(200).json({ test: '/' });
+  } catch (error) {
+    next(error);
+  }
+});
 
 // route middlewares e.g(not found, error handlers)
 app.use(new RouteMiddleware().errorResponse);

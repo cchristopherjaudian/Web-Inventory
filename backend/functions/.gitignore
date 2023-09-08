@@ -9,3 +9,7 @@ typings/
 node_modules/
 
 dist/
+
+config/db.json
+
+package-lock.json

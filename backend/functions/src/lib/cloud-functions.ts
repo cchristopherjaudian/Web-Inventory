@@ -1,3 +1,4 @@
+import { initializeApp } from 'firebase-admin/app';
 import * as cf from 'firebase-functions';
 
 interface ICloudFunctions {
@@ -6,6 +7,7 @@ interface ICloudFunctions {
 }
 
 export type THttpsFunction = cf.HttpsFunction;
+initializeApp();
 
 class CloudFunctions implements ICloudFunctions {
   private _defaultRegion = 'asia-east1';
