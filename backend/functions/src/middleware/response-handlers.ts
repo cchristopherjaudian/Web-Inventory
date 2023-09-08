@@ -2,15 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 import httpStatus from 'http-status';
 import { NotFoundError } from '../lib/custom-errors/class-errors';
 import ResponseCodes from '../../commons/response-codes';
-
-type TResponseError = {
-  statusCode?: string;
-  status?: number;
-  message?: string;
-  stack?: string;
-};
-
-export type TNormalizedError = Error & TResponseError;
+import { TNormalizedError } from '../..';
 
 class RouteMiddleware {
   public notFound(req: Request, res: Response, next: NextFunction): void {

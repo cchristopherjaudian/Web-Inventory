@@ -1,9 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { AuthenticationError } from '../lib/custom-errors/class-errors';
-import TokenService from '../services/token-service';
+import { AccountService, TokenService } from '../services';
+import { IAuthRequest } from '../..';
+import { TAccounts } from '../lib/types/accounts-types';
+import { AccountStatuses } from '@prisma/client';
 
 class TokenMiddleware {
   private _jwt = new TokenService();
+  private _account = new AccountService();
 
   private async verifyToken(token: string) {
     try {
@@ -18,7 +22,7 @@ class TokenMiddleware {
   }
 
   public endUserValidate = async (
-    req: Request,
+    req: IAuthRequest,
     res: Response,
     next: NextFunction
   ) => {
@@ -26,6 +30,12 @@ class TokenMiddleware {
       const token = req.headers['authorization'];
       const authUser = await this.verifyToken(token as string);
 
+      const account = await this._account.findAccount({ id: authUser });
+      console.log('account', account);
+      console.log('authUser', authUser);
+      if (!account) throw new AuthenticationError();
+
+      req.account = account as TAccounts & { status: AccountStatuses };
       next();
     } catch (error) {
       next(error);

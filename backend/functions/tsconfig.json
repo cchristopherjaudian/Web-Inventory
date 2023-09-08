@@ -105,7 +105,8 @@
     "./src/*.ts",
     "./commons/**/*.ts",
     "./commons/*.ts",
-    "./config/db.json"
+    "./config/db.json",
+    "./*.d.ts"
   ],
   "exclude": ["node_modules", "./dist"]
 }
