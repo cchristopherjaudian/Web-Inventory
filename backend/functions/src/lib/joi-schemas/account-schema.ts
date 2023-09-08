@@ -1,12 +1,17 @@
 import Joi from 'joi';
-import { AccountStatuses } from '../types/accounts-types';
+import { AccountTypes } from '@prisma/client';
 
-const createAccountSchema = {
+const registerSchema = {
   body: Joi.object({
     email: Joi.string().email().trim().required(),
-    password: Joi.string().required(),
-    accountType: Joi.string().valid(...Object.values(AccountStatuses)),
+    accountType: Joi.string().valid(...Object.values(AccountTypes)),
   }),
 };
 
-export { createAccountSchema };
+const loginSchema = {
+  body: Joi.object({
+    email: Joi.string().email().trim().required(),
+  }),
+};
+
+export { registerSchema, loginSchema };

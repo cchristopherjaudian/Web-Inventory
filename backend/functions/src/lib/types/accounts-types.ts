@@ -13,7 +13,6 @@ export enum AccountTypes {
 
 export type TAccounts = {
   email: string;
-  password: string;
-  status: AccountStatuses;
+  status?: AccountStatuses;
   accountType: AccountTypes;
 };

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { auth } from 'firebase-admin';
 
 type TVerifiedToken = {
   id: string;
@@ -8,6 +9,11 @@ class TokenService {
   private _tokenSecret;
   constructor() {
     this._tokenSecret = String(process.env.TOKEN_SECRET);
+  }
+
+  public async verifyGoogleToken(token: string) {
+    const authenticated = await auth().verifyIdToken(token);
+    return authenticated;
   }
 
   public sign(payload: Record<string, any>) {

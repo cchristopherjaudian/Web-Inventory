@@ -9,16 +9,12 @@
 import express from 'express';
 import CloudFunctions, { THttpsFunction } from './lib/cloud-functions';
 import RouteMiddleware from './middleware/response-handlers';
+import routes from './routes';
 
 const app = express();
 
-app.get('/', async (req, res, next) => {
-  try {
-    res.status(200).json({ test: '/' });
-  } catch (error) {
-    next(error);
-  }
-});
+// initialize routes
+app.use(routes);
 
 // route middlewares e.g(not found, error handlers)
 app.use(new RouteMiddleware().errorResponse);
