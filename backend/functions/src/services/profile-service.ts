@@ -1,8 +1,13 @@
+import { AccountStatuses } from '@prisma/client';
+import { ResourceConflictError } from '../lib/custom-errors/class-errors';
+import { TAccounts } from '../lib/types/accounts-types';
 import { TProfile } from '../lib/types/profile-types';
 import ProfileRepository from '../repositories/profile-repository';
+import AccountService from './account-service';
 
 class ProfileService {
   private _repo = new ProfileRepository();
+  private _acc = new AccountService();
 
   public async createProfile(payload: TProfile) {
     const profile = await this._repo.create(payload);
@@ -15,6 +20,12 @@ class ProfileService {
   }
 
   public async updateProfile(payload: Partial<TProfile>) {
+    let hasEmail;
+    if (payload.account?.email) {
+      hasEmail = await this._acc.findAccount({ email: payload.account.email });
+    }
+    if (hasEmail) throw new ResourceConflictError('Email already exists.');
+
     const updateProfile = await this._repo.update(payload);
     return updateProfile;
   }

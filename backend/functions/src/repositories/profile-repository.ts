@@ -51,6 +51,9 @@ class ProfileRepository {
 
       const profile = await this._db.profile.update({
         where: { id: hasProfile?.id },
+        include: {
+          account: true,
+        },
         data: {
           ...payload,
           account: {

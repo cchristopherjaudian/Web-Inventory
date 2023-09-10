@@ -22,7 +22,7 @@ class AccountRepository {
       const account = await this._db.account.findFirst({
         where: payload,
       });
-      return account;
+      return account || null;
     } catch (error) {
       throw error;
     } finally {
