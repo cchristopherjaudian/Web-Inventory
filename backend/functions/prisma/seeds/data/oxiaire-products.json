@@ -1,0 +1,211 @@
+{
+  "data": [
+    {
+      "code": "FTR-5",
+      "name": "Flask Type (Small)",
+      "size": "5 lbs",
+      "price": 6000,
+      "content": 300
+    },
+    {
+      "code": "FTR-10",
+      "name": "Flask Type (Small)",
+      "size": "10 lbs",
+      "price": 6500,
+      "content": 350
+    },
+    {
+      "code": "FTR-15",
+      "name": "Flask Type (Regular)",
+      "size": "15 lbs.",
+      "price": 5500,
+      "content": 400
+    },
+    {
+      "code": "FTR-20",
+      "name": "Flask Type (Large)",
+      "size": "20 lbs",
+      "price": 7600,
+      "content": 450
+    },
+    {
+      "code": "FTR-25",
+      "name": "Flask Type (Medium)",
+      "size": "25 lbs.",
+      "price": 7800,
+      "content": 500
+    },
+    {
+      "code": "Mo2-50",
+      "name": "O2 Medical",
+      "size": "50 lbs.",
+      "price": 9500,
+      "content": 600
+    },
+    {
+      "code": "To2-50",
+      "name": "O2 Industrial",
+      "size": "50 lbs.",
+      "price": 9500,
+      "content": 500
+    },
+    {
+      "code": "To2-FTR-15",
+      "name": "O2 Industrial (Ftr)",
+      "size": "15 lbs.",
+      "price": 7500,
+      "content": 400
+    },
+    {
+      "code": "CA-21X",
+      "name": "Compressed Air",
+      "size": "50 lbs.",
+      "price": 10000,
+      "content": 1000
+    },
+    {
+      "code": "C2H2-50",
+      "name": "Acetylene-50",
+      "size": "50 lbs",
+      "price": 10000,
+      "content": 2000
+    },
+    {
+      "code": "C2H2-15",
+      "name": "Acetylene-15",
+      "size": "15 lbs.",
+      "price": 7500,
+      "content": 1200
+    },
+    {
+      "code": "C2H2-10",
+      "name": "Acetylene-10",
+      "size": "10 lbs.",
+      "price": 6000,
+      "content": 1200
+    },
+    {
+      "code": "N2-50",
+      "name": "Nitrogen-50",
+      "size": "50 lbs.",
+      "price": 10000,
+      "content": 850
+    },
+    {
+      "code": "N2-15",
+      "name": "Nitrogen-15",
+      "size": "15 lbs.",
+      "price": 7500,
+      "content": 650
+    },
+    {
+      "code": "N2-10",
+      "name": "Nitrogen-10",
+      "size": "10 lbs.",
+      "price": 6000,
+      "content": 550
+    },
+    {
+      "code": "N2-Mo2-50",
+      "name": "Nitrogen (Medical)",
+      "size": "50 lbs.",
+      "price": 10000,
+      "content": 1000
+    },
+    {
+      "code": "AR-50",
+      "name": "Argon-50",
+      "size": "50 lbs.",
+      "price": 10000,
+      "content": 2800
+    },
+    {
+      "code": "AR-15",
+      "name": "Argon-15",
+      "size": "15 lbs.",
+      "price": 7500,
+      "content": 2000
+    },
+    {
+      "code": "Co2-50",
+      "name": "Co2-50",
+      "size": "50 lbs.",
+      "price": 10000,
+      "content": 1500
+    },
+    {
+      "code": "Co2-15",
+      "name": "Co2-15",
+      "size": "15 lbs.",
+      "price": 7500,
+      "content": 750
+    },
+    {
+      "code": "Co2-Mo2-50",
+      "name": "Co2 (Medical)",
+      "size": "50 lbs.",
+      "price": 10000,
+      "content": 2000
+    },
+    {
+      "code": "H2-50",
+      "name": "Hydrogen",
+      "size": "50 lbs.",
+      "price": 10000,
+      "content": 1800
+    },
+    {
+      "code": "LPG-11",
+      "name": "Lpg",
+      "size": "11 kg.",
+      "price": 2000
+    },
+    { "code": "WC-21X", "name": "Wheel Chair", "price": 5500 },
+    { "code": "DB-21X", "name": "Digital Bp", "price": 580 },
+    {
+      "code": "2CHB-21X",
+      "name": "2 Crank Hospital Bed",
+      "price": 12500
+    },
+    {
+      "code": "3CHB-21X",
+      "name": "3 Crank Hospital Bed",
+      "price": 30000
+    },
+    {
+      "code": "MR-21X",
+      "name": "Medical Regulator",
+      "price": 2500
+    },
+    {
+      "code": "HBC-21X",
+      "name": "High Back Chair",
+      "price": 8700
+    },
+    {
+      "code": "NSFCTC-21X",
+      "name": "Non-Slip Foldable Commode Toilet Chair",
+      "price": 3530
+    },
+    {
+      "code": "WWOW-21X",
+      "name": "Walker W/O Wheels",
+      "price": 1800
+    },
+    {
+      "code": "BHDC-21X",
+      "name": "Bariatric Heavy Duty Cane",
+      "price": 588
+    },
+    {
+      "code": "AECWS-21X",
+      "name": "Adjustable Elderly Crutch With Stool",
+      "price": 588
+    },
+    {
+      "code": "FSCB-21X",
+      "name": "Foldable Single Cane Bronze",
+      "price": 420
+    }
+  ]
+}

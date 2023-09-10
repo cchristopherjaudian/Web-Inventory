@@ -6,7 +6,6 @@ class ProfileRepository {
 
   public async create(payload: TProfile) {
     try {
-      console.log('payload', payload);
       const profile = await this._db.profile.create({
         data: {
           firstname: payload.firstname,

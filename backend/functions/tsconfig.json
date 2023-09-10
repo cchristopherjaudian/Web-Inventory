@@ -106,7 +106,8 @@
     "./commons/**/*.ts",
     "./commons/*.ts",
     "./config/db.json",
-    "./*.d.ts"
+    "./*.d.ts",
+    "./prisma/seeds/*.ts"
   ],
   "exclude": ["node_modules", "./dist"]
 }
