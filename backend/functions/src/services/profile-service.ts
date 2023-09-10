@@ -10,9 +10,13 @@ class ProfileService {
   }
 
   public async getProfile(payload: Partial<TProfile>) {
-    console.log('payload', payload);
     const profile = await this._repo.findOne(payload);
     return profile;
+  }
+
+  public async updateProfile(payload: Partial<TProfile>) {
+    const updateProfile = await this._repo.update(payload);
+    return updateProfile;
   }
 }
 

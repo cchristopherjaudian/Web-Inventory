@@ -10,4 +10,19 @@ const createProfileSchema = {
   }),
 };
 
-export { createProfileSchema };
+const updateProfileSchema = {
+  body: Joi.object({
+    firstname: Joi.string().trim().optional(),
+    lastname: Joi.string().trim().optional(),
+    address: Joi.string().trim().optional(),
+    middlename: Joi.string().trim().optional(),
+    account: Joi.object({
+      email: Joi.string().email().trim().optional(),
+      accountType: Joi.string()
+        .valid(...Object.values(AccountTypes))
+        .optional(),
+    }),
+  }),
+};
+
+export { createProfileSchema, updateProfileSchema };

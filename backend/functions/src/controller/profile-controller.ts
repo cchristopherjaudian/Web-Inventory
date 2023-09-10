@@ -39,4 +39,15 @@ const getProfile = catchAsync(async (req, res) => {
   );
 });
 
-export default { create, getProfile };
+const updateProfile = catchAsync(async (req, res) => {
+  const profile = await profileInstance.updateProfile(req.body);
+
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_MODIFIED,
+    profile!
+  );
+});
+
+export default { create, getProfile, updateProfile };

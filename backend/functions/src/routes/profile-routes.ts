@@ -3,6 +3,7 @@ import { ProfileController } from '../controller';
 import JoiMiddleware from '../middleware/joi-middleware';
 import { createProfileSchema } from '../lib/joi-schemas/profile-schema';
 import TokenMiddleware from '../middleware/auth-middleware';
+import profileController from '../controller/profile-controller';
 
 const router = Router();
 const joi = new JoiMiddleware();
@@ -19,6 +20,7 @@ router
     '/auth',
     tokenValidation.endUserValidate as any,
     ProfileController.getProfile
-  );
+  )
+  .patch('/auth', profileController.updateProfile);
 
 export default router;
