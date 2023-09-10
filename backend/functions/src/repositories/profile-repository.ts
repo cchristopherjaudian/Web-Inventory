@@ -9,16 +9,13 @@ class ProfileRepository {
     try {
       const profile = await this._db.profile.create({
         data: {
-          firstname: payload.firstname,
-          lastname: payload.lastname,
-          middlename: payload.middlename,
-          address: payload.address,
+          ...payload,
           account: {
             connect: {
               id: payload.account.id,
             },
           },
-        },
+        } as any,
       });
       return profile;
     } catch (error) {
@@ -46,11 +43,8 @@ class ProfileRepository {
 
   public async update(payload: Partial<TProfile>) {
     try {
-      const hasProfile = await this.findOne({ accountId: payload.account?.id });
-      if (!hasProfile) throw new NotFoundError('Profile does not exists.');
-
       const profile = await this._db.profile.update({
-        where: { id: hasProfile?.id },
+        where: { id: payload?.id },
         include: {
           account: true,
         },

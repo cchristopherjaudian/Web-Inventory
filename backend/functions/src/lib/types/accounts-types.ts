@@ -19,3 +19,5 @@ export type TAccounts = {
   createdAt?: string;
   updatedAt?: string;
 };
+
+export type AdminAccountTypes = Exclude<TAccounts, 'BUSINESS' | 'CUSTOMER'>;

@@ -23,6 +23,12 @@ enum AccountStatuses {
   INACTIVE
 }
 
+enum StockIndicator {
+  LOW
+  NORMAL
+  HIGH
+}
+
 model Account {
   id          String          @id @default(uuid())
   email       String          @db.VarChar(100)
@@ -63,8 +69,9 @@ model Products {
 model Inventory {
   id String @id @default(uuid())
 
-  stock      Int
-  expiration String? @db.VarChar(100)
+  stock          Int
+  stockIndicator StockIndicator @default(NORMAL)
+  expiration     String?        @db.VarChar(100)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

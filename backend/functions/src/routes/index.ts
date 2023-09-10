@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import accountRoutes from './account-routes';
 import profileRoutes from './profile-routes';
+import productRoutes from './product-routes';
 
 const router = Router();
 
@@ -18,6 +19,10 @@ const defaultRoutes: TRoutelist = [
   {
     path: '/profiles',
     controller: profileRoutes,
+  },
+  {
+    path: '/products',
+    controller: productRoutes,
   },
 ];
 
