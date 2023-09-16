@@ -37,6 +37,8 @@ model Account {
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   Profile     Profile?
+
+  @@map("account")
 }
 
 model Profile {
@@ -50,6 +52,8 @@ model Profile {
 
   account   Account @relation(fields: [accountId], references: [id])
   accountId String  @unique
+
+  @@map("profile")
 }
 
 model Products {
@@ -64,6 +68,8 @@ model Products {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   Inventory Inventory[]
+
+  @@map("products")
 }
 
 model Inventory {
@@ -76,6 +82,8 @@ model Inventory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Products  Products? @relation(fields: [productId], references: [id])
+  products  Products? @relation(fields: [productId], references: [id])
   productId String?
+
+  @@map("inventory")
 }
