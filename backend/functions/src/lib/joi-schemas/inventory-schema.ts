@@ -22,4 +22,11 @@ const getInventoriesSchema = {
     }),
 };
 
-export { createInventorySchema, getInventoriesSchema };
+const updateInventorySchema = {
+    body: Joi.object({
+        stock: Joi.number().greater(0).optional(),
+        expiration: Joi.date().format('YYYY-MM-DD').optional(),
+    }),
+};
+
+export { createInventorySchema, getInventoriesSchema, updateInventorySchema };

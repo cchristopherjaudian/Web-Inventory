@@ -17,8 +17,8 @@ class InventoryRepository {
 
     public async findOne(query: TQueryArgs) {
         try {
-            const account = await this._db.inventory.findFirst(query);
-            return account;
+            const inventory = await this._db.inventory.findFirst(query);
+            return inventory;
         } catch (error) {
             console.log('inventory', error);
             throw error;
@@ -51,6 +51,21 @@ class InventoryRepository {
             }
 
             return await this._db.inventory.findMany(params);
+        } catch (error) {
+            console.log('inventory', error);
+            throw error;
+        } finally {
+            await this._db.$disconnect();
+        }
+    }
+
+    public async update(id: string, payload: Partial<TInventory>) {
+        try {
+            const inventory = await this._db.inventory.update({
+                where: { id },
+                data: payload,
+            });
+            return inventory;
         } catch (error) {
             console.log('inventory', error);
             throw error;

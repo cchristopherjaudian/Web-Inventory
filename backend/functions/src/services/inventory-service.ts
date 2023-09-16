@@ -57,6 +57,15 @@ class InventoryService {
     public async getInventories(query: TInventoryList) {
         return await this._repo.list(query);
     }
+
+    public async updateInventory(id: string, payload: Partial<TInventory>) {
+        await this.getInventory(id);
+
+        if (payload?.stock) {
+            payload.stockIndicator = this.getStockIndicator(payload.stock);
+        }
+        return await this._repo.update(id, payload);
+    }
 }
 
 export default InventoryService;

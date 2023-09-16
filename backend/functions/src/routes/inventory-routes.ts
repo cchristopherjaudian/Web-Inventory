@@ -6,6 +6,7 @@ import { InventoryController } from '../controller';
 import {
     createInventorySchema,
     getInventoriesSchema,
+    updateInventorySchema,
 } from '../lib/joi-schemas/inventory-schema';
 
 const router = Router();
@@ -29,6 +30,12 @@ router
         authMiddleware.endUserValidate as any,
         joi.requestSchemaValidate(getInventoriesSchema),
         InventoryController.getInventories
+    )
+    .patch(
+        '/:inventoryId',
+        authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
+        joi.requestSchemaValidate(updateInventorySchema),
+        InventoryController.updateInventory
     );
 
 export default router;

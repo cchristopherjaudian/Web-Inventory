@@ -37,4 +37,22 @@ const getInventories = catchAsync(async (req, res) => {
     );
 });
 
-export default { createInventory, getInventory, getInventories };
+const updateInventory = catchAsync(async (req, res) => {
+    const newInventory = await inventory.updateInventory(
+        req.params.inventoryId,
+        req.body
+    );
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_MODIFIED,
+        newInventory
+    );
+});
+
+export default {
+    createInventory,
+    getInventory,
+    getInventories,
+    updateInventory,
+};
