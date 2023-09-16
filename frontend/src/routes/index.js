@@ -5,5 +5,5 @@ import SubOneRoutes from './SubOneRoutes';
 import SubTwoRoutes from './SubTwoRoutes';
 
 export default function ThemeRoutes() {
-  return useRoutes([AdminRoutes]);
+  return useRoutes([AdminRoutes,LoginRoutes]);
 }

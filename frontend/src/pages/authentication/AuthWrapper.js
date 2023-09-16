@@ -25,7 +25,7 @@ const AuthWrapper = ({ children }) => (
           <Grid item xs={6}>
             <img src='https://placehold.co/700x1200' alt='test' />
           </Grid>
-          <Grid item>
+          <Grid item xs={6}>
             <AuthCard>{children}</AuthCard>
           </Grid>
 

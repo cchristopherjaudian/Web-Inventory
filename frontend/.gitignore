@@ -106,5 +106,10 @@ dist
 # Backup file
 *.bak
 
+# Firebase Deploy
+.firebase/
+.firebaserc
+firebase.json
+
 #output
 build

@@ -1,24 +1,71 @@
 import { Link } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
-import FirebaseRegister from './auth-forms/AuthRegister';
-import AuthWrapper from './AuthWrapper';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
 
-const Register = () => (
-  <AuthWrapper>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-          <Typography variant="h3">Sign up</Typography>
-          <Typography component={Link} to="/login" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
-            Already have an account?
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import RegisterStepper from './RegisterStepper';
+
+const defaultTheme = createTheme();
+const Register = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+
+  return (<ThemeProvider theme={defaultTheme}>
+    <Grid container component="main" sx={{ height: '100vh' }} >
+      <CssBaseline />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: 'url(https://placehold.co/600x400)',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: (t) =>
+            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Box
+          flexDirection="column"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="100vh"
+          sx={{
+            my: 8,
+            mx: 4,
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            {"Oxiaire Member's Portal"}
           </Typography>
-        </Stack>
-      </Grid>
-      <Grid item xs={12}>
-        <FirebaseRegister />
+          <Typography component="h1" variant="caption">
+            Please select an account type below
+          </Typography>
+          <RegisterStepper/>
+
+        </Box>
       </Grid>
     </Grid>
-  </AuthWrapper>
-);
+  </ThemeProvider>);
+
+
+};
 
 export default Register;
