@@ -20,4 +20,19 @@ const updateProductSchema = {
   }),
 };
 
-export { createProductSchema, updateProductSchema };
+const productListQuery = {
+  query: Joi.object({
+    searchField: Joi.string().trim().optional(),
+    search: Joi.string().trim().optional().when('searchField', {
+      is: undefined,
+      then: Joi.required(),
+    }),
+    whereField: Joi.string().trim().optional(),
+    where: Joi.string().trim().optional().when('whereField', {
+      is: undefined,
+      then: Joi.required(),
+    }),
+  }),
+};
+
+export { createProductSchema, updateProductSchema, productListQuery };

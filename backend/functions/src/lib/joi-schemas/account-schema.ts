@@ -1,17 +1,22 @@
 import Joi from 'joi';
-import { AccountTypes } from '@prisma/client';
+import { AccountTypes, AccountStatuses } from '@prisma/client';
 
 const registerSchema = {
   body: Joi.object({
     email: Joi.string().email().trim().required(),
     accountType: Joi.string().valid(...Object.values(AccountTypes)),
+    status: Joi.string().trim().optional().default('ACTIVE'),
   }),
 };
 
-const loginSchema = {
-  body: Joi.object({
-    email: Joi.string().email().trim().required(),
+const getCustomersSchema = {
+  query: Joi.object({
+    search: Joi.string().trim().optional(),
+    status: Joi.string()
+      .trim()
+      .valid(...Object.values(AccountStatuses))
+      .optional(),
   }),
 };
 
-export { registerSchema, loginSchema };
+export { registerSchema, getCustomersSchema };

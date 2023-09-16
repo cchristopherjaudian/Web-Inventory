@@ -20,4 +20,10 @@ export type TAccounts = {
   updatedAt?: string;
 };
 
+// Customers
+export type TCustomerListQuery = {
+  search?: string;
+  status?: string;
+};
+
 export type AdminAccountTypes = Exclude<TAccounts, 'BUSINESS' | 'CUSTOMER'>;

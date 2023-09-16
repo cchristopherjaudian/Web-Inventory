@@ -15,7 +15,7 @@ class AccountService {
     let account;
     let newData = false;
     // checks if email exists
-    account = await this.findAccount({ email: payload.email });
+    account = await this._repo.findOne({ email: payload.email });
     if (!account) {
       account = await this._repo.create(payload);
       newData = true;

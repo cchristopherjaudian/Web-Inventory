@@ -1,9 +1,13 @@
 import ProductsRepository from '../repositories/products-repository';
-import { TProducts } from '../lib/types/product-types';
+import { TProducts, TProductsQuery } from '../lib/types/product-types';
 import { ResourceConflictError } from '../lib/custom-errors/class-errors';
 
 class ProductsService {
   private _repo = new ProductsRepository();
+
+  public async productList(query: TProductsQuery) {
+    return await this._repo.list(query);
+  }
 
   public async createProduct(payload: TProducts) {
     const isExists = await this.findProduct({ code: payload.code });

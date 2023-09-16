@@ -4,6 +4,7 @@ import AuthMiddleware from '../middleware/auth-middleware';
 import { ProductController } from '../controller';
 import {
   createProductSchema,
+  productListQuery,
   updateProductSchema,
 } from '../lib/joi-schemas/product-schema';
 
@@ -15,13 +16,19 @@ router
   .post(
     '/',
     joi.requestSchemaValidate(createProductSchema),
-    authMiddleware.adminValidate as any,
+    authMiddleware.adminValidate(['ADMIN']) as any,
     ProductController.createProduct
   )
   .get(
     '/:productId',
     authMiddleware.endUserValidate as any,
     ProductController.getProduct
+  )
+  .get(
+    '/',
+    joi.requestSchemaValidate(productListQuery),
+    authMiddleware.endUserValidate as any,
+    ProductController.getProductList
   )
   .patch(
     '/:productId',

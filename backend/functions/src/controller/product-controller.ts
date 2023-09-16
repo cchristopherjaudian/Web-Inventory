@@ -3,6 +3,7 @@ import { catchAsync } from '../helpers/catch-async';
 import ResponseObject from '../lib/response-object';
 import ResponseCodes from '../../commons/response-codes';
 import ProductsService from '../services/product-service';
+import { TProductsQuery } from '../lib/types/product-types';
 
 const response = new ResponseObject();
 const productInstance = new ProductsService();
@@ -31,6 +32,19 @@ const getProduct = catchAsync(async (req, res) => {
   );
 });
 
+const getProductList = catchAsync(async (req, res) => {
+  const product = await productInstance.productList(
+    req.query as TProductsQuery
+  );
+
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.LIST_RETRIEVED,
+    product!
+  );
+});
+
 const updateProduct = catchAsync(async (req, res) => {
   const product = await productInstance.update({
     id: req.params.productId,
@@ -45,4 +59,4 @@ const updateProduct = catchAsync(async (req, res) => {
   );
 });
 
-export default { createProduct, getProduct, updateProduct };
+export default { createProduct, getProduct, updateProduct, getProductList };

@@ -1,5 +1,7 @@
+import {} from '@prisma/client';
 import Prisma from '../lib/prisma';
 import { TAccounts } from '../lib/types/accounts-types';
+import { TQueryArgs } from '../..';
 
 class AccountRepository {
   private _db = Prisma.Instance.db;
@@ -9,6 +11,17 @@ class AccountRepository {
       const account = await this._db.account.create({
         data: payload,
       });
+      return account;
+    } catch (error) {
+      throw error;
+    } finally {
+      await this._db.$disconnect();
+    }
+  }
+
+  public async list(params: TQueryArgs) {
+    try {
+      const account = await this._db.account.findMany(params as {});
       return account;
     } catch (error) {
       throw error;

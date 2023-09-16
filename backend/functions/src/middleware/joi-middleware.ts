@@ -22,7 +22,7 @@ class JoiMiddleware {
     if (body) {
       return body.validate(request.body, { abortEarly: false });
     }
-    return query.validate(request.body, { abortEarly: false });
+    return query.validate(request.query, { abortEarly: false });
   }
 
   public requestSchemaValidate =
