@@ -1,7 +1,7 @@
-import { Router } from 'express';
+import {Router} from 'express';
 import JoiMiddleware from '../middleware/joi-middleware';
 import AuthMiddleware from '../middleware/auth-middleware';
-import { ProductController } from '../controller';
+import {ProductController} from '../controller';
 import {
   createProductSchema,
   productListQuery,

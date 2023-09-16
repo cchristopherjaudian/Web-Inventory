@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { AccountTypes, AccountStatuses } from '@prisma/client';
+import {AccountTypes, AccountStatuses} from '@prisma/client';
 
 const registerSchema = {
   body: Joi.object({
@@ -9,7 +9,7 @@ const registerSchema = {
   }),
 };
 
-const getCustomersSchema = {
+const getB2cListSchema = {
   query: Joi.object({
     search: Joi.string().trim().optional(),
     status: Joi.string()
@@ -19,4 +19,4 @@ const getCustomersSchema = {
   }),
 };
 
-export { registerSchema, getCustomersSchema };
+export {registerSchema, getB2cListSchema};

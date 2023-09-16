@@ -1,5 +1,5 @@
-import { Request } from 'express';
-import { TAccounts } from './src/lib/types/accounts-types';
+import {Request} from 'express';
+import {TAccounts} from './src/lib/types/accounts-types';
 
 type TResponseError = {
   statusCode?: string;

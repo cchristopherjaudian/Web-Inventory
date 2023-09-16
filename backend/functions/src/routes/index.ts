@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import {Router} from 'express';
 import accountRoutes from './account-routes';
 import profileRoutes from './profile-routes';
 import productRoutes from './product-routes';

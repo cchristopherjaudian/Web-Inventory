@@ -21,7 +21,7 @@ class AccountRepository {
 
   public async list(params: TQueryArgs) {
     try {
-      const account = await this._db.account.findMany(params as {});
+      const account = await this._db.account.findMany(params);
       return account;
     } catch (error) {
       throw error;

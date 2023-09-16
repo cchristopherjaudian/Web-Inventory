@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase-admin/app';
+import {initializeApp} from 'firebase-admin/app';
 import * as cf from 'firebase-functions';
 
 interface ICloudFunctions {

@@ -35,4 +35,4 @@ const productListQuery = {
   }),
 };
 
-export { createProductSchema, updateProductSchema, productListQuery };
+export {createProductSchema, updateProductSchema, productListQuery};

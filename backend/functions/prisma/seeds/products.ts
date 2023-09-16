@@ -1,11 +1,11 @@
-import { data } from './data/oxiaire-products.json';
+import {data} from './data/oxiaire-products.json';
 import Prisma from '../../src/lib/prisma';
 
 const main = async () => {
   try {
-    await Prisma.Instance.db.products.deleteMany({ where: {} });
+    await Prisma.Instance.db.products.deleteMany({where: {}});
 
-    await Prisma.Instance.db.products.createMany({ data });
+    await Prisma.Instance.db.products.createMany({data});
   } catch (error) {
     console.log('error occured in products', error);
   } finally {

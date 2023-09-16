@@ -1,4 +1,4 @@
-import { TAccounts } from './accounts-types';
+import {TAccounts} from './accounts-types';
 
 export type TProfile = {
   id?: string;

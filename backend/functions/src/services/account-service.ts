@@ -1,10 +1,5 @@
-import bcrypt from 'bcrypt';
 import { TAccounts } from '../lib/types/accounts-types';
 import { AccountRepository } from '../repositories/';
-import {
-  AuthenticationError,
-  NotFoundError,
-} from '../lib/custom-errors/class-errors';
 import TokenService from './token-service';
 
 class AccountService {

@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import {Response} from 'express';
 
 class ResponseObject {
   public createResponse(

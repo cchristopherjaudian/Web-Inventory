@@ -1,4 +1,3 @@
-import { NotFoundError } from '../lib/custom-errors/class-errors';
 import Prisma from '../lib/prisma';
 import { TProducts, TProductsQuery } from '../lib/types/product-types';
 
@@ -35,7 +34,7 @@ class ProductsRepository {
       const product = await this._db.products.create({
         data: {
           ...payload,
-        } as any,
+        } as TProducts,
       });
       return product;
     } catch (error) {

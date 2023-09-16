@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
-import { IAuthRequest } from '../..';
-import { catchAsync } from '../helpers/catch-async';
+import {IAuthRequest} from '../..';
+import {catchAsync} from '../helpers/catch-async';
 import ResponseObject from '../lib/response-object';
-import { ProfileSerivce } from '../services';
+import {ProfileSerivce} from '../services';
 import ResponseCodes from '../../commons/response-codes';
 
 const response = new ResponseObject();
@@ -50,4 +50,4 @@ const updateProfile = catchAsync(async (req, res) => {
   );
 });
 
-export default { create, getProfile, updateProfile };
+export default {create, getProfile, updateProfile};

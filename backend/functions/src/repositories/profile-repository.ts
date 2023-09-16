@@ -1,4 +1,3 @@
-import { NotFoundError } from '../lib/custom-errors/class-errors';
 import Prisma from '../lib/prisma';
 import { TProfile } from '../lib/types/profile-types';
 

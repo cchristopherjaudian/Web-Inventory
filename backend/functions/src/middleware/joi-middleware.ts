@@ -27,17 +27,19 @@ class JoiMiddleware {
 
   public requestSchemaValidate =
     (schema: TSchemaBody<Schema>) =>
-    (req: Request, res: Response, next: NextFunction) => {
-      const { error, value } = this.validateSchema(schema, req);
+      (req: Request, res: Response, next: NextFunction) => {
+        const { error, value } = this.validateSchema(schema, req);
 
-      const err = this.mapError(error as Partial<ValidationError> & TJoiError);
-      if (err) next(err);
+        const err = this.mapError(
+                error as Partial<ValidationError> & TJoiError
+        );
+        if (err) next(err);
 
-      if (schema?.body) req.body = value;
-      if (schema?.query) req.query = value;
+        if (schema?.body) req.body = value;
+        if (schema?.query) req.query = value;
 
-      next();
-    };
+        next();
+      };
 }
 
 export default JoiMiddleware;

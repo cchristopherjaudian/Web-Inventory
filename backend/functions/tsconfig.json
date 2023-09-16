@@ -107,7 +107,9 @@
     "./commons/*.ts",
     "./config/db.json",
     "./*.d.ts",
-    "./prisma/seeds/*.ts"
+    "./prisma/seeds/*.ts",
+    // the "parserOptions.project" error
+    ".eslintrc.js"
   ],
   "exclude": ["node_modules", "./dist"]
 }

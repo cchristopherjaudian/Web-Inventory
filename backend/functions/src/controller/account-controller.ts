@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
-import { AccountService } from '../services/';
+import {AccountService} from '../services/';
 import ResponseObject from '../lib/response-object';
-import { catchAsync } from '../helpers/catch-async';
+import {catchAsync} from '../helpers/catch-async';
 import ResponseCodes from '../../commons/response-codes';
 
 const accountInstance = new AccountService();
@@ -17,4 +17,4 @@ const register = catchAsync(async (req, res) => {
   );
 });
 
-export default { register };
+export default {register};

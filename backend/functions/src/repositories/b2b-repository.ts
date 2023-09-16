@@ -1,12 +1,12 @@
 import { AccountTypes } from '@prisma/client';
 import { TQueryArgs } from '../..';
-import { TCustomerListQuery } from '../lib/types/accounts-types';
+import { TAccountsListQuery } from '../lib/types/accounts-types';
 import AccountRepository from './account-repository';
 
-class CustomerRepository {
+class B2bRepository {
   private _acc = new AccountRepository();
 
-  public async customersList(params: TCustomerListQuery) {
+  public async b2bList(params: TAccountsListQuery) {
     const query = { where: {} } as TQueryArgs;
 
     if (params?.search) {
@@ -20,9 +20,9 @@ class CustomerRepository {
     }
 
     return await this._acc.list({
-      where: { ...query.where, accountType: AccountTypes.CUSTOMER },
+      where: { ...query.where, accountType: AccountTypes.BUSINESS },
     });
   }
 }
 
-export default CustomerRepository;
+export default B2bRepository;

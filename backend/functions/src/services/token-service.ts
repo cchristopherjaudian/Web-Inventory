@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { auth } from 'firebase-admin';
+import {auth} from 'firebase-admin';
 
 type TVerifiedToken = {
   id: string;
@@ -26,7 +26,7 @@ class TokenService {
         {
           expiresIn: '1d',
         },
-        function (err, token) {
+        function(err, token) {
           return err ? reject(err) : resolve(token as string);
         }
       );

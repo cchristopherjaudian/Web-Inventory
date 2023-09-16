@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import ResponseObject from '../lib/response-object';
-import { catchAsync } from '../helpers/catch-async';
+import {catchAsync} from '../helpers/catch-async';
 import ResponseCodes from '../../commons/response-codes';
 import AdminService from '../services/admin-service';
 
@@ -17,4 +17,4 @@ const getAdminList = catchAsync(async (req, res) => {
   );
 });
 
-export default { getAdminList };
+export default {getAdminList};

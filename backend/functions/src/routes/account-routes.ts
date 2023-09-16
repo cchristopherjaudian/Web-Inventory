@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import {Router} from 'express';
 import {
   AccountController,
   AdminController,
@@ -7,7 +7,7 @@ import {
 import JoiMiddleware from '../middleware/joi-middleware';
 import {
   registerSchema,
-  getCustomersSchema,
+  getB2cListSchema,
 } from '../lib/joi-schemas/account-schema';
 import AuthMiddleware from '../middleware/auth-middleware';
 
@@ -31,9 +31,9 @@ router.get(
 // CUSTOMERS ROUTES
 router.get(
   '/customers',
-  joi.requestSchemaValidate(getCustomersSchema),
+  joi.requestSchemaValidate(getB2cListSchema),
   authMiddleware.adminValidate(['ADMIN']) as any,
-  CustomerController.getCustomersList
+  CustomerController.getb2cList
 );
 
 export default router;

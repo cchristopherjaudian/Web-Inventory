@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { ProfileController } from '../controller';
+import {Router} from 'express';
+import {ProfileController} from '../controller';
 import JoiMiddleware from '../middleware/joi-middleware';
 import {
   createProfileSchema,

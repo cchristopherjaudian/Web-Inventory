@@ -21,7 +21,7 @@ export type TAccounts = {
 };
 
 // Customers
-export type TCustomerListQuery = {
+export type TAccountsListQuery = {
   search?: string;
   status?: string;
 };

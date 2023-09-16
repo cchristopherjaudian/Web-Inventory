@@ -1,9 +1,7 @@
-import { AccountStatuses } from '@prisma/client';
 import {
   NotFoundError,
   ResourceConflictError,
 } from '../lib/custom-errors/class-errors';
-import { TAccounts } from '../lib/types/accounts-types';
 import { TProfile } from '../lib/types/profile-types';
 import ProfileRepository from '../repositories/profile-repository';
 import AccountService from './account-service';

@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { AccountTypes } from '@prisma/client';
+import {AccountTypes} from '@prisma/client';
 
 const createProfileSchema = {
   body: Joi.object({
@@ -25,4 +25,4 @@ const updateProfileSchema = {
   }),
 };
 
-export { createProfileSchema, updateProfileSchema };
+export {createProfileSchema, updateProfileSchema};

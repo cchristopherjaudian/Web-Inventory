@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
-import { catchAsync } from '../helpers/catch-async';
+import {catchAsync} from '../helpers/catch-async';
 import ResponseObject from '../lib/response-object';
 import ResponseCodes from '../../commons/response-codes';
 import ProductsService from '../services/product-service';
-import { TProductsQuery } from '../lib/types/product-types';
+import {TProductsQuery} from '../lib/types/product-types';
 
 const response = new ResponseObject();
 const productInstance = new ProductsService();
@@ -59,4 +59,4 @@ const updateProduct = catchAsync(async (req, res) => {
   );
 });
 
-export default { createProduct, getProduct, updateProduct, getProductList };
+export default {createProduct, getProduct, updateProduct, getProductList};

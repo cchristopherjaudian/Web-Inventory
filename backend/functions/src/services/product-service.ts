@@ -1,6 +1,6 @@
 import ProductsRepository from '../repositories/products-repository';
-import { TProducts, TProductsQuery } from '../lib/types/product-types';
-import { ResourceConflictError } from '../lib/custom-errors/class-errors';
+import {TProducts, TProductsQuery} from '../lib/types/product-types';
+import {ResourceConflictError} from '../lib/custom-errors/class-errors';
 
 class ProductsService {
   private _repo = new ProductsRepository();
@@ -10,7 +10,7 @@ class ProductsService {
   }
 
   public async createProduct(payload: TProducts) {
-    const isExists = await this.findProduct({ code: payload.code });
+    const isExists = await this.findProduct({code: payload.code});
     if (isExists) throw new ResourceConflictError('Product already exists.');
     const product = await this._repo.create(payload);
     return product;
@@ -24,7 +24,7 @@ class ProductsService {
   public async update(payload: Partial<TProducts>) {
     let hasProducts;
     if (payload?.code) {
-      hasProducts = await this.findProduct({ code: payload.code });
+      hasProducts = await this.findProduct({code: payload.code});
     }
     if (hasProducts) throw new ResourceConflictError('Product already exists.');
 

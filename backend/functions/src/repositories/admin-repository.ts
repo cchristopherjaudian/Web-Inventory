@@ -6,7 +6,7 @@ class AdminRepository {
   public async adminList() {
     return await this._repo.list({
       where: {
-        OR: [{ accountType: 'SUB_1' }, { accountType: 'SUB_2' }],
+        OR: [{accountType: 'SUB_1'}, {accountType: 'SUB_2'}],
       },
     });
   }

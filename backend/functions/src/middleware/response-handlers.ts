@@ -11,6 +11,7 @@ class RouteMiddleware {
     next(error);
   }
 
+  /*  eslint-disable @typescript-eslint/no-unused-vars */
   public errorResponse(
     error: TNormalizedError,
     req: Request,

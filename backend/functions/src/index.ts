@@ -7,7 +7,7 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 import express from 'express';
-import CloudFunctions, { THttpsFunction } from './lib/cloud-functions';
+import CloudFunctions, {THttpsFunction} from './lib/cloud-functions';
 import RouteMiddleware from './middleware/response-handlers';
 import routes from './routes';
 

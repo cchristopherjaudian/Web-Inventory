@@ -1,4 +1,4 @@
-import { default as productsRunner } from './products';
+import {default as productsRunner} from './products';
 
 (async () => {
   try {
