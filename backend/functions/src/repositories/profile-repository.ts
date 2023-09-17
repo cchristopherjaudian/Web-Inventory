@@ -1,3 +1,4 @@
+import { AccountStatuses } from '@prisma/client';
 import Prisma from '../lib/prisma';
 import { TProfile } from '../lib/types/profile-types';
 
@@ -6,6 +7,14 @@ class ProfileRepository {
 
     public async create(payload: TProfile) {
         try {
+            console.log('payload', payload);
+            await this._db.account.update({
+                where: { id: payload.account.id },
+                data: {
+                    accountType: payload.account.accountType,
+                    status: AccountStatuses.ACTIVE,
+                },
+            });
             const profile = await this._db.profile.create({
                 data: {
                     ...payload,

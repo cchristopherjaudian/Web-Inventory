@@ -23,9 +23,6 @@ const updateProfileSchema = {
         middlename: Joi.string().trim().optional(),
         account: Joi.object({
             email: Joi.string().email().trim().optional(),
-            accountType: Joi.string()
-                .valid(...Object.values(AccountTypes))
-                .optional(),
         }),
     }),
 };

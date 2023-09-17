@@ -1,3 +1,4 @@
+import { AccountStatuses } from '@prisma/client';
 import { TAccounts } from '../lib/types/accounts-types';
 import { AccountRepository } from '../repositories/';
 import ProfileRepository from '../repositories/profile-repository';
@@ -17,10 +18,10 @@ class AccountService {
             account = await this._repo.create(payload);
             newData = true;
         }
-        const profile = await this._profileRepo.findOne({
-            accountId: account.id,
-        });
-        if (!profile) newData = true;
+
+        if (account.status === AccountStatuses.INACTIVE) {
+            newData = true;
+        }
 
         const token = await this._token.sign(account);
         return {
