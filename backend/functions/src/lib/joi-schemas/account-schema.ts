@@ -1,11 +1,9 @@
 import Joi from 'joi';
-import { AccountTypes, AccountStatuses } from '@prisma/client';
+import { AccountStatuses } from '@prisma/client';
 
 const registerSchema = {
     body: Joi.object({
         email: Joi.string().email().trim().required(),
-        accountType: Joi.string().valid(...Object.values(AccountTypes)),
-        status: Joi.string().trim().optional().default('ACTIVE'),
     }),
 };
 
