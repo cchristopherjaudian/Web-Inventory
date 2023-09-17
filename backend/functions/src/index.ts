@@ -7,11 +7,14 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 import express from 'express';
-import CloudFunctions, {THttpsFunction} from './lib/cloud-functions';
+import cors from 'cors';
+import CloudFunctions, { THttpsFunction } from './lib/cloud-functions';
 import RouteMiddleware from './middleware/response-handlers';
 import routes from './routes';
 
 const app = express();
+
+app.use(cors());
 
 // initialize routes
 app.use(routes);
@@ -23,5 +26,5 @@ app.use(new RouteMiddleware().notFound);
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 export const v1 = new CloudFunctions()
-  .withRuntime()
-  .handlerV1(<THttpsFunction>(<unknown>app));
+    .withRuntime()
+    .handlerV1(<THttpsFunction>(<unknown>app));
