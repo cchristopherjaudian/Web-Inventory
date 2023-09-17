@@ -16,7 +16,7 @@ router
     .post(
         '/',
         joi.requestSchemaValidate(createProfileSchema),
-        authMiddleware.endUserValidate as any,
+        authMiddleware.endUserValidate('INACTIVE') as any,
         ProfileController.create
     )
     .get(

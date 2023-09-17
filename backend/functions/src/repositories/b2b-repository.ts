@@ -1,26 +1,37 @@
 import { AccountTypes } from '@prisma/client';
 import { TQueryArgs } from '../..';
 import { TAccountsListQuery } from '../lib/types/accounts-types';
-import AccountRepository from './account-repository';
+import ProfileRepository from './profile-repository';
 
 class B2bRepository {
-    private _acc = new AccountRepository();
+    private _profile = new ProfileRepository();
 
     public async b2bList(params: TAccountsListQuery) {
-        const query = { where: {} } as TQueryArgs;
+        const query = {
+            where: {
+                account: {
+                    accountType: AccountTypes.BUSINESS,
+                },
+            },
+        } as TQueryArgs;
 
         if (params?.search) {
-            query.where!.email = {
+            query.where!.account.email = {
                 contains: params.search,
             };
         }
 
         if (params?.status) {
-            query.where!.status = params.status;
+            query.where!.account.status = params.status;
         }
 
-        return await this._acc.list({
-            where: { ...query.where, accountType: AccountTypes.BUSINESS },
+        return await this._profile.list({
+            where: {
+                ...query.where,
+            },
+            include: {
+                account: true,
+            },
         });
     }
 }

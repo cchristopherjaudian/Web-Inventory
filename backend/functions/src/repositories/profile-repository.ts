@@ -1,6 +1,7 @@
 import { AccountStatuses } from '@prisma/client';
 import Prisma from '../lib/prisma';
 import { TProfile } from '../lib/types/profile-types';
+import { TQueryArgs } from '../..';
 
 class ProfileRepository {
     private _db = Prisma.Instance.db;
@@ -73,6 +74,10 @@ class ProfileRepository {
         } finally {
             await this._db.$disconnect();
         }
+    }
+
+    public async list(query: TQueryArgs) {
+        return this._db.profile.findMany(query);
     }
 }
 
