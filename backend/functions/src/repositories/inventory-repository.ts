@@ -59,6 +59,10 @@ class InventoryRepository {
         }
     }
 
+    public async rawQueryList(query: TQueryArgs) {
+        return this._db.inventory.findMany(query);
+    }
+
     public async update(id: string, payload: Partial<TInventory>) {
         try {
             const inventory = await this._db.inventory.update({

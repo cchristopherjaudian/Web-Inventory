@@ -1,53 +1,53 @@
 import httpStatus from 'http-status';
-import {IAuthRequest} from '../..';
-import {catchAsync} from '../helpers/catch-async';
+import { IAuthRequest } from '../..';
+import { catchAsync } from '../helpers/catch-async';
 import ResponseObject from '../lib/response-object';
-import {ProfileSerivce} from '../services';
 import ResponseCodes from '../../commons/response-codes';
+import { ProfileService } from '../services';
 
 const response = new ResponseObject();
-const profileInstance = new ProfileSerivce();
+const profileInstance = new ProfileService();
 
 const create = catchAsync(async (req, res) => {
-  const request = req as IAuthRequest;
-  const profile = await profileInstance.createProfile({
-    ...request.body,
-    account: {
-      id: request.account.id,
-    },
-  });
+    const request = req as IAuthRequest;
+    const profile = await profileInstance.createProfile({
+        ...request.body,
+        account: {
+            id: request.account.id,
+        },
+    });
 
-  response.createResponse(
-    res,
-    httpStatus.OK,
-    ResponseCodes.DATA_CREATED,
-    profile
-  );
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_CREATED,
+        profile
+    );
 });
 
 const getProfile = catchAsync(async (req, res) => {
-  const request = req as IAuthRequest;
-  const profile = await profileInstance.getProfile({
-    accountId: request.account.id,
-  });
+    const request = req as IAuthRequest;
+    const profile = await profileInstance.getProfile({
+        accountId: request.account.id,
+    });
 
-  response.createResponse(
-    res,
-    httpStatus.OK,
-    ResponseCodes.DATA_RETRIEVED,
-    profile!
-  );
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_RETRIEVED,
+        profile!
+    );
 });
 
 const updateProfile = catchAsync(async (req, res) => {
-  const profile = await profileInstance.updateProfile(req.body);
+    const profile = await profileInstance.updateProfile(req.body);
 
-  response.createResponse(
-    res,
-    httpStatus.OK,
-    ResponseCodes.DATA_MODIFIED,
-    profile!
-  );
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_MODIFIED,
+        profile!
+    );
 });
 
-export default {create, getProfile, updateProfile};
+export default { create, getProfile, updateProfile };

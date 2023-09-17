@@ -3,6 +3,8 @@ import accountRoutes from './account-routes';
 import profileRoutes from './profile-routes';
 import productRoutes from './product-routes';
 import inventoryRoutes from './inventory-routes';
+import cartRoutes from './cart-routes';
+import orderRoutes from './order-routes';
 
 const router = Router();
 
@@ -28,6 +30,14 @@ const defaultRoutes: TRoutelist = [
     {
         path: '/inventories',
         controller: inventoryRoutes,
+    },
+    {
+        path: '/carts',
+        controller: cartRoutes,
+    },
+    {
+        path: '/orders',
+        controller: orderRoutes,
     },
 ];
 

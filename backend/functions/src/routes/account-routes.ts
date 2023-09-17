@@ -2,7 +2,8 @@ import { Router } from 'express';
 import {
     AccountController,
     AdminController,
-    CustomerController,
+    B2bController,
+    B2cController,
 } from '../controller';
 import JoiMiddleware from '../middleware/joi-middleware';
 import {
@@ -30,10 +31,18 @@ router.get(
 
 // CUSTOMERS ROUTES
 router.get(
-    '/customers',
+    '/b2c',
     joi.requestSchemaValidate(getB2cListSchema),
     authMiddleware.adminValidate(['ADMIN']) as any,
-    CustomerController.getb2cList
+    B2cController.getb2cList
+);
+
+// Bussiness ROUTES
+router.get(
+    '/b2b',
+    joi.requestSchemaValidate(getB2cListSchema),
+    authMiddleware.adminValidate(['ADMIN']) as any,
+    B2bController.getb2cList
 );
 
 export default router;

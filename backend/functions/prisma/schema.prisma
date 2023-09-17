@@ -29,14 +29,23 @@ enum StockIndicator {
   HIGH
 }
 
+enum OrderStatuses {
+  PREPARING
+  DISPATCHED
+  DELIVERED
+}
+
 model Account {
   id          String          @id @default(uuid())
   email       String          @db.VarChar(100)
   status      AccountStatuses @default(INACTIVE)
-  accountType AccountTypes
+  accountType AccountTypes?
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   Profile     Profile?
+  cart        Cart[]
+  Orders      Orders[]
+  OrderStatus OrderStatus[]
 
   @@map("account")
 }
@@ -82,8 +91,74 @@ model Inventory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  products  Products? @relation(fields: [productId], references: [id])
-  productId String?
+  products   Products?    @relation(fields: [productId], references: [id])
+  productId  String?
+  cart       Cart[]
+  OrderItems OrderItems[]
 
   @@map("inventory")
+}
+
+model Cart {
+  id String @id @default(uuid())
+
+  quantity  Int
+  account   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+
+  inventory   Inventory? @relation(fields: [inventoryId], references: [id])
+  inventoryId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cart")
+}
+
+model Orders {
+  id String @id @default(uuid())
+
+  account   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+
+  paymentMethod String? @db.VarChar(100)
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  OrderItems  OrderItems[]
+  OrderStatus OrderStatus[]
+
+  @@map("orders")
+}
+
+model OrderStatus {
+  id String @id @default(uuid())
+
+  account Account? @relation(fields: [adminId], references: [id])
+  adminId String?
+
+  status OrderStatuses? @default(PREPARING)
+
+  orders  Orders? @relation(fields: [orderId], references: [id])
+  orderId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItems {
+  id String @id @default(uuid())
+
+  inventory   Inventory? @relation(fields: [inventoryId], references: [id])
+  inventoryId String?
+
+  orders  Orders? @relation(fields: [orderId], references: [id])
+  orderId String
+
+  quantity Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("order_items")
 }

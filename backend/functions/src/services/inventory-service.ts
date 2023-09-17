@@ -10,7 +10,7 @@ import {
 } from '../lib/custom-errors/class-errors';
 
 class InventoryService {
-    private _repo = new InventoryRepository();
+    public invRepo = new InventoryRepository();
 
     private getStockIndicator(stock: number) {
         if (stock < INVENTORY_CONSTANTS.Threshold) {
@@ -25,7 +25,7 @@ class InventoryService {
     }
 
     public async createInventory(payload: TInventory) {
-        const isExists = await this._repo.findOne({
+        const isExists = await this.invRepo.findOne({
             where: {
                 expiration: payload.expiration?.toString(),
                 productId: payload.productId,
@@ -39,14 +39,14 @@ class InventoryService {
         payload.expiration = payload.expiration
             ? moment(payload.expiration).tz('Asia/Manila').toISOString()
             : '';
-        const inventory = await this._repo.create(payload);
+        const inventory = await this.invRepo.create(payload);
         return inventory;
     }
 
     public async getInventory(id: string) {
         if (!id) throw new BadRequestError('Missing id params.');
 
-        const inventory = await this._repo.findOne({
+        const inventory = await this.invRepo.findOne({
             where: { id },
             include: { products: true },
         });
@@ -55,7 +55,7 @@ class InventoryService {
     }
 
     public async getInventories(query: TInventoryList) {
-        return await this._repo.list(query);
+        return await this.invRepo.list(query);
     }
 
     public async updateInventory(id: string, payload: Partial<TInventory>) {
@@ -64,7 +64,7 @@ class InventoryService {
         if (payload?.stock) {
             payload.stockIndicator = this.getStockIndicator(payload.stock);
         }
-        return await this._repo.update(id, payload);
+        return await this.invRepo.update(id, payload);
     }
 }
 
