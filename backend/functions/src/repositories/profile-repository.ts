@@ -8,7 +8,6 @@ class ProfileRepository {
 
     public async create(payload: TProfile) {
         try {
-            console.log('payload', payload);
             await this._db.account.update({
                 where: { id: payload.account.id },
                 data: {

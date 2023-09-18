@@ -1,3 +1,4 @@
+import { TQueryArgs } from '../..';
 import {
     BadRequestError,
     NotFoundError,
@@ -52,9 +53,13 @@ class CartService {
     public async getUserCart(query: TCartList) {
         const items = await this._repo.list(query);
 
-        return {
-            items,
-        };
+        return items;
+    }
+
+    public async getCart(query: TQueryArgs) {
+        const items = await this._repo.findOne(query);
+
+        return items;
     }
 
     public async deleteCartItem(id: string) {

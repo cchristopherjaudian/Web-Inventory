@@ -1,6 +1,11 @@
 import { OrderStatuses } from '@prisma/client';
 import Prisma from '../lib/prisma';
-import { TOrderPayload } from '../lib/types/order-types';
+import {
+    TOrderPayload,
+    TOrderStatus,
+    TOrderWithoutItems,
+} from '../lib/types/order-types';
+import { TQueryArgs } from '../..';
 
 class OrderRepository {
     private _db = Prisma.Instance.db;
@@ -11,7 +16,6 @@ class OrderRepository {
                 data: {
                     accountId: payload.accountId,
                     paymentMethod: payload.paymentMethod,
-
                     OrderItems: {
                         createMany: {
                             data: payload.items,
@@ -30,6 +34,49 @@ class OrderRepository {
         } finally {
             await this._db.$disconnect();
         }
+    }
+
+    public async createStatus(payload: TOrderStatus) {
+        return await this._db.orderStatus.create({ data: payload });
+    }
+
+    public async findOneOrder(query: TQueryArgs) {
+        return await this._db.orders.findFirst(query);
+    }
+
+    public async findOneOrderStatus(query: TQueryArgs) {
+        return await this._db.orderStatus.findFirst(query);
+    }
+
+    public async updateOrder(id: string, payload: Partial<TOrderWithoutItems>) {
+        return await this._db.orders.update({
+            where: { id },
+            data: payload,
+        });
+    }
+
+    public async list() {
+        const params = {
+            where: {},
+            include: {
+                OrderItems: {
+                    include: {
+                        inventory: {
+                            include: {
+                                products: true,
+                            },
+                        },
+                    },
+                },
+                OrderStatus: {
+                    include: {
+                        account: true,
+                    },
+                },
+            },
+        };
+
+        return await this._db.orders.findMany(params);
     }
 }
 

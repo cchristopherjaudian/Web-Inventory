@@ -21,27 +21,53 @@ class AuthMiddleware {
         }
     }
 
-    public endUserValidate =
-        (status = 'ACTIVE') =>
-        async (req: IAuthRequest, res: Response, next: NextFunction) => {
-            try {
-                const token = req.headers['authorization'];
-                const authUser = await this.verifyToken(token as string);
+    public inactiveValidate = async (
+        req: IAuthRequest,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const token = req.headers['authorization'];
+            const authUser = await this.verifyToken(token as string);
 
-                const account = await this._account.findAccount({
-                    id: authUser,
-                    status,
-                } as Partial<TAccounts>);
-                if (!account) throw new AuthenticationError();
+            const account = await this._account.findAccount({
+                id: authUser,
+                status: AccountStatuses.INACTIVE,
+            } as Partial<TAccounts>);
+            if (!account) throw new AuthenticationError();
 
-                req.account = account as TAccounts & {
-                    status: AccountStatuses;
-                };
-                next();
-            } catch (error) {
-                next(error);
-            }
-        };
+            req.account = account as TAccounts & {
+                status: AccountStatuses;
+            };
+            next();
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    public endUserValidate = async (
+        req: IAuthRequest,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const token = req.headers['authorization'];
+            const authUser = await this.verifyToken(token as string);
+
+            const account = await this._account.findAccount({
+                id: authUser,
+                status: AccountStatuses.ACTIVE,
+            } as Partial<TAccounts>);
+            if (!account) throw new AuthenticationError();
+
+            req.account = account as TAccounts & {
+                status: AccountStatuses;
+            };
+            next();
+        } catch (error) {
+            next(error);
+        }
+    };
 
     public adminValidate =
         (roles: AccountTypes[]) =>

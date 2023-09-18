@@ -22,4 +22,38 @@ const createOrder = catchAsync(async (req, res) => {
     );
 });
 
-export default { createOrder };
+const createOrderStatus = catchAsync(async (req, res) => {
+    const request = req as IAuthRequest;
+    const newStatus = await order.createOrderStatus({
+        ...req.body,
+        adminId: request.account.id,
+    });
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_CREATED,
+        newStatus
+    );
+});
+
+const updateOrder = catchAsync(async (req, res) => {
+    const newStatus = await order.updateOrder(req.params.orderId, req.body);
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_MODIFIED,
+        newStatus
+    );
+});
+
+const listOrders = catchAsync(async (req, res) => {
+    const newStatus = await order.orders();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_MODIFIED,
+        newStatus
+    );
+});
+
+export default { createOrder, createOrderStatus, updateOrder, listOrders };

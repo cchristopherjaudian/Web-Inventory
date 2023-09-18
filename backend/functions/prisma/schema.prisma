@@ -35,6 +35,17 @@ enum OrderStatuses {
   DELIVERED
 }
 
+enum PaymentStatuses {
+  PROCESSING
+  PAID
+}
+
+enum PaymentMethods {
+  COD
+  GCASH
+  BANK_TRANSFER
+}
+
 model Account {
   id          String          @id @default(uuid())
   email       String          @db.VarChar(100)
@@ -121,7 +132,9 @@ model Orders {
   account   Account? @relation(fields: [accountId], references: [id])
   accountId String?
 
-  paymentMethod String? @db.VarChar(100)
+  paymentMethod PaymentMethods  @default(COD)
+  status        PaymentStatuses @default(PROCESSING)
+  refNo         String?
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -144,6 +157,8 @@ model OrderStatus {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("order_status")
 }
 
 model OrderItems {
