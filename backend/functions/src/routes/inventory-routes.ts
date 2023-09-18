@@ -27,7 +27,7 @@ router
     )
     .get(
         '/',
-        authMiddleware.endUserValidate as any,
+        authMiddleware.endUserValidate('ACTIVE') as any,
         joi.requestSchemaValidate(getInventoriesSchema),
         InventoryController.getInventories
     )
