@@ -12,7 +12,7 @@ const addCart = catchAsync(async (req, res) => {
     const request = req as IAuthRequest;
     const newItem = await cart.addCart({
         ...req.body,
-        accountId: request.account.id,
+        profileId: request.profile.id,
     });
     response.createResponse(
         res,
@@ -25,7 +25,7 @@ const addCart = catchAsync(async (req, res) => {
 const getUserCart = catchAsync(async (req, res) => {
     const request = req as IAuthRequest;
     const items = await cart.getUserCart({
-        accountId: request.account.id as string,
+        profileId: request.profile.id as string,
     });
     response.createResponse(
         res,

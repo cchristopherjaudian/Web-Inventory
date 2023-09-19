@@ -29,7 +29,7 @@ class CartService {
 
         const cart = await this._repo.findOne({
             where: {
-                accountId: cartItem.accountId,
+                profileId: cartItem.profileId,
                 inventoryId: inventory?.id,
             },
         });

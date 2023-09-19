@@ -1,12 +1,14 @@
 import { NextFunction, Response } from 'express';
 import { AuthenticationError } from '../lib/custom-errors/class-errors';
-import { AccountService, TokenService } from '../services';
+import { AccountService, ProfileService, TokenService } from '../services';
 import { IAuthRequest } from '../..';
 import { TAccounts } from '../lib/types/accounts-types';
 import { AccountStatuses, AccountTypes } from '@prisma/client';
+import { TProfile } from '../lib/types/profile-types';
 
 class AuthMiddleware {
     private _jwt = new TokenService();
+    private _profile = new ProfileService();
     private _account = new AccountService();
 
     private async verifyToken(token: string) {
@@ -34,11 +36,10 @@ class AuthMiddleware {
                 id: authUser,
                 status: AccountStatuses.INACTIVE,
             } as Partial<TAccounts>);
+
             if (!account) throw new AuthenticationError();
 
-            req.account = account as TAccounts & {
-                status: AccountStatuses;
-            };
+            req.account = (<unknown>account) as TAccounts;
             next();
         } catch (error) {
             next(error);
@@ -54,15 +55,15 @@ class AuthMiddleware {
             const token = req.headers['authorization'];
             const authUser = await this.verifyToken(token as string);
 
-            const account = await this._account.findAccount({
-                id: authUser,
-                status: AccountStatuses.ACTIVE,
+            const profile = await this._profile.getProfile({
+                account: {
+                    id: authUser,
+                    status: AccountStatuses.ACTIVE,
+                },
             } as Partial<TAccounts>);
-            if (!account) throw new AuthenticationError();
+            if (!profile) throw new AuthenticationError();
 
-            req.account = account as TAccounts & {
-                status: AccountStatuses;
-            };
+            req.profile = (<unknown>profile) as TProfile;
             next();
         } catch (error) {
             next(error);
@@ -76,18 +77,18 @@ class AuthMiddleware {
                 const token = req.headers['authorization'];
                 const authUser = await this.verifyToken(token as string);
 
-                const account = await this._account.findAccount({
-                    id: authUser,
-                    status: 'ACTIVE',
+                const profile = await this._profile.getProfile({
+                    account: {
+                        id: authUser,
+                        status: 'ACTIVE',
+                    },
                 } as Partial<TAccounts>);
-                if (!account) throw new AuthenticationError();
-                if (!roles.includes(account.accountType!)) {
+                if (!profile) throw new AuthenticationError();
+                if (!roles.includes(profile.account.accountType!)) {
                     throw new AuthenticationError();
                 }
 
-                req.account = account as TAccounts & {
-                    status: AccountStatuses;
-                };
+                req.profile = (<unknown>profile) as TProfile;
                 next();
             } catch (error) {
                 next(error);

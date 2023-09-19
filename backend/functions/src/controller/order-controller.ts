@@ -12,7 +12,7 @@ const createOrder = catchAsync(async (req, res) => {
     const request = req as IAuthRequest;
     const newItem = await order.createOrder({
         ...req.body,
-        accountId: request.account.id,
+        accountId: request.profile.id,
     });
     response.createResponse(
         res,
@@ -26,7 +26,7 @@ const createOrderStatus = catchAsync(async (req, res) => {
     const request = req as IAuthRequest;
     const newStatus = await order.createOrderStatus({
         ...req.body,
-        adminId: request.account.id,
+        adminId: request.profile.id,
     });
     response.createResponse(
         res,

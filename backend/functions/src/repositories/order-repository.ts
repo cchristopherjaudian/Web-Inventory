@@ -14,7 +14,7 @@ class OrderRepository {
         try {
             return await this._db.orders.create({
                 data: {
-                    accountId: payload.accountId,
+                    profileId: payload.profileId,
                     paymentMethod: payload.paymentMethod,
                     OrderItems: {
                         createMany: {
@@ -70,7 +70,11 @@ class OrderRepository {
                 },
                 OrderStatus: {
                     include: {
-                        account: true,
+                        profile: {
+                            include: {
+                                account: true,
+                            },
+                        },
                     },
                 },
             },

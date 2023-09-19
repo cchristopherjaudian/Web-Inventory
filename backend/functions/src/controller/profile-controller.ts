@@ -29,7 +29,7 @@ const create = catchAsync(async (req, res) => {
 const getProfile = catchAsync(async (req, res) => {
     const request = req as IAuthRequest;
     const profile = await profileInstance.getProfile({
-        accountId: request.account.id,
+        accountId: request.profile.account.id,
     });
 
     response.createResponse(

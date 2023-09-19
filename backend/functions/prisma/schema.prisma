@@ -54,9 +54,6 @@ model Account {
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   Profile     Profile?
-  cart        Cart[]
-  Orders      Orders[]
-  OrderStatus OrderStatus[]
 
   @@map("account")
 }
@@ -70,8 +67,11 @@ model Profile {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  account   Account @relation(fields: [accountId], references: [id])
-  accountId String  @unique
+  account     Account       @relation(fields: [accountId], references: [id])
+  accountId   String        @unique
+  Cart        Cart[]
+  Orders      Orders[]
+  OrderStatus OrderStatus[]
 
   @@map("profile")
 }
@@ -97,7 +97,7 @@ model Inventory {
 
   stock          Int
   stockIndicator StockIndicator @default(NORMAL)
-  expiration     String?        @db.VarChar(100)
+  expiration     DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -114,8 +114,8 @@ model Cart {
   id String @id @default(uuid())
 
   quantity  Int
-  account   Account? @relation(fields: [accountId], references: [id])
-  accountId String?
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId String?
 
   inventory   Inventory? @relation(fields: [inventoryId], references: [id])
   inventoryId String?
@@ -129,8 +129,8 @@ model Cart {
 model Orders {
   id String @id @default(uuid())
 
-  account   Account? @relation(fields: [accountId], references: [id])
-  accountId String?
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId String?
 
   paymentMethod PaymentMethods  @default(COD)
   status        PaymentStatuses @default(PROCESSING)
@@ -147,8 +147,8 @@ model Orders {
 model OrderStatus {
   id String @id @default(uuid())
 
-  account Account? @relation(fields: [adminId], references: [id])
-  adminId String?
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId String?
 
   status OrderStatuses? @default(PREPARING)
 

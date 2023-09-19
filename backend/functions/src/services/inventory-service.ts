@@ -27,7 +27,7 @@ class InventoryService {
     public async createInventory(payload: TInventory) {
         const isExists = await this.invRepo.findOne({
             where: {
-                expiration: payload.expiration?.toString(),
+                expiration: payload.expiration,
                 productId: payload.productId,
             },
         });
@@ -37,10 +37,10 @@ class InventoryService {
 
         payload.stockIndicator = this.getStockIndicator(payload.stock);
         payload.expiration = payload.expiration
-            ? moment(payload.expiration).tz('Asia/Manila').toISOString()
-            : '';
-        const inventory = await this.invRepo.create(payload);
-        return inventory;
+            ? moment(payload.expiration).tz('Asia/Manila').toDate()
+            : null;
+
+        return await this.invRepo.create(payload);
     }
 
     public async getInventory(id: string) {
