@@ -23,6 +23,11 @@ enum AccountStatuses {
   INACTIVE
 }
 
+enum RouteStatuses {
+  ACTIVE
+  INACTIVE
+}
+
 enum StockIndicator {
   LOW
   NORMAL
@@ -72,6 +77,7 @@ model Profile {
   Cart        Cart[]
   Orders      Orders[]
   OrderStatus OrderStatus[]
+  Routes      Routes[]
 
   @@map("profile")
 }
@@ -176,4 +182,25 @@ model OrderItems {
   updatedAt DateTime @updatedAt
 
   @@map("order_items")
+}
+
+model Routes {
+  id String @id @default(uuid())
+
+  route       String
+  date        String
+  time        String
+  description String
+
+  plateNumber String
+
+  status RouteStatuses @default(ACTIVE)
+
+  profile Profile? @relation(fields: [adminId], references: [id])
+  adminId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("routes")
 }

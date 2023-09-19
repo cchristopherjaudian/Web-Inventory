@@ -8,3 +8,5 @@ export { default as ProductController } from './product-controller';
 export { default as InventoryController } from './inventory-controller';
 export { default as CartController } from './cart-controller';
 export { default as OrderController } from './order-controller';
+
+export { default as ScheduleController } from './schedule-controller';

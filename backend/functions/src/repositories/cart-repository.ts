@@ -32,7 +32,7 @@ class CartRepository {
     public async list(params: TCartList) {
         try {
             const query = {
-                where: { accountId: params.accountId },
+                where: { profileId: params.profileId },
                 include: {
                     inventory: {
                         include: {
