@@ -42,7 +42,7 @@ const RegisterStepper = () => {
             </Box>
             <Grid container>
                 {console.log(activeStep)}
-                {activeStep == 0 ? <CustomerForm /> : <BusinessForm />}
+                {activeStep == 0 ? <CustomerForm type="CUSTOMER" /> : <BusinessForm type="BUSINESS" />}
             </Grid>
         </>
     );

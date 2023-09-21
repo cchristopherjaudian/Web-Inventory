@@ -68,7 +68,7 @@ const Oxichat = () => (
     <Grid item xs={12} lg={8} style={{ height: '83vh' }}>
       <Grid direction="column" container style={{ display: 'flex', height: '100%' }}>
         <Grid item xs={12} style={{ display: 'flex', flex: 1 }}>
-          <MainCard title="Ricardo Madlangtuta Jr." sx={{ width: '100%' }}>
+          <MainCard title="Test User" sx={{ width: '100%' }}>
             <Chatbox />
           </MainCard>
 

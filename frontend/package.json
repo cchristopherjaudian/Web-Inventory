@@ -2,7 +2,7 @@
   "name": "oxiaire",
   "version": "1.0.0",
   "private": true,
-  "homepage": "http://localhost:3000",
+  "homepage": "http://localhost:3000/login",
   "dependencies": {
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons": "^4.7.0",

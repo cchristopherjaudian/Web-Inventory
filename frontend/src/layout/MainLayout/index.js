@@ -5,8 +5,9 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Toolbar, useMediaQuery } from '@mui/material';
 import Drawer from './Drawer';
 import Header from './Header';
-import navigation from 'menu-items/admin';
-//import navigation from 'menu-items/subadmin1';
+import adminnavigation from 'menu-items/admin';
+import sub1navigation from 'menu-items/subadmin1';
+import sub2navigation from 'menu-items/subadmin2';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 import { openDrawer } from 'store/reducers/menu';
 
@@ -14,9 +15,10 @@ const MainLayout = () => {
   const theme = useTheme();
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
   const dispatch = useDispatch();
-
+  const admintype = useSelector((state)=>state.token.admintype.adminType);
   const { drawerOpen } = useSelector((state) => state.menu);
   const [open, setOpen] = useState(drawerOpen);
+  let navigation = [adminnavigation,sub1navigation,sub2navigation][admintype];
   const handleDrawerToggle = () => {
     setOpen(!open);
     dispatch(openDrawer({ drawerOpen: !open }));

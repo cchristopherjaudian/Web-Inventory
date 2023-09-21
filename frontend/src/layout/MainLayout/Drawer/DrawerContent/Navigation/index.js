@@ -1,9 +1,12 @@
 import { Box, Typography } from '@mui/material';
 import NavGroup from './NavGroup';
-import menuItem from 'menu-items/admin';
-//import menuItem from 'menu-items/subadmin1';
-
+import { useSelector } from 'react-redux';
+import adminnavigation from 'menu-items/admin';
+import sub1navigation from 'menu-items/subadmin1';
+import sub2navigation from 'menu-items/subadmin2';
 const Navigation = () => {
+  const admintype = useSelector((state)=>state.token.admintype.adminType);
+  let menuItem = [adminnavigation,sub1navigation,sub2navigation][admintype];
   const navGroups = menuItem.items.map((item) => {
     switch (item.type) {
       case 'group':

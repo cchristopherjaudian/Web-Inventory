@@ -21,7 +21,7 @@ import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
-import avatar from 'assets/images/users/user.jpg';
+import avatar from 'assets/images/users/user.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 
 function TabPanel({ children, value, index, ...other }) {
@@ -90,7 +90,7 @@ const Profile = () => {
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={avatar} sx={{ width: 32, height: 32 }} />
-          <Typography variant="subtitle1">Ricardo Madlangtuta Jr.</Typography>
+          <Typography variant="subtitle1">Test User</Typography>
         </Stack>
       </ButtonBase>
       <Popper
@@ -133,7 +133,7 @@ const Profile = () => {
                           <Stack direction="row" spacing={1.25} alignItems="center">
                             <Avatar alt="profile user" src={avatar} sx={{ width: 32, height: 32 }} />
                             <Stack>
-                              <Typography variant="h6">Ricardo Madlangtuta Jr.</Typography>
+                              <Typography variant="h6">Test User</Typography>
                               <Typography variant="body2" color="textSecondary">
                                 Pano mo nasabe?
                               </Typography>

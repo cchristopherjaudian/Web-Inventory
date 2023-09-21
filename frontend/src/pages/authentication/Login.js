@@ -65,7 +65,6 @@ export default function Login() {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-              {/* <LockOutlinedIcon /> */}
             </Avatar>
             <Typography component="h1" variant="h5">
               {"Oxiaire Member's Portal"}
@@ -76,13 +75,6 @@ export default function Login() {
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <Grid item>
                 <FirebaseSocial />
-              </Grid>
-              <Grid container sx={{ mt: 3 }} >
-                <Grid item>
-                  <Link href="register" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
               </Grid>
               <Copyright sx={{ mt: 1 }} />
             </Box>

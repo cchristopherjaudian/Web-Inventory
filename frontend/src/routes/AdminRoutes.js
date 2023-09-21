@@ -39,11 +39,11 @@ const AdminRoutes = {
       },
       {
         path: 'b2c',
-        element: <Customers />
+        element: <Customers type='B2C' />
       },
       {
         path: 'b2b',
-        element: <Customers />
+        element: <Customers type='B2B' />
       },
       {
         path: 'routes',

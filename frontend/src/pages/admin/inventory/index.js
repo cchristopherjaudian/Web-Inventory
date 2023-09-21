@@ -4,7 +4,7 @@ import {
 
 import MainCard from 'components/MainCard';
 import ProductQuantity from './ProductQuantity';
-import ReportTable from './ReportTable';
+import InventoryTable from './InventoryTable';
 import InventoryHeader from 'components/inventoryheader/index';
 const Inventory = () => (
   <Grid container direction="row" spacing={1}>
@@ -14,7 +14,7 @@ const Inventory = () => (
       <Grid direction="column" container>
         <Grid item xs={12} >
           <MainCard title="Product Stocks" sx={{ width: '100%' }}>
-            <ReportTable/>
+            <InventoryTable/>
           </MainCard>
         </Grid>
       </Grid>

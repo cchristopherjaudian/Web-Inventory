@@ -4,6 +4,7 @@ import { Grid, FormControl, InputAdornment, OutlinedInput } from '@mui/material'
 import { SearchOutlined } from '@ant-design/icons';
 
 export default function Account() {
+   
     return (
         <MainCard title="Account">
             <Grid container justifyContent="flex-end" sx={{mt:-3}}>
@@ -26,8 +27,7 @@ export default function Account() {
                     </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-
-                    <AccountTable />
+                    <AccountTable acctype />
                 </Grid>
             </Grid>
         </MainCard>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import MainCard from 'components/MainCard';
 import IncomeAreaChart from './IncomeAreaChart';
 import RadialChart from './RadialChart';
-import OrderTable from './OrderTable';
+import OrderTable from './SalesTable';
 import {
   Box,
   Button,

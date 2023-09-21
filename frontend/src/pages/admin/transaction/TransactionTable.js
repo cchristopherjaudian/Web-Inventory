@@ -1,65 +1,93 @@
 import { DataGrid } from '@mui/x-data-grid';
+
 import {
     Box,
     Grid
 } from '@mui/material';
-const OrderTable = () => {
+
+
+const TransactionTable = () => {
+
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90 },
         {
-            field: 'firstName',
-            headerName: 'First name',
+            field: 'invoice',
+            headerName: 'Invoice Number',
             editable: false,
+            flex: 1
         },
         {
-            field: 'lastName',
-            headerName: 'Last name',
+            field: 'date',
+            headerName: 'Date',
             editable: false,
+            flex: 1
         },
         {
-            field: 'age',
-            headerName: 'Age',
-            type: 'number',
+            field: 'payment',
+            headerName: 'Payment',
             editable: false,
+            flex: 1
         },
         {
-            field: 'fullName',
-            headerName: 'Full name',
-            description: 'This column has a value getter and is not sortable.',
-            sortable: false,
-            valueGetter: (params) =>
-                `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+            field: 'contract',
+            headerName: 'Contract',
+            editable: false,
+            flex: 1
+        },
+        {
+            field: 'receipt',
+            headerName: 'Receipt',
+            editable: false,
+            flex: 1
+        },
+        {
+            field: 'payment',
+            headerName: 'Payment',
+            editable: false,
+            flex: 1
+        },
+        {
+            field: 'description',
+            headerName: 'Description',
+            editable: false,
+            flex: 1
+        },
+        {
+            field: 'price',
+            headerName: 'Price',
+            editable: false,
+            flex: 1
+        },
+        {
+            field: 'quantity',
+            headerName: 'Quantity',
+            editable: false,
+            flex: 1
+        },
+        {
+            field: 'amount',
+            headerName: 'Amount',
+            editable: false,
+            flex: 1
         },
     ];
 
-    const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-        { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-        { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-    ];
+    const rows = [];
 
     return (
-        <Box sx={{width: '100%' }}>
+        <Box>
             <Grid container>
                 <Grid item xs={12}>
                     <DataGrid
-                        autoHeight
                         rows={rows}
                         columns={columns}
                         initialState={{
                             pagination: {
                                 paginationModel: {
-                                    pageSize: 5,
+                                    pageSize: 10,
                                 },
                             },
                         }}
-                        pageSizeOptions={[5]}
+                        pageSizeOptions={[10]}
                         disableRowSelectionOnClick
                     />
                 </Grid>
@@ -71,4 +99,4 @@ const OrderTable = () => {
     );
 }
 
-export default OrderTable;
+export default TransactionTable;

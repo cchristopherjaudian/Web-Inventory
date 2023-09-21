@@ -8,14 +8,14 @@ const icons = {
 
 const home = {
   id: 'group-home',
-  title: '',
+  title: 'Home',
   type: 'group',
   children: [
     {
-      id: 'inventory',
+      id: 'inventorysub2',
       title: 'Inventory',
       type: 'item',
-      url: '/inventory',
+      url: '/',
       icon: icons.CodeSandboxOutlined,
       breadcrumbs: false
     },{

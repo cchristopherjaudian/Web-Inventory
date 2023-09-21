@@ -3,49 +3,55 @@ import {
     Box,
     Grid
 } from '@mui/material';
+import useAxios from 'hooks/useAxios';
+import { useState, useEffect } from 'react';
 const AccountTable = () => {
+    const { data, loading, error, fetchData } = useAxios('accounts/admins', 'GET');
+    const [rowData, setRowData] = useState([]);
+
+    useEffect(() => {
+        if (data !== null) {
+            setRowData(data['data']);
+        }
+
+    }, [data]);
+    useEffect(() => {
+        fetchData();
+    }, []);
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90 },
         {
-            field: 'firstName',
-            headerName: 'First name',
+            field: 'account',
+            headerName: 'Account',
             editable: false,
-        },
-        {
-            field: 'lastName',
-            headerName: 'Last name',
-            editable: false,
-        },
-        {
-            field: 'age',
-            headerName: 'Age',
-            type: 'number',
-            editable: false,
+            flex: 1
         },
         {
             field: 'fullName',
             headerName: 'Full name',
-            description: 'This column has a value getter and is not sortable.',
             sortable: false,
+            flex: 1,
             valueGetter: (params) =>
                 `${params.row.firstName || ''} ${params.row.lastName || ''}`,
         },
+        {
+            field: 'contact',
+            headerName: 'Contact',
+            editable: false,
+            flex: 1
+        },
+        {
+            field: 'email',
+            headerName: 'Email',
+            editable: false,
+            flex: 1
+        },
+
     ];
 
-    const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-        { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-        { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-    ];
+    const rows = rowData;
 
     return (
-        <Box sx={{width: '100%' }}>
+        <Box sx={{ width: '100%' }}>
             <Grid container>
                 <Grid item xs={12}>
                     <DataGrid
@@ -55,11 +61,11 @@ const AccountTable = () => {
                         initialState={{
                             pagination: {
                                 paginationModel: {
-                                    pageSize: 5,
+                                    pageSize: 10,
                                 },
                             },
                         }}
-                        pageSizeOptions={[5]}
+                        pageSizeOptions={[10]}
                         disableRowSelectionOnClick
                     />
                 </Grid>

@@ -4,6 +4,7 @@ import IncomeAreaChart from './IncomeAreaChart';
 import RadialChart from './RadialChart';
 import ReportTable from './ReportTable';
 import InventoryHeader from 'components/inventoryheader/index';
+
 import {
   Box,
   Button,
@@ -15,10 +16,12 @@ import {
 
 const Dashboard = () => {
   const [slot, setSlot] = useState('week');
+  
   const data = [
     { label: 'Product Info 1', value: 400, id: 0 },
     { label: 'Product Info 2', value: 300, id: 1 }
   ];
+
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       <InventoryHeader/>
