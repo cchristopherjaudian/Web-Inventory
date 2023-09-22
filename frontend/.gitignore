@@ -113,3 +113,10 @@ firebase.json
 
 #output
 build
+
+# dependency build
+yarn.lock
+package-lock.json
+
+# build files
+build/
