@@ -7,10 +7,12 @@ import {
 } from '../lib/joi-schemas/profile-schema';
 import AuthMiddleware from '../middleware/auth-middleware';
 import profileController from '../controller/profile-controller';
+import Prisma from '../lib/prisma';
 
+const db = Prisma.Instance.db;
 const router = Router();
 const joi = new JoiMiddleware();
-const authMiddleware = new AuthMiddleware();
+const authMiddleware = new AuthMiddleware(db);
 
 router
     .post(

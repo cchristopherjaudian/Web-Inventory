@@ -1,11 +1,23 @@
-import AdminRepository from '../repositories/admin-repository';
+import { PrismaClient } from '@prisma/client';
 
 class AdminService {
-  private _repo = new AdminRepository();
+    private _db: PrismaClient;
 
-  public async getAdminList() {
-    return this._repo.adminList();
-  }
+    constructor(db: PrismaClient) {
+        this._db = db;
+    }
+
+    public async getAdminList() {
+        try {
+            return this._db.account.findMany({
+                where: {
+                    OR: [{ accountType: 'SUB_1' }, { accountType: 'SUB_2' }],
+                },
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 export default AdminService;

@@ -3,12 +3,15 @@ import ResponseObject from '../lib/response-object';
 import { catchAsync } from '../helpers/catch-async';
 import ResponseCodes from '../../commons/response-codes';
 import InventoryService from '../services/inventory-service';
+import Prisma from '../lib/prisma';
 
-const inventory = new InventoryService();
+const db = Prisma.Instance.db;
+const inventory = new InventoryService(db);
 const response = new ResponseObject();
 
 const createInventory = catchAsync(async (req, res) => {
     const newInventory = await inventory.createInventory(req.body);
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,
@@ -19,6 +22,7 @@ const createInventory = catchAsync(async (req, res) => {
 
 const getInventory = catchAsync(async (req, res) => {
     const newInventory = await inventory.getInventory(req.params.inventoryId);
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,
@@ -29,6 +33,7 @@ const getInventory = catchAsync(async (req, res) => {
 
 const getInventories = catchAsync(async (req, res) => {
     const newInventory = await inventory.getInventories(req.query);
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,
@@ -42,6 +47,7 @@ const updateInventory = catchAsync(async (req, res) => {
         req.params.inventoryId,
         req.body
     );
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,

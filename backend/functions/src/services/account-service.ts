@@ -1,38 +1,47 @@
-import { AccountStatuses } from '@prisma/client';
+import { AccountStatuses, PrismaClient } from '@prisma/client';
 import { TAccounts } from '../lib/types/accounts-types';
-import { AccountRepository } from '../repositories/';
-import ProfileRepository from '../repositories/profile-repository';
 import TokenService from './token-service';
 
 class AccountService {
-    private _repo = new AccountRepository();
+    private _db: PrismaClient;
     private _token = new TokenService();
-    private _profileRepo = new ProfileRepository();
+
+    constructor(db: PrismaClient) {
+        this._db = db;
+    }
 
     public async createAccount(payload: Omit<TAccounts, 'status'>) {
-        let account;
-        let newData = false;
-        // checks if email exists
-        account = await this._repo.findOne({ email: payload.email });
-        if (!account) {
-            account = await this._repo.create(payload);
-            newData = true;
-        }
+        try {
+            let newData = false;
+            // checks if email exists
+            let account = await this._db.account.findFirst({
+                where: { email: payload.email },
+            });
+            if (!account) {
+                account = await this._db.account.create({ data: payload });
+                newData = true;
+            }
 
-        if (account.status === AccountStatuses.INACTIVE) {
-            newData = true;
-        }
+            if (account.status === AccountStatuses.INACTIVE) {
+                newData = true;
+            }
 
-        const token = await this._token.sign(account);
-        return {
-            token,
-            newData,
-        };
+            const token = await this._token.sign(account);
+            return {
+                token,
+                newData,
+            };
+        } catch (error) {
+            throw error;
+        }
     }
 
     public async findAccount(payload: Partial<TAccounts>) {
-        const account = await this._repo.findOne(payload);
-        return account;
+        try {
+            return await this._db.account.findFirst({ where: payload });
+        } catch (error) {
+            throw error;
+        }
     }
 }
 

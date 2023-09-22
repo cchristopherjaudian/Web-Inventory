@@ -1,14 +1,17 @@
 import httpStatus from 'http-status';
-import { AccountService } from '../services/';
 import ResponseObject from '../lib/response-object';
 import { catchAsync } from '../helpers/catch-async';
 import ResponseCodes from '../../commons/response-codes';
+import Prisma from '../lib/prisma';
+import AccountService from '../services/account-service';
 
-const accountInstance = new AccountService();
+const db = Prisma.Instance.db;
+const accountInstance = new AccountService(db);
 const response = new ResponseObject();
 
 const register = catchAsync(async (req, res) => {
     const account = await accountInstance.createAccount(req.body);
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,

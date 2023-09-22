@@ -1,15 +1,18 @@
 import { NextFunction, Response } from 'express';
 import { AuthenticationError } from '../lib/custom-errors/class-errors';
-import { AccountService, ProfileService, TokenService } from '../services';
 import { IAuthRequest } from '../..';
 import { TAccounts } from '../lib/types/accounts-types';
-import { AccountStatuses, AccountTypes } from '@prisma/client';
+import { AccountStatuses, AccountTypes, PrismaClient } from '@prisma/client';
 import { TProfile } from '../lib/types/profile-types';
+import TokenService from '../services/token-service';
 
 class AuthMiddleware {
     private _jwt = new TokenService();
-    private _profile = new ProfileService();
-    private _account = new AccountService();
+    private _db: PrismaClient;
+
+    constructor(db: PrismaClient) {
+        this._db = db;
+    }
 
     private async verifyToken(token: string) {
         try {
@@ -32,10 +35,12 @@ class AuthMiddleware {
             const token = req.headers['authorization'];
             const authUser = await this.verifyToken(token as string);
 
-            const account = await this._account.findAccount({
-                id: authUser,
-                status: AccountStatuses.INACTIVE,
-            } as Partial<TAccounts>);
+            const account = await this._db.account.findFirst({
+                where: {
+                    id: authUser,
+                    status: AccountStatuses.INACTIVE,
+                },
+            });
 
             if (!account) throw new AuthenticationError();
 
@@ -43,6 +48,8 @@ class AuthMiddleware {
             next();
         } catch (error) {
             next(error);
+        } finally {
+            await this._db.$disconnect();
         }
     };
 
@@ -55,12 +62,17 @@ class AuthMiddleware {
             const token = req.headers['authorization'];
             const authUser = await this.verifyToken(token as string);
 
-            const profile = await this._profile.getProfile({
-                account: {
-                    id: authUser,
-                    status: AccountStatuses.ACTIVE,
+            const profile = await this._db.profile.findFirst({
+                where: {
+                    account: {
+                        id: authUser,
+                        status: AccountStatuses.ACTIVE,
+                    },
                 },
-            } as Partial<TAccounts>);
+                include: {
+                    account: true,
+                },
+            });
             if (!profile) throw new AuthenticationError();
 
             req.profile = (<unknown>profile) as TProfile;
@@ -77,12 +89,18 @@ class AuthMiddleware {
                 const token = req.headers['authorization'];
                 const authUser = await this.verifyToken(token as string);
 
-                const profile = await this._profile.getProfile({
-                    account: {
-                        id: authUser,
-                        status: 'ACTIVE',
+                const profile = await this._db.profile.findFirst({
+                    where: {
+                        account: {
+                            id: authUser,
+                            status: AccountStatuses.ACTIVE,
+                        },
                     },
-                } as Partial<TAccounts>);
+                    include: {
+                        account: true,
+                    },
+                });
+
                 if (!profile) throw new AuthenticationError();
                 if (!roles.includes(profile.account.accountType!)) {
                     throw new AuthenticationError();

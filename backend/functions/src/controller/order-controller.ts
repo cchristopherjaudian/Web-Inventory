@@ -4,8 +4,10 @@ import { catchAsync } from '../helpers/catch-async';
 import ResponseCodes from '../../commons/response-codes';
 import { IAuthRequest } from '../..';
 import OrderService from '../services/order-service';
+import Prisma from '../lib/prisma';
 
-const order = new OrderService();
+const db = Prisma.Instance.db;
+const order = new OrderService(db);
 const response = new ResponseObject();
 
 const createOrder = catchAsync(async (req, res) => {
@@ -14,6 +16,7 @@ const createOrder = catchAsync(async (req, res) => {
         ...req.body,
         accountId: request.profile.id,
     });
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,
@@ -28,6 +31,7 @@ const createOrderStatus = catchAsync(async (req, res) => {
         ...req.body,
         adminId: request.profile.id,
     });
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,
@@ -38,6 +42,7 @@ const createOrderStatus = catchAsync(async (req, res) => {
 
 const updateOrder = catchAsync(async (req, res) => {
     const newStatus = await order.updateOrder(req.params.orderId, req.body);
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,
@@ -48,10 +53,11 @@ const updateOrder = catchAsync(async (req, res) => {
 
 const listOrders = catchAsync(async (req, res) => {
     const newStatus = await order.orders();
+    await db.$disconnect();
     response.createResponse(
         res,
         httpStatus.OK,
-        ResponseCodes.DATA_MODIFIED,
+        ResponseCodes.LIST_RETRIEVED,
         newStatus
     );
 });

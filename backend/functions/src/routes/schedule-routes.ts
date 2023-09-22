@@ -7,9 +7,12 @@ import {
     updateScheduleSchema,
 } from '../lib/joi-schemas/schedule-schema';
 import { ScheduleController } from '../controller';
+import Prisma from '../lib/prisma';
+
+const db = Prisma.Instance.db;
 const router = Router();
 const joi = new JoiMiddleware();
-const authMiddleware = new AuthMiddleware();
+const authMiddleware = new AuthMiddleware(db);
 
 router
     .post(

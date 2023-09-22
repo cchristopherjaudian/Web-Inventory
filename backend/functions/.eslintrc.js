@@ -26,7 +26,7 @@ module.exports = {
     rules: {
         'quote-props': ['error', 'as-needed'],
         '@typescript-eslint/no-explicit-any': 'off',
-        indent: ['error', 'never'],
+        indent: 'off',
         'operator-linebreak': 'off',
         'import/no-unresolved': 0,
         'linebreak-style': 0,

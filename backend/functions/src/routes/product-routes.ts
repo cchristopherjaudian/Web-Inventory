@@ -7,10 +7,12 @@ import {
     productListQuery,
     updateProductSchema,
 } from '../lib/joi-schemas/product-schema';
+import Prisma from '../lib/prisma';
 
+const db = Prisma.Instance.db;
 const router = Router();
 const joi = new JoiMiddleware();
-const authMiddleware = new AuthMiddleware();
+const authMiddleware = new AuthMiddleware(db);
 
 router
     .post(

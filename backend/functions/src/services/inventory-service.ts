@@ -1,16 +1,20 @@
-import { StockIndicator } from '@prisma/client';
+import { PrismaClient, StockIndicator } from '@prisma/client';
 import moment from 'moment-timezone';
 import INVENTORY_CONSTANTS from '../../commons/inventory-contants';
 import { TInventory, TInventoryList } from '../lib/types/inventory-types';
-import InventoryRepository from '../repositories/inventory-repository';
 import {
     BadRequestError,
     NotFoundError,
     ResourceConflictError,
 } from '../lib/custom-errors/class-errors';
+import { TQueryArgs } from '../..';
 
 class InventoryService {
-    public invRepo = new InventoryRepository();
+    private _db: PrismaClient;
+
+    constructor(db: PrismaClient) {
+        this._db = db;
+    }
 
     private getStockIndicator(stock: number) {
         if (stock < INVENTORY_CONSTANTS.Threshold) {
@@ -25,7 +29,7 @@ class InventoryService {
     }
 
     public async createInventory(payload: TInventory) {
-        const isExists = await this.invRepo.findOne({
+        const isExists = await this._db.inventory.findFirst({
             where: {
                 expiration: payload.expiration,
                 productId: payload.productId,
@@ -40,13 +44,13 @@ class InventoryService {
             ? moment(payload.expiration).tz('Asia/Manila').toDate()
             : null;
 
-        return await this.invRepo.create(payload);
+        return await this._db.inventory.create({ data: payload });
     }
 
     public async getInventory(id: string) {
         if (!id) throw new BadRequestError('Missing id params.');
 
-        const inventory = await this.invRepo.findOne({
+        const inventory = await this._db.inventory.findFirst({
             where: { id },
             include: { products: true },
         });
@@ -55,7 +59,32 @@ class InventoryService {
     }
 
     public async getInventories(query: TInventoryList) {
-        return await this.invRepo.list(query);
+        try {
+            const params = {
+                // select: {},
+                where: {},
+                include: {
+                    products: !query?.stock || !query?.search,
+                },
+            } as TQueryArgs;
+
+            if (query?.stock) {
+                params.where.stockIndicator = query.stock;
+            }
+
+            if (query?.search) {
+                params.where.products = {
+                    name: {
+                        contains: query.search,
+                        mode: 'insensitive', // Default value: default
+                    },
+                };
+            }
+
+            return await this._db.inventory.findMany(params);
+        } catch (error) {
+            throw error;
+        }
     }
 
     public async updateInventory(id: string, payload: Partial<TInventory>) {
@@ -64,7 +93,10 @@ class InventoryService {
         if (payload?.stock) {
             payload.stockIndicator = this.getStockIndicator(payload.stock);
         }
-        return await this.invRepo.update(id, payload);
+        return await this._db.inventory.update({
+            where: { id },
+            data: payload,
+        });
     }
 }
 

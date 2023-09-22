@@ -1,5 +1,4 @@
 import { Router } from 'express';
-// import {} from '../controller';
 import JoiMiddleware from '../middleware/joi-middleware';
 import AuthMiddleware from '../middleware/auth-middleware';
 import { InventoryController } from '../controller';
@@ -8,10 +7,12 @@ import {
     getInventoriesSchema,
     updateInventorySchema,
 } from '../lib/joi-schemas/inventory-schema';
+import Prisma from '../lib/prisma';
 
+const db = Prisma.Instance.db;
 const router = Router();
 const joi = new JoiMiddleware();
-const authMiddleware = new AuthMiddleware();
+const authMiddleware = new AuthMiddleware(db);
 
 router
     .post(
