@@ -1,7 +1,7 @@
 import { PrismaClient, RouteStatuses } from '@prisma/client';
 import { TRoutes } from '../lib/types/schedule-types';
 import { NotFoundError } from '../lib/custom-errors/class-errors';
-import { TQueryArgs } from '../..';
+import { TQueryArgs } from '../../index';
 
 class ScheduleService {
     private _db: PrismaClient;

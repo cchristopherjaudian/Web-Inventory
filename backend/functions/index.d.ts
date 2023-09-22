@@ -30,3 +30,28 @@ export interface TQueryArgs {
 }
 
 export type TNormalizedError = Error & TResponseError;
+
+export interface IHttpOptions {
+    omit?: boolean | Expression<boolean>;
+
+    region?:
+        | SupportedRegion
+        | string
+        | Array<SupportedRegion | string>
+        | Expression<string>
+        | ResetValue;
+
+    cors?: string | boolean | RegExp | Array<string | RegExp>;
+
+    memory?: options.MemoryOption | Expression<number> | ResetValue;
+
+    timeoutSeconds?: number | Expression<number> | ResetValue;
+
+    minInstances?: number | Expression<number> | ResetValue;
+
+    maxInstances?: number | Expression<number> | ResetValue;
+
+    concurrency?: number | Expression<number> | ResetValue;
+
+    cpu?: number | 'gcf_gen1';
+}

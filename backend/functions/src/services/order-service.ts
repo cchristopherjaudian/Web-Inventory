@@ -1,4 +1,4 @@
-import { OrderStatuses, PrismaClient } from '@prisma/client';
+import { OrderStatuses, PaymentStatuses, PrismaClient } from '@prisma/client';
 import {
     BadRequestError,
     NotFoundError,
@@ -6,9 +6,12 @@ import {
 } from '../lib/custom-errors/class-errors';
 import {
     TOrderPayload,
+    TOrderSales,
     TOrderStatus,
     TOrderWithoutItems,
 } from '../lib/types/order-types';
+import moment from 'moment-timezone';
+import { Decimal } from '@prisma/client/runtime/library';
 
 class OrderService {
     private _db: PrismaClient;
@@ -74,13 +77,13 @@ class OrderService {
             data: {
                 profileId: payload.profileId,
                 paymentMethod: payload.paymentMethod,
-                OrderItems: {
+                orderItems: {
                     createMany: {
                         data: payload.items,
                     },
                 },
 
-                OrderStatus: {
+                orderStatus: {
                     create: {
                         status: OrderStatuses.PREPARING,
                     },
@@ -127,7 +130,7 @@ class OrderService {
         const params = {
             where: {},
             include: {
-                OrderItems: {
+                orderItems: {
                     include: {
                         inventory: {
                             include: {
@@ -136,7 +139,7 @@ class OrderService {
                         },
                     },
                 },
-                OrderStatus: {
+                orderStatus: {
                     include: {
                         profile: {
                             include: {
@@ -148,6 +151,52 @@ class OrderService {
             },
         };
         return await this._db.orders.findMany(params);
+    }
+
+    public async sales(query: TOrderSales) {
+        const startsAt = moment(query.startsAt)
+            .startOf('day')
+            .tz('Asia/Manila')
+            .toDate();
+        const endsAt = moment(query.endsAt)
+            .endOf('day')
+            .tz('Asia/Manila')
+            .toDate();
+
+        const orders = await this._db.orders.findMany({
+            include: {
+                orderItems: {
+                    include: {
+                        inventory: {
+                            include: {
+                                products: true,
+                            },
+                        },
+                    },
+                },
+            },
+            where: {
+                status: PaymentStatuses.PAID,
+                AND: [
+                    { createdAt: { lte: endsAt } },
+                    { createdAt: { gte: startsAt } },
+                ],
+            },
+        });
+
+        if (orders.length === 0) return orders;
+
+        const flatOrders = orders.flatMap((order) => order.orderItems);
+
+        const sales = flatOrders.reduce((acc, { quantity, inventory }) => {
+            const total = <any>inventory?.products?.price * quantity;
+
+            return acc + total;
+        }, 0);
+
+        return {
+            sales,
+        };
     }
 }
 

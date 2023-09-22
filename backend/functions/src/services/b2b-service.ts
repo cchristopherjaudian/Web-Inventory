@@ -1,6 +1,6 @@
 import { AccountTypes, PrismaClient } from '@prisma/client';
 import { TAccountsListQuery } from '../lib/types/accounts-types';
-import { TQueryArgs } from '../..';
+import { TQueryArgs } from '../../index';
 
 class B2bService {
     private _db: PrismaClient;

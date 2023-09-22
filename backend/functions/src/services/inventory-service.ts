@@ -7,7 +7,7 @@ import {
     NotFoundError,
     ResourceConflictError,
 } from '../lib/custom-errors/class-errors';
-import { TQueryArgs } from '../..';
+import { TQueryArgs } from '../../index';
 
 class InventoryService {
     private _db: PrismaClient;

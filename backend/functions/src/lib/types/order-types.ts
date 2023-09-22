@@ -10,3 +10,8 @@ export type TOrderPayload = TOrder & {
 };
 
 export type TOrderWithoutItems = Omit<TOrderPayload, 'items'>;
+
+export type TOrderSales = {
+    startsAt: string;
+    endsAt: string;
+};

@@ -5,6 +5,7 @@ import { OrderController } from '../controller';
 import {
     createOrderSchema,
     createOrderStatusSchema,
+    getOrderSalesSchema,
     updateOrderSchema,
 } from '../lib/joi-schemas/order-schema';
 import Prisma from '../lib/prisma';
@@ -33,11 +34,12 @@ router
         authMiddleware.adminValidate(['ADMIN', 'SUB_1']) as any,
         OrderController.updateOrder
     )
+    .get('/', authMiddleware.endUserValidate as any, OrderController.listOrders)
     .get(
-        '/',
-        // joi.requestSchemaValidate(updateOrderSchema),
+        '/sales',
+        joi.requestSchemaValidate(getOrderSalesSchema),
         authMiddleware.endUserValidate as any,
-        OrderController.listOrders
+        OrderController.getSales
     );
 
 export default router;

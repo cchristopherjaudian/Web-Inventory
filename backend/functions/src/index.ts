@@ -25,6 +25,6 @@ app.use(new RouteMiddleware().notFound);
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
-export const v1 = new CloudFunctions()
+export const v2 = new CloudFunctions()
     .withRuntime()
-    .handlerV1(<THttpsFunction>(<unknown>app));
+    .handlerV2(<THttpsFunction>(<unknown>app));

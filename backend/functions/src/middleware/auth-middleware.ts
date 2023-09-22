@@ -79,6 +79,8 @@ class AuthMiddleware {
             next();
         } catch (error) {
             next(error);
+        } finally {
+            await this._db.$disconnect();
         }
     };
 
@@ -110,6 +112,8 @@ class AuthMiddleware {
                 next();
             } catch (error) {
                 next(error);
+            } finally {
+                await this._db.$disconnect();
             }
         };
 }

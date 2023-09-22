@@ -1,5 +1,8 @@
 import { OrderStatuses, PaymentMethods, PaymentStatuses } from '@prisma/client';
-import Joi from 'joi';
+import JoiImport from 'joi';
+import joiDate from '@joi/date';
+
+const Joi = JoiImport.extend(joiDate) as typeof JoiImport;
 
 const createOrderSchema = {
     body: Joi.object({
@@ -36,4 +39,16 @@ const updateOrderSchema = {
     }),
 };
 
-export { createOrderSchema, createOrderStatusSchema, updateOrderSchema };
+const getOrderSalesSchema = {
+    query: Joi.object({
+        startsAt: Joi.date().format('YYYY-MM-DD').required(),
+        endsAt: Joi.date().format('YYYY-MM-DD').required(),
+    }),
+};
+
+export {
+    createOrderSchema,
+    createOrderStatusSchema,
+    updateOrderSchema,
+    getOrderSalesSchema,
+};

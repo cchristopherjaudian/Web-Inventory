@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { TQueryArgs } from '../..';
+import { TQueryArgs } from '../../index';
 import {
     BadRequestError,
     NotFoundError,
