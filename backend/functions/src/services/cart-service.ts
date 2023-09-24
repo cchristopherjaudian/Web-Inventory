@@ -67,9 +67,13 @@ class CartService {
         try {
             const query = {
                 where: { profileId: params.profileId },
-                include: {
+                select: {
+                    id: true,
+                    quantity: true,
                     inventory: {
-                        include: {
+                        select: {
+                            expiration: true,
+                            id: true,
                             products: true,
                         },
                     },
@@ -82,18 +86,20 @@ class CartService {
         }
     }
 
-    public async getCart(query: TQueryArgs) {
-        try {
-            return await this._db.cart.findFirst(query);
-        } catch (error) {
-            throw error;
-        }
-    }
-
     public async getCartItem(id: string) {
         return await this._db.cart.findFirst({
             where: { id },
-            include: { inventory: { include: { products: true } } },
+            select: {
+                id: true,
+                quantity: true,
+                inventory: {
+                    select: {
+                        expiration: true,
+                        id: true,
+                        products: true,
+                    },
+                },
+            },
         });
     }
 
