@@ -36,6 +36,11 @@ router
     )
     .get('/', authMiddleware.endUserValidate as any, OrderController.listOrders)
     .get(
+        '/:orderId',
+        authMiddleware.endUserValidate as any,
+        OrderController.getOrder
+    )
+    .get(
         '/sales',
         joi.requestSchemaValidate(getOrderSalesSchema),
         authMiddleware.adminValidate(['ADMIN']) as any,

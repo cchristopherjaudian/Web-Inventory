@@ -15,7 +15,7 @@ const createOrder = catchAsync(async (req, res) => {
     const request = req as IAuthRequest;
     const newItem = await order.createOrder({
         ...req.body,
-        accountId: request.profile.id,
+        profileId: request.profile.id,
     });
     await db.$disconnect();
     response.createResponse(
@@ -52,8 +52,20 @@ const updateOrder = catchAsync(async (req, res) => {
     );
 });
 
+const getOrder = catchAsync(async (req, res) => {
+    const orderInfo = await order.getOrder(req.params.orderId);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_MODIFIED,
+        orderInfo!
+    );
+});
+
 const listOrders = catchAsync(async (req, res) => {
-    const newStatus = await order.orders();
+    const request = req as IAuthRequest;
+    const newStatus = await order.orders(request.profile.id);
     await db.$disconnect();
     response.createResponse(
         res,
@@ -80,4 +92,5 @@ export default {
     updateOrder,
     listOrders,
     getSales,
+    getOrder,
 };

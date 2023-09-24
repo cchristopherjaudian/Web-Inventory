@@ -14,6 +14,28 @@ import moment from 'moment-timezone';
 
 class OrderService {
     private _db: PrismaClient;
+    private _defaultOrderParams = {
+        include: {
+            orderItems: {
+                include: {
+                    inventory: {
+                        include: {
+                            products: true,
+                        },
+                    },
+                },
+            },
+            orderStatus: {
+                include: {
+                    profile: {
+                        include: {
+                            account: true,
+                        },
+                    },
+                },
+            },
+        },
+    };
 
     constructor(db: PrismaClient) {
         this._db = db;
@@ -126,31 +148,19 @@ class OrderService {
         });
     }
 
-    public async orders() {
+    public async orders(profileId?: string) {
         const params = {
-            where: {},
-            include: {
-                orderItems: {
-                    include: {
-                        inventory: {
-                            include: {
-                                products: true,
-                            },
-                        },
-                    },
-                },
-                orderStatus: {
-                    include: {
-                        profile: {
-                            include: {
-                                account: true,
-                            },
-                        },
-                    },
-                },
-            },
+            where: { profileId },
+            ...this._defaultOrderParams,
         };
         return await this._db.orders.findMany(params);
+    }
+
+    public async getOrder(id: string) {
+        return this._db.orders.findFirst({
+            where: { id },
+            ...this._defaultOrderParams,
+        });
     }
 
     public async sales(query: TOrderSales) {
