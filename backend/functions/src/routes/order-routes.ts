@@ -38,7 +38,7 @@ router
     .get(
         '/sales',
         joi.requestSchemaValidate(getOrderSalesSchema),
-        authMiddleware.endUserValidate as any,
+        authMiddleware.adminValidate(['ADMIN']) as any,
         OrderController.getSales
     );
 
