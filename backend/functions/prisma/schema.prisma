@@ -123,6 +123,8 @@ model Cart {
   profile   Profile? @relation(fields: [profileId], references: [id])
   profileId String?
 
+  saved Boolean? @default(false)
+
   inventory   Inventory? @relation(fields: [inventoryId], references: [id])
   inventoryId String?
 

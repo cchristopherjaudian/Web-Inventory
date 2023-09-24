@@ -11,7 +11,6 @@ import {
     TOrderWithoutItems,
 } from '../lib/types/order-types';
 import moment from 'moment-timezone';
-import { Decimal } from '@prisma/client/runtime/library';
 
 class OrderService {
     private _db: PrismaClient;
@@ -63,7 +62,8 @@ class OrderService {
                         stock: updatedStock,
                     },
                 }),
-                this._db.cart.delete({ where: { id: cartItem?.cartId } }),
+                !isCartExists.saved &&
+                    this._db.cart.delete({ where: { id: cartItem?.cartId } }),
             ]);
         }
 

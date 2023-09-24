@@ -39,6 +39,28 @@ const getUserCart = catchAsync(async (req, res) => {
     );
 });
 
+const getCartItem = catchAsync(async (req, res) => {
+    const item = await cart.getCartItem(req.params.cartId);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.LIST_RETRIEVED,
+        item!
+    );
+});
+
+const updateCart = catchAsync(async (req, res) => {
+    const item = await cart.updateCart(req.params.cartId, req.body);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.LIST_RETRIEVED,
+        item!
+    );
+});
+
 const deleteCartItem = catchAsync(async (req, res) => {
     const deleted = await cart.deleteCartItem(req.params.cartId);
     await db.$disconnect();
@@ -50,4 +72,10 @@ const deleteCartItem = catchAsync(async (req, res) => {
     );
 });
 
-export default { addCart, getUserCart, deleteCartItem };
+export default {
+    addCart,
+    getUserCart,
+    deleteCartItem,
+    getCartItem,
+    updateCart,
+};

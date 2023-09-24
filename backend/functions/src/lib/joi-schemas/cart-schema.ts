@@ -7,4 +7,11 @@ const addCartSchema = {
     }),
 };
 
-export { addCartSchema };
+const updateCartSchema = {
+    body: Joi.object({
+        quantity: Joi.number().greater(0).optional(),
+        saved: Joi.boolean().optional(),
+    }),
+};
+
+export { addCartSchema, updateCartSchema };

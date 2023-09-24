@@ -2,7 +2,10 @@ import { Router } from 'express';
 import JoiMiddleware from '../middleware/joi-middleware';
 import AuthMiddleware from '../middleware/auth-middleware';
 import { CartController } from '../controller';
-import { addCartSchema } from '../lib/joi-schemas/cart-schema';
+import {
+    addCartSchema,
+    updateCartSchema,
+} from '../lib/joi-schemas/cart-schema';
 import Prisma from '../lib/prisma';
 
 const db = Prisma.Instance.db;
@@ -21,6 +24,17 @@ router
         '/auth',
         authMiddleware.endUserValidate as any,
         CartController.getUserCart
+    )
+    .get(
+        '/:cartId',
+        authMiddleware.endUserValidate as any,
+        CartController.getCartItem
+    )
+    .patch(
+        '/:cartId',
+        joi.requestSchemaValidate(updateCartSchema),
+        authMiddleware.endUserValidate as any,
+        CartController.updateCart
     )
     .delete(
         '/:cartId',

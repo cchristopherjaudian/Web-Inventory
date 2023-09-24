@@ -90,6 +90,19 @@ class CartService {
         }
     }
 
+    public async getCartItem(id: string) {
+        return await this._db.cart.findFirst({
+            where: { id },
+            include: { inventory: { include: { products: true } } },
+        });
+    }
+
+    public async updateCart(id: string, payload: Partial<TCart>) {
+        const cart = await this.getCartItem(id);
+        if (!cart) throw new NotFoundError('Cart item does not exists.');
+        return await this._db.cart.update({ where: { id }, data: payload });
+    }
+
     public async deleteCartItem(id: string) {
         return await this._db.cart.delete({ where: { id } });
     }
