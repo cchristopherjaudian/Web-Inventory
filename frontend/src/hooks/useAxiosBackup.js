@@ -4,10 +4,9 @@ import customaxios from 'axios';
 
 function useAxios(url, method, requestData = null, lazy = true) {
   const token = useSelector((state) => state.token.token);
-
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileError, setProfileError] = useState(null);
   const serviceId = process.env.REACT_APP_BASE_URL;
   const axios = customaxios.create({
     baseURL: serviceId,
@@ -17,7 +16,7 @@ function useAxios(url, method, requestData = null, lazy = true) {
     }
   });
 
-  const fetchData = async () => {
+  const fetchProfile = async () => {
     try {
 
       let response;
@@ -39,21 +38,21 @@ function useAxios(url, method, requestData = null, lazy = true) {
           throw new Error('Invalid method');
       }
 
-      setData(response.data);
+      setProfile(response.data);
     } catch (error) {
       console.log(error);
-      setError(error);
+      setProfileError(error);
     } finally {
-      setLoading(false);
+      setProfileLoading(false);
     }
   };
 
 
   useEffect(() => {
-    if (!lazy) fetchData();
+    if (!lazy) fetchProfile();
   }, [url, method]);
 
-  return { data, loading, error, fetchData };
+  return { profile, profileLoading, profileError, fetchProfile };
 }
 
 export default useAxios;
