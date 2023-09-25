@@ -2,13 +2,18 @@ import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, 
 import { UnorderedListOutlined, AndroidOutlined } from '@ant-design/icons';
 import Logo from 'components/Logo';
 import avatar from 'assets/images/users/user.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import customerNavigation from 'menu-items/customer';
 import { useNavigate } from 'react-router-dom';
 import Notification from './Notification';
+import { useDispatch } from 'react-redux';
+import { setToken, setAuth } from 'store/reducers/token';
 const Navbar = () => {
+
+
     const settings = ['Profile', 'Logout'];
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -24,8 +29,17 @@ const Navbar = () => {
         navigate(path);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (index) => {
         setAnchorElUser(null);
+        switch (index) {
+            case 0:
+                break;
+            case 1:
+                dispatch(setToken(''));
+                dispatch(setAuth(false));
+                navigate('/', { replace: true });
+                break;
+        }
     };
     return (<AppBar position="static" color='default'>
         <Container maxWidth={false}>
@@ -81,7 +95,7 @@ const Navbar = () => {
                     ))}
                 </Box>
                 <Box sx={{ flexGrow: 0, mr: 2 }}>
-                    
+                    <Notification />
                 </Box>
 
                 <Box sx={{ flexGrow: 0 }}>
@@ -107,8 +121,8 @@ const Navbar = () => {
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUserMenu}
                     >
-                        {settings.map((setting) => (
-                            <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                        {settings.map((setting, index) => (
+                            <MenuItem key={setting} onClick={() => handleCloseUserMenu(index)}>
                                 <Typography textAlign="center">{setting}</Typography>
                             </MenuItem>
                         ))}

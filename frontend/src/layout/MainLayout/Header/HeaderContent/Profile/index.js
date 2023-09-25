@@ -23,7 +23,10 @@ import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
 import avatar from 'assets/images/users/user.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setToken,setAuth } from 'store/reducers/token';
 function TabPanel({ children, value, index, ...other }) {
   return (
     <div role="tabpanel" hidden={value !== index} id={`profile-tabpanel-${index}`} aria-labelledby={`profile-tab-${index}`} {...other}>
@@ -48,8 +51,10 @@ function a11yProps(index) {
 const Profile = () => {
   const theme = useTheme();
 
-  const handleLogout = async () => {
-   
+  const handleLogout = () => {
+    dispatch(setToken(''));
+    dispatch(setAuth(false));
+    navigate('/',{replace:true});
   };
 
   const anchorRef = useRef(null);
@@ -72,8 +77,15 @@ const Profile = () => {
   };
 
   const iconBackColorOpen = 'grey.300';
-
+  useSelector((state) => console.log(state.token));
+  const firstName = useSelector((state) => state.profile.firstName.firstName);
+  const middleName = useSelector((state) => state.profile.middleName.middleName);
+  const lastName = useSelector((state) => state.profile.lastName.lastName);
+  const adminType = useSelector((state) => state.token.admintype.adminType);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
+    
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
         sx={{
@@ -90,7 +102,7 @@ const Profile = () => {
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={avatar} sx={{ width: 32, height: 32 }} />
-          <Typography variant="subtitle1">Test User</Typography>
+          <Typography variant="subtitle1">{firstName}{' '}{middleName}{' '}{lastName}</Typography>
         </Stack>
       </ButtonBase>
       <Popper
@@ -133,9 +145,9 @@ const Profile = () => {
                           <Stack direction="row" spacing={1.25} alignItems="center">
                             <Avatar alt="profile user" src={avatar} sx={{ width: 32, height: 32 }} />
                             <Stack>
-                              <Typography variant="h6">Test User</Typography>
+                              <Typography variant="h6">{firstName}{' '}{middleName}{' '}{lastName}</Typography>
                               <Typography variant="body2" color="textSecondary">
-                                Pano mo nasabe?
+                                {adminType === 0 ? 'ADMIN': (adminType === 1) ? 'SUB ADMIN 1' : 'SUB ADMIN 2'}
                               </Typography>
                             </Stack>
                           </Stack>

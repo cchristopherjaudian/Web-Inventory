@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useTheme } from '@mui/material/styles';
 import {
-  Avatar,
   Badge,
+  Button,
   Box,
   ClickAwayListener,
   Divider,
@@ -19,12 +19,12 @@ import {
   useMediaQuery
 } from '@mui/material';
 
-
+import CartItemList from './CartItemList';
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
-
-import { BellOutlined, CloseOutlined, GiftOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
-
+import { useSelector } from 'react-redux';
+import { CloseOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 const avatarSX = {
   width: 36,
   height: 36,
@@ -45,7 +45,7 @@ const actionSX = {
 const Notification = () => {
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
-
+  const navigate = useNavigate();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const handleToggle = () => {
@@ -58,15 +58,19 @@ const Notification = () => {
     }
     setOpen(false);
   };
-
+  const proceedCheckout = ()=>{
+    setOpen(false);
+    navigate('/checkout')
+  }
   const iconBackColorOpen = 'grey.300';
   const iconBackColor = 'grey.100';
-
+  let cartItems = useSelector((state) => state.cart.cart);
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <IconButton
         disableRipple
         color="secondary"
+        size="large"
         sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor }}
         aria-label="open profile"
         ref={anchorRef}
@@ -74,8 +78,8 @@ const Notification = () => {
         aria-haspopup="true"
         onClick={handleToggle}
       >
-        <Badge badgeContent={4} color="primary">
-          <BellOutlined />
+        <Badge badgeContent={cartItems.length} color="primary">
+          <ShoppingCartOutlined />
         </Badge>
       </IconButton>
       <Popper
@@ -101,17 +105,17 @@ const Notification = () => {
             <Paper
               sx={{
                 boxShadow: theme.customShadows.z1,
-                width: '100%',
+                width: 400,
                 minWidth: 285,
-                maxWidth: 420,
+                maxWidth: 400,
                 [theme.breakpoints.down('md')]: {
-                  maxWidth: 285
+                  maxWidth: 400
                 }
               }}
             >
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard
-                  title="Notification"
+                  title="My Cart"
                   elevation={0}
                   border={false}
                   content={false}
@@ -132,132 +136,17 @@ const Notification = () => {
                       }
                     }}
                   >
-                    <ListItemButton>
-                      <ListItemAvatar>
-                        <Avatar
-                          sx={{
-                            color: 'success.main',
-                            bgcolor: 'success.lighter'
-                          }}
-                        >
-                          <GiftOutlined />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6">
-                            It&apos;s{' '}
-                            <Typography component="span" variant="subtitle1">
-                              Cristina danny&apos;s
-                            </Typography>{' '}
-                            birthday today.
-                          </Typography>
-                        }
-                        secondary="2 min ago"
-                      />
-                      <ListItemSecondaryAction>
-                        <Typography variant="caption" noWrap>
-                          3:00 AM
-                        </Typography>
-                      </ListItemSecondaryAction>
-                    </ListItemButton>
-                    <Divider />
-                    <ListItemButton>
-                      <ListItemAvatar>
-                        <Avatar
-                          sx={{
-                            color: 'primary.main',
-                            bgcolor: 'primary.lighter'
-                          }}
-                        >
-                          <MessageOutlined />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6">
-                            <Typography component="span" variant="subtitle1">
-                              Aida Burg
-                            </Typography>{' '}
-                            commented your post.
-                          </Typography>
-                        }
-                        secondary="5 August"
-                      />
-                      <ListItemSecondaryAction>
-                        <Typography variant="caption" noWrap>
-                          6:00 PM
-                        </Typography>
-                      </ListItemSecondaryAction>
-                    </ListItemButton>
-                    <Divider />
-                    <ListItemButton>
-                      <ListItemAvatar>
-                        <Avatar
-                          sx={{
-                            color: 'error.main',
-                            bgcolor: 'error.lighter'
-                          }}
-                        >
-                          <SettingOutlined />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6">
-                            Your Profile is Complete &nbsp;
-                            <Typography component="span" variant="subtitle1">
-                              60%
-                            </Typography>{' '}
-                          </Typography>
-                        }
-                        secondary="7 hours ago"
-                      />
-                      <ListItemSecondaryAction>
-                        <Typography variant="caption" noWrap>
-                          2:45 PM
-                        </Typography>
-                      </ListItemSecondaryAction>
-                    </ListItemButton>
-                    <Divider />
-                    <ListItemButton>
-                      <ListItemAvatar>
-                        <Avatar
-                          sx={{
-                            color: 'primary.main',
-                            bgcolor: 'primary.lighter'
-                          }}
-                        >
-                          C
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6">
-                            <Typography component="span" variant="subtitle1">
-                              Cristina Danny
-                            </Typography>{' '}
-                            invited to join{' '}
-                            <Typography component="span" variant="subtitle1">
-                              Meeting.
-                            </Typography>
-                          </Typography>
-                        }
-                        secondary="Daily scrum meeting time"
-                      />
-                      <ListItemSecondaryAction>
-                        <Typography variant="caption" noWrap>
-                          9:10 PM
-                        </Typography>
-                      </ListItemSecondaryAction>
-                    </ListItemButton>
-                    <Divider />
+                    {cartItems.map((item, index) => {
+                      return <CartItemList key={index} item={item} />
+                    })}
+
                     <ListItemButton sx={{ textAlign: 'center', py: `${12}px !important` }}>
                       <ListItemText
                         primary={
-                          <Typography variant="h6" color="primary">
-                            View All
-                          </Typography>
+                          <Button variant="outlined" color="success" onClick={proceedCheckout}>
+                            Proceed to Checkout
+                          </Button>
+
                         }
                       />
                     </ListItemButton>
