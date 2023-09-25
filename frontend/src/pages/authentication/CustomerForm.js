@@ -32,7 +32,7 @@ const CustomerForm = (props) => {
     useEffect(() => {
         if(data){
             if(data.status === 200){
-                navigate('/home', { replace: true })
+                navigate('/', { replace: true })
             }
         }
     }, [data]);

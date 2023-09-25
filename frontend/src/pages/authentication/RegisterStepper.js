@@ -17,8 +17,6 @@ const RegisterStepper = () => {
         return steps.length;
     };
 
-
-
     const handleStep = (step) => () => {
         setActiveStep(step);
     };
