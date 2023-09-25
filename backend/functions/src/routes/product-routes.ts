@@ -23,13 +23,23 @@ router
     )
     .get(
         '/:productId',
-        authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
+        authMiddleware.adminValidate([
+            'ADMIN',
+            'SUB_2',
+            'BUSINESS',
+            'CUSTOMER',
+        ]) as any,
         ProductController.getProduct
     )
     .get(
         '/',
         joi.requestSchemaValidate(productListQuery),
-        authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
+        authMiddleware.adminValidate([
+            'ADMIN',
+            'SUB_2',
+            'BUSINESS',
+            'CUSTOMER',
+        ]) as any,
         ProductController.getProductList
     )
     .patch(

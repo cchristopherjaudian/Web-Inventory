@@ -24,7 +24,7 @@ router
     .get(
         '/',
         joi.requestSchemaValidate(listSchedulesSchema),
-        authMiddleware.adminValidate(['ADMIN', 'BUSINESS']) as any,
+        authMiddleware.adminValidate(['ADMIN', 'BUSINESS', 'CUSTOMER']) as any,
         ScheduleController.schedules
     )
     .patch(
