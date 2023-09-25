@@ -27,8 +27,7 @@ const b2c = [
       id: 'schedule',
       title: 'Schedule',
       url: '/schedule',
-      
-    },
+    }
   ];
 
 export default b2c;

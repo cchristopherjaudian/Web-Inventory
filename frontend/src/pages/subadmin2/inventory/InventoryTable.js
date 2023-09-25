@@ -3,57 +3,53 @@ import {
     Box,
     Grid
 } from '@mui/material';
-const InventoryTable = () => {
+import useAxios from 'hooks/useAxios';
+import { useState, useEffect } from 'react';
+
+
+
+const InventoryTable = (props) => {
+    
     const columns = [
         {
-            field: 'products',
-            headerName: 'Products',
-            editable: false,
-            flex:1
-        },
-        {
-            field: 'buying',
-            headerName: 'Buying Price',
-            editable: false,
-            flex:1
-        },
-        {
-            field: 'qty',
-            headerName: 'Quantity',
+            field: 'code',
+            headerName: 'Code',
             editable: false,
             flex: 1
         },
         {
-            field: 'threshold',
-            headerName: 'Threshold Value',
+            field: 'name',
+            headerName: 'Name',
             editable: false,
             flex: 1
         },
         {
-            field: 'updated',
-            headerName: 'Updated',
+            field: 'size',
+            headerName: 'Size',
             editable: false,
             flex: 1
         },
         {
-            field: 'availability',
-            headerName: 'Availability',
+            field: 'price',
+            headerName: 'Price',
             editable: false,
             flex: 1
         },
+        {
+            field: 'content',
+            headerName: 'Content',
+            editable: false,
+            flex: 1
+        }
     ];
-
-    const rows = [
-     
-    ];
-
+    const productList = props.products;
     return (
-        <Box sx={{width: '100%' }}>
+        <Box sx={{ width: '100%' }}>
             <Grid container>
                 <Grid item xs={12}>
                     <DataGrid
                         autoHeight
-                        rows={rows}
+                        rows={productList}
                         columns={columns}
                         initialState={{
                             pagination: {
