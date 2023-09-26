@@ -4,10 +4,12 @@ import Logo from 'components/Logo';
 import avatar from 'assets/images/users/user.png';
 import { useState, useEffect } from 'react';
 import customerNavigation from 'menu-items/customer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 import Notification from './Notification';
 import { useDispatch } from 'react-redux';
 import { setToken, setAuth } from 'store/reducers/token';
+
 const Navbar = () => {
 
 
@@ -16,7 +18,8 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-
+    let location = useLocation();
+    
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -95,7 +98,10 @@ const Navbar = () => {
                     ))}
                 </Box>
                 <Box sx={{ flexGrow: 0, mr: 2 }}>
-                    <Notification />
+                    {
+                        location.pathname !== '/checkout' && <Notification />
+                    }
+                    
                 </Box>
 
                 <Box sx={{ flexGrow: 0 }}>

@@ -2,17 +2,28 @@ import MainCard from "components/MainCard";
 import { Button, Divider, Grid, Typography } from '@mui/material';
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import useAxios from "hooks/useAxios";
 const Price = (props) => {
     const cartItems = useSelector((state) => state.cart.cart);
     const [subtotal, setSubTotal] = useState(0);
-    console.log(cartItems);
+    const { data, fetchData } = useAxios('orders', 'POST', cartItems);
 
     useEffect(() => {
-        if (cartItems) {
-            const totalPrice = cartItems.reduce((total, item) => total + Number(item.cartItem.price) * item.quantity, 0);
-            setSubTotal(totalPrice);
-        }
+        const totalPrice = cartItems && Object.keys(cartItems).length
+            ? cartItems.reduce((total, item) => total + Number(item.cartItem.price) * item.quantity, 0)
+            : 0;
+        setSubTotal(totalPrice);
     }, [cartItems]);
+
+    const processCheckout = () => {
+        props.parsePayload();
+        //fetchData();
+    };
+    useEffect(() => {
+        if (data) {
+            props.increment;
+        }
+    }, [data]);
     return (
         <MainCard>
             <Grid container spacing={1}>
@@ -48,9 +59,19 @@ const Price = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2 }}>
-                    <Button fullWidth variant="contained" color={props.isCompleted() ? "success" : "primary"} onClick={props.increment}>
-                        {props.isCompleted() ? "Confirm" : "Checkout"}
-                    </Button>
+                    {
+                        props.isCompleted() ?
+                            <Button fullWidth variant="contained" color="success" onClick={() => processCheckout()}>
+                                Confirm
+                            </Button>
+                            :
+                            (Object.keys(cartItems).length > 0) ?
+                            <Button fullWidth variant="contained" color="primary" onClick={props.increment}>
+                                Checkout
+                            </Button>
+                            :
+                            <></>
+                    }
                     {
                         props.isInitial() ? <></> : <Button fullWidth sx={{ mt: 1 }} variant="contained" color="secondary" onClick={props.decrement}>
                             Back

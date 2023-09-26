@@ -58,7 +58,7 @@ const Notification = () => {
     }
     setOpen(false);
   };
-  const proceedCheckout = ()=>{
+  const proceedCheckout = () => {
     setOpen(false);
     navigate('/checkout')
   }
@@ -139,17 +139,20 @@ const Notification = () => {
                     {cartItems.map((item, index) => {
                       return <CartItemList key={index} item={item} />
                     })}
+                    {
+                      cartItems.length > 0 &&
+                      <ListItemButton sx={{ textAlign: 'center', py: `${12}px !important` }}>
+                        <ListItemText
+                          primary={
+                            <Button variant="outlined" color="success" onClick={proceedCheckout}>
+                              Proceed to Checkout
+                            </Button>
 
-                    <ListItemButton sx={{ textAlign: 'center', py: `${12}px !important` }}>
-                      <ListItemText
-                        primary={
-                          <Button variant="outlined" color="success" onClick={proceedCheckout}>
-                            Proceed to Checkout
-                          </Button>
+                          }
+                        />
+                      </ListItemButton>
+                    }
 
-                        }
-                      />
-                    </ListItemButton>
                   </List>
                 </MainCard>
               </ClickAwayListener>
