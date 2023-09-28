@@ -63,9 +63,20 @@ const getOrder = catchAsync(async (req, res) => {
     );
 });
 
-const listOrders = catchAsync(async (req, res) => {
+const endUserOrders = catchAsync(async (req, res) => {
     const request = req as IAuthRequest;
-    const newStatus = await order.orders(request.profile.id);
+    const newStatus = await order.endUserOrders(request.profile.id);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.LIST_RETRIEVED,
+        newStatus
+    );
+});
+
+const adminOrders = catchAsync(async (req, res) => {
+    const newStatus = await order.adminOrders();
     await db.$disconnect();
     response.createResponse(
         res,
@@ -90,7 +101,8 @@ export default {
     createOrder,
     createOrderStatus,
     updateOrder,
-    listOrders,
+    endUserOrders,
     getSales,
+    adminOrders,
     getOrder,
 };

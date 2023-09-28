@@ -34,6 +34,19 @@ const getProduct = catchAsync(async (req, res) => {
     );
 });
 
+const getProductInventories = catchAsync(async (req, res) => {
+    const product = await productInstance.productInventories(
+        req.params.productId
+    );
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_RETRIEVED,
+        product!
+    );
+});
+
 const getProductList = catchAsync(async (req, res) => {
     const product = await productInstance.productList(
         req.query as TProductsQuery
@@ -61,4 +74,10 @@ const updateProduct = catchAsync(async (req, res) => {
     );
 });
 
-export default { createProduct, getProduct, updateProduct, getProductList };
+export default {
+    createProduct,
+    getProduct,
+    updateProduct,
+    getProductList,
+    getProductInventories,
+};

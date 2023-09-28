@@ -32,6 +32,16 @@ router
         ProductController.getProduct
     )
     .get(
+        '/:productId/inventories',
+        authMiddleware.adminValidate([
+            'ADMIN',
+            'SUB_2',
+            'BUSINESS',
+            'CUSTOMER',
+        ]) as any,
+        ProductController.getProductInventories
+    )
+    .get(
         '/',
         joi.requestSchemaValidate(productListQuery),
         authMiddleware.adminValidate([

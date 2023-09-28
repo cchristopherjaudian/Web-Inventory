@@ -148,9 +148,16 @@ class OrderService {
         });
     }
 
-    public async orders(profileId?: string) {
+    public async endUserOrders(profileId?: string) {
         const params = {
             where: { profileId },
+            ...this._defaultOrderParams,
+        };
+        return await this._db.orders.findMany(params);
+    }
+
+    public async adminOrders() {
+        const params = {
             ...this._defaultOrderParams,
         };
         return await this._db.orders.findMany(params);

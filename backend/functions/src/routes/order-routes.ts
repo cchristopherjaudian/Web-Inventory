@@ -34,7 +34,16 @@ router
         authMiddleware.adminValidate(['ADMIN', 'SUB_1']) as any,
         OrderController.updateOrder
     )
-    .get('/', authMiddleware.endUserValidate as any, OrderController.listOrders)
+    .get(
+        '/endusers',
+        authMiddleware.endUserValidate as any,
+        OrderController.endUserOrders
+    )
+    .get(
+        '/admins',
+        authMiddleware.adminValidate(['ADMIN', 'SUB_1']) as any,
+        OrderController.adminOrders
+    )
     .get(
         '/:orderId',
         authMiddleware.endUserValidate as any,

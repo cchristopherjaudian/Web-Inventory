@@ -1,5 +1,8 @@
 import { TProducts, TProductsQuery } from '../lib/types/product-types';
-import { ResourceConflictError } from '../lib/custom-errors/class-errors';
+import {
+    NotFoundError,
+    ResourceConflictError,
+} from '../lib/custom-errors/class-errors';
 import { PrismaClient } from '@prisma/client';
 
 class ProductsService {
@@ -36,6 +39,20 @@ class ProductsService {
             data: payload as TProducts,
         });
         return product;
+    }
+
+    public async productInventories(id: string) {
+        const product = await this._db.products.findUnique({ where: { id } });
+        if (!product) throw new NotFoundError('Product does not exists.');
+
+        const inventories = await this._db.inventory.findMany({
+            where: { productId: product.id },
+        });
+
+        return {
+            product,
+            inventories,
+        };
     }
 
     public async findProduct(payload: Partial<TProducts & { id: string }>) {
