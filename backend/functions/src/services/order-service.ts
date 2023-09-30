@@ -34,6 +34,11 @@ class OrderService {
                     },
                 },
             },
+            profile: {
+                include: {
+                    account: true,
+                },
+            },
         },
     };
 
