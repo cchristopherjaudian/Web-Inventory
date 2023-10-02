@@ -5,7 +5,6 @@ import { TInventory, TInventoryList } from '../lib/types/inventory-types';
 import {
     BadRequestError,
     NotFoundError,
-    ResourceConflictError,
 } from '../lib/custom-errors/class-errors';
 import { TQueryArgs } from '../../index';
 
@@ -36,7 +35,19 @@ class InventoryService {
             },
         });
         if (isExists) {
-            throw new ResourceConflictError('Product already exists.');
+            isExists.stock = isExists.stock + payload.stock;
+
+            payload.stockIndicator = this.getStockIndicator(isExists.stock);
+
+            return this._db.inventory.update({
+                where: {
+                    id: isExists.id,
+                },
+
+                data: {
+                    ...isExists,
+                },
+            });
         }
 
         payload.stockIndicator = this.getStockIndicator(payload.stock);

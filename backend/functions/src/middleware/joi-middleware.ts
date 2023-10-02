@@ -17,26 +17,27 @@ class JoiMiddleware {
         return joiError;
     }
 
-    private validateSchema(schema: TSchemaBody<Schema>, request: Request) {
-        const { query, body } = schema;
-        if (body) {
-            return body.validate(request.body, { abortEarly: false });
-        }
-        return query.validate(request.query, { abortEarly: false });
+    private validateSchema(schema: Schema, request: Record<string, unknown>) {
+        return schema.validate(request, { abortEarly: false });
     }
 
     public requestSchemaValidate =
-        (schema: TSchemaBody<Schema>) =>
+        (requestSchema: TSchemaBody<Schema>) =>
         (req: Request, res: Response, next: NextFunction) => {
-            const { error, value } = this.validateSchema(schema, req);
+            Object.keys(requestSchema).forEach((key) => {
+                const { error, value } = this.validateSchema(
+                    requestSchema[key as keyof typeof requestSchema],
+                    req[key as keyof typeof req]
+                );
 
-            const err = this.mapError(
-                error as Partial<ValidationError> & TJoiError
-            );
-            if (err) next(err);
+                const err = this.mapError(
+                    error as Partial<ValidationError> & TJoiError
+                );
+                if (err) next(err);
 
-            if (schema?.body) req.body = value;
-            if (schema?.query) req.query = value;
+                if (key === 'body') req.body = value;
+                if (key === 'query') req.query = value;
+            });
 
             next();
         };
