@@ -6,7 +6,7 @@ import MainLayout from 'layout/MainLayout';
 
 const Inventory = Loadable(lazy(()=> import('pages/subadmin2/inventory/')))
 const Settings = Loadable(lazy(() => import('pages/admin/Settings')));
-
+const UpdateForm = Loadable(lazy(()=>import('pages/subadmin2/inventory/UpdateForm')));
 
 const SubTwoRoutes = {
     path: '/',
@@ -19,6 +19,10 @@ const SubTwoRoutes = {
       {
         path: 'settings',
         element: <Settings />
+      },
+      {
+        path: 'inventories/:id',
+        element: <UpdateForm />
       }
     ]
   };

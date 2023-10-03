@@ -3,17 +3,18 @@ import {
     Box,
     Grid
 } from '@mui/material';
-import useAxios from 'hooks/useAxios';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 
 
 const InventoryTable = (props) => {
-    
+    const [productRows, setProductRows] = useState([]);
+    const navigate = useNavigate();
     const columns = [
         {
             field: 'code',
-            headerName: 'Code',
+            headerName: 'Product Code',
             editable: false,
             flex: 1
         },
@@ -24,32 +25,42 @@ const InventoryTable = (props) => {
             flex: 1
         },
         {
-            field: 'size',
-            headerName: 'Size',
-            editable: false,
-            flex: 1
-        },
-        {
             field: 'price',
             headerName: 'Price',
             editable: false,
             flex: 1
-        },
-        {
+        }, {
+            field: 'size',
+            headerName: 'Size',
+            editable: false,
+            flex: 1
+        }, {
             field: 'content',
             headerName: 'Content',
             editable: false,
             flex: 1
         }
     ];
-    const productList = props.products;
+    const gridClick = (params, event, details) => {
+        let selectedData = params['row'];
+        let uri = '/inventories/' + selectedData.id;
+        console.log(uri);
+        navigate(uri);
+        
+    }
+    useEffect(() => {
+        console.log(props.products);
+        setProductRows(props.products);
+
+    }, [props.products])
+    const inventoryList = productRows;
     return (
         <Box sx={{ width: '100%' }}>
             <Grid container>
                 <Grid item xs={12}>
                     <DataGrid
                         autoHeight
-                        rows={productList}
+                        rows={inventoryList}
                         columns={columns}
                         initialState={{
                             pagination: {
@@ -60,6 +71,7 @@ const InventoryTable = (props) => {
                         }}
                         pageSizeOptions={[10]}
                         disableRowSelectionOnClick
+                        onCellClick={gridClick}
                     />
                 </Grid>
             </Grid>

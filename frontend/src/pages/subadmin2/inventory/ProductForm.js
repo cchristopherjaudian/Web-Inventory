@@ -62,7 +62,7 @@ const ProductForm = (props) => {
                             </Typography>
                             <label htmlFor="contained-button-file">
                                 <Input accept="image/*" id="contained-button-file" type="file" onChange={handleImageChange} />
-                                <Button variant="contained" component="span">
+                                <Button variant="contained" color="secondary" component="span">
                                     Upload
                                 </Button>
                             </label>
@@ -80,6 +80,7 @@ const ProductForm = (props) => {
                             name="code"
                             onChange={formik.handleChange}
                             value={formik.values.code}
+                            autoFocus
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -89,7 +90,6 @@ const ProductForm = (props) => {
                             fullWidth
                             id="name"
                             label="Product Name"
-                            autoFocus
                             onChange={formik.handleChange}
                             value={formik.values.name}
                         />
