@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import useAxios from "hooks/useAxios";
 const Price = (props) => {
     const cartItems = useSelector((state) => state.cart.cart);
+    const [price,setPrice] = useState(0);
     const [subtotal, setSubTotal] = useState(0);
     const { data, fetchData } = useAxios('orders', 'POST', cartItems);
-
+    const [change,setChange] = useState(0);
     useEffect(() => {
         const totalPrice = cartItems && Object.keys(cartItems).length
-            ? cartItems.reduce((total, item) => total + Number(item.cartItem.price) * item.quantity, 0)
+            ? cartItems[0].reduce((total, item) => total + Number(item.inventory.products.price) * item.quantity, 0)
             : 0;
+            
         setSubTotal(totalPrice);
     }, [cartItems]);
 
@@ -24,6 +26,9 @@ const Price = (props) => {
             props.increment;
         }
     }, [data]);
+    useEffect(()=>{
+        setPrice(change + subtotal);
+    },[change,subtotal]);
     return (
         <MainCard>
             <Grid container spacing={1}>
@@ -55,7 +60,7 @@ const Price = (props) => {
                 </Grid>
                 <Grid item xs={6} sx={{ mt: 3 }}>
                     <Typography variant="h4">
-                        {'₱'}00.00
+                        {'₱'}{price}
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2 }}>
