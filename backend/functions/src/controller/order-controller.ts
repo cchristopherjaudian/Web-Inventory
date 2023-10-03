@@ -30,7 +30,7 @@ const createOrderStatus = catchAsync(async (req, res) => {
     const request = req as IAuthRequest;
     const newStatus = await order.createOrderStatus({
         ...req.body,
-        adminId: request.profile.id,
+        profileId: request.profile.id,
     });
     await db.$disconnect();
     response.createResponse(

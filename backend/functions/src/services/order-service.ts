@@ -113,13 +113,16 @@ class OrderService {
                 orderStatus: {
                     create: {
                         status: OrderStatuses.PREPARING,
+                        profileId: payload.profileId,
                     },
                 },
             },
         });
     }
 
-    public async createOrderStatus(payload: TOrderStatus) {
+    public async createOrderStatus(
+        payload: TOrderStatus & { createdAt: Date }
+    ) {
         const hasOrder = await this._db.orders.findFirst({
             where: { id: payload.orderId },
         });
@@ -128,7 +131,9 @@ class OrderService {
         }
         const hasOrderStatus = await this._db.orderStatus.findFirst({
             where: {
-                orderId: payload.orderId,
+                orders: {
+                    id: payload.orderId,
+                },
                 status: payload.status,
             },
         });
@@ -136,6 +141,9 @@ class OrderService {
             throw new ResourceConflictError('Order status already exists.');
         }
 
+        payload.createdAt = moment(payload.createdAt)
+            .tz('Asia/Manila')
+            .toDate();
         return await this._db.orderStatus.create({ data: payload });
     }
 

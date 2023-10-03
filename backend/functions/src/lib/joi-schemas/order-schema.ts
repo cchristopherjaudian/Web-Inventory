@@ -23,6 +23,7 @@ const createOrderSchema = {
 const createOrderStatusSchema = {
     body: Joi.object({
         orderId: Joi.string().trim().required(),
+        createdAt: Joi.date().format('YYYY-MM-DD').required(),
         status: Joi.string()
             .trim()
             .valid(...Object.keys(OrderStatuses))
