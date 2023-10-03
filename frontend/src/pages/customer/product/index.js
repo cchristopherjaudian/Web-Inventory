@@ -1,5 +1,5 @@
 import MainCard from "components/MainCard";
-import { ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons';
+
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { styled } from '@mui/system';
@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import useAxios from "hooks/useAxios";
 import useAxiosBackup from "hooks/useAxiosBackup";
 import RelatedProducts from "./related";
+import Info from "./info";
 const Product = () => {
     let { id } = useParams();
     const dispatch = useDispatch();
@@ -64,77 +65,7 @@ const Product = () => {
         <MainCard>
             <Grid container spacing={1}>
                 <Grid item xs={12} md={9}>
-                    <Card sx={{ width: '100%', display: 'flex' }}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                            <CardMedia
-                                component="img"
-                                height="300"
-                                image={"https://placehold.co/300"}
-                                alt="placeholder"
-                            />
-                        </Box>
-                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                            <CardContent sx={{ flex: '1 0 auto' }}>
-                                <Box sx={{ display: 'flex', gap: 1 }}>
-                                    <Typography gutterBottom variant="h4">
-                                        {itemInfo.name}
-                                    </Typography>
-                                    <Chip label=" 50 lbs" color="error" size="small" />
-                                </Box>
-                                <Typography variant="body2" color="text.secondary">
-                                    200 stocks available
-                                </Typography>
-                                <Typography mt={3} variant="body1" color="#2980b9">
-                                    Price: {itemInfo.price}
-                                </Typography>
-                                <Grid container spacing={0.2} mt={2}>
-                                    <Grid item xs={6}>
-                                        <Typography variant="body2" >
-                                            Availability
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Typography variant="body2" color="#2980b9">
-                                            In Stock
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Typography variant="body2" >
-                                            Category
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Typography variant="body2" color="#2980b9">
-                                            Medical Oxygen
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Typography variant="body2" >
-                                            Walk in | Deliver
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12} mt={4}>
-                                        {
-                                            cartItems.some(obj => obj.id === id) ?
-                                                <Button variant="contained" color="success" startIcon={<ShoppingCartOutlined />}>
-                                                    Added
-                                                </Button>
-                                                :
-                                                <Button variant="contained" startIcon={<ShoppingCartOutlined />} onClick={() => setCartItem(itemInfo)}>
-                                                    Add to Cart
-                                                </Button>
-                                        }
-
-                                        <IconButton variant="contained">
-                                            <HeartOutlined />
-                                        </IconButton>
-                                    </Grid>
-                                </Grid>
-
-                            </CardContent>
-                        </Box>
-
-                    </Card>
+                    <Info itemInfo={itemInfo} setCartItem={setCartItem} cartItems={cartItems}/>
                     <Card mt={2} sx={{ width: '100%', display: 'flex', padding: 2 }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="h3" color="#2980b9">Product Information</Typography>
