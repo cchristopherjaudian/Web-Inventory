@@ -3,43 +3,64 @@ import {
     Box,
     Grid
 } from '@mui/material';
-const OrderTable = () => {
+import useAxios from 'hooks/useAxios';
+import { useState,useEffect } from 'react';
+const OrderTable = (props) => {
+    const [orderId,setOrderId] = useState('');
+    const {data,fetchData} = useAxios('orders/' + orderId,'GET',null,false);
     const columns = [
         {
-            field: 'name',
-            headerName: 'Name',
+            field: 'id',
+            headerName: 'Order ID',
             editable: false,
             flex: 1
         },
         {
+            field: 'name',
+            headerName: 'Name',
+            editable: false,
+            flex: 1,
+            valueGetter: (params) => `${params.row.firstname} ${params.row.middlename} ${params.row.lastname}`
+        },
+        {
             field: 'status',
-            headerName: 'User Status',
-            editable: false,
-            flex:1
-        },
-        {
-            field: 'status2',
-            headerName: 'User Status',
-            editable: false,
-            flex:1
-        },
-        {
-            field: 'status3',
             headerName: 'Order Status',
             editable: false,
             flex:1
         },
         {
-            field: 'invoices',
-            headerName: 'Invoices',
+            field: 'createdAt',
+            headerName: 'Date Ordered',
+            editable: false,
+            flex:1
+        },
+        {
+            field: 'paymentMethod',
+            headerName: 'Payment Method',
             editable: false,
             flex:1
         }
     ];
 
-    const rows = [
-   
-    ];
+    const gridClick = (params, event, details) => {
+        let selectedData = params['row'];
+        setOrderId(selectedData.id);
+        //props.setSelectedOrder(selectedData);
+    }
+    useEffect(()=>{
+        if(orderId ){
+            fetchData();
+            setOrderId('');
+        }
+    },[orderId]);
+    useEffect(()=>{
+        if(data){
+            const steps = data['data']['orderStatus'];
+            props.setSelectedOrder(data['data']);
+            props.setOrderSteps(steps);
+        }
+    },[data]);
+    const rows = props.orders;
 
     return (
         <Box sx={{width: '100%', mt:1 }}>
@@ -58,6 +79,7 @@ const OrderTable = () => {
                         }}
                         pageSizeOptions={[10]}
                         disableRowSelectionOnClick
+                        onCellClick={gridClick}
                     />
                 </Grid>
             </Grid>
