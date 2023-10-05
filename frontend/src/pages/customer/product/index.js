@@ -42,11 +42,19 @@ const Product = () => {
         }
     }, [selectedProduct]);
     useEffect(() => {
-
         if (profile) {
             if (profile['status'] === 200) {
-                const dispatchProduct = { ...profile['data'], cartItem };
-                dispatch(setCart(dispatchProduct));
+
+                let newCart = [...cartItems];
+                const dispatchProduct = { ...profile['data'], inventory: { products: cartItem } };
+                let objectIndex = cartItems.findIndex(item => item.inventory.products.code === cartItem.code);
+                if (objectIndex === -1) {
+                    newCart.push(dispatchProduct);
+                } else {
+                    newCart[objectIndex] = dispatchProduct;
+                }
+                console.log(newCart);
+                dispatch(setCart(newCart));
                 setSelectedProduct({});
                 setCartItem({});
             }
@@ -65,7 +73,7 @@ const Product = () => {
         <MainCard>
             <Grid container spacing={1}>
                 <Grid item xs={12} md={9}>
-                    <Info itemInfo={itemInfo} setCartItem={setCartItem} cartItems={cartItems}/>
+                    <Info itemInfo={itemInfo} setCartItem={setCartItem} cartItems={cartItems} productId={id} />
                     <Card mt={2} sx={{ width: '100%', display: 'flex', padding: 2 }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="h3" color="#2980b9">Product Information</Typography>

@@ -53,7 +53,7 @@ const Info = (props) => {
                     </Grid>
                     <Grid item xs={12} mt={4}>
                         {
-                            props.cartItems.some(obj => obj.id === id) ?
+                            props.cartItems.some(obj => obj.id === props.id) ?
                                 <Button variant="contained" color="success" startIcon={<ShoppingCartOutlined />}>
                                     Added
                                 </Button>

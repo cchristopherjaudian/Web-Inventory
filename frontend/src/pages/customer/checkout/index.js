@@ -51,7 +51,7 @@ const Checkout = () => {
     }
     const parsePayload = () => {
         let newCart = [];
-
+        console.log(finalCart);
         finalCart.forEach((item, index) => {
             newCart.push({
                 cartId: item.id,

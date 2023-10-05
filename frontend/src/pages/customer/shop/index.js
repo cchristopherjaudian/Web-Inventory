@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import useAxios from "hooks/useAxios";
 import useAxiosBackup from "hooks/useAxiosBackup";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "store/reducers/cart";
 const Shop = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const reduxcart = useSelector((state) => state.cart.cart);
+
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState({});
     const [cartItem, setCartItem] = useState({});
@@ -36,8 +38,17 @@ const Shop = () => {
 
         if (profile) {
             if (profile['status'] === 200) {
-                const dispatchProduct = { ...profile['data'], cartItem };
-                dispatch(setCart(dispatchProduct));
+                
+                let newCart = [...reduxcart];
+                const dispatchProduct = { ...profile['data'], inventory: { products: cartItem } };
+                let objectIndex = reduxcart.findIndex(item => item.inventory.products.code === cartItem.code);
+                if(objectIndex === -1){
+                    newCart.push(dispatchProduct);
+                } else{
+                    newCart[objectIndex] = dispatchProduct;
+                }
+                console.log(newCart);
+                dispatch(setCart(newCart));
                 setSelectedProduct({});
                 setCartItem({});
             }

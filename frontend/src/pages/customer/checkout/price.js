@@ -5,15 +5,18 @@ import { useEffect, useState } from "react";
 import useAxios from "hooks/useAxios";
 const Price = (props) => {
     const cartItems = useSelector((state) => state.cart.cart);
-    const [price,setPrice] = useState(0);
+    const [price, setPrice] = useState(0);
     const [subtotal, setSubTotal] = useState(0);
     const { data, fetchData } = useAxios('orders', 'POST', cartItems);
-    const [change,setChange] = useState(0);
+    const [change, setChange] = useState(0);
     useEffect(() => {
         const totalPrice = cartItems && Object.keys(cartItems).length
-            ? cartItems[0].reduce((total, item) => total + Number(item.inventory.products.price) * item.quantity, 0)
+            //? cartItems.reduce((total, item) => total + Number(item.inventory.products.price) * item.quantity, 0)
+            ? cartItems.reduce((sum, item) => {
+                return sum + (item.quantity * parseFloat(item.inventory.products.price));
+            }, 0)
             : 0;
-            
+
         setSubTotal(totalPrice);
     }, [cartItems]);
 
@@ -26,9 +29,9 @@ const Price = (props) => {
             props.increment;
         }
     }, [data]);
-    useEffect(()=>{
+    useEffect(() => {
         setPrice(change + subtotal);
-    },[change,subtotal]);
+    }, [change, subtotal]);
     return (
         <MainCard>
             <Grid container spacing={1}>
@@ -71,11 +74,11 @@ const Price = (props) => {
                             </Button>
                             :
                             (Object.keys(cartItems).length > 0) ?
-                            <Button fullWidth variant="contained" color="primary" onClick={props.increment}>
-                                Checkout
-                            </Button>
-                            :
-                            <></>
+                                <Button fullWidth variant="contained" color="primary" onClick={props.increment}>
+                                    Checkout
+                                </Button>
+                                :
+                                <></>
                     }
                     {
                         props.isInitial() ? <></> : <Button fullWidth sx={{ mt: 1 }} variant="contained" color="secondary" onClick={props.decrement}>
