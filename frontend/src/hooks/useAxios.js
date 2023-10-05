@@ -21,7 +21,7 @@ function useAxios(url, method, requestData = null, lazy = true) {
     try {
 
       let response;
-
+      console.log(url);
       switch (method) {
         case 'GET':
           response = await axios.get(url);
@@ -41,7 +41,6 @@ function useAxios(url, method, requestData = null, lazy = true) {
 
       setData(response.data);
     } catch (error) {
-      console.log(error);
       setError(error);
     } finally {
       setLoading(false);
