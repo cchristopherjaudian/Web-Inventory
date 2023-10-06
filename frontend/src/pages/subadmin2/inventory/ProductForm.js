@@ -1,22 +1,36 @@
 import MainCard from 'components/MainCard';
+import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import {
     Box,
     Button,
     Grid,
     TextField,
-    Typography
+    Typography,
+    Snackbar
 } from '@mui/material';
 import { styled } from '@mui/system';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import { useFormik } from 'formik';
+import MuiAlert from '@mui/material/Alert';
 import useAxios from 'hooks/useAxios';
 const ProductForm = (props) => {
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
     const [selectedImage, setSelectedImage] = useState();
     const [payload, setPayload] = useState({});
     const Input = styled('input')({
         display: 'none',
     });
+    const Alert = forwardRef(function Alert(props, ref) {
+        return <MuiAlert sx={{ color: 'white' }} elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+    const handleClick = () => {
+        setOpen(true);
+    };
 
+    const handleClose = () => {
+        setOpen(false);
+    };
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
@@ -33,26 +47,33 @@ const ProductForm = (props) => {
             content: 0
         },
         onSubmit: values => {
-            console.log(values);
             setPayload(values);
             fetchData();
         },
     });
     useEffect(() => {
         if (data) {
-            console.log(data['data']);
-            props.updateTable(data['data']);
-            formik.resetForm();
+            if (data['status'] === 200) {
+                props.updateTable(data['data']);
+                setMessage('Product registered successfully')
+                setOpen(true);
+                formik.resetForm();
+            }
         }
     }, [data]);
-    useEffect(()=>{
+    useEffect(() => {
         setPayload(formik.values);
-    },[formik.values]);
+    }, [formik.values]);
     return (<Grid item xs={12} lg={4}>
+        <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                {message}
+            </Alert>
+        </Snackbar>
         <MainCard title="New Product" sx={{ width: '100%' }}>
             <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: -3, height: '100%' }}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         {selectedImage && <img src={selectedImage} alt="preview" />}
                     </Grid>
                     <Grid item xs={12}>
@@ -68,7 +89,7 @@ const ProductForm = (props) => {
                             </label>
                         </Box>
 
-                    </Grid>
+                    </Grid> */}
 
 
                     <Grid item xs={12}>
@@ -136,16 +157,19 @@ const ProductForm = (props) => {
                         type="submit"
                         fullWidth
                         variant="contained"
+                        endIcon={loading ? <LoadingOutlined/> : <ArrowRightOutlined />}
+                        disabled={loading}
                     >
                         Submit
                     </Button>
                     <Button
                         sx={{ mt: 1 }}
                         type="reset"
-                        color="error"
+                        color="secondary"
                         fullWidth
                         variant="contained"
-                        onClick={()=>formik.resetForm()}
+                        disabled={loading}
+                        onClick={() => formik.resetForm()}
                     >
                         Cancel
                     </Button>

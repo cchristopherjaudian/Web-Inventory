@@ -12,12 +12,14 @@ import { useState, useEffect } from 'react';
 
 const Inventory = () => {
   const [productList, setProductList] = useState([]);
-  const { data, loading, error, fetchData } = useAxios('products', 'GET', null, false);
+  const { data, loading, error, fetchData } = useAxios('products', 'GET',null,false);
   useEffect(() => {
     if (data) {
+      console.log(data);
       setProductList(data['data']);
     }
   }, [data]);
+  
   const updateTable = (product) => {
     setProductList([...productList, product]);
   }

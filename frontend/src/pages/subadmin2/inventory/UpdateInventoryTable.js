@@ -30,7 +30,8 @@ const UpdateInventoryTable = (props) => {
             field: 'expiration',
             headerName: 'Expiration Date',
             editable: true,
-            flex: 1
+            flex: 1,
+            valueGetter: (params) => `${params.row.expiration.substring(0,10)}`
         },
         {
             field: 'stock',
