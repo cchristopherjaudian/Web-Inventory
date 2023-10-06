@@ -1,13 +1,49 @@
 import { DataGrid } from '@mui/x-data-grid';
+import {RightOutlined} from '@ant-design/icons';
 import {
     Box,
-    Grid
+    Button,
+    Grid,
+    Snackbar
 } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 import useAxios from 'hooks/useAxios';
-import { useState,useEffect } from 'react';
+import useInventoryAxios from 'hooks/useInventoryAxios';
+import { useState, useEffect, forwardRef } from 'react';
+
+
+
 const OrderTable = (props) => {
-    const [orderId,setOrderId] = useState('');
-    const {data,fetchData} = useAxios('orders/' + orderId,'GET',null,false);
+ 
+    const [gridRows,setGridRows] = useState([]);
+    const [orderId, setOrderId] = useState('');
+    const [paidOrder,setPaidOrder] = useState('');
+    const { data, fetchData } = useAxios('orders/' + orderId, 'GET', null, false);
+    const {inventoryData,inventoryFetchData} = useInventoryAxios('orders/' + paidOrder,'PATCH',{status:'PAID',refNo: '1'},false);
+
+    useEffect(()=>{
+        if(props.orders){
+            setGridRows(props.orders);
+        }
+    },[props.orders]);
+    useEffect(()=>{
+        if(paidOrder){
+            inventoryFetchData();
+            setPaidOrder('');
+        }
+    },[paidOrder]);
+    useEffect(()=>{
+        if(inventoryData){
+            console.log('Inventory Data');
+            console.log(inventoryData);
+            if(inventoryData['status'] === 200){
+                props.setMessage('Order set as paid successfully');
+                props.handleClick();
+                props.refreshTable();
+                props.setSelectedOrder({});
+            }
+        }
+    },[inventoryData]);
     const columns = [
         {
             field: 'id',
@@ -26,19 +62,34 @@ const OrderTable = (props) => {
             field: 'status',
             headerName: 'Order Status',
             editable: false,
-            flex:1
+            flex: 1
         },
         {
             field: 'createdAt',
             headerName: 'Date Ordered',
             editable: false,
-            flex:1
+            flex: 1,
+            valueGetter: (params) => `${params.row.createdAt.substring(0,10)}`
         },
         {
             field: 'paymentMethod',
             headerName: 'Payment Method',
             editable: false,
-            flex:1
+            flex: 1
+        }, {
+            field: 'action',
+            headerName: '',
+            sortable: false,
+            width: 150,
+            disableClickEventBubbling: true,
+            renderCell: (params) => {
+                const onClick = (event) => {
+                    event.stopPropagation();
+                    setPaidOrder(params.row.id);
+                };
+
+                return <Button endIcon={<RightOutlined/>} variant="contained" color="success" onClick={onClick}>Set as Paid</Button>;
+            }
         }
     ];
 
@@ -47,28 +98,30 @@ const OrderTable = (props) => {
         setOrderId(selectedData.id);
         //props.setSelectedOrder(selectedData);
     }
-    useEffect(()=>{
-        if(orderId ){
+    useEffect(() => {
+        if (orderId) {
             fetchData();
             setOrderId('');
         }
-    },[orderId]);
-    useEffect(()=>{
-        if(data){
+    }, [orderId]);
+    useEffect(() => {
+        if (data) {
             const steps = data['data']['orderStatus'];
             props.setSelectedOrder(data['data']);
             props.setOrderSteps(steps);
         }
-    },[data]);
-    const rows = props.orders;
+    }, [data]);
+    
 
     return (
-        <Box sx={{width: '100%', mt:1 }}>
+        <Box sx={{ width: '100%', mt: 1 }}>
+            
             <Grid container>
+
                 <Grid item xs={12}>
                     <DataGrid
                         autoHeight
-                        rows={rows}
+                        rows={gridRows}
                         columns={columns}
                         initialState={{
                             pagination: {

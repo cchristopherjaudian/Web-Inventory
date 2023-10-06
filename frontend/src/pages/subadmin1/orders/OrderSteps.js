@@ -12,6 +12,7 @@ import useAxios from 'hooks/useAxios';
 const steps = ['Preparing', 'Dispatched', 'Delivered'];
 
 const OrderSteps = (props) => {
+    console.log(props);
     const initialState = [
         {
             "PREPARING": ''
@@ -55,28 +56,7 @@ const OrderSteps = (props) => {
         }
     }, [props.steps]);
 
-    // useEffect(() => {
-    //     if (props.steps) {
-    //         const steps = props.steps;
 
-    //         setActiveStep(steps.length - 1);
-    //         setStatus(steps);
-
-    //         let newStepDate = [...stepDate];
-    //         steps.forEach((label) => {
-
-    //             const index = newStepDate.findIndex(obj => Object.prototype.hasOwnProperty.call(obj, label.status));
-    //             if (index !== -1) {
-    //                 newStepDate[index][label.status] = label.createdAt;
-    //             } else {
-    //                 newStepDate.push({ [label.status]: label.createdAt });
-    //             }
-    //         });
-    //         setStepDate(newStepDate);
-
-
-    //     }
-    // }, [props.steps]);
     useEffect(()=>{
         if(props.id){
             resetStepDate();
@@ -101,7 +81,11 @@ const OrderSteps = (props) => {
     }, [payload]);
     useEffect(() => {
         if (data) {
-            console.log(data);
+           
+            if(data['status'] === 200){
+                props.handleClick();
+                props.setMessage('Order status updated successfully');
+            }
         }
     }, [data]);
     const handleStep = (step) => () => {
