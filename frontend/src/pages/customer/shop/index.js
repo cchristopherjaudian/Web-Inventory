@@ -38,13 +38,13 @@ const Shop = () => {
 
         if (profile) {
             if (profile['status'] === 200) {
-                
+
                 let newCart = [...reduxcart];
                 const dispatchProduct = { ...profile['data'], inventory: { products: cartItem } };
                 let objectIndex = reduxcart.findIndex(item => item.inventory.products.code === cartItem.code);
-                if(objectIndex === -1){
+                if (objectIndex === -1) {
                     newCart.push(dispatchProduct);
-                } else{
+                } else {
                     newCart[objectIndex] = dispatchProduct;
                 }
                 console.log(newCart);
@@ -64,13 +64,16 @@ const Shop = () => {
                 <MainCard>
                     <form style={{ display: 'flex', alignItems: 'center' }}>
                         <TextField id="searchProduct" label="Search" variant="outlined" sx={{ width: '300px' }} />
-                        <Select id="selectSort" sx={{ marginRight: '10px', marginLeft: '10px', width: '200px' }}>
-                            {/* <MenuItem value={10}>Option 1</MenuItem>
+                        {/* <Select id="selectSort" sx={{ marginRight: '10px', marginLeft: '10px', width: '200px' }}>
+                            <MenuItem value={10}>Option 1</MenuItem>
                             <MenuItem value={20}>Option 2</MenuItem>
-                            <MenuItem value={30}>Option 3</MenuItem> */}
-                        </Select>
-                        <Button variant="contained" color="primary">
+                            <MenuItem value={30}>Option 3</MenuItem>
+                        </Select> */}
+                        <Button variant="contained" color="primary" sx={{ml:2}}>
                             Search
+                        </Button>
+                        <Button variant="contained" color="secondary" type="reset" sx={{ml:1}}>
+                            Clear
                         </Button>
                     </form>
                 </MainCard>
@@ -92,17 +95,22 @@ const Shop = () => {
                                             {product.name}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            {product.size}{' '}{product.price}
+                                            Size: {product.size}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Content: {product.price}
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
-                                    <Button size="small" color="secondary" variant="outlined" onClick={() => navigate('/product/' + product.id)}>
-                                        Learn More
-                                    </Button>
-                                    <Button size="small" color="primary" variant="contained" onClick={() => setCartItem(product)}>
-                                        Add to Cart
-                                    </Button>
+                                    <Box display="flex" justifyContent="space-between" width="100%">
+                                        <Button size="small" color="secondary" variant="outlined" onClick={() => navigate('/product/' + product.id)}>
+                                            Learn More
+                                        </Button>
+                                        <Button size="small" color="primary" variant="contained" onClick={() => setCartItem(product)}>
+                                            Add to Cart
+                                        </Button>
+                                    </Box>
                                 </CardActions>
                             </Card>
                         </Grid>

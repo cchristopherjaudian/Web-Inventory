@@ -1,7 +1,37 @@
 import { IconButton, Button, Box, Chip, Typography, Card, CardMedia, CardContent, Grid } from '@mui/material';
 import { ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons';
-
+import { useState, useEffect } from 'react';
+import useInventoryAxios from 'hooks/useInventoryAxios';
 const Info = (props) => {
+    const [stock, setStock] = useState(0);
+    const [productId, setProductId] = useState('');
+    const [productInfo, setProductInfo] = useState({});
+    const { inventoryData, inventoryFetchData } = useInventoryAxios('products/' + productId + '/inventories', 'GET', null, false);
+
+    useEffect(() => {
+        if (props.itemInfo) {
+            setProductId(props.itemInfo.id);
+        }
+    }, [props.itemInfo]);
+    useEffect(() => {
+        if (productId) {
+            inventoryFetchData();
+        }
+    }, [productId]);
+    useEffect(() => {
+        if (inventoryData) {
+            let data = inventoryData['data'];
+
+            if (data) {
+                let totalStock = 0;
+                for (let inventory of data.inventories) {
+                    totalStock += inventory.stock;
+                }
+                setStock(totalStock);
+            }
+
+        }
+    }, [inventoryData]);
     return (<Card sx={{ width: '100%', display: 'flex' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <CardMedia
@@ -20,7 +50,7 @@ const Info = (props) => {
                     <Chip label=" 50 lbs" color="error" size="small" />
                 </Box>
                 <Typography variant="body2" color="text.secondary">
-                    200 stocks available
+                    {stock} stocks available
                 </Typography>
                 <Typography mt={3} variant="body1" color="#2980b9">
                     Price: {props.itemInfo.price}
