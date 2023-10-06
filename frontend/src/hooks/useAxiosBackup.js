@@ -5,7 +5,7 @@ import customaxios from 'axios';
 function useAxios(url, method, requestData = null, lazy = true) {
   const token = useSelector((state) => state.token.token);
   const [profile, setProfile] = useState(null);
-  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(false);
   const [profileError, setProfileError] = useState(null);
   const serviceId = process.env.REACT_APP_BASE_URL;
   const axios = customaxios.create({
@@ -18,9 +18,9 @@ function useAxios(url, method, requestData = null, lazy = true) {
 
   const fetchProfile = async () => {
     try {
-
+      
       let response;
-
+      setProfileLoading(true);
       switch (method) {
         case 'GET':
           response = await axios.get(url);

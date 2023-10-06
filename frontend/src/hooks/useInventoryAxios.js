@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import customaxios from 'axios';
 
-function useAxios(url, method, requestData = null, lazy = true) {
+function useInventoryAxios(url, method, requestData = null, lazy = true) {
   const token = useSelector((state) => state.token.token);
 
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [inventoryData, setInventoryData] = useState(null);
+  const [inventoryLoading, setInventoryLoading] = useState(false);
+  const [inventoryError, setInventoryError] = useState(null);
   const serviceId = process.env.REACT_APP_BASE_URL;
   const axios = customaxios.create({
     baseURL: serviceId,
@@ -17,11 +17,10 @@ function useAxios(url, method, requestData = null, lazy = true) {
     }
   });
 
-  const fetchData = async () => {
+  const inventoryFetchData = async () => {
     try {
-      setLoading(true);
+      setInventoryLoading(true);
       let response;
-      console.log(url);
       switch (method) {
         case 'GET':
           response = await axios.get(url);
@@ -39,20 +38,20 @@ function useAxios(url, method, requestData = null, lazy = true) {
           throw new Error('Invalid method');
       }
 
-      setData(response.data);
+      setInventoryData(response.data);
     } catch (error) {
-      setError(error);
+      setInventoryError(error);
     } finally {
-      setLoading(false);
+      setInventoryLoading(false);
     }
   };
 
 
   useEffect(() => {
-    if (!lazy) fetchData();
+    if (!lazy) inventoryFetchData();
   }, [url, method]);
 
-  return { data, loading, error, fetchData };
+  return { inventoryData, inventoryLoading, inventoryError, inventoryFetchData };
 }
 
-export default useAxios;
+export default useInventoryAxios;
