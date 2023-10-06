@@ -9,8 +9,8 @@ const Schedule = () => {
     const listspap = ['N/A', 'N/A', 'N/A', 'N/A', 'N/A'];
     const listtruck = ['CAO 1371', 'NET 3800', 'AAO 4525', 'NET 3800', 'NET 3800'];
 
-    return (<MainCard title="Route Schedule">
-        <Grid container spacing={1}>
+    return (<MainCard>
+        <Grid container spacing={1} sx={{mt:3}}>
             <Grid item xs={12} lg={3} direction="column">
                 <Header title="ROUTES" img="/asset/routes.png" />
                 {listRoutes.map((item, index) => {
