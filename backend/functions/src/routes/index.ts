@@ -6,6 +6,7 @@ import inventoryRoutes from './inventory-routes';
 import cartRoutes from './cart-routes';
 import orderRoutes from './order-routes';
 import scheduleRoutes from './schedule-routes';
+import metricsRoutes from './metrics-routes';
 
 const router = Router();
 
@@ -43,6 +44,10 @@ const defaultRoutes: TRoutelist = [
     {
         path: '/schedules',
         controller: scheduleRoutes,
+    },
+    {
+        path: '/metrics',
+        controller: metricsRoutes,
     },
 ];
 

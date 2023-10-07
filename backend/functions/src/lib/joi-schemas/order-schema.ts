@@ -12,9 +12,8 @@ const createOrderSchema = {
             .required(),
         items: Joi.array().items(
             Joi.object({
-                inventoryId: Joi.string().trim().required(),
+                productId: Joi.string().trim().required(),
                 cartId: Joi.string().trim().required(),
-                quantity: Joi.number().greater(0).required(),
             })
         ),
     }),

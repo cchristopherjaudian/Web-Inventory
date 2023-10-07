@@ -1,30 +1,18 @@
-import { PrismaClient, StockIndicator } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import moment from 'moment-timezone';
-import INVENTORY_CONSTANTS from '../../commons/inventory-contants';
 import { TInventory, TInventoryList } from '../lib/types/inventory-types';
 import {
     BadRequestError,
     NotFoundError,
 } from '../lib/custom-errors/class-errors';
 import { TQueryArgs } from '../../index';
+import { getStockIndicator } from '../helpers/stock-indicator';
 
 class InventoryService {
     private _db: PrismaClient;
 
     constructor(db: PrismaClient) {
         this._db = db;
-    }
-
-    private getStockIndicator(stock: number) {
-        if (stock < INVENTORY_CONSTANTS.Threshold) {
-            return StockIndicator.LOW;
-        }
-
-        if (stock > INVENTORY_CONSTANTS.Threshold) {
-            return StockIndicator.HIGH;
-        }
-
-        return StockIndicator.NORMAL;
     }
 
     public async createInventory(payload: TInventory) {
@@ -37,7 +25,7 @@ class InventoryService {
         if (isExists) {
             isExists.stock = isExists.stock + payload.stock;
 
-            payload.stockIndicator = this.getStockIndicator(isExists.stock);
+            payload.stockIndicator = getStockIndicator(isExists.stock);
 
             return this._db.inventory.update({
                 where: {
@@ -50,7 +38,7 @@ class InventoryService {
             });
         }
 
-        payload.stockIndicator = this.getStockIndicator(payload.stock);
+        payload.stockIndicator = getStockIndicator(payload.stock);
         payload.expiration = payload.expiration
             ? moment(payload.expiration).tz('Asia/Manila').toDate()
             : null;
@@ -102,7 +90,7 @@ class InventoryService {
         await this.getInventory(id);
 
         if (payload?.stock) {
-            payload.stockIndicator = this.getStockIndicator(payload.stock);
+            payload.stockIndicator = getStockIndicator(payload.stock);
         }
         return await this._db.inventory.update({
             where: { id },

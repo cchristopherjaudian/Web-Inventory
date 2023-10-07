@@ -5,7 +5,6 @@ import ResponseCodes from '../../commons/response-codes';
 import { IAuthRequest } from '../..';
 import OrderService from '../services/order-service';
 import Prisma from '../lib/prisma';
-import { TOrderSales } from '../lib/types/order-types';
 
 const db = Prisma.Instance.db;
 const order = new OrderService(db);
@@ -86,23 +85,11 @@ const adminOrders = catchAsync(async (req, res) => {
     );
 });
 
-const getSales = catchAsync(async (req, res) => {
-    const newStatus = await order.sales(req.query as TOrderSales);
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.DATA_RETRIEVED,
-        newStatus
-    );
-});
-
 export default {
     createOrder,
     createOrderStatus,
     updateOrder,
     endUserOrders,
-    getSales,
     adminOrders,
     getOrder,
 };

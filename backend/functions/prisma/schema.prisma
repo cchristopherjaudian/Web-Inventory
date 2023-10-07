@@ -85,11 +85,12 @@ model Profile {
 model Products {
   id String @id @default(uuid())
 
-  name    String   @db.VarChar(100)
-  code    String   @db.VarChar(100)
-  size    String?  @db.VarChar(100)
-  price   Decimal  @db.Decimal(9, 2)
-  content Decimal? @db.Decimal(9, 2)
+  name     String   @db.VarChar(100)
+  code     String   @db.VarChar(100)
+  size     String?  @db.VarChar(100)
+  price    Decimal  @db.Decimal(9, 2)
+  content  Decimal? @db.Decimal(9, 2)
+  category String   @db.VarChar(100)
 
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt

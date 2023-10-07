@@ -5,7 +5,6 @@ import { OrderController } from '../controller';
 import {
     createOrderSchema,
     createOrderStatusSchema,
-    getOrderSalesSchema,
     updateOrderSchema,
 } from '../lib/joi-schemas/order-schema';
 import Prisma from '../lib/prisma';
@@ -48,12 +47,6 @@ router
         '/:orderId',
         authMiddleware.endUserValidate as any,
         OrderController.getOrder
-    )
-    .get(
-        '/sales',
-        joi.requestSchemaValidate(getOrderSalesSchema),
-        authMiddleware.adminValidate(['ADMIN']) as any,
-        OrderController.getSales
     );
 
 export default router;

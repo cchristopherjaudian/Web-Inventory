@@ -11,6 +11,7 @@ import {
     TOrderWithoutItems,
 } from '../lib/types/order-types';
 import moment from 'moment-timezone';
+import { getStockIndicator } from '../helpers/stock-indicator';
 
 class OrderService {
     private _db: PrismaClient;
@@ -47,77 +48,63 @@ class OrderService {
     }
 
     public async createOrder(payload: TOrderPayload) {
-        const inventories = await this._db.inventory.findMany({
-            where: {
-                id: {
-                    in: payload.items.map(
-                        (item) => item.inventoryId
-                    ) as string[],
-                },
-            },
-        });
+        console.log('payload', payload);
+        const mappedItems = await Promise.all(
+            payload.items.map(async (item) => {
+                const cart = await this._db.cart.findUnique({
+                    where: { id: item.cartId },
+                });
+                if (!cart) throw new NotFoundError('Cart does not exists.');
 
-        if (inventories.length === 0) {
-            throw new NotFoundError('Inventory does not exists.');
-        }
-
-        for (const inventory of inventories) {
-            const cartItem = payload.items.find(
-                (item) => item.inventoryId === inventory.id
-            );
-
-            if (!cartItem) {
-                throw new NotFoundError('Inventory does not exists.');
-            }
-
-            const isCartExists = await this._db.cart.findFirst({
-                where: { id: cartItem.cartId },
-            });
-
-            if (!isCartExists) throw new NotFoundError('Cart does not exists.');
-
-            if (inventory.stock < cartItem?.quantity) {
-                throw new BadRequestError('Insufficient stock.');
-            }
-
-            const updatedStock = inventory.stock - cartItem.quantity;
-
-            await Promise.all([
-                this._db.inventory.update({
-                    where: { id: inventory.id },
-                    data: {
-                        stock: updatedStock,
+                const inventories = await this._db.inventory.findMany({
+                    where: {
+                        productId: item.productId,
                     },
-                }),
-                !isCartExists.saved &&
-                    this._db.cart.delete({ where: { id: cartItem?.cartId } }),
-            ]);
-        }
+                    orderBy: [
+                        {
+                            expiration: 'asc',
+                        },
+                    ],
+                });
 
-        const mappedItems = payload.items.map((k) => ({
-            quantity: k.quantity,
-            inventoryId: k.inventoryId,
-        }));
-        payload.items = mappedItems;
+                if (inventories.length === 0) {
+                    throw new BadRequestError('Insufficient stock.');
+                }
 
-        return await this._db.orders.create({
-            data: {
-                profileId: payload.profileId,
-                paymentMethod: payload.paymentMethod,
-                orderItems: {
-                    createMany: {
-                        data: payload.items,
-                    },
-                },
+                let currentQuantity = cart.quantity;
+                inventories.every(async (inventory) => {
+                    const currentStock = Math.max(
+                        inventory.stock - currentQuantity,
+                        0
+                    );
+                    currentQuantity = Math.max(
+                        currentQuantity - inventory.stock,
+                        0
+                    );
 
-                orderStatus: {
-                    create: {
-                        status: OrderStatuses.PREPARING,
-                        profileId: payload.profileId,
-                    },
-                },
-            },
-        });
+                    inventory.stock = currentStock;
+                    inventory.stockIndicator = getStockIndicator(currentStock);
+                    await this._db.inventory.update({
+                        where: {
+                            id: inventory.id,
+                        },
+                        data: { ...inventory },
+                    });
+                    if (currentQuantity === 0) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                // update inventory stock
+                // delete cart if not flag as saved.
+
+                return;
+            })
+        );
+
+        return mappedItems;
     }
 
     public async createOrderStatus(
@@ -181,52 +168,6 @@ class OrderService {
             where: { id },
             ...this._defaultOrderParams,
         });
-    }
-
-    public async sales(query: TOrderSales) {
-        const startsAt = moment(query.startsAt)
-            .startOf('day')
-            .tz('Asia/Manila')
-            .toDate();
-        const endsAt = moment(query.endsAt)
-            .endOf('day')
-            .tz('Asia/Manila')
-            .toDate();
-
-        const orders = await this._db.orders.findMany({
-            include: {
-                orderItems: {
-                    include: {
-                        inventory: {
-                            include: {
-                                products: true,
-                            },
-                        },
-                    },
-                },
-            },
-            where: {
-                status: PaymentStatuses.PAID,
-                AND: [
-                    { createdAt: { lte: endsAt } },
-                    { createdAt: { gte: startsAt } },
-                ],
-            },
-        });
-
-        if (orders.length === 0) return orders;
-
-        const flatOrders = orders.flatMap((order) => order.orderItems);
-
-        const sales = flatOrders.reduce((acc, { quantity, inventory }) => {
-            const total = <any>inventory?.products?.price * quantity;
-
-            return acc + total;
-        }, 0);
-
-        return {
-            sales,
-        };
     }
 }
 

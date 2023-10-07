@@ -11,7 +11,7 @@ class CloudFunctions {
     private _options = { region: 'asia-east1' } as IHttpOptions;
 
     public withRuntime(options?: IHttpOptions): this {
-        this._options = options ?? { region: 'asia-east1' };
+        this._options ??= options as IHttpOptions;
         return this;
     }
 
