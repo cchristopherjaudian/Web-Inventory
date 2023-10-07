@@ -19,9 +19,6 @@ class MetricsService {
             .tz('Asia/Manila')
             .toDate();
 
-        console.log('startsAt', startsAt);
-        console.log('endsAt', endsAt);
-
         const orders = await this._db.orders.findMany({
             include: {
                 orderItems: {
@@ -55,12 +52,15 @@ class MetricsService {
     }
 
     public async getPanels() {
+        const endsAt = moment().endOf('day').toDate();
+        const startsAt = moment().startOf('day').subtract(7, 'days').toDate();
         const [
             categoryGroup,
             products,
             {
                 _count: { id: lowStocks },
             },
+            orders,
         ] = await Promise.all([
             this._db.products.groupBy({
                 by: ['category'],
@@ -74,9 +74,37 @@ class MetricsService {
                     stockIndicator: StockIndicator.LOW,
                 },
             }),
+            this._db.orderItems.groupBy({
+                by: ['productId'],
+                where: {
+                    orders: {
+                        status: PaymentStatuses.PAID,
+                        AND: [
+                            { createdAt: { lte: endsAt } },
+                            { createdAt: { gte: startsAt } },
+                        ],
+                    },
+                },
+                _sum: {
+                    quantity: true,
+                },
+            }),
         ]);
         const category = categoryGroup.length;
-        return { category, products, lowStocks };
+
+        let topSelling = 0;
+        if (orders.length > 0) {
+            topSelling = orders.reduce(
+                (acc, curr) =>
+                    curr._sum.quantity! >=
+                    Number(process.env.TOP_SELLING_THRESHOLD)
+                        ? acc + 1
+                        : 0,
+                0
+            );
+        }
+
+        return { category, products, lowStocks, topSelling };
     }
 }
 

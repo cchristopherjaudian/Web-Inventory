@@ -3,7 +3,8 @@ import {
     NotFoundError,
     ResourceConflictError,
 } from '../lib/custom-errors/class-errors';
-import { PrismaClient } from '@prisma/client';
+import { PaymentStatuses, PrismaClient } from '@prisma/client';
+import moment from 'moment-timezone';
 
 class ProductsService {
     private _db: PrismaClient;
@@ -13,6 +14,8 @@ class ProductsService {
     }
 
     public async productList(params: TProductsQuery) {
+        const endsAt = moment().endOf('day').toDate();
+        const startsAt = moment().startOf('day').subtract(7, 'days').toDate();
         const query = { where: {} } as { where: { [key: string]: any } };
 
         if (params?.search && params?.searchField) {
@@ -27,7 +30,45 @@ class ProductsService {
             query.where[params.whereField] = params.where;
         }
 
-        return await this._db.products.findMany(query);
+        const uniqueIds = await this._db.orderItems.groupBy({
+            by: ['productId'],
+            _sum: {
+                quantity: true,
+            },
+            where: {
+                orders: {
+                    status: PaymentStatuses.PAID,
+                },
+                AND: [
+                    { createdAt: { lte: endsAt } },
+                    { createdAt: { gte: startsAt } },
+                ],
+            },
+        });
+
+        const featuredIds = uniqueIds
+            .filter(
+                (id) =>
+                    id._sum.quantity! >=
+                    Number(process.env.TOP_SELLING_THRESHOLD)
+            )
+            .map((id) => id.productId);
+
+        const [featured, products] = await this._db.$transaction([
+            this._db.products.findMany({
+                where: {
+                    id: {
+                        in: featuredIds as [],
+                    },
+                },
+            }),
+            this._db.products.findMany(query),
+        ]);
+
+        return {
+            featured,
+            products,
+        };
     }
 
     public async createProduct(payload: TProducts) {
