@@ -21,6 +21,18 @@ const getSales = catchAsync(async (req, res) => {
     );
 });
 
+const getPanels = catchAsync(async (req, res) => {
+    const newStatus = await order.getPanels();
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_RETRIEVED,
+        newStatus
+    );
+});
+
 export default {
     getSales,
+    getPanels,
 };

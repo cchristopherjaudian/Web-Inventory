@@ -1,4 +1,4 @@
-import { PaymentStatuses, PrismaClient } from '@prisma/client';
+import { PaymentStatuses, PrismaClient, StockIndicator } from '@prisma/client';
 import moment from 'moment-timezone';
 import { TOrderSales } from '../lib/types/order-types';
 
@@ -18,6 +18,9 @@ class MetricsService {
             .endOf('day')
             .tz('Asia/Manila')
             .toDate();
+
+        console.log('startsAt', startsAt);
+        console.log('endsAt', endsAt);
 
         const orders = await this._db.orders.findMany({
             include: {
@@ -49,6 +52,31 @@ class MetricsService {
         return {
             sales,
         };
+    }
+
+    public async getPanels() {
+        const [
+            categoryGroup,
+            products,
+            {
+                _count: { id: lowStocks },
+            },
+        ] = await Promise.all([
+            this._db.products.groupBy({
+                by: ['category'],
+            }),
+            this._db.products.count(),
+            this._db.inventory.aggregate({
+                _count: {
+                    id: true,
+                },
+                where: {
+                    stockIndicator: StockIndicator.LOW,
+                },
+            }),
+        ]);
+        const category = categoryGroup.length;
+        return { category, products, lowStocks };
     }
 }
 

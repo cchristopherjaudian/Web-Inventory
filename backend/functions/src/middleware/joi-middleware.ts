@@ -33,6 +33,7 @@ class JoiMiddleware {
                 const err = this.mapError(
                     error as Partial<ValidationError> & TJoiError
                 );
+
                 if (err) next(err);
 
                 if (key === 'body') req.body = value;

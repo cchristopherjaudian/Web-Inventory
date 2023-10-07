@@ -10,11 +10,17 @@ const router = Router();
 const joi = new JoiMiddleware();
 const authMiddleware = new AuthMiddleware(db);
 
-router.get(
-    '/',
-    joi.requestSchemaValidate(getMetricsSales),
-    authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
-    MetricsController.getSales
-);
+router
+    .get(
+        '/sales',
+        joi.requestSchemaValidate(getMetricsSales),
+        authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
+        MetricsController.getSales
+    )
+    .get(
+        '/panels',
+        authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
+        MetricsController.getPanels
+    );
 
 export default router;
