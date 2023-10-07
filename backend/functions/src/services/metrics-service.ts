@@ -23,11 +23,7 @@ class MetricsService {
             include: {
                 orderItems: {
                     include: {
-                        inventory: {
-                            include: {
-                                products: true,
-                            },
-                        },
+                        products: true,
                     },
                 },
             },
@@ -44,8 +40,8 @@ class MetricsService {
 
         const flatOrders = orders.flatMap((order) => order.orderItems);
 
-        const sales = flatOrders.reduce((acc, { quantity, inventory }) => {
-            const total = <any>inventory?.products?.price * quantity;
+        const sales = flatOrders.reduce((acc, { quantity, products }) => {
+            const total = <any>products?.price * quantity;
 
             return acc + total;
         }, 0);

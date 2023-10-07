@@ -13,51 +13,56 @@ class CartService {
         this._db = db;
     }
 
-    public async addCart(
-        payload: Omit<TCart, 'inventoryId'> & { code?: string }
-    ) {
+    public async addCart(payload: TCart & { code?: string }) {
         try {
-            const cartItem = { ...payload, inventoryId: null } as TCart & {
-                code?: string;
-            };
-            const inventory = await this._db.inventory.findFirst({
-                include: { products: true },
+            const product = await this._db.products.findFirst({
                 where: {
-                    products: {
-                        code: payload.code,
-                    },
+                    code: payload.code,
                 },
             });
-            if (!inventory) {
-                throw new NotFoundError('Inventory does not exists.');
+            if (!product) {
+                throw new NotFoundError('Products does not exists.');
             }
 
             const cart = await this._db.cart.findFirst({
                 where: {
-                    profileId: cartItem.profileId,
-                    inventoryId: inventory?.id,
+                    profileId: payload.profileId,
+                    productId: product?.id,
                 },
             });
 
-            if (inventory.stock < cartItem.quantity) {
-                throw new BadRequestError(
-                    'Insufficient stock for this inventory.'
-                );
+            const inventories = await this._db.inventory.findMany({
+                where: {
+                    productId: product.id,
+                },
+                orderBy: [
+                    {
+                        expiration: 'asc',
+                    },
+                ],
+            });
+
+            const stockTotal = inventories.reduce(
+                (acc, curr) => acc + curr.stock,
+                0
+            );
+            if (payload.quantity > stockTotal) {
+                throw new BadRequestError('Insufficient stock.');
             }
 
             if (cart) {
-                cart.quantity = cart.quantity + cartItem.quantity;
+                cart.quantity = cart.quantity + payload.quantity;
                 return await this._db.cart.update({
                     where: { id: cart.id },
                     data: cart,
                 });
             }
 
-            if (cartItem?.code) {
-                delete cartItem?.code;
+            if (payload?.code) {
+                delete payload?.code;
             }
-            cartItem.inventoryId = inventory.id;
-            return await this._db.cart.create({ data: cartItem });
+            payload.productId = product.id;
+            return await this._db.cart.create({ data: payload });
         } catch (error) {
             throw error;
         }
@@ -70,13 +75,7 @@ class CartService {
                 select: {
                     id: true,
                     quantity: true,
-                    inventory: {
-                        select: {
-                            expiration: true,
-                            id: true,
-                            products: true,
-                        },
-                    },
+                    products: true,
                 },
             } as TQueryArgs;
 
@@ -92,13 +91,7 @@ class CartService {
             select: {
                 id: true,
                 quantity: true,
-                inventory: {
-                    select: {
-                        expiration: true,
-                        id: true,
-                        products: true,
-                    },
-                },
+                products: true,
             },
         });
     }

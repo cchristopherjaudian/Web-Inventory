@@ -1,4 +1,7 @@
-import Joi from 'joi';
+import JoiImport from 'joi';
+import joiDate from '@joi/date';
+
+const Joi = JoiImport.extend(joiDate) as typeof JoiImport;
 
 const getMetricsSales = {
     query: Joi.object({

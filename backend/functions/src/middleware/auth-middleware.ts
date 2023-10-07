@@ -90,7 +90,6 @@ class AuthMiddleware {
             try {
                 const token = req.headers['authorization'];
                 const authUser = await this.verifyToken(token as string);
-                console.log('authUser', authUser);
                 const profile = await this._db.profile.findFirst({
                     where: {
                         account: {

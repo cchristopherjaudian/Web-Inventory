@@ -1,4 +1,4 @@
-import { OrderStatuses, PaymentStatuses, PrismaClient } from '@prisma/client';
+import { OrderStatuses, PrismaClient } from '@prisma/client';
 import {
     BadRequestError,
     NotFoundError,
@@ -6,7 +6,6 @@ import {
 } from '../lib/custom-errors/class-errors';
 import {
     TOrderPayload,
-    TOrderSales,
     TOrderStatus,
     TOrderWithoutItems,
 } from '../lib/types/order-types';
@@ -19,11 +18,7 @@ class OrderService {
         include: {
             orderItems: {
                 include: {
-                    inventory: {
-                        include: {
-                            products: true,
-                        },
-                    },
+                    products: true,
                 },
             },
             orderStatus: {
@@ -48,7 +43,6 @@ class OrderService {
     }
 
     public async createOrder(payload: TOrderPayload) {
-        console.log('payload', payload);
         const mappedItems = await Promise.all(
             payload.items.map(async (item) => {
                 const cart = await this._db.cart.findUnique({
@@ -71,6 +65,13 @@ class OrderService {
                     throw new BadRequestError('Insufficient stock.');
                 }
 
+                const stockTotal = inventories.reduce(
+                    (acc, curr) => acc + curr.stock,
+                    0
+                );
+                if (cart.quantity > stockTotal) {
+                    throw new BadRequestError('Insufficient stock.');
+                }
                 let currentQuantity = cart.quantity;
                 inventories.every(async (inventory) => {
                     const currentStock = Math.max(
@@ -90,6 +91,7 @@ class OrderService {
                         },
                         data: { ...inventory },
                     });
+
                     if (currentQuantity === 0) {
                         return false;
                     }
@@ -97,14 +99,34 @@ class OrderService {
                     return true;
                 });
 
-                // update inventory stock
-                // delete cart if not flag as saved.
+                // deletes cart if not flagged as save
+                !cart.saved &&
+                    (await this._db.cart.delete({ where: { id: cart.id } }));
 
-                return;
+                return {
+                    productId: item.productId,
+                    quantity: cart.quantity,
+                };
             })
         );
 
-        return mappedItems;
+        return await this._db.orders.create({
+            data: {
+                profileId: payload.profileId,
+                paymentMethod: payload.paymentMethod,
+                orderItems: {
+                    createMany: {
+                        data: mappedItems,
+                    },
+                },
+
+                orderStatus: {
+                    create: {
+                        status: OrderStatuses.PREPARING,
+                    },
+                },
+            },
+        });
     }
 
     public async createOrderStatus(

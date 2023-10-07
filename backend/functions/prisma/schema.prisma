@@ -92,9 +92,11 @@ model Products {
   content  Decimal? @db.Decimal(9, 2)
   category String   @db.VarChar(100)
 
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  Inventory Inventory[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Inventory  Inventory[]
+  OrderItems OrderItems[]
+  Cart       Cart[]
 
   @@map("products")
 }
@@ -109,10 +111,8 @@ model Inventory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  products   Products?    @relation(fields: [productId], references: [id])
-  productId  String?
-  cart       Cart[]
-  OrderItems OrderItems[]
+  products  Products? @relation(fields: [productId], references: [id])
+  productId String?
 
   @@map("inventory")
 }
@@ -126,8 +126,8 @@ model Cart {
 
   saved Boolean? @default(false)
 
-  inventory   Inventory? @relation(fields: [inventoryId], references: [id])
-  inventoryId String?
+  products  Products? @relation(fields: [productId], references: [id])
+  productId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -173,8 +173,8 @@ model OrderStatus {
 model OrderItems {
   id String @id @default(uuid())
 
-  inventory   Inventory? @relation(fields: [inventoryId], references: [id])
-  inventoryId String?
+  products  Products? @relation(fields: [productId], references: [id])
+  productId String?
 
   orders  Orders? @relation(fields: [orderId], references: [id])
   orderId String

@@ -1,14 +1,10 @@
-export type TProducts = {
-  name: string;
-  code: string;
-  size?: string;
-  price: number;
-  content?: number;
-};
+import { Products } from '@prisma/client';
+
+export type TProducts = Omit<Products, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type TProductsQuery = {
-  search?: string;
-  searchField: string;
-  where?: string;
-  whereField: string;
+    search?: string;
+    searchField: string;
+    where?: string;
+    whereField: string;
 };
