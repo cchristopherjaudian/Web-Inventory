@@ -12,12 +12,6 @@ const b2c = [
       
     },
     {
-      id: 'career',
-      title: 'Career',
-      url: '/career',
-      
-    },
-    {
       id: 'Shop',
       title: 'Shop',
       url: '/shop',

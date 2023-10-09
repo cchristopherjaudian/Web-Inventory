@@ -6,7 +6,6 @@ import MainLayout from 'layout/MainLayout';
 
 const Home = Loadable(lazy(() => import('pages/customer/home/')));
 const About = Loadable(lazy(() => import('pages/customer/about/')));
-const Career = Loadable(lazy(() => import('pages/customer/career/')));
 const Shop = Loadable(lazy(() => import('pages/customer/shop/')));
 const Schedule = Loadable(lazy(() => import('pages/customer/schedule/')));
 const Product = Loadable(lazy(()=> import('pages/customer/product/')));
@@ -23,10 +22,6 @@ const CustomerRoutes = {
       {
         path: 'about',
         element: <About />
-      },
-      {
-        path: 'career',
-        element: <Career />
       },
       {
         path: 'shop',
