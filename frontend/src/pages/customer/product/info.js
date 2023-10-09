@@ -1,5 +1,5 @@
 import { IconButton, Button, Box, Chip, Typography, Card, CardMedia, CardContent, Grid } from '@mui/material';
-import { ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, HeartOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import useInventoryAxios from 'hooks/useInventoryAxios';
 const Info = (props) => {
@@ -63,7 +63,7 @@ const Info = (props) => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body2" color="#2980b9">
-                            In Stock
+                            {stock > 0 ? 'In Stock' : 'Out of Stock'}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -73,7 +73,7 @@ const Info = (props) => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body2" color="#2980b9">
-                            Medical Oxygen
+                            {props.itemInfo.category}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -88,9 +88,16 @@ const Info = (props) => {
                                     Added
                                 </Button>
                                 :
-                                <Button variant="contained" startIcon={<ShoppingCartOutlined />} onClick={() => props.setCartItem(props.itemInfo)}>
-                                    Add to Cart
-                                </Button>
+                                (stock > 0) ?
+                                    <Button variant="contained" startIcon={<ShoppingCartOutlined />} onClick={() => props.setCartItem(props.itemInfo)}>
+                                        Add to Cart
+                                    </Button>
+                                    :
+                                    <Button variant="contained" color="error" startIcon={<CloseCircleOutlined />}>
+                                        Out of Stock
+                                    </Button>
+
+
                         }
 
                         <IconButton variant="contained">
