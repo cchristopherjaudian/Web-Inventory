@@ -1,6 +1,12 @@
-import { PaymentStatuses, PrismaClient, StockIndicator } from '@prisma/client';
+import {
+    OrderItems,
+    PaymentStatuses,
+    PrismaClient,
+    StockIndicator,
+} from '@prisma/client';
 import moment from 'moment-timezone';
 import { TOrderSales } from '../lib/types/order-types';
+import { TGroupedQuantity } from '../lib/types/metrics-types';
 
 class MetricsService {
     private _db: PrismaClient;
@@ -52,20 +58,27 @@ class MetricsService {
     }
 
     public async getPanels() {
-        const endsAt = moment().endOf('day').toDate();
-        const startsAt = moment().startOf('day').subtract(7, 'days').toDate();
         const [
             categoryGroup,
-            products,
+            {
+                _sum: { quantity: products },
+            },
             {
                 _count: { id: lowStocks },
             },
             orders,
         ] = await Promise.all([
-            this._db.products.groupBy({
-                by: ['category'],
+            this._db.orderItems.groupBy(this.byProductId as any),
+            this._db.orderItems.aggregate({
+                _sum: {
+                    quantity: true,
+                },
+                where: {
+                    orders: {
+                        ...this._getPaidCriteria,
+                    },
+                },
             }),
-            this._db.products.count(),
             this._db.inventory.aggregate({
                 _count: {
                     id: true,
@@ -74,37 +87,56 @@ class MetricsService {
                     stockIndicator: StockIndicator.LOW,
                 },
             }),
-            this._db.orderItems.groupBy({
-                by: ['productId'],
-                where: {
-                    orders: {
-                        status: PaymentStatuses.PAID,
-                        AND: [
-                            { createdAt: { lte: endsAt } },
-                            { createdAt: { gte: startsAt } },
-                        ],
+            this._db.orderItems.groupBy(this.byProductId as any),
+        ]);
+
+        const topSelling = this.reducedQuantity(orders as TGroupedQuantity);
+        const categories = this.reducedQuantity(
+            categoryGroup as TGroupedQuantity
+        );
+
+        return { categories, products, lowStocks, topSelling };
+    }
+
+    private get _getPaidCriteria() {
+        return {
+            status: PaymentStatuses.PAID,
+            AND: [
+                { createdAt: { lte: moment().endOf('day').toDate() } },
+                {
+                    createdAt: {
+                        gte: moment()
+                            .startOf('day')
+                            .subtract(7, 'days')
+                            .toDate(),
                     },
                 },
-                _sum: {
-                    quantity: true,
+            ],
+        };
+    }
+
+    private get byProductId() {
+        return {
+            by: ['productId'],
+            _sum: { quantity: true },
+            where: {
+                orders: {
+                    ...this._getPaidCriteria,
                 },
-            }),
-        ]);
-        const category = categoryGroup.length;
+            },
+        };
+    }
 
-        let topSelling = 0;
-        if (orders.length > 0) {
-            topSelling = orders.reduce(
-                (acc, curr) =>
-                    curr._sum.quantity! >=
-                    Number(process.env.TOP_SELLING_THRESHOLD)
-                        ? acc + 1
-                        : 0,
-                0
-            );
-        }
+    private reducedQuantity(list: TGroupedQuantity) {
+        if (list.length === 0) return 0;
 
-        return { category, products, lowStocks, topSelling };
+        return list.reduce(
+            (acc, curr) =>
+                curr._sum.quantity! >= Number(process.env.TOP_SELLING_THRESHOLD)
+                    ? acc + 1
+                    : 0,
+            0
+        );
     }
 }
 

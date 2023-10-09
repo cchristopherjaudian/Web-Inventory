@@ -44,6 +44,11 @@ router
         OrderController.adminOrders
     )
     .get(
+        '/transactions',
+        authMiddleware.adminValidate(['ADMIN', 'SUB_1']) as any,
+        OrderController.getOrdersTxn
+    )
+    .get(
         '/:orderId',
         authMiddleware.endUserValidate as any,
         OrderController.getOrder

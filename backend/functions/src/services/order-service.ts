@@ -1,4 +1,4 @@
-import { OrderStatuses, PrismaClient } from '@prisma/client';
+import { OrderStatuses, PaymentStatuses, PrismaClient } from '@prisma/client';
 import {
     BadRequestError,
     NotFoundError,
@@ -190,6 +190,50 @@ class OrderService {
             where: { id },
             ...this._defaultOrderParams,
         });
+    }
+
+    public async ordersTxn() {
+        const transactions = await this._db.orders.findMany({
+            where: {
+                status: PaymentStatuses.PAID,
+            },
+            include: {
+                orderItems: {
+                    include: {
+                        products: true,
+                    },
+                },
+                orderStatus: true,
+            },
+        });
+
+        if (transactions.length === 0) return [];
+
+        const mappedTransactions = transactions.map((txn) => {
+            const totalPrice = txn.orderItems.reduce(
+                (acc, item) =>
+                    (acc = <any>item.products?.price * item.quantity),
+                0
+            );
+
+            const dispatchedDate = txn.orderStatus.find(
+                (order) => order.status === OrderStatuses.DISPATCHED
+            );
+            const dateDelivered = txn.orderStatus.find(
+                (order) => order.status === OrderStatuses.DELIVERED
+            );
+            return {
+                orderId: txn.id,
+                dateOrdered: txn.createdAt,
+                paymentMethod: txn.paymentMethod,
+                itemsCount: txn.orderItems.length,
+                totalPrice,
+                dispatchedDate: dispatchedDate?.createdAt || null,
+                dateDelivered: dateDelivered?.createdAt || null,
+            };
+        });
+
+        return mappedTransactions;
     }
 }
 

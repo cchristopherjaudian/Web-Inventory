@@ -85,10 +85,22 @@ const adminOrders = catchAsync(async (req, res) => {
     );
 });
 
+const getOrdersTxn = catchAsync(async (req, res) => {
+    const newStatus = await order.ordersTxn();
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.LIST_RETRIEVED,
+        newStatus
+    );
+});
+
 export default {
     createOrder,
     createOrderStatus,
     updateOrder,
+    getOrdersTxn,
     endUserOrders,
     adminOrders,
     getOrder,

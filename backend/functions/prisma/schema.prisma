@@ -94,8 +94,8 @@ model Products {
 
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
-  Inventory  Inventory[]
-  OrderItems OrderItems[]
+  inventory  Inventory[]
+  orderItems OrderItems[]
   Cart       Cart[]
 
   @@map("products")
