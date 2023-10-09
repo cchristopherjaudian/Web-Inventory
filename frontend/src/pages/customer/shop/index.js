@@ -18,7 +18,7 @@ const Shop = () => {
     const { profile, fetchProfile } = useAxiosBackup('carts', 'POST', selectedProduct);
     useEffect(() => {
         if (data) {
-            setProducts(data['data']);
+            setProducts(data['data']['products']);
         }
     }, [data]);
     useEffect(() => {
