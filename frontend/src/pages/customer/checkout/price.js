@@ -6,6 +6,7 @@ import useAxios from "hooks/useAxios";
 const Price = (props) => {
     const cartItems = useSelector((state) => state.cart.cart);
     const [price, setPrice] = useState(0);
+    const [payMethod, setPayMethod] = useState('');
     const [subtotal, setSubTotal] = useState(0);
     const { data, fetchData } = useAxios('orders', 'POST', cartItems);
     const [change, setChange] = useState(0);
@@ -19,10 +20,13 @@ const Price = (props) => {
 
         setSubTotal(totalPrice);
     }, [cartItems]);
-
+    useEffect(() => {
+        if (props.payMethod) {
+            setPayMethod(props.payMethod);
+        }
+    }, [props.payMethod])
     const processCheckout = () => {
         props.parsePayload();
-        //fetchData();
     };
     useEffect(() => {
         if (data) {
@@ -55,6 +59,21 @@ const Price = (props) => {
                         {'₱'}00.00
                     </Typography>
                 </Grid>
+                <Divider />
+                {
+                    payMethod && <Grid item xs={6}>
+                        <Typography variant="body1">
+                            Payment Method
+                        </Typography>
+                    </Grid>
+                }
+                {
+                    payMethod && <Grid item xs={6}>
+                        <Typography variant="body1">
+                            {payMethod}
+                        </Typography>
+                    </Grid>
+                }
                 <Divider />
                 <Grid item xs={6} sx={{ mt: 3 }}>
                     <Typography variant="h4">
