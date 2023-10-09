@@ -57,20 +57,12 @@ const OrderSteps = (props) => {
     }, [props.steps]);
 
 
-    useEffect(()=>{
-        if(props.id){
+    useEffect(() => {
+        if (props.id) {
             resetStepDate();
         }
-    },[props.id]);
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            if (event.target.value) {
-                let objIndex = event.target.name;
-                let objKey = Object.keys(stepDate[objIndex])[0];
-                setPayload({ orderId: props.id, createdAt: event.target.value, status: objKey })
-            }
-        }
-    };
+    }, [props.id]);
+   
     const resetStepDate = () => {
         setStepDate(initialState);
     };
@@ -81,8 +73,8 @@ const OrderSteps = (props) => {
     }, [payload]);
     useEffect(() => {
         if (data) {
-           
-            if(data['status'] === 200){
+
+            if (data['status'] === 200) {
                 props.handleClick();
                 props.setMessage('Order status updated successfully');
             }
@@ -100,10 +92,10 @@ const OrderSteps = (props) => {
                         <StepButton color="inherit" onClick={handleStep(index)}>
                             <Stack direction="column" sx={{ alignItems: 'center' }}>
                                 <Typography>{label}</Typography>
-                                <Typography variant="caption">yyyy-MM-dd</Typography>
-                                <FormControl sx={{ width: '70%', mt: 1 }}>
+                                <FormControl sx={{ width: '90%', mt: 1 }}>
                                     <OutlinedInput
                                         size="small"
+                                        type="date"
                                         id={index}
                                         name={index}
                                         tag={index}
@@ -112,13 +104,15 @@ const OrderSteps = (props) => {
                                                 <EditOutlined />
                                             </InputAdornment>
                                         }
-                                        onKeyDown={handleKeyDown}
                                         onChange={(event) => {
                                             let newStepDate = [...stepDate];
                                             if (Object.keys(newStepDate[index]).length > 0) {
                                                 newStepDate[index][Object.keys(newStepDate[index])[0]] = event.target.value;
                                                 setStepDate(newStepDate);
                                             }
+                                            let objIndex = event.target.name;
+                                            let objKey = Object.keys(stepDate[objIndex])[0];
+                                            setPayload({ orderId: props.id, createdAt: event.target.value, status: objKey })
                                         }}
                                         inputProps={{
                                             'aria-label': 'weight'
