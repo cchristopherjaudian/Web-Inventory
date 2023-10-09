@@ -55,8 +55,7 @@ const Checkout = () => {
         finalCart.forEach((item, index) => {
             newCart.push({
                 cartId: item.id,
-                inventoryId: item.inventoryId,
-                quantity: item.quantity
+                productId: item.productId
             });
         });
         let finalPayload = { paymentMethod: payMethod, items: newCart };
@@ -101,7 +100,7 @@ const Checkout = () => {
         </Grid>
         <Grid item xs={12} md={3} sx={{ mt: 5 }}>
             {
-                activeStep < (totalSteps() - 1) ? <Price increment={incrementStep} decrement={decrementStep} isCompleted={isCompleted} isInitial={isInitial} parsePayload={parsePayload} /> : <></>
+                activeStep < (totalSteps() - 1) ? <Price increment={incrementStep} decrement={decrementStep} isCompleted={isCompleted} isInitial={isInitial} parsePayload={parsePayload} payMethod = {payMethod} /> : <></>
             }
         </Grid>
     </Grid>);
