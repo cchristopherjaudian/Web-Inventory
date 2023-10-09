@@ -4,6 +4,10 @@ import {
     ListItemButton,
     ListItemAvatar,
     ListItemText,
+    OutlinedInput,
+    FormControl,
+    FormHelperText,
+    InputAdornment,
     Typography
 } from '@mui/material';
 import { ShoppingOutlined } from '@ant-design/icons';
@@ -13,19 +17,20 @@ import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
 
 const CartItemList = (props) => {
-    console.log(props.item[0]);
     const dispatch = useDispatch();
     const [cartID, setCartID] = useState('');
     const { data, fetchData } = useAxios('carts/' + cartID, 'DELETE');
-    const price = (Number(props.item[0].inventory.products.price) * Number(props.item[0].quantity));
+    let quantity = Number(props.item.quantity);
+    let subprice = Number(props.item.inventory.products.price);
+    const price = quantity * subprice;
     useEffect(() => {
         if (cartID) {
             fetchData();
         }
     }, [cartID]);
     useEffect(() => {
-        if(data){
-            if(data['status'] === 200){
+        if (data) {
+            if (data['status'] === 200) {
                 dispatch(removeItem(cartID));
                 setCartID('');
             }
@@ -34,20 +39,21 @@ const CartItemList = (props) => {
     return (<>
         <ListItemButton>
             <ListItemAvatar>
-                <img src='https://placehold.co/100' alt={props.item[0].inventory.products.name} />
+                <img src='https://placehold.co/100' alt={props.item.inventory.products.name} />
             </ListItemAvatar>
             <ListItemText
                 sx={{ ml: 2 }}
                 primary={
                     <Typography variant="h6">
                         <Typography component="span" variant="subtitle1">
-                            {props.item[0].inventory.products.name}
+                            {props.item.inventory.products.name}
                         </Typography>{' '}
                     </Typography>
                 }
-                secondary={'x' + props.item[0].quantity}
+                secondary={'x' + props.item.quantity}
 
             />
+            
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
                 secondary={'₱' + price}
