@@ -1,10 +1,11 @@
-import { useState } from 'react';
+
 import MainCard from 'components/MainCard';
 import IncomeAreaChart from './IncomeAreaChart';
 import RadialChart from './RadialChart';
 import ReportTable from './ReportTable';
 import InventoryHeader from 'components/inventoryheader/index';
-
+import useMetricsAxios from 'hooks/useMetricsAxios';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -16,15 +17,20 @@ import {
 
 const Dashboard = () => {
   const [slot, setSlot] = useState('week');
-  
+  const [metrics, setMetrics] = useState({});
+  const { metricsData, fetchMetricsData } = useMetricsAxios('metrics/panels', 'GET',null,false);
   const data = [
     { label: 'Product Info 1', value: 400, id: 0 },
     { label: 'Product Info 2', value: 300, id: 1 }
   ];
-
+  useEffect(() => {
+    if (metricsData) {
+      setMetrics(metricsData['data']);
+    }
+  }, [metricsData]);
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-      <InventoryHeader/>
+      <InventoryHeader metrics={metrics}/>
       <Grid item xs={12} sx={{ mb: -5.0 }}>
         <Typography variant="h5">Sales Report</Typography>
       </Grid>

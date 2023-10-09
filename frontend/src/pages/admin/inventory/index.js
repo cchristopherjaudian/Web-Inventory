@@ -6,15 +6,27 @@ import MainCard from 'components/MainCard';
 import ProductQuantity from './ProductQuantity';
 import InventoryTable from './InventoryTable';
 import InventoryHeader from 'components/inventoryheader/index';
-const Inventory = () => (
-  <Grid container direction="row" spacing={1}>
-    <InventoryHeader/>
+import useMetricsAxios from 'hooks/useMetricsAxios';
+import { useState, useEffect } from 'react';
+
+const Inventory = () => {
+  const [metrics, setMetrics] = useState({});
+  const { metricsData, fetchMetricsData } = useMetricsAxios('metrics/panels', 'GET', null, false);
+
+  useEffect(() => {
+    if (metricsData) {
+      setMetrics(metricsData['data']);
+    }
+  }, [metricsData]);
+
+  return <Grid container direction="row" spacing={1}>
+    <InventoryHeader metrics={metrics}/>
 
     <Grid item xs={12} md={6} >
       <Grid direction="column" container>
         <Grid item xs={12} >
           <MainCard title="Product Stocks" sx={{ width: '100%' }}>
-            <InventoryTable/>
+            <InventoryTable />
           </MainCard>
         </Grid>
       </Grid>
@@ -48,6 +60,6 @@ const Inventory = () => (
       </Grid>
     </Grid>
   </Grid>
-);
+};
 
 export default Inventory;
