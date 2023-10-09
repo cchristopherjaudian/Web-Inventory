@@ -15,60 +15,35 @@ const CustomerInfo = () => {
         <MainCard>
             <Box>
                 <Grid container spacing={1.5}>
-                    <Grid item xs={12} md={9}>
+                    <Grid item xs={12} md={4}>
                         <TextField
-                            name="customerName"
+                            name="lastName"
                             fullWidth
-                            id="customerName"
-                            label="Customer Name"
+                            id="lastName"
+                            label="Last Name"
                             autoFocus
                         />
                     </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={4}>
                         <TextField
-                            name="IDNo"
+                            name="firstName"
                             fullWidth
-                            id="IDNo"
-                            label="ID No"
+                            id="firstName"
+                            label="First Name"
 
                         />
                     </Grid>
-                    <Grid item xs={12} md={9}>
+                    <Grid item xs={12} md={4}>
                         <TextField
-                            name="address"
+                            name="middleName"
                             fullWidth
-                            id="address"
-                            label="Address"
+                            id="middleName"
+                            label="Middle Name"
 
                         />
                     </Grid>
-                    <Grid item xs={12} md={3}>
-                        <TextField
-                            name="contact"
-                            fullWidth
-                            id="contact"
-                            label="Contact Person"
 
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={2}>
-                        <TextField
-                            name="periodfrom"
-                            fullWidth
-                            id="periodfrom"
-                            label="Period Cover"
-
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={2}>
-                        <TextField
-                            name="periodto"
-                            fullWidth
-                            id="periodto"
-                            label="To"
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={5}>
+                    <Grid item xs={12} sx={{mt:2}}>
                         <Stack direction="row" justifyContent="end" spacing={1}>
                             <FormControlLabel control={<Checkbox />} label="View all records" />
                             <Button variant="contained" size="small">Load Records</Button>
@@ -76,22 +51,7 @@ const CustomerInfo = () => {
                             <Button variant="contained" size="small">Unbilled</Button>
                         </Stack>
                     </Grid>
-                    <Grid item xs={12} md={2}>
-                        <TextField
-                            name="productName"
-                            fullWidth
-                            id="productName"
-                            label="Product Name"
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={1}>
-                        <TextField
-                            name=""
-                            fullWidth
-                            id=""
-                            label=""
-                        />
-                    </Grid>
+
                 </Grid>
             </Box>
         </MainCard>
