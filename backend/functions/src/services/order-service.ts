@@ -210,10 +210,13 @@ class OrderService {
         if (transactions.length === 0) return [];
 
         const mappedTransactions = transactions.map((txn) => {
-            const totalPrice = txn.orderItems.reduce(
-                (acc, item) =>
-                    (acc = <any>item.products?.price * item.quantity),
-                0
+            const sumProducts = txn.orderItems.reduce(
+                (acc, item) => {
+                    acc.amount = <any>item.products?.price * item.quantity;
+                    acc.quantity = acc.quantity + item.quantity;
+                    return acc;
+                },
+                { amount: 0, quantity: 0 }
             );
 
             const dispatchedDate = txn.orderStatus.find(
@@ -226,8 +229,8 @@ class OrderService {
                 orderId: txn.id,
                 dateOrdered: txn.createdAt,
                 paymentMethod: txn.paymentMethod,
-                itemsCount: txn.orderItems.length,
-                totalPrice,
+                itemsCount: sumProducts.quantity,
+                totalPrice: sumProducts.amount,
                 dispatchedDate: dispatchedDate?.createdAt || null,
                 dateDelivered: dateDelivered?.createdAt || null,
             };
