@@ -16,7 +16,7 @@ const Inventory = () => {
   useEffect(() => {
     if (data) {
       console.log(data);
-      setProductList(data['data']);
+      setProductList(data['data']['products']);
     }
   }, [data]);
   
