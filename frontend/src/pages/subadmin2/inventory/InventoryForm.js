@@ -10,11 +10,12 @@ import {
 } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/system';
-import { useState, useEffect, forwardRef } from 'react';
+import { useState, useEffect, forwardRef, useRef } from 'react';
 import { useFormik } from 'formik';
 import useAxios from 'hooks/useAxios';
 
 const InventoryForm = (props) => {
+    const inputRef = useRef();
     const [message, setMessage] = useState('');
     const [orders, setOrders] = useState([]);
     const [payload, setPayload] = useState({});
@@ -52,6 +53,7 @@ const InventoryForm = (props) => {
                 setMessage('Product inventory registered successfully');
                 props.fetchData();
                 formik.resetForm();
+                inputRef.current.focus();
             }
 
         }
@@ -74,12 +76,14 @@ const InventoryForm = (props) => {
                         <TextField
                             required
                             fullWidth
+                            type="date"
                             id="expiration"
                             label="Expiration"
                             name="expiration"
                             onChange={formik.handleChange}
                             value={formik.values.expiration}
                             autoFocus
+                            inputRef={inputRef}
                         />
                     </Grid>
                     <Grid item xs={12}>
