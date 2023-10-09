@@ -25,6 +25,12 @@ const InventoryTable = (props) => {
             flex: 1
         },
         {
+            field: 'category',
+            headerName: 'Category',
+            editable: false,
+            flex: 1
+        },
+        {
             field: 'price',
             headerName: 'Price',
             editable: false,

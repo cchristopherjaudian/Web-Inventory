@@ -34,6 +34,24 @@ const ProductInfo = (props) => {
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'end' }}>
                         <Button variant="outlined" color="primary" component={Link} to="/">Back to Products</Button>
                     </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            name="name"
+                            fullWidth
+                            id="name"
+                            disabled
+                            value={productInfo ? productInfo.name : ''}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            name="category"
+                            fullWidth
+                            id="category"
+                            disabled
+                            value={productInfo ? productInfo.category : ''}
+                        />
+                    </Grid>
                     <Grid item xs={12}>
                         <TextField
                             name="code"
@@ -41,15 +59,6 @@ const ProductInfo = (props) => {
                             id="code"
                             disabled
                             value={productInfo ? productInfo.code : ''}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            name="name"
-                            fullWidth
-                            id="name"
-                            disabled
-                            value={productInfo ? productInfo.name : ''}
                         />
                     </Grid>
                     <Grid item xs={12} md={4}>

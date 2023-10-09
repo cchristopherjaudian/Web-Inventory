@@ -43,6 +43,7 @@ const ProductForm = (props) => {
             name: '',
             code: '',
             size: '',
+            category: '',
             price: 0,
             content: 0
         },
@@ -73,25 +74,6 @@ const ProductForm = (props) => {
         <MainCard title="New Product" sx={{ width: '100%' }}>
             <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: -3, height: '100%' }}>
                 <Grid container spacing={2}>
-                    {/* <Grid item xs={12}>
-                        {selectedImage && <img src={selectedImage} alt="preview" />}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', '& > :not(style)': { m: 1 } }}>
-                            <Typography variant="body2" color="text.secondary">
-                                Select Image
-                            </Typography>
-                            <label htmlFor="contained-button-file">
-                                <Input accept="image/*" id="contained-button-file" type="file" onChange={handleImageChange} />
-                                <Button variant="contained" color="secondary" component="span">
-                                    Upload
-                                </Button>
-                            </label>
-                        </Box>
-
-                    </Grid> */}
-
-
                     <Grid item xs={12}>
                         <TextField
                             required
@@ -119,12 +101,12 @@ const ProductForm = (props) => {
                         <TextField
                             required
                             fullWidth
-                            id="size"
-                            label="Size"
-                            name="size"
-                            autoComplete="size"
+                            id="category"
+                            label="Category"
+                            name="category"
+                            type="text"
                             onChange={formik.handleChange}
-                            value={formik.values.size}
+                            value={formik.values.category}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -137,6 +119,18 @@ const ProductForm = (props) => {
                             type="number"
                             onChange={formik.handleChange}
                             value={formik.values.price}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            id="size"
+                            label="Size"
+                            name="size"
+                            autoComplete="size"
+                            onChange={formik.handleChange}
+                            value={formik.values.size}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -157,7 +151,7 @@ const ProductForm = (props) => {
                         type="submit"
                         fullWidth
                         variant="contained"
-                        endIcon={loading ? <LoadingOutlined/> : <ArrowRightOutlined />}
+                        endIcon={loading ? <LoadingOutlined /> : <ArrowRightOutlined />}
                         disabled={loading}
                     >
                         Submit
