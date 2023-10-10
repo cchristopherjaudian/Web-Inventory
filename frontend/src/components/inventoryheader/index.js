@@ -17,7 +17,7 @@ const InventoryHeader = (props) => {
         <MainCard title="Overall Inventory">
             <Grid container rowSpacing={1} columnSpacing={2.75} sx={{ mt: -3 }}>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <Analytics color="primary" title="Categories" count={metrics['category']} extra="Last 7 days" />
+                    <Analytics color="primary" title="Categories" count={metrics['categories']} extra="Last 7 days" />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
                     <Analytics color="warning.main" title="Total Products" count={metrics['products']} extra="Last 7 days" />

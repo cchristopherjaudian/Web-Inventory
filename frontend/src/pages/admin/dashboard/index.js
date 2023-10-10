@@ -5,6 +5,8 @@ import RadialChart from './RadialChart';
 import ReportTable from './ReportTable';
 import InventoryHeader from 'components/inventoryheader/index';
 import useMetricsAxios from 'hooks/useMetricsAxios';
+import useHighAxios from 'hooks/useHighAxios';
+import useLowAxios from 'hooks/useLowAxios';
 import { useState, useEffect } from 'react';
 import {
   Box,
@@ -17,8 +19,12 @@ import {
 
 const Dashboard = () => {
   const [slot, setSlot] = useState('week');
+  const [lowStocks, setLowStocks] = useState([]);
+  const [highStocks, setHighStocks] = useState([]);
   const [metrics, setMetrics] = useState({});
-  const { metricsData, fetchMetricsData } = useMetricsAxios('metrics/panels', 'GET',null,false);
+  const { metricsData, fetchMetricsData } = useMetricsAxios('metrics/panels', 'GET', null, false);
+  const { lowData, fetchLowData } = useLowAxios('inventories?stock=LOW', 'GET', null, false);
+  const { highData, fetchHighData } = useHighAxios('inventories?stock=HIGH', 'GET', null, false);
   const data = [
     { label: 'Product Info 1', value: 400, id: 0 },
     { label: 'Product Info 2', value: 300, id: 1 }
@@ -28,9 +34,38 @@ const Dashboard = () => {
       setMetrics(metricsData['data']);
     }
   }, [metricsData]);
+  useEffect(() => {
+    if (lowData) {
+      let newData = [];
+      lowData['data'].map((d, i) => {
+        newData.push({
+          id: i,
+          code: d['products']['code'],
+          name: d['products']['name'],
+          quantity: d['stock']
+        });
+      });
+
+      setLowStocks(newData);
+    }
+  }, [lowData]);
+  useEffect(() => {
+    if (highData) {
+      let newData = [];
+      highData['data'].map((d, i) => {
+        newData.push({
+          id: i,
+          code: d['products']['code'],
+          name: d['products']['name'],
+          quantity: d['stock']
+        });
+      });
+      setHighStocks(newData);
+    }
+  }, [highData]);
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-      <InventoryHeader metrics={metrics}/>
+      <InventoryHeader metrics={metrics} />
       <Grid item xs={12} sx={{ mb: -5.0 }}>
         <Typography variant="h5">Sales Report</Typography>
       </Grid>
@@ -102,13 +137,13 @@ const Dashboard = () => {
       <Grid item xs={12} md={6}>
         <MainCard sx={{ mt: 2 }} content={false}>
           <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>Low Quantity Stock</Typography>
-          <ReportTable />
+          <ReportTable products={lowStocks} />
         </MainCard>
       </Grid>
       <Grid item xs={12} md={6}>
         <MainCard sx={{ mt: 2 }} content={false}>
           <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>High Quantity Stock</Typography>
-          <ReportTable />
+          <ReportTable products={highStocks} />
         </MainCard>
       </Grid>
     </Grid>
