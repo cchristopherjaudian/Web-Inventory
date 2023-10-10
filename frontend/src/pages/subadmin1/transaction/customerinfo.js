@@ -8,14 +8,15 @@ import {
     Checkbox,
     Box
 } from '@mui/material';
+import { SearchOutlined } from '@ant-design/icons';
 
 
-const CustomerInfo = () => {
+const CustomerInfo = (props) => {
     return (
-        <MainCard>
+        <MainCard title="Transaction Records">
             <Box>
                 <Grid container spacing={1.5}>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={3}>
                         <TextField
                             name="lastName"
                             fullWidth
@@ -24,7 +25,7 @@ const CustomerInfo = () => {
                             autoFocus
                         />
                     </Grid>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={3}>
                         <TextField
                             name="firstName"
                             fullWidth
@@ -33,7 +34,7 @@ const CustomerInfo = () => {
 
                         />
                     </Grid>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={3}>
                         <TextField
                             name="middleName"
                             fullWidth
@@ -43,12 +44,10 @@ const CustomerInfo = () => {
                         />
                     </Grid>
 
-                    <Grid item xs={12} sx={{mt:2}}>
+                    <Grid item xs={12} md={3}>
                         <Stack direction="row" justifyContent="end" spacing={1}>
-                            <FormControlLabel control={<Checkbox />} label="View all records" />
-                            <Button variant="contained" size="small">Load Records</Button>
-                            <Button variant="contained" size="small">Delete Invoice</Button>
-                            <Button variant="contained" size="small">Unbilled</Button>
+                            <Button variant="contained" onClick={()=>props.fetchData()}
+                            startIcon={<SearchOutlined/>}>Load Records</Button>
                         </Stack>
                     </Grid>
 

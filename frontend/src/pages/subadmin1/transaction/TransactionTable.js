@@ -4,81 +4,71 @@ import {
     Grid
 } from '@mui/material';
 import MainCard from 'components/MainCard';
-const TransactionTable = () => {
+import { useState, useEffect } from 'react';
+const TransactionTable = (props) => {
+    const [gridRows, setGridRows] = useState([]);
+
+    useEffect(() => {
+        if (props.transactions) {
+            setGridRows(props.transactions);
+        }
+    }, [props.transactions])
     const columns = [
         {
-            field: 'invoice',
-            headerName: 'Invoice Number',
+            field: 'orderId',
+            headerName: 'Order No.',
             editable: false,
             flex: 1
         },
         {
-            field: 'date',
-            headerName: 'Date',
+            field: 'paymentMethod',
+            headerName: 'Payment Method',
             editable: false,
-            flex:1
+            flex: 1
         },
         {
-            field: 'payment',
-            headerName: 'Payment',
+            field: 'itemsCount',
+            headerName: 'No. of items',
             editable: false,
-            flex:1
+            flex: 1
+        }, {
+            field: 'totalPrice',
+            headerName: 'Total',
+            editable: false,
+            flex: 1
         },
         {
-            field: 'contract',
-            headerName: 'Contract',
+            field: 'dateOrdered',
+            headerName: 'Date Ordered',
             editable: false,
-            flex:1
-        },{
-            field: 'receipt',
-            headerName: 'Receipt',
-            editable: false,
-            flex:1
+            flex: 1,
+            valueGetter: (params) => `${params.row.dateOrdered.substring(0,10)}`
         },
         {
-            field: 'description',
-            headerName: 'Description',
+            field: 'dispatchedDate',
+            headerName: 'Date Dispatched',
             editable: false,
-            flex:1
+            flex: 1,
+            valueGetter: (params) => `${params.row.dispatchedDate.substring(0,10)}`
         },
         {
-            field: 'price',
-            headerName: 'Price',
+            field: 'dateDelivered',
+            headerName: 'Date Delivered',
             editable: false,
-            flex:1
-        },
-        {
-            field: 'qty',
-            headerName: 'Qty',
-            editable: false,
-            flex:1
-        },
-        {
-            field: 'amount',
-            headerName: 'Amount',
-            editable: false,
-            flex:1
-        },
-        {
-            field: 'deposit',
-            headerName: 'Deposit',
-            editable: false,
-            flex:1
-        },
+            flex: 1,
+            valueGetter: (params) => `${params.row.dateDelivered.substring(0,10)}`
+        }
     ];
 
-    const rows = [
-      
-    ];
 
     return (
-        <MainCard sx = {{mt:1}}>
+        <MainCard sx={{ mt: 1 }}>
             <Box sx={{ width: '100%' }}>
                 <Grid container>
                     <Grid item xs={12}>
                         <DataGrid
                             autoHeight
-                            rows={rows}
+                            rows={gridRows ? gridRows : []}
                             columns={columns}
                             initialState={{
                                 pagination: {
