@@ -9,7 +9,8 @@ import {
     Typography
 } from '@mui/material';
 
-const ProductQuantity = () => {
+const ProductQuantity = (props) => {
+    console.log(props)
     return (
         <Grid item xs={6}>
             <CardActionArea component="a" href="#">
@@ -18,17 +19,23 @@ const ProductQuantity = () => {
                         component="img"
                         sx={{ width: 100, height: 100, display: { xs: 'none', sm: 'block' } }}
                         image="https://placehold.co/100"
-                        alt="Eyyy"
+                        alt={props.stock?.code}
                     />
                     <CardContent sx={{ flex: 1, ml: -1, mt: -1 }}>
                         <Stack direction="column" justifyContent="center">
                             <Typography component="caption" variant="caption" textAlign="left" sx={{ lineHeight: 2 }}>
-                                Flask Type(Regular)
+                                {props.stock?.name}
                             </Typography>
                             <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1, fontSize: '0.6rem' }}>
-                                Remaining Qty: 10 Packet
+                                Remaining Qty: {props.stock?.quantity}
                             </Typography>
-                            <Chip label="Low" color="error" variant="outlined" size="small" sx={{ mt: 1 }} />
+                            {
+                               props.stock?.indicator === 'LOW' ?
+                               <Chip label="Low" color="error" variant="outlined" size="small" sx={{ mt: 1 }} />
+                               :
+                               <Chip label="High" color="success" variant="outlined" size="small" sx={{ mt: 1 }} />
+                            }
+                            
                         </Stack>
                     </CardContent>
 

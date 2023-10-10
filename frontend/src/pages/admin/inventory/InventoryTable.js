@@ -3,44 +3,40 @@ import {
     Box,
     Grid
 } from '@mui/material';
-const InventoryTable = () => {
+import { useState, useEffect } from 'react';
+const InventoryTable = (props) => {
+    const [gridRows, setGridRows] = useState([]);
+    useEffect(() => {
+        if (props.inventory) {
+            setGridRows(props.inventory);
+        }
+    }, [props.inventory]);
     const columns = [
+        {
+            field: 'code',
+            headerName: 'Product Code',
+            editable: false,
+            flex: 1
+        },
         {
             field: 'name',
             headerName: 'Product Name',
             editable: false,
-            
-        },
-        {
-            field: 'soldqty',
-            headerName: 'Sold Qty',
-            editable: false,
-            
-        },
-        {
-            field: 'remaining',
-            headerName: 'Remaining Qty',
-            editable: false,
-            
+            flex: 1
         },
         {
             field: 'price',
             headerName: 'Price',
             sortable: false,
-            
+            flex: 1
         },
     ];
-
-    const rows = [
-      
-    ];
-
     return (
-        <Box sx={{width: '100%' }}>
+        <Box sx={{ width: '100%' }}>
             <Grid container>
                 <Grid item xs={12}>
                     <DataGrid
-                        rows={rows}
+                        rows={gridRows ? gridRows : []}
                         columns={columns}
                         initialState={{
                             pagination: {
