@@ -3,10 +3,8 @@ import {RightOutlined} from '@ant-design/icons';
 import {
     Box,
     Button,
-    Grid,
-    Snackbar
+    Grid
 } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
 import useAxios from 'hooks/useAxios';
 import useInventoryAxios from 'hooks/useInventoryAxios';
 import { useState, useEffect, forwardRef } from 'react';
