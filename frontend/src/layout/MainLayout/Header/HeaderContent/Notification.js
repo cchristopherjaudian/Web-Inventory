@@ -105,11 +105,11 @@ const Notification = () => {
             <Paper
               sx={{
                 boxShadow: theme.customShadows.z1,
-                width: 400,
-                minWidth: 285,
-                maxWidth: 400,
+                width: 500,
+                minWidth: 385,
+                maxWidth: 500,
                 [theme.breakpoints.down('md')]: {
-                  maxWidth: 400
+                  maxWidth: 500
                 }
               }}
             >
