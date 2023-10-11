@@ -47,6 +47,14 @@ const InventoryTable = (props) => {
                         }}
                         pageSizeOptions={[10]}
                         disableRowSelectionOnClick
+                        sx={{
+                            '.MuiDataGrid-cell:focus': {
+                              outline: 'none'
+                            },
+                            '& .MuiDataGrid-row:hover': {
+                              cursor: 'pointer'
+                            }
+                          }}
                     />
                 </Grid>
             </Grid>

@@ -60,6 +60,14 @@ const OrderTable = (props) => {
                         pageSizeOptions={[10]}
                         disableRowSelectionOnClick
                         onCellClick={gridClick}
+                        sx={{
+                            '.MuiDataGrid-cell:focus': {
+                              outline: 'none'
+                            },
+                            '& .MuiDataGrid-row:hover': {
+                              cursor: 'pointer'
+                            }
+                          }}
                     />
                 </Grid>
             </Grid>
