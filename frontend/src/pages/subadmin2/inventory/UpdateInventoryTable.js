@@ -31,7 +31,7 @@ const UpdateInventoryTable = (props) => {
             headerName: 'Expiration Date',
             editable: true,
             flex: 1,
-            valueGetter: (params) => `${params.row.expiration.substring(0,10)}`
+            valueGetter: (params) => `${params.row.expiration.substring(0, 10)}`
         },
         {
             field: 'stock',
@@ -66,6 +66,14 @@ const UpdateInventoryTable = (props) => {
                     pageSizeOptions={[10]}
                     disableRowSelectionOnClick
                     onCellClick={gridClick}
+                    sx={{
+                        '.MuiDataGrid-cell:focus': {
+                            outline: 'none'
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                            cursor: 'pointer'
+                        }
+                    }}
                 />
             </MainCard>
         </Grid>

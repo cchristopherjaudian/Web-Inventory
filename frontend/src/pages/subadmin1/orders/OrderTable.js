@@ -1,5 +1,5 @@
 import { DataGrid } from '@mui/x-data-grid';
-import {RightOutlined} from '@ant-design/icons';
+import {RightOutlined,LoadingOutlined} from '@ant-design/icons';
 import {
     Box,
     Button,
@@ -131,6 +131,14 @@ const OrderTable = (props) => {
                         pageSizeOptions={[10]}
                         disableRowSelectionOnClick
                         onCellClick={gridClick}
+                        sx={{
+                            '.MuiDataGrid-cell:focus': {
+                              outline: 'none'
+                            },
+                            '& .MuiDataGrid-row:hover': {
+                              cursor: 'pointer'
+                            }
+                          }}
                     />
                 </Grid>
             </Grid>
