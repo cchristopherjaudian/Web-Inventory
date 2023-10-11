@@ -49,14 +49,14 @@ const TransactionTable = (props) => {
             headerName: 'Date Dispatched',
             editable: false,
             flex: 1,
-            valueGetter: (params) => `${params.row.dispatchedDate.substring(0, 10)}`
+            valueGetter: (params) => params.row.dispatchedDate ? `${params.row.dispatchedDate.substring(0, 10)}` : ''
         },
         {
             field: 'dateDelivered',
             headerName: 'Date Delivered',
             editable: false,
             flex: 1,
-            valueGetter: (params) => `${params.row.dateDelivered.substring(0, 10)}`
+            valueGetter: (params) =>  params.row.dateDelivered ? `${params.row.dateDelivered.substring(0, 10)}` : ''
         }
     ];
 
@@ -82,6 +82,14 @@ const TransactionTable = (props) => {
                             }}
                             pageSizeOptions={[10]}
                             disableRowSelectionOnClick
+                            sx={{
+                                '.MuiDataGrid-cell:focus': {
+                                  outline: 'none'
+                                },
+                                '& .MuiDataGrid-row:hover': {
+                                  cursor: 'pointer'
+                                }
+                              }}
                         />
                     </Grid>
                 </Grid>
