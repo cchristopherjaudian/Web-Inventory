@@ -21,7 +21,7 @@ const CartItemList = (props) => {
     const [cartID, setCartID] = useState('');
     const { data, fetchData } = useAxios('carts/' + cartID, 'DELETE');
     let quantity = Number(props.item.quantity);
-    let subprice = Number(props.item.inventory.products.price);
+    let subprice = Number(props.item.products.price);
     const price = quantity * subprice;
     useEffect(() => {
         if (cartID) {
@@ -39,14 +39,14 @@ const CartItemList = (props) => {
     return (<>
         <ListItemButton>
             <ListItemAvatar>
-                <img src='https://placehold.co/100' alt={props.item.inventory.products.name} />
+                <img src='https://placehold.co/100' alt={props.item.products.name} />
             </ListItemAvatar>
             <ListItemText
                 sx={{ ml: 2 }}
                 primary={
                     <Typography variant="h6">
                         <Typography component="span" variant="subtitle1">
-                            {props.item.inventory.products.name}
+                            {props.item.products.name}
                         </Typography>{' '}
                     </Typography>
                 }
