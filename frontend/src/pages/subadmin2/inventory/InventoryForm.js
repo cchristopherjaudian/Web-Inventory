@@ -5,8 +5,7 @@ import {
     Button,
     Grid,
     TextField,
-    Snackbar,
-    Typography
+    Snackbar
 } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/system';
@@ -17,6 +16,7 @@ import useAxios from 'hooks/useAxios';
 const InventoryForm = (props) => {
     const inputRef = useRef();
     const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
     const [orders, setOrders] = useState([]);
     const [payload, setPayload] = useState({});
     const [productId, setProductId] = useState('');
@@ -50,21 +50,34 @@ const InventoryForm = (props) => {
         if (data) {
             if (data['status'] === 200) {
                 handleClick();
+                setSeverity('success');
                 setMessage('Product inventory registered successfully');
                 props.fetchData();
                 formik.resetForm();
                 inputRef.current.focus();
+                setOpen(true);
             }
 
         }
     }, [data]);
+    useEffect(() => {
+        if (error) {
+            setSeverity('error');
+            if (error['response']['status'] === 400) {
+                setMessage('Failed to update inventory. Please validate all fields.')
+            } else {
+                setMessage('Failed to communicate with server. Please try again.')
+            }
+            setOpen(true);
+        }
+    }, [error]);
     useEffect(() => {
         setPayload({ ...formik.values, productId: props.productId });
     }, [formik.values]);
 
     return (<Grid item xs={12}>
         <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
                 {message}
             </Alert>
         </Snackbar>

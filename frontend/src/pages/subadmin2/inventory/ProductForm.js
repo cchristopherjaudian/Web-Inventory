@@ -5,7 +5,6 @@ import {
     Button,
     Grid,
     TextField,
-    Typography,
     Snackbar
 } from '@mui/material';
 import { styled } from '@mui/system';
@@ -16,8 +15,11 @@ import useAxios from 'hooks/useAxios';
 const ProductForm = (props) => {
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
     const [selectedImage, setSelectedImage] = useState();
     const [payload, setPayload] = useState({});
+
+
     const Input = styled('input')({
         display: 'none',
     });
@@ -38,6 +40,7 @@ const ProductForm = (props) => {
         }
     };
     const { data, loading, error, fetchData } = useAxios('products', 'POST', payload, true);
+    
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -56,18 +59,30 @@ const ProductForm = (props) => {
         if (data) {
             if (data['status'] === 200) {
                 props.updateTable(data['data']);
+                setSeverity('success');
                 setMessage('Product registered successfully')
-                setOpen(true);
                 formik.resetForm();
-            }
+                setOpen(true);
+            } 
         }
     }, [data]);
+    useEffect(()=>{
+        if(error){
+            setSeverity('error');
+            if(error['response']['status'] === 400){
+                setMessage('Failed to register product. Please validate all fields.')
+            } else{
+                setMessage('Failed to communicate with server. Please try again.')
+            }
+            setOpen(true);
+        }
+    },[error]);
     useEffect(() => {
         setPayload(formik.values);
     }, [formik.values]);
     return (<Grid item xs={12} lg={4}>
         <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
                 {message}
             </Alert>
         </Snackbar>
