@@ -1,21 +1,29 @@
 import MainCard from "components/MainCard";
-import { Box, Button, Card, CardContent, CardMedia, CardActionArea, CardActions, FormControl, InputLabel, Grid, Select, MenuItem, Typography, TextField } from "@mui/material";
+import { Snackbar, Box, Button, Card, CardContent, CardMedia, CardActionArea, CardActions, FormControl, InputLabel, Grid, Select, MenuItem, Typography, TextField } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import useAxios from "hooks/useAxios";
 import useAxiosBackup from "hooks/useAxiosBackup";
-import { useState, useEffect } from "react";
+import { useState, useEffect,forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "store/reducers/cart";
+import MuiAlert from '@mui/material/Alert';
 const Shop = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const reduxcart = useSelector((state) => state.cart.cart);
-
+    const [message, setMessage] = useState('');
+    const [open, setOpen] = useState(false);
+    const Alert = forwardRef(function Alert(props, ref) {
+        return <MuiAlert sx={{ color: 'white' }} elevation={6} ref={ref} variant="filled" {...props} />;
+    });
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState({});
     const [cartItem, setCartItem] = useState({});
     const { data, fetchData } = useAxios('products', 'GET', null, false);
     const { profile, fetchProfile } = useAxiosBackup('carts', 'POST', selectedProduct);
+    const handleClose = () => {
+        setOpen(false);
+    };
     useEffect(() => {
         if (data) {
             setProducts(data['data']['products']);
@@ -40,8 +48,8 @@ const Shop = () => {
             if (profile['status'] === 200) {
 
                 let newCart = [...reduxcart];
-                const dispatchProduct = { ...profile['data'], inventory: { products: cartItem } };
-                let objectIndex = reduxcart.findIndex(item => item.inventory.products.code === cartItem.code);
+                const dispatchProduct = { ...profile['data'], products: cartItem };
+                let objectIndex = reduxcart.findIndex(item => item.products.code === cartItem.code);
                 if (objectIndex === -1) {
                     newCart.push(dispatchProduct);
                 } else {
@@ -51,11 +59,18 @@ const Shop = () => {
                 dispatch(setCart(newCart));
                 setSelectedProduct({});
                 setCartItem({});
+                setMessage("Product has been added to cart")
+                setOpen(true);
             }
         }
     }, [profile]);
     return (
         <Grid container spacing={2} sx={{ mt: 2 }}>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
             <Grid item xs={12}>
                 <Box component="img" src="https://placehold.co/700x200" alt="Featured" sx={{ width: '100%', height: '200' }} />
             </Grid>
@@ -69,10 +84,10 @@ const Shop = () => {
                             <MenuItem value={20}>Option 2</MenuItem>
                             <MenuItem value={30}>Option 3</MenuItem>
                         </Select> */}
-                        <Button variant="contained" color="primary" sx={{ml:2}}>
+                        <Button variant="contained" color="primary" sx={{ ml: 2 }}>
                             Search
                         </Button>
-                        <Button variant="contained" color="secondary" type="reset" sx={{ml:1}}>
+                        <Button variant="contained" color="secondary" type="reset" sx={{ ml: 1 }}>
                             Clear
                         </Button>
                     </form>
