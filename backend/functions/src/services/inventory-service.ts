@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import moment from 'moment-timezone';
 import { TInventory, TInventoryList } from '../lib/types/inventory-types';
 import {
@@ -7,11 +6,12 @@ import {
 } from '../lib/custom-errors/class-errors';
 import { TQueryArgs } from '../../index';
 import { getStockIndicator } from '../helpers/stock-indicator';
+import { TPrismaClient } from '../lib/prisma';
 
 class InventoryService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 

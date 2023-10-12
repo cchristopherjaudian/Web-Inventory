@@ -2,15 +2,16 @@ import { NextFunction, Response } from 'express';
 import { AuthenticationError } from '../lib/custom-errors/class-errors';
 import { IAuthRequest } from '../..';
 import { TAccounts } from '../lib/types/accounts-types';
-import { AccountStatuses, AccountTypes, PrismaClient } from '@prisma/client';
+import { AccountStatuses, AccountTypes } from '@prisma/client';
 import { TProfile } from '../lib/types/profile-types';
 import TokenService from '../services/token-service';
+import { TPrismaClient } from '../lib/prisma';
 
 class AuthMiddleware {
     private _jwt = new TokenService();
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 

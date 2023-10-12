@@ -7,11 +7,12 @@ import {
 import moment from 'moment-timezone';
 import { TOrderSales } from '../lib/types/order-types';
 import { TGroupedQuantity } from '../lib/types/metrics-types';
+import { TPrismaClient } from '../lib/prisma';
 
 class MetricsService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 

@@ -1,12 +1,13 @@
 import { AccountStatuses, PrismaClient } from '@prisma/client';
 import { TAccounts } from '../lib/types/accounts-types';
 import TokenService from './token-service';
+import { TPrismaClient } from '../lib/prisma';
 
 class AccountService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
     private _token = new TokenService();
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 

@@ -4,11 +4,12 @@ import {
     ResourceConflictError,
 } from '../lib/custom-errors/class-errors';
 import { TProfile } from '../lib/types/profile-types';
+import { TPrismaClient } from '../lib/prisma';
 
 class ProfileService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 

@@ -13,8 +13,27 @@ class Prisma {
     }
 
     public get db() {
-        return this._app;
+        return this._app.$extends({
+            result: {
+                profile: {
+                    fullName: {
+                        needs: {
+                            firstname: true,
+                            lastname: true,
+                            middlename: true,
+                        },
+                        compute(profile) {
+                            return `${profile.firstname} ${
+                                profile.middlename ?? ''
+                            } ${profile.lastname}`;
+                        },
+                    },
+                },
+            },
+        });
     }
 }
+
+export type TPrismaClient = typeof Prisma.Instance.db;
 
 export default Prisma;

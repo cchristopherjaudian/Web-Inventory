@@ -12,7 +12,7 @@ import Prisma from '../lib/prisma';
 const db = Prisma.Instance.db;
 const router = Router();
 const joi = new JoiMiddleware();
-const authMiddleware = new AuthMiddleware(db);
+const authMiddleware = new AuthMiddleware(db as any);
 
 router
     .post(

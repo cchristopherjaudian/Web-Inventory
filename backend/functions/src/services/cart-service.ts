@@ -1,15 +1,15 @@
-import { PrismaClient } from '@prisma/client';
 import { TQueryArgs } from '../../index';
 import {
     BadRequestError,
     NotFoundError,
 } from '../lib/custom-errors/class-errors';
 import { TCart, TCartList } from '../lib/types/cart-types';
+import { TPrismaClient } from '../lib/prisma';
 
 class CartService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 

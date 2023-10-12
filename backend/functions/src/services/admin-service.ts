@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { TPrismaClient } from '../lib/prisma';
 
 class AdminService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 

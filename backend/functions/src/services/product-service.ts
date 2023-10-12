@@ -5,30 +5,18 @@ import {
 } from '../lib/custom-errors/class-errors';
 import { PaymentStatuses, PrismaClient } from '@prisma/client';
 import moment from 'moment-timezone';
+import { TPrismaClient } from '../lib/prisma';
 
 class ProductsService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 
     public async productList(params: TProductsQuery) {
         const endsAt = moment().endOf('day').toDate();
         const startsAt = moment().startOf('day').subtract(7, 'days').toDate();
-        const query = { where: {} } as { where: { [key: string]: any } };
-
-        if (params?.search && params?.searchField) {
-            query.where = {
-                [params.searchField]: {
-                    contains: params.search,
-                },
-            };
-        }
-
-        if (params?.where && params?.whereField) {
-            query.where[params.whereField] = params.where;
-        }
 
         const uniqueIds = await this._db.orderItems.groupBy({
             by: ['productId'],
@@ -62,7 +50,9 @@ class ProductsService {
                     },
                 },
             }),
-            this._db.products.findMany(query),
+            this._db.products.findMany({
+                where: { name: { search: params.search as string } },
+            }),
         ]);
 
         return {

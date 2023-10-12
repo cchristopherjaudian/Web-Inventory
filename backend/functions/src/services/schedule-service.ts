@@ -1,12 +1,13 @@
-import { PrismaClient, RouteStatuses } from '@prisma/client';
+import { RouteStatuses } from '@prisma/client';
 import { TRoutes } from '../lib/types/schedule-types';
 import { NotFoundError } from '../lib/custom-errors/class-errors';
 import { TQueryArgs } from '../../index';
+import { TPrismaClient } from '../lib/prisma';
 
 class ScheduleService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 

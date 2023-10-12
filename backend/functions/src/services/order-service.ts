@@ -11,9 +11,10 @@ import {
 } from '../lib/types/order-types';
 import moment from 'moment-timezone';
 import { getStockIndicator } from '../helpers/stock-indicator';
+import { TPrismaClient } from '../lib/prisma';
 
 class OrderService {
-    private _db: PrismaClient;
+    private _db: TPrismaClient;
     private _defaultOrderParams = {
         include: {
             orderItems: {
@@ -38,7 +39,7 @@ class OrderService {
         },
     };
 
-    constructor(db: PrismaClient) {
+    constructor(db: TPrismaClient) {
         this._db = db;
     }
 
