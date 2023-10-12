@@ -46,8 +46,8 @@ const Product = () => {
             if (profile['status'] === 200) {
 
                 let newCart = [...cartItems];
-                const dispatchProduct = { ...profile['data'], inventory: { products: cartItem } };
-                let objectIndex = cartItems.findIndex(item => item.inventory.products.code === cartItem.code);
+                const dispatchProduct = { ...profile['data'], products: cartItem };
+                let objectIndex = cartItems.findIndex(item => item.products.code === cartItem.code);
                 if (objectIndex === -1) {
                     newCart.push(dispatchProduct);
                 } else {
