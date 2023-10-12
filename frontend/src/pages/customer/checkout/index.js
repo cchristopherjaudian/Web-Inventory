@@ -16,6 +16,7 @@ import Confirmation from './confirmation';
 import useAxios from 'hooks/useAxios';
 const steps = ['Cart', 'Payment', 'Invoice'];
 import MuiAlert from '@mui/material/Alert';
+import Swal from 'sweetalert2';
 const Checkout = () => {
 
     const [message, setMessage] = useState('');
@@ -40,6 +41,7 @@ const Checkout = () => {
     const incrementStep = () => {
         let prev = activeStep;
         if ((prev + 1) === totalSteps()) return;
+
         setActiveStep(prev + 1);
     }
     const decrementStep = () => {
@@ -56,15 +58,26 @@ const Checkout = () => {
         return activeStep === 0;
     }
     const parsePayload = () => {
-        let newCart = [];
-        finalCart.forEach((item, index) => {
-            newCart.push({
-                cartId: item.id,
-                productId: item.products.id
-            });
-        });
-        let finalPayload = { paymentMethod: payMethod, items: newCart };
-        setPayload(finalPayload);
+        Swal.fire({
+            icon: 'question',
+            title: 'Checkout Orders',
+            text: 'Are you sure you want to proceed with your order?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let newCart = [];
+                finalCart.forEach((item, index) => {
+                    newCart.push({
+                        cartId: item.id,
+                        productId: item.products.id
+                    });
+                });
+                let finalPayload = { paymentMethod: payMethod, items: newCart };
+                setPayload(finalPayload);
+            }
+        })
+
     }
     useEffect(() => {
         if (Object.keys(payload).length !== 0) {

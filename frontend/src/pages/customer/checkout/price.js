@@ -1,4 +1,5 @@
 import MainCard from "components/MainCard";
+import Swal from "sweetalert2";
 import { Button, Divider, Grid, Typography } from '@mui/material';
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -26,6 +27,14 @@ const Price = (props) => {
         }
     }, [props.payMethod])
     const processCheckout = () => {
+        if (payMethod === '') {
+            Swal.fire(
+                'Checkout Order',
+                'Please select a payment method',
+                'warning'
+            )
+            return;
+        }
         props.parsePayload();
     };
     useEffect(() => {

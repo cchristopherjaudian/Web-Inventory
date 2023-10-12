@@ -1,5 +1,5 @@
 import { DataGrid } from '@mui/x-data-grid';
-import {RightOutlined,LoadingOutlined} from '@ant-design/icons';
+import { RightOutlined, LoadingOutlined } from '@ant-design/icons';
 import {
     Box,
     Button,
@@ -8,40 +8,41 @@ import {
 import useAxios from 'hooks/useAxios';
 import useInventoryAxios from 'hooks/useInventoryAxios';
 import { useState, useEffect, forwardRef } from 'react';
-
+import Swal from 'sweetalert2';
 
 
 const OrderTable = (props) => {
- 
-    const [gridRows,setGridRows] = useState([]);
-    const [orderId, setOrderId] = useState('');
-    const [paidOrder,setPaidOrder] = useState('');
-    const { data, fetchData } = useAxios('orders/' + orderId, 'GET', null, false);
-    const {inventoryData,inventoryFetchData} = useInventoryAxios('orders/' + paidOrder,'PATCH',{status:'PAID',refNo: '1'},false);
 
-    useEffect(()=>{
-        if(props.orders){
+    const [gridRows, setGridRows] = useState([]);
+    const [orderId, setOrderId] = useState('');
+    const [paidOrder, setPaidOrder] = useState('');
+    const { data, fetchData } = useAxios('orders/' + orderId, 'GET', null, false);
+    const { inventoryData, inventoryFetchData } = useInventoryAxios('orders/' + paidOrder, 'PATCH', { status: 'PAID', refNo: '1' }, false);
+
+    useEffect(() => {
+        if (props.orders) {
             setGridRows(props.orders);
         }
-    },[props.orders]);
-    useEffect(()=>{
-        if(paidOrder){
+    }, [props.orders]);
+    useEffect(() => {
+        if (paidOrder) {
+
             inventoryFetchData();
             setPaidOrder('');
+
         }
-    },[paidOrder]);
-    useEffect(()=>{
-        if(inventoryData){
-            console.log('Inventory Data');
+    }, [paidOrder]);
+    useEffect(() => {
+        if (inventoryData) {
             console.log(inventoryData);
-            if(inventoryData['status'] === 200){
+            if (inventoryData['status'] === 200) {
                 props.setMessage('Order set as paid successfully');
                 props.handleClick();
                 props.refreshTable();
                 props.setSelectedOrder({});
             }
         }
-    },[inventoryData]);
+    }, [inventoryData]);
     const columns = [
         {
             field: 'id',
@@ -67,7 +68,7 @@ const OrderTable = (props) => {
             headerName: 'Date Ordered',
             editable: false,
             flex: 1,
-            valueGetter: (params) => `${params.row.createdAt.substring(0,10)}`
+            valueGetter: (params) => `${params.row.createdAt.substring(0, 10)}`
         },
         {
             field: 'paymentMethod',
@@ -83,10 +84,21 @@ const OrderTable = (props) => {
             renderCell: (params) => {
                 const onClick = (event) => {
                     event.stopPropagation();
-                    setPaidOrder(params.row.id);
+                    Swal.fire({
+                        icon: 'question',
+                        title: 'Order Status',
+                        text: 'Are you sure you want to set this order as paid?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setPaidOrder(params.row.id);
+                        }
+                    });
+
                 };
 
-                return <Button endIcon={<RightOutlined/>} variant="contained" color="success" onClick={onClick}>Set as Paid</Button>;
+                return <Button endIcon={<RightOutlined />} variant="contained" color="success" onClick={onClick}>Set as Paid</Button>;
             }
         }
     ];
@@ -109,11 +121,11 @@ const OrderTable = (props) => {
             props.setOrderSteps(steps);
         }
     }, [data]);
-    
+
 
     return (
         <Box sx={{ width: '100%', mt: 1 }}>
-            
+
             <Grid container>
 
                 <Grid item xs={12}>
@@ -133,12 +145,12 @@ const OrderTable = (props) => {
                         onCellClick={gridClick}
                         sx={{
                             '.MuiDataGrid-cell:focus': {
-                              outline: 'none'
+                                outline: 'none'
                             },
                             '& .MuiDataGrid-row:hover': {
-                              cursor: 'pointer'
+                                cursor: 'pointer'
                             }
-                          }}
+                        }}
                     />
                 </Grid>
             </Grid>

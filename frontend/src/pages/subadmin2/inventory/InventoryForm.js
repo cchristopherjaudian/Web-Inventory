@@ -7,6 +7,7 @@ import {
     TextField,
     Snackbar
 } from '@mui/material';
+import Swal from 'sweetalert2';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/system';
 import { useState, useEffect, forwardRef, useRef } from 'react';
@@ -62,13 +63,17 @@ const InventoryForm = (props) => {
     }, [data]);
     useEffect(() => {
         if (error) {
-            setSeverity('error');
+            let msg = '';
             if (error['response']['status'] === 400) {
-                setMessage('Failed to update inventory. Please validate all fields.')
+                msg = ('Failed to update inventory. Please validate all fields.')
             } else {
-                setMessage('Failed to communicate with server. Please try again.')
+                msg = ('Failed to communicate with server. Please try again.')
             }
-            setOpen(true);
+            Swal.fire(
+                'Product',
+                msg,
+                'warning'
+            );
         }
     }, [error]);
     useEffect(() => {

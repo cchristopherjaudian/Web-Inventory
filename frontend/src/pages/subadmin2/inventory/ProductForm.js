@@ -11,6 +11,7 @@ import { styled } from '@mui/system';
 import { useState, useEffect, forwardRef } from 'react';
 import { useFormik } from 'formik';
 import MuiAlert from '@mui/material/Alert';
+import Swal from 'sweetalert2';
 import useAxios from 'hooks/useAxios';
 const ProductForm = (props) => {
     const [open, setOpen] = useState(false);
@@ -40,7 +41,7 @@ const ProductForm = (props) => {
         }
     };
     const { data, loading, error, fetchData } = useAxios('products', 'POST', payload, true);
-    
+
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -63,20 +64,25 @@ const ProductForm = (props) => {
                 setMessage('Product registered successfully')
                 formik.resetForm();
                 setOpen(true);
-            } 
+            }
         }
     }, [data]);
-    useEffect(()=>{
-        if(error){
-            setSeverity('error');
-            if(error['response']['status'] === 400){
-                setMessage('Failed to register product. Please validate all fields.')
-            } else{
-                setMessage('Failed to communicate with server. Please try again.')
+    useEffect(() => {
+        if (error) {
+            let msg = '';
+            if (error['response']['status'] === 400) {
+                msg = ('Failed to register product. Please validate all fields.')
+            } else {
+                msg = ('Failed to communicate with server. Please try again.')
             }
-            setOpen(true);
+
+            Swal.fire(
+                'Product',
+                msg,
+                'warning'
+            );
         }
-    },[error]);
+    }, [error]);
     useEffect(() => {
         setPayload(formik.values);
     }, [formik.values]);
