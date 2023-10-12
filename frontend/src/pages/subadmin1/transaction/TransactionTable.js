@@ -42,21 +42,23 @@ const TransactionTable = (props) => {
             headerName: 'Date Ordered',
             editable: false,
             flex: 1,
-            valueGetter: (params) => `${params.row.dateOrdered.substring(0, 10)}`
+            valueGetter: (params) =>  params.row.dateOrdered ? `${params.row.dateOrdered.substring(0, 10)}` : ''
         },
         {
             field: 'dispatchedDate',
             headerName: 'Date Dispatched',
             editable: false,
             flex: 1,
-            valueGetter: (params) => `${params.row.dispatchedDate.substring(0, 10)}`
+            valueGetter: (params) =>  params.row.dispatchedDate ? `${params.row.dispatchedDate.substring(0, 10)}` : ''
+       
         },
         {
             field: 'dateDelivered',
             headerName: 'Date Delivered',
             editable: false,
             flex: 1,
-            valueGetter: (params) => `${params.row.dateDelivered.substring(0, 10)}`
+            valueGetter: (params) =>  params.row.dateDelivered ? `${params.row.dateDelivered.substring(0, 10)}` : ''
+          
         }
     ];
 
