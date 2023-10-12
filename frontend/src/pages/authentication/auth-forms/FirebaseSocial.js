@@ -16,14 +16,20 @@ const FirebaseSocial = () => {
   const { token } = useSelector((state) => state.menu);
   const [newToken, setNewToken] = useState('');
   const [newData, setNewData] = useState(false);
+  const [emailLogin, setEmailLogin] = useState('');
   const [user, setUser] = useState('');
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const { data, loading, error, fetchData } = useAxios('accounts', 'POST', { email: 'customer@gmail.com' });
+  const { data, loading, error, fetchData } = useAxios('accounts', 'POST', { email: emailLogin });
   const { profile, profileLoading, profileError, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
 
+  useEffect(()=>{
+    if(emailLogin){
+      fetchData();
+      setEmailLogin('');
+    }
+  },[emailLogin]);
   useEffect(() => {
     if (data) {
-      console.log(data);
       const createToken = data['data']['token'];
       dispatch(setToken({ token: createToken }));
       setNewData(data['data']['newData']);
@@ -70,24 +76,6 @@ const FirebaseSocial = () => {
 
   }, [profile]);
 
-  const mockLogin = (type) => {
-    dispatch(setAuth({ authenticated: true }));
-    const adminTypes = {
-      'ADMIN': 0,
-      'SUB_1': 1,
-      'SUB_2': 2
-    };
-
-    if (type in adminTypes) {
-      dispatch(setAdminType({ adminType: adminTypes[type] }));
-      dispatch(setAdmin({ isadmin: true }));
-      navigate('/', { replace: true });
-    } else if (type === 'CUSTOMER') {
-      dispatch(setAdmin({ isadmin: false }));
-      navigate('/home', { replace: true });
-    }
-
-  }
   return (
     <Stack
       direction="row"
@@ -100,11 +88,37 @@ const FirebaseSocial = () => {
         color="secondary"
         fullWidth={!matchDownSM}
         startIcon={<img src={Google} alt="Google" />}
-        onClick={() => fetchData()}
+        onClick={() => setEmailLogin('customer@gmail.com')}
       >
-        {!matchDownSM && 'Sign in with Google'}
+        {!matchDownSM && 'Sign in as Customer'}
       </Button>
-      
+      <Button
+        variant="outlined"
+        color="secondary"
+        fullWidth={!matchDownSM}
+        startIcon={<img src={Google} alt="Google" />}
+        onClick={() => setEmailLogin('sub1@gmail.com')}
+      >
+        {!matchDownSM && 'Sign in as SUB1'}
+      </Button>
+      <Button
+        variant="outlined"
+        color="secondary"
+        fullWidth={!matchDownSM}
+        startIcon={<img src={Google} alt="Google" />}
+        onClick={() => setEmailLogin('sub2@gmail.com')}
+      >
+        {!matchDownSM && 'Sign in as SUB2'}
+      </Button>
+      <Button
+        variant="outlined"
+        color="secondary"
+        fullWidth={!matchDownSM}
+        startIcon={<img src={Google} alt="Google" />}
+        onClick={() => setEmailLogin('admin@gmail.com')}
+      >
+        {!matchDownSM && 'Sign in as ADMIN'}
+      </Button>
     </Stack>
   );
 };

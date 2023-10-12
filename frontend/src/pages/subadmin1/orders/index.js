@@ -6,7 +6,7 @@ import useAxios from 'hooks/useAxios';
 import MuiAlert from '@mui/material/Alert';
 import { useEffect, useState, forwardRef } from 'react';
 const Orders = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMesssage] = useState('');
   const [orders, setOrders] = useState([]);
   const { data, fetchData } = useAxios('orders/admins', 'GET', null, false);
   const [selectedOrder, setSelectedOrder] = useState({});
@@ -44,10 +44,7 @@ const Orders = () => {
       console.log(orderSteps);
     }
   }, [orderSteps]);
-  useEffect(() => {
-    console.log('Selected Order');
-    console.log(selectedOrder);
-  }, [selectedOrder])
+
   return <MainCard title="Orders">
     <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>

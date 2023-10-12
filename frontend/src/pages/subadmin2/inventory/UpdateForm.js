@@ -10,19 +10,18 @@ const UpdateForm = () => {
     const productId = params.id;
     const [urlId, setUrlId] = useState('');
     const { data, fetchData } = useAxios('products/' + urlId + '/inventories', 'GET');
-
+  
     const [info, setInfo] = useState({});
     
     useEffect(() => {
         if (data) {
-            console.log(data); setInfo(data['data']);
+            setInfo(data['data']);
         }
     }, [data]);
     useEffect(() => {
         setUrlId(productId);
     }, [productId])
     useEffect(() => {
-        console.log(urlId);
         if (urlId !== '') fetchData();
     }, [urlId]);
     return (<Grid container spacing={1}>
