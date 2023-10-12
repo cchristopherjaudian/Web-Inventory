@@ -13,7 +13,7 @@ const b2c = [
     },
     {
       id: 'Shop',
-      title: 'Shop',
+      title: 'Purchase',
       url: '/shop',
       
     },
