@@ -11,6 +11,8 @@ const Schedule = Loadable(lazy(() => import('pages/customer/schedule/')));
 const Product = Loadable(lazy(()=> import('pages/customer/product/')));
 const Checkout = Loadable(lazy(()=>import('pages/customer/checkout/')));
 const Invoice = Loadable(lazy(()=>import('pages/customer/invoice/')));
+const Profile = Loadable(lazy(()=> import('pages/common/profile/')));
+const History = Loadable(lazy(()=> import('pages/customer/history/')));
 const CustomerRoutes = {
     path: '/',
     element: <MainLayout />,
@@ -42,6 +44,14 @@ const CustomerRoutes = {
       {
         path: 'invoice/:id',
         element:<Invoice/>
+      },
+      {
+        path: 'profile',
+        element: <Profile />
+      },
+      {
+        path: 'history',
+        element: <History />
       }
     ]
   };
