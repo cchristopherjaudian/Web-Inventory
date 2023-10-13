@@ -6,18 +6,16 @@ import {
 import useAxios from 'hooks/useAxios';
 import { useState, useEffect } from 'react';
 const AccountTable = () => {
-    const { data, loading, error, fetchData } = useAxios('accounts/admins', 'GET');
+    const { data } = useAxios('accounts/admins', 'GET', null, false);
     const [rowData, setRowData] = useState([]);
 
     useEffect(() => {
-        if (data !== null) {
+        if (data) {
             setRowData(data['data']);
         }
 
     }, [data]);
-    useEffect(() => {
-        fetchData();
-    }, []);
+
     const columns = [
         {
             field: 'account',
@@ -69,12 +67,12 @@ const AccountTable = () => {
                         disableRowSelectionOnClick
                         sx={{
                             '.MuiDataGrid-cell:focus': {
-                              outline: 'none'
+                                outline: 'none'
                             },
                             '& .MuiDataGrid-row:hover': {
-                              cursor: 'pointer'
+                                cursor: 'pointer'
                             }
-                          }}
+                        }}
                     />
                 </Grid>
             </Grid>
