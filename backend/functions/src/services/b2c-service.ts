@@ -16,12 +16,22 @@ class B2cService {
                     OR: [
                         {
                             firstname: {
-                                search: params?.search,
+                                contains: params?.search ?? '',
+                                mode: 'insensitive',
                             },
                         },
                         {
                             lastname: {
-                                search: params?.search,
+                                contains: params?.search ?? '',
+                                mode: 'insensitive',
+                            },
+                        },
+                        {
+                            account: {
+                                email: {
+                                    contains: params?.search ?? '',
+                                    mode: 'insensitive',
+                                },
                             },
                         },
                     ],

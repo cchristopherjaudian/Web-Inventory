@@ -10,7 +10,7 @@ const admin = new AdminService(db);
 const response = new ResponseObject();
 
 const getAdminList = catchAsync(async (req, res) => {
-    const admins = await admin.getAdminList();
+    const admins = await admin.getAdminList(req.query);
     await db.$disconnect();
     response.createResponse(
         res,

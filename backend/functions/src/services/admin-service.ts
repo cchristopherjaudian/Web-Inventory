@@ -1,4 +1,6 @@
+import { AccountTypes } from '@prisma/client';
 import { TPrismaClient } from '../lib/prisma';
+import { TAccountsListQuery } from '../lib/types/accounts-types';
 
 class AdminService {
     private _db: TPrismaClient;
@@ -7,11 +9,37 @@ class AdminService {
         this._db = db;
     }
 
-    public async getAdminList() {
+    public async getAdminList(params: TAccountsListQuery) {
         try {
-            return this._db.account.findMany({
+            return this._db.profile.findMany({
                 where: {
-                    OR: [{ accountType: 'SUB_1' }, { accountType: 'SUB_2' }],
+                    OR: [
+                        {
+                            firstname: {
+                                contains: params?.search ?? '',
+                                mode: 'insensitive',
+                            },
+                        },
+                        {
+                            lastname: {
+                                contains: params?.search ?? '',
+                                mode: 'insensitive',
+                            },
+                        },
+                        {
+                            account: {
+                                email: {
+                                    contains: params?.search ?? '',
+                                    mode: 'insensitive',
+                                },
+                            },
+                        },
+                    ],
+                    account: {
+                        accountType: {
+                            in: [AccountTypes.SUB_1, AccountTypes.SUB_2],
+                        },
+                    },
                 },
             });
         } catch (error) {

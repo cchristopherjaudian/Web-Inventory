@@ -27,6 +27,7 @@ router.post(
 // ADMIN ROUTES
 router.get(
     '/admins',
+    joi.requestSchemaValidate(getB2cListSchema),
     authMiddleware.adminValidate(['ADMIN']) as any,
     AdminController.getAdminList
 );
