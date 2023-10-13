@@ -10,4 +10,12 @@ const getMetricsSales = {
     }),
 };
 
-export { getMetricsSales };
+const getRptSchema = {
+    query: Joi.object({
+        status: Joi.string().trim().optional(),
+        startsAt: Joi.date().format('YYYY-MM-DD').optional(),
+        endsAt: Joi.date().format('YYYY-MM-DD').optional(),
+    }),
+};
+
+export { getMetricsSales, getRptSchema };

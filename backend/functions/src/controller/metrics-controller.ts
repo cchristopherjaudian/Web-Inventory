@@ -32,7 +32,19 @@ const getPanels = catchAsync(async (req, res) => {
     );
 });
 
+const getReportsList = catchAsync(async (req, res) => {
+    const newStatus = await order.getReportsList(req.query);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.LIST_RETRIEVED,
+        newStatus
+    );
+});
+
 export default {
     getSales,
     getPanels,
+    getReportsList,
 };

@@ -3,7 +3,10 @@ import JoiMiddleware from '../middleware/joi-middleware';
 import AuthMiddleware from '../middleware/auth-middleware';
 import { MetricsController } from '../controller';
 import Prisma from '../lib/prisma';
-import { getMetricsSales } from '../lib/joi-schemas/metrics-schema';
+import {
+    getMetricsSales,
+    getRptSchema,
+} from '../lib/joi-schemas/metrics-schema';
 
 const db = Prisma.Instance.db;
 const router = Router();
@@ -21,6 +24,12 @@ router
         '/panels',
         authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
         MetricsController.getPanels
+    )
+    .get(
+        '/reports',
+        joi.requestSchemaValidate(getRptSchema),
+        authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
+        MetricsController.getReportsList
     );
 
 export default router;

@@ -1,4 +1,4 @@
-import { OrderStatuses, PaymentStatuses, PrismaClient } from '@prisma/client';
+import { OrderStatuses, PaymentStatuses } from '@prisma/client';
 import {
     BadRequestError,
     NotFoundError,

@@ -1,12 +1,11 @@
-import {
-    OrderItems,
-    PaymentStatuses,
-    PrismaClient,
-    StockIndicator,
-} from '@prisma/client';
+import { OrderStatuses, PaymentStatuses, StockIndicator } from '@prisma/client';
 import moment from 'moment-timezone';
 import { TOrderSales } from '../lib/types/order-types';
-import { TGroupedQuantity } from '../lib/types/metrics-types';
+import {
+    TGroupedQuantity,
+    TMappedRptPayload,
+    TRptListQuery,
+} from '../lib/types/metrics-types';
 import { TPrismaClient } from '../lib/prisma';
 
 class MetricsService {
@@ -97,6 +96,145 @@ class MetricsService {
         );
 
         return { categories, products, lowStocks, topSelling };
+    }
+
+    private _mapReportList({ list, sales }: TMappedRptPayload) {
+        return {
+            list: list.length === 0 ? [] : list,
+            sales: sales === 0 ? 0 : sales,
+        };
+    }
+
+    public async getReportsList(query: TRptListQuery) {
+        const startsAt = query.startsAt
+            ? moment(query.startsAt).startOf('day').tz('Asia/Manila').toDate()
+            : moment()
+                  .startOf('year')
+                  .startOf('day')
+                  .tz('Asia/Manila')
+                  .toDate();
+        const endsAt = query.endsAt
+            ? moment(query.endsAt).endOf('day').tz('Asia/Manila').toDate()
+            : moment().endOf('year').endOf('day').tz('Asia/Manila').toDate();
+
+        const orderStatusList = await this._db.orderStatus.groupBy({
+            by: ['orderId'],
+            where: {
+                status: query.status ?? OrderStatuses.PREPARING,
+                orders: {
+                    AND: [
+                        { createdAt: { lte: endsAt } },
+                        { createdAt: { gte: startsAt } },
+                    ],
+                },
+            },
+        });
+
+        const statusesIds = orderStatusList.map((k) => k.orderId);
+        const [list, orderItems] = await Promise.all([
+            this._db.orders.findMany({
+                select: {
+                    id: true,
+                    paymentMethod: true,
+                    status: true,
+                    refNo: true,
+                    _count: {
+                        select: {
+                            orderItems: true,
+                        },
+                    },
+                    profile: true,
+                    orderItems: {
+                        select: {
+                            quantity: true,
+                            products: true,
+                        },
+                    },
+                    orderStatus: true,
+                    createdAt: true,
+                },
+                where: {
+                    id: {
+                        in: statusesIds as string[],
+                    },
+                },
+            }),
+            this._db.orderItems.groupBy({
+                by: ['productId'],
+                _sum: {
+                    quantity: true,
+                },
+                where: {
+                    orderId: {
+                        in: statusesIds,
+                    },
+                },
+                orderBy: [
+                    {
+                        _sum: {
+                            quantity: 'desc',
+                        },
+                    },
+                ],
+                having: {
+                    quantity: {
+                        _sum: {
+                            gte: parseInt(
+                                process.env.TOP_SELLING_THRESHOLD as string
+                            ),
+                        },
+                    },
+                },
+                take: 2,
+            }),
+        ]);
+
+        const mappedOrders = list.map((order) => {
+            const sumProducts = order.orderItems.reduce(
+                (acc, item) => {
+                    acc.amount = <any>item.products?.price * item.quantity;
+                    acc.quantity = acc.quantity + item.quantity;
+                    return acc;
+                },
+                { amount: 0, quantity: 0 }
+            );
+
+            const dispatchedDate = order.orderStatus.find(
+                (order) => order.status === OrderStatuses.DISPATCHED
+            );
+            const dateDelivered = order.orderStatus.find(
+                (order) => order.status === OrderStatuses.DELIVERED
+            );
+            return {
+                orderId: order.id,
+                dateOrdered: order.createdAt,
+                paymentMethod: order.paymentMethod,
+                itemsCount: sumProducts.quantity,
+                totalPrice: sumProducts.amount,
+                dispatchedDate: dispatchedDate?.createdAt || null,
+                dateDelivered: dateDelivered?.createdAt || null,
+                customerName: order.profile?.fullName,
+            };
+        });
+
+        const reducedSales = await orderItems.reduce(
+            async (acc, { productId, _sum }) => {
+                const product = await this._db.products.findUnique({
+                    where: { id: productId as string },
+                });
+                const accumulator = await acc;
+                accumulator.sales = <any>product?.price * <any>_sum.quantity;
+                accumulator.code.push(product?.code as string);
+
+                return accumulator;
+            },
+            Promise.resolve({ sales: 0, code: [] as string[] })
+        );
+
+        return {
+            list: mappedOrders,
+            sales: reducedSales,
+        };
     }
 
     private get _getPaidCriteria() {
