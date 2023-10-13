@@ -33,6 +33,7 @@ const ProductForm = (props) => {
 
     const handleClose = () => {
         setOpen(false);
+        setMessage('');
     };
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {

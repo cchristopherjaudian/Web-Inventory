@@ -6,7 +6,7 @@ import useAxios from 'hooks/useAxios';
 import MuiAlert from '@mui/material/Alert';
 import { useEffect, useState, forwardRef } from 'react';
 const Orders = () => {
-  const [message, setMesssage] = useState('');
+  const [message, setMessage] = useState('');
   const [orders, setOrders] = useState([]);
   const { data, fetchData } = useAxios('orders/admins', 'GET', null, false);
   const [selectedOrder, setSelectedOrder] = useState({});
