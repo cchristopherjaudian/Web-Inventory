@@ -50,13 +50,6 @@ function a11yProps(index) {
 
 const Profile = () => {
   const theme = useTheme();
-
-  const handleLogout = () => {
-    dispatch(setToken(''));
-    dispatch(setAuth(false));
-    navigate('/',{replace:true});
-  };
-
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const handleToggle = () => {
@@ -82,8 +75,7 @@ const Profile = () => {
   const middleName = useSelector((state) => state.profile.middleName.middleName);
   const lastName = useSelector((state) => state.profile.lastName.lastName);
   const adminType = useSelector((state) => state.token.admintype.adminType);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  
   return (
     
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
@@ -152,11 +144,6 @@ const Profile = () => {
                             </Stack>
                           </Stack>
                         </Grid>
-                        <Grid item>
-                          <IconButton size="large" color="secondary" onClick={handleLogout}>
-                            <LogoutOutlined />
-                          </IconButton>
-                        </Grid>
                       </Grid>
                     </CardContent>
                     {open && (
@@ -175,26 +162,13 @@ const Profile = () => {
                               label="Profile"
                               {...a11yProps(0)}
                             />
-                            <Tab
-                              sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                textTransform: 'capitalize'
-                              }}
-                              icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                              label="Setting"
-                              {...a11yProps(1)}
-                            />
+                           
                           </Tabs>
                         </Box>
                         <TabPanel value={value} index={0} dir={theme.direction}>
-                          <ProfileTab handleLogout={handleLogout} />
+                          <ProfileTab />
                         </TabPanel>
-                        <TabPanel value={value} index={1} dir={theme.direction}>
-                          <SettingTab />
-                        </TabPanel>
+                       
                       </>
                     )}
                   </MainCard>
