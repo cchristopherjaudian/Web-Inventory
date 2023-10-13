@@ -11,8 +11,20 @@ const CustomerTable = (props) => {
     const { data, loading, error, fetchData } = useAxios('accounts/' + props.type, 'GET');
     const [rowData, setRowData] = useState([]);
     useEffect(() => {
-        if (data !== null) {
-            setRowData(data['data']);
+        if (data) {
+            let newData = [];
+            data['data'].map((d,i) =>{
+                newData.push({
+                    id: d['id'],
+                    firstname: d['firstname'],
+                    middlename: d['middlename'],
+                    lastname: d['lastname'],
+                    address: d['address'],
+                    createdAt: d['createdAt'],
+                    status: d['account']['status']
+                })
+            });
+            setRowData(newData);
         }
     }, [data]);
     useEffect(() => {
@@ -43,6 +55,19 @@ const CustomerTable = (props) => {
             sortable: false,
             flex: 1
         },
+        {
+            field: 'createdAt',
+            headerName: 'Date Created',
+            sortable: false,
+            flex: 1,
+            valueGetter: (params) => params.row.createdAt ? `${params.row.createdAt.substring(0, 10)}` : ''
+        },
+        {
+            field: 'status',
+            headerName: 'Status',
+            sortable: false,
+            flex: 1
+        }
     ];
     const rows = rowData;
 
