@@ -16,6 +16,8 @@ import {
   Typography
 } from '@mui/material';
 
+import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
+import { SearchOutlined } from '@ant-design/icons';
 
 const Dashboard = () => {
   const [slot, setSlot] = useState('week');
@@ -25,10 +27,16 @@ const Dashboard = () => {
   const { metricsData, fetchMetricsData } = useMetricsAxios('metrics/panels', 'GET', null, false);
   const { lowData, fetchLowData } = useLowAxios('inventories?stock=LOW', 'GET', null, false);
   const { highData, fetchHighData } = useHighAxios('inventories?stock=HIGH', 'GET', null, false);
+  const [dateFilter, setDateFilter] = useState({ txfrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
   const data = [
     { label: 'Product Info 1', value: 400, id: 0 },
     { label: 'Product Info 2', value: 300, id: 1 }
   ];
+  const handleFilter = (e) => {
+    let newFilter = { ...dateFilter, [e.target.name]: e.target.value };
+    setDateFilter(newFilter);
+    console.log(dateFilter);
+  }
   useEffect(() => {
     if (metricsData) {
       setMetrics(metricsData['data']);
@@ -63,6 +71,7 @@ const Dashboard = () => {
       setHighStocks(newData);
     }
   }, [highData]);
+  
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       <InventoryHeader metrics={metrics} />
@@ -88,39 +97,37 @@ const Dashboard = () => {
             <Grid container alignItems="center" justifyContent="space-between">
 
               <Grid item>
-                <Stack direction="row" alignItems="center" spacing={0}>
-                  <Button
-                    size="small"
-                    onClick={() => setSlot('day')}
-                    color={slot === 'day' ? 'primary' : 'secondary'}
-                    variant={slot === 'day' ? 'outlined' : 'text'}
-                  >
-                    Daily
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => setSlot('week')}
-                    color={slot === 'week' ? 'primary' : 'secondary'}
-                    variant={slot === 'week' ? 'outlined' : 'text'}
-                  >
-                    Weekly
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => setSlot('month')}
-                    color={slot === 'month' ? 'primary' : 'secondary'}
-                    variant={slot === 'month' ? 'outlined' : 'text'}
-                  >
-                    Monthly
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => setSlot('annual')}
-                    color={slot === 'annual' ? 'primary' : 'secondary'}
-                    variant={slot === 'annual' ? 'outlined' : 'text'}
-                  >
-                    Annually
-                  </Button>
+                <Typography variant="h4">Sales</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={{ mt: 2 }}>
+                  <FormControl sx={{ width: '90%', mt: 1 }}>
+                    <OutlinedInput
+                      size="small"
+                      type="date"
+                      id="txfrom"
+                      name="txfrom"
+                      inputProps={{
+                        'aria-label': 'weight'
+                      }}
+                      onClick={handleFilter}
+                      value={dateFilter['txfrom']}
+                    />
+                  </FormControl>
+                  <Typography variant="h5"> to </Typography>
+                  <FormControl sx={{ width: '90%', mt: 1 }}>
+                    <OutlinedInput
+                      size="small"
+                      type="date"
+                      id="txTo"
+                      name="txTo"
+                      inputProps={{
+                        'aria-label': 'weight'
+                      }}
+                      onClick={handleFilter}
+                      value={dateFilter['txTo']}
+                    />
+                  </FormControl>
+                  <Button sx={{ width: '60%', pl: 2, pr: 2 }}  endIcon={<SearchOutlined />} size="medium" variant="contained">Filter</Button>
+
                 </Stack>
               </Grid>
               <Grid item>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MainCard from 'components/MainCard';
 import IncomeAreaChart from './IncomeAreaChart';
 import RadialChart from './RadialChart';
@@ -12,7 +12,8 @@ import {
   Tabs,
   Typography
 } from '@mui/material';
-
+import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
+import { SearchOutlined } from '@ant-design/icons';
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -21,13 +22,18 @@ function a11yProps(index) {
 }
 
 const SalesReport = () => {
+  const [dateFilter, setDateFilter] = useState({ txfrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
   const [slot, setSlot] = useState('week');
   const data = [
     { label: 'Product Info 1', value: 400, id: 0 },
     { label: 'Product Info 2', value: 300, id: 1 }
   ];
   const [value, setValue] = useState(0);
-
+  const handleFilter = (e) => {
+    let newFilter = { ...dateFilter, [e.target.name]: e.target.value };
+    setDateFilter(newFilter);
+    console.log(dateFilter);
+  }
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -52,39 +58,36 @@ const SalesReport = () => {
             <Grid container alignItems="center" justifyContent="space-between">
 
               <Grid item>
-                <Stack direction="row" alignItems="center" spacing={0}>
-                  <Button
-                    size="small"
-                    onClick={() => setSlot('day')}
-                    color={slot === 'day' ? 'primary' : 'secondary'}
-                    variant={slot === 'day' ? 'outlined' : 'text'}
-                  >
-                    Daily
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => setSlot('week')}
-                    color={slot === 'week' ? 'primary' : 'secondary'}
-                    variant={slot === 'week' ? 'outlined' : 'text'}
-                  >
-                    Weekly
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => setSlot('month')}
-                    color={slot === 'month' ? 'primary' : 'secondary'}
-                    variant={slot === 'month' ? 'outlined' : 'text'}
-                  >
-                    Monthly
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => setSlot('annual')}
-                    color={slot === 'annual' ? 'primary' : 'secondary'}
-                    variant={slot === 'annual' ? 'outlined' : 'text'}
-                  >
-                    Annually
-                  </Button>
+                <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={{ mt: 2 }}>
+                  <FormControl sx={{ width: '90%', mt: 1 }}>
+                    <OutlinedInput
+                      size="small"
+                      type="date"
+                      id="txfrom"
+                      name="txfrom"
+                      inputProps={{
+                        'aria-label': 'weight'
+                      }}
+                      onClick={handleFilter}
+                      value={dateFilter['txfrom']}
+                    />
+                  </FormControl>
+                  <Typography variant="h5"> to </Typography>
+                  <FormControl sx={{ width: '90%', mt: 1 }}>
+                    <OutlinedInput
+                      size="small"
+                      type="date"
+                      id="txTo"
+                      name="txTo"
+                      inputProps={{
+                        'aria-label': 'weight'
+                      }}
+                      onClick={handleFilter}
+                      value={dateFilter['txTo']}
+                    />
+                  </FormControl>
+                  <Button sx={{ width: '60%', pl: 2, pr: 2 }} endIcon={<SearchOutlined />} size="medium" variant="contained">Filter</Button>
+
                 </Stack>
               </Grid>
               <Grid item>
@@ -97,16 +100,16 @@ const SalesReport = () => {
       </Grid>
       <Grid item xs={12}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tabs value={value} onChange={handleChange} aria-label="order-tabs">
             <Tab label="All Orders" {...a11yProps(0)} />
-            <Tab label="On Delivery" {...a11yProps(1)} />
-            <Tab label="Delivered" {...a11yProps(2)} />
-            <Tab label="Cancelled" {...a11yProps(3)} />
+            <Tab label="Preparing" {...a11yProps(1)} />
+            <Tab label="Dispatched" {...a11yProps(2)} />
+            <Tab label="Delivered" {...a11yProps(3)} />
           </Tabs>
         </Box>
       </Grid>
       <Grid item xs={12}>
-        <OrderTable/>
+        <OrderTable />
       </Grid>
     </Grid>
   );
