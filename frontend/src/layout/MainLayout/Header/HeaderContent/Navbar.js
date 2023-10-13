@@ -13,13 +13,13 @@ import { setToken, setAuth } from 'store/reducers/token';
 const Navbar = () => {
 
 
-    const settings = ['Profile', 'Logout'];
+    const settings = ['Profile', 'History', 'Logout'];
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     let location = useLocation();
-    
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -36,8 +36,12 @@ const Navbar = () => {
         setAnchorElUser(null);
         switch (index) {
             case 0:
+                navigate('/profile');
                 break;
             case 1:
+                navigate('/history', { replace: true });
+                break;
+            case 2:
                 dispatch(setToken(''));
                 dispatch(setAuth(false));
                 navigate('/', { replace: true });
@@ -101,14 +105,14 @@ const Navbar = () => {
                     {
                         location.pathname !== '/checkout' && <Notification />
                     }
-                    
+
                 </Box>
 
                 <Box sx={{ flexGrow: 0 }}>
 
                     <Tooltip title="Open settings">
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                            <Avatar alt="Test User" src={avatar} sx={{ width: 50, height: 50 }} />
+                            <Avatar alt="User DP" src={avatar} sx={{ width: 50, height: 50 }} />
                         </IconButton>
                     </Tooltip>
                     <Menu
