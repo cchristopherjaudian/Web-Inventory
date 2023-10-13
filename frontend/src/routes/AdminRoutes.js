@@ -16,7 +16,7 @@ const Maintenance = Loadable(lazy(() => import('pages/admin/Maintenance')));
 const Settings = Loadable(lazy(() => import('pages/admin/Settings')));
 const OrderNotice = Loadable(lazy(() => import('pages/subadmin1/ordernotice/index')));
 const Orders = Loadable(lazy(() => import('pages/subadmin1/orders/index')));
-
+const Profile = Loadable(lazy(()=> import('pages/common/profile')));
 const AdminRoutes = {
     path: '/',
     element: <MainLayout />,
@@ -72,6 +72,10 @@ const AdminRoutes = {
       {
         path: 'orders',
         element: <Orders />
+      },
+      {
+        path: 'profile',
+        element: <Profile />
       }
     ]
   };

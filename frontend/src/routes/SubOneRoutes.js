@@ -9,7 +9,7 @@ const TransactionRecords = Loadable(lazy(() => import('pages/subadmin1/transacti
 const OrderNotice = Loadable(lazy(() => import('pages/subadmin1/ordernotice/')));
 const Orders = Loadable(lazy(() => import('pages/subadmin1/orders/')));
 const OrderInfo = Loadable(lazy(() => import('pages/subadmin1/ordernotice/orderinfo')));
-
+const Profile = Loadable(lazy(()=> import('pages/common/profile')));
 const SubOneRoutes = {
   path: '/',
   element: <MainLayout />,
@@ -33,6 +33,10 @@ const SubOneRoutes = {
     {
       path: 'order/:id',
       element: <OrderInfo />
+    },
+    {
+      path: 'profile',
+      element: <Profile />
     }
   ]
 };
