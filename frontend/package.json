@@ -12,6 +12,7 @@
     "@mui/x-charts": "^6.0.0-alpha.9",
     "@mui/x-data-grid": "^6.13.0",
     "@mui/x-date-pickers": "^6.16.0",
+    "@react-oauth/google": "^0.11.1",
     "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
