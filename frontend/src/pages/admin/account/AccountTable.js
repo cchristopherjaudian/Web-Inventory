@@ -18,28 +18,26 @@ const AccountTable = () => {
 
     const columns = [
         {
-            field: 'account',
-            headerName: 'Account',
-            editable: false,
-            flex: 1
-        },
-        {
-            field: 'fullName',
-            headerName: 'Full name',
+            field: 'lastname',
+            headerName: 'Last name',
             sortable: false,
-            flex: 1,
-            valueGetter: (params) =>
-                `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+            flex: 1
         },
         {
-            field: 'contact',
-            headerName: 'Contact',
+            field: 'firstname',
+            headerName: 'First Name',
             editable: false,
             flex: 1
         },
         {
-            field: 'email',
-            headerName: 'Email',
+            field: 'middlename',
+            headerName: 'Middle Name',
+            editable: false,
+            flex: 1
+        },
+        {
+            field: 'address',
+            headerName: 'Address',
             editable: false,
             flex: 1
         },
