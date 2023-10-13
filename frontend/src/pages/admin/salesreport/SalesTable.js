@@ -75,8 +75,15 @@ const SalesTable = () => {
                             },
                         }}
                         pageSizeOptions={[10]}
-                        checkboxSelection
                         disableRowSelectionOnClick
+                        sx={{
+                            '.MuiDataGrid-cell:focus': {
+                              outline: 'none'
+                            },
+                            '& .MuiDataGrid-row:hover': {
+                              cursor: 'pointer'
+                            }
+                          }}
                     />
                 </Grid>
             </Grid>
