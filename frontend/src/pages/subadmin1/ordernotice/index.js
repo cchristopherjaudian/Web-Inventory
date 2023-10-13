@@ -14,7 +14,7 @@ const OrderNotice = () => {
 
   useEffect(() => {
     if (data) {
-      setOrders(data['data'].filter((item) => item.status !== 'PAID'));      
+      setOrders(data['data'].filter((item) => item.status !== 'PAID'));
     }
   }, [data]);
   useEffect(() => {
@@ -23,7 +23,6 @@ const OrderNotice = () => {
   }, [filter]);
   return <MainCard title="Order Notice">
     <Grid container>
-      <Searchbar setFilter={setFilter} setKeyword={setKeyword} />
       <OrderTable orderRows={orders} />
     </Grid>
   </MainCard>
