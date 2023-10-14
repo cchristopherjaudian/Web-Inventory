@@ -160,7 +160,8 @@ model OrderStatus {
   profile   Profile? @relation(fields: [profileId], references: [id])
   profileId String?
 
-  status OrderStatuses? @default(PREPARING)
+  status    OrderStatuses? @default(PREPARING)
+  isCurrent Boolean        @default(false)
 
   orders  Orders? @relation(fields: [orderId], references: [id])
   orderId String

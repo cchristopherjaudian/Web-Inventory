@@ -117,10 +117,15 @@ class MetricsService {
             ? moment(query.endsAt).endOf('day').tz('Asia/Manila').toDate()
             : moment().endOf('year').endOf('day').tz('Asia/Manila').toDate();
 
+        let queryStatus = {};
+        if (query.status) {
+            queryStatus = { status: query.status, isCurrent: true };
+        }
+
         const orderStatusList = await this._db.orderStatus.groupBy({
             by: ['orderId'],
             where: {
-                status: query.status ?? OrderStatuses.PREPARING,
+                ...queryStatus,
                 orders: {
                     AND: [
                         { createdAt: { lte: endsAt } },

@@ -124,6 +124,7 @@ class OrderService {
                 orderStatus: {
                     create: {
                         status: OrderStatuses.PREPARING,
+                        isCurrent: true,
                     },
                 },
             },
@@ -131,7 +132,7 @@ class OrderService {
     }
 
     public async createOrderStatus(
-        payload: TOrderStatus & { createdAt: Date }
+        payload: TOrderStatus & { createdAt: Date; orderStatusId?: string }
     ) {
         const hasOrder = await this._db.orders.findFirst({
             where: { id: payload.orderId },
@@ -154,7 +155,19 @@ class OrderService {
         payload.createdAt = moment(payload.createdAt)
             .tz('Asia/Manila')
             .toDate();
-        return await this._db.orderStatus.create({ data: payload });
+        await this._db.orderStatus.update({
+            where: {
+                id: payload.orderStatusId,
+            } as any,
+            data: { isCurrent: false },
+        });
+
+        if (payload?.orderStatusId) {
+            delete payload.orderStatusId;
+        }
+        return await this._db.orderStatus.create({
+            data: { ...payload, isCurrent: true },
+        });
     }
 
     public async updateOrder(id: string, payload: Partial<TOrderWithoutItems>) {
