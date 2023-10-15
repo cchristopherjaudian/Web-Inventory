@@ -3,69 +3,67 @@ import {
     Box,
     Grid
 } from '@mui/material';
-const SalesTable = () => {
+const SalesTable = (props) => {
     const columns = [
         {
-            field: 'invoiceID',
+            field: 'id',
             headerName: 'Invoice ID',
             editable: false,
             flex:1
         },
         {
-            field: 'date',
-            headerName: 'Date',
+            field: 'fullName',
+            headerName: 'Customer Name',
             editable: false,
             flex:1
         },
         {
-            field: 'customer',
-            headerName: 'Customer',
-            editable: false,
-            flex: 1
-        },
-        {
-            field: 'receipt',
-            headerName: 'Receipt',
+            field: 'itemnumber',
+            headerName: 'No. of Items',
             sortable: false,
             flex: 1
         },
         {
-            field: 'description',
-            headerName: 'Description',
+            field: 'paymentMethod',
+            headerName: 'Payment Method',
             sortable: false,
             flex: 1
         },
         {
-            field: 'quantity',
-            headerName: 'Quantity',
+            field: 'price',
+            headerName: 'Price',
             sortable: false,
             flex: 1
         },
         {
-            field: 'status',
-            headerName: 'Status',
+            field: 'dateOrdered',
+            headerName: 'Date Ordered',
             sortable: false,
-            flex: 1
+            flex: 1,
+            valueGetter: (params) => params.row.dateOrdered ? `${params.row.dateOrdered.substring(0, 10)}` : ''
         },
         {
-            field: 'amount',
-            headerName: 'Amount',
+            field: 'dateDispatched',
+            headerName: 'Date Dispatched',
             sortable: false,
-            flex: 1
+            flex: 1,
+            valueGetter: (params) => params.row.dateDispatched ? `${params.row.dateDispatched.substring(0, 10)}` : ''
+        },
+        {
+            field: 'dateDelivered',
+            headerName: 'Date Delivered',
+            sortable: false,
+            flex: 1,
+            valueGetter: (params) => params.row.dateDelivered ? `${params.row.dateDelivered.substring(0, 10)}` : ''
         },
     ];
-
-    const rows = [
-     
-    ];
-
     return (
         <Box sx={{ height: 400, width: '100%' }}>
             <Grid container>
                 <Grid item xs={12}>
                     <DataGrid
                         autoHeight
-                        rows={rows}
+                        rows={props.orders? props.orders: []}
                         columns={columns}
                         initialState={{
                             pagination: {

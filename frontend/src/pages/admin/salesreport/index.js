@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import { SearchOutlined } from '@ant-design/icons';
+import useAxios from 'hooks/useAxios';
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -22,27 +23,59 @@ function a11yProps(index) {
 }
 
 const SalesReport = () => {
-  const [dateFilter, setDateFilter] = useState({ txfrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
+  const [query, setQuery] = useState('');
+  const [dateFilter, setDateFilter] = useState({ txFrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
   const [slot, setSlot] = useState('week');
-  const data = [
-    { label: 'Product Info 1', value: 400, id: 0 },
-    { label: 'Product Info 2', value: 300, id: 1 }
-  ];
+  const [orders, setOrders] = useState([]);
+  const [status, setStatus] = useState('');
   const [value, setValue] = useState(0);
+  const { data, fetchData } = useAxios(query, 'GET');
+  const tabStatus = ['', 'PREPARING', 'DISPATCHED', 'DELIVERED'];
+  const handleFilterClick = () =>{
+    setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status);
+  }
   const handleFilter = (e) => {
     let newFilter = { ...dateFilter, [e.target.name]: e.target.value };
     setDateFilter(newFilter);
-    console.log(dateFilter);
   }
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setStatus(tabStatus[newValue]);
   };
+  useEffect(() => {
+    if (dateFilter && status) {
+      console.log(dateFilter);
+      setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status);
+    }
+  }, [dateFilter, status]);
+  useEffect(() => {
+    if (query) {
+      fetchData();
+    }
+  }, [query]);
+  useEffect(() => {
+    if (data) {
+      let newData = [];
+      data['data']['list'].map((d,i)=>{
+        newData.push({
+          id: d['orderId'],
+          fullName: d['customerName'],
+          itemnumber: d['itemsCount'],
+          paymentMethod: d['paymentMethod'],
+          price: d['totalPrice'],
+          dateOrdered: d['dateOrdered'],
+          dateDispatched: d['dispatchedDate'],
+          dateDelivered: d['dateDelivered']
+        })
+      });
+      setOrders(newData);
+    }
+  }, [data]);
   return (
     <Grid container spacing={0.5}>
       <Grid item xs={12} md={3}>
-
         <MainCard content={false} sx={{ mt: 1.5 }}>
-          <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>Earnings</Typography>
+          <Typography variant="h6" sx={{ mt: 2.0, mb: 3.0, ml: 2.0 }}>Earnings</Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
             <RadialChart />
@@ -63,13 +96,13 @@ const SalesReport = () => {
                     <OutlinedInput
                       size="small"
                       type="date"
-                      id="txfrom"
-                      name="txfrom"
+                      id="txFrom"
+                      name="txFrom"
                       inputProps={{
                         'aria-label': 'weight'
                       }}
-                      onClick={handleFilter}
-                      value={dateFilter['txfrom']}
+                      onChange={handleFilter}
+                      value={dateFilter['txFrom']}
                     />
                   </FormControl>
                   <Typography variant="h5"> to </Typography>
@@ -82,11 +115,11 @@ const SalesReport = () => {
                       inputProps={{
                         'aria-label': 'weight'
                       }}
-                      onClick={handleFilter}
+                      onChange={handleFilter}
                       value={dateFilter['txTo']}
                     />
                   </FormControl>
-                  <Button sx={{ width: '60%', pl: 2, pr: 2 }} endIcon={<SearchOutlined />} size="medium" variant="contained">Filter</Button>
+                  <Button sx={{ width: '60%', pl: 2, pr: 2 }} endIcon={<SearchOutlined />} size="medium" variant="contained" onClick={handleFilterClick}>Filter</Button>
 
                 </Stack>
               </Grid>
@@ -109,7 +142,7 @@ const SalesReport = () => {
         </Box>
       </Grid>
       <Grid item xs={12}>
-        <OrderTable />
+        <OrderTable orders={orders} />
       </Grid>
     </Grid>
   );
