@@ -29,6 +29,7 @@ const OrderSteps = (props) => {
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState({});
     const [status, setStatus] = useState([]);
+    const [orderStatus, setOrderStatus] = useState([]);
     const [orderDate, setOrderDate] = useState('');
     const [payload, setPayload] = useState({});
     const { data, fetchData } = useAxios('orders/status', 'POST', payload, false);
@@ -38,7 +39,7 @@ const OrderSteps = (props) => {
     useEffect(() => {
         if (props.steps && JSON.stringify(steps) !== JSON.stringify(props.steps)) {
             const steps = props.steps;
-
+            setOrderStatus(props.steps);
             setActiveStep(steps.length - 1);
             setStatus(steps);
 
@@ -62,12 +63,13 @@ const OrderSteps = (props) => {
             resetStepDate();
         }
     }, [props.id]);
-   
+
     const resetStepDate = () => {
         setStepDate(initialState);
     };
     useEffect(() => {
         if (payload) {
+            console.log(payload);
             fetchData();
         }
     }, [payload]);
@@ -75,6 +77,9 @@ const OrderSteps = (props) => {
         if (data) {
 
             if (data['status'] === 200) {
+                let tempStatus = orderStatus;
+                tempStatus.push(data['data']);
+                setOrderStatus(tempStatus);
                 props.handleClick();
                 props.setMessage('Order status updated successfully');
             }
@@ -96,6 +101,7 @@ const OrderSteps = (props) => {
                                     <OutlinedInput
                                         size="small"
                                         type="date"
+                                        disabled={index === 0}
                                         id={index}
                                         name={index}
                                         tag={index}
@@ -106,13 +112,14 @@ const OrderSteps = (props) => {
                                         }
                                         onChange={(event) => {
                                             let newStepDate = [...stepDate];
+                                            let previousStatusId = (orderStatus[index - 1]['id']);
                                             if (Object.keys(newStepDate[index]).length > 0) {
                                                 newStepDate[index][Object.keys(newStepDate[index])[0]] = event.target.value;
                                                 setStepDate(newStepDate);
                                             }
                                             let objIndex = event.target.name;
                                             let objKey = Object.keys(stepDate[objIndex])[0];
-                                            setPayload({ orderId: props.id, createdAt: event.target.value, status: objKey })
+                                            setPayload({ orderId: props.id, createdAt: event.target.value, status: objKey, orderStatusId: previousStatusId })
                                         }}
                                         inputProps={{
                                             'aria-label': 'weight'
