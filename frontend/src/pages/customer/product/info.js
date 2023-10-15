@@ -47,7 +47,7 @@ const Info = (props) => {
                     <Typography gutterBottom variant="h4">
                         {props.itemInfo.name}
                     </Typography>
-                    <Chip label=" 50 lbs" color="error" size="small" />
+                    {/* <Chip label=" 50 lbs" color="error" size="small" /> */}
                 </Box>
                 <Typography variant="body2" color="text.secondary">
                     {stock} stocks available
