@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import { useMediaQuery, Button, Stack } from '@mui/material';
 import Google from 'assets/images/icons/google.svg';
 import { setToken, setAuth, setAdmin, setAdminType } from 'store/reducers/token';
-import { setFirstName, setMiddleName, setLastName, setAddress } from 'store/reducers/profile';
+import { setFirstName, setMiddleName, setLastName, setAddress,setAccType } from 'store/reducers/profile';
 
 const FirebaseSocial = () => {
   const navigate = useNavigate();
@@ -19,15 +19,15 @@ const FirebaseSocial = () => {
   const [emailLogin, setEmailLogin] = useState('');
   const [user, setUser] = useState('');
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const { data, loading, error, fetchData } = useAxios('accounts', 'POST', { email: emailLogin });
-  const { profile, profileLoading, profileError, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
+  const { data, fetchData } = useAxios('accounts', 'POST', { email: emailLogin });
+  const { profile, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
 
-  useEffect(()=>{
-    if(emailLogin){
+  useEffect(() => {
+    if (emailLogin) {
       fetchData();
       setEmailLogin('');
     }
-  },[emailLogin]);
+  }, [emailLogin]);
   useEffect(() => {
     if (data) {
       const createToken = data['data']['token'];
@@ -58,6 +58,7 @@ const FirebaseSocial = () => {
       const newData = data['data']['newData'];
       const accountType = profile['data']['account']['accountType'];
       dispatch(setAuth({ authenticated: true }));
+      dispatch(setAccType({ accType: accountType }));
       dispatch(setFirstName({ firstName: profile['data']['firstname'] }));
       dispatch(setMiddleName({ middleName: profile['data']['middlename'] }));
       dispatch(setLastName({ lastName: profile['data']['lastname'] }));
@@ -67,7 +68,7 @@ const FirebaseSocial = () => {
         dispatch(setAdminType({ adminType: adminTypes[accountType] }));
         dispatch(setAdmin({ isadmin: true }));
         navigate('/', { replace: true });
-      } else if (accountType === 'CUSTOMER') {
+      } else {
         dispatch(setAdmin({ isadmin: false }));
         navigate('/home', { replace: true });
       }
@@ -91,6 +92,15 @@ const FirebaseSocial = () => {
         onClick={() => setEmailLogin('customer@gmail.com')}
       >
         {!matchDownSM && 'Sign in as Customer'}
+      </Button>
+      <Button
+        variant="outlined"
+        color="secondary"
+        fullWidth={!matchDownSM}
+        startIcon={<img src={Google} alt="Google" />}
+        onClick={() => setEmailLogin('business@gmail.com')}
+      >
+        {!matchDownSM && 'Sign in as Business'}
       </Button>
       <Button
         variant="outlined"
