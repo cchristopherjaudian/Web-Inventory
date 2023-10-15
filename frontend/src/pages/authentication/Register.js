@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
-
+import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 
@@ -12,7 +12,7 @@ import RegisterStepper from './RegisterStepper';
 
 const defaultTheme = createTheme();
 const Register = () => {
-
+  const [selectedTab, setSelectedTab] = useState(0);
   return (<ThemeProvider theme={defaultTheme}>
     <Grid container component="main" sx={{ height: '100vh' }} >
       <CssBaseline />
@@ -50,7 +50,7 @@ const Register = () => {
           <Typography component="h1" variant="caption">
             Please select an account type below
           </Typography>
-          <RegisterStepper/>
+          <RegisterStepper selectedTab={selectedTab}/>
 
         </Box>
       </Grid>

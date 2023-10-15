@@ -1,4 +1,5 @@
 import MainCard from 'components/MainCard';
+
 import { useFormik } from 'formik';
 import useAxios from 'hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
@@ -13,32 +14,21 @@ import {
 const CustomerForm = (props) => {
     const navigate = useNavigate();
     const [payload, setPayload] = useState({});
-    const { data, loading, error, fetchData } = useAxios('profiles', 'POST', payload,true);
+    
     const formik = useFormik({
         initialValues: {
             firstname: '',
             middlename: '',
             lastname: '',
-            address: '',
-            account: {
-                accountType: props.type
-            }
+            address: ''
         },
         onSubmit: values => {
-            setPayload(values);
-
+            console.log("Submit Formik")
+            let newPayload = {...values,account:{accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS'}};
+            props.setPayload(newPayload);
         },
     });
-    useEffect(() => {
-        if(data){
-            if(data.status === 200){
-                navigate('/', { replace: true })
-            }
-        }
-    }, [data]);
-    useEffect(() => {
-        fetchData();
-    }, [payload]);
+    
     return (<Grid item xs={12} sx={{ mt: 2 }}>
         <Grid direction="column" container >
             <Grid item xs={12} style={{ display: 'flex', flex: 1 }}>

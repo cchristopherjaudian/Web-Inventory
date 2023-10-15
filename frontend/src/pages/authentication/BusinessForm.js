@@ -13,15 +13,6 @@ const BusinessForm = () => {
                 <MainCard title="Account Details" sx={{ width: '100%' }}>
                     <Box component="form" noValidate sx={{ height: '100%' }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    name="email"
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    disabled
-                                />
-                            </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField
                                     name="firstName"
