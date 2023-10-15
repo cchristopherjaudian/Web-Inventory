@@ -13,7 +13,6 @@ const Price = (props) => {
     const [change, setChange] = useState(0);
     useEffect(() => {
         const totalPrice = cartItems && Object.keys(cartItems).length
-            //? cartItems.reduce((total, item) => total + Number(item.inventory.products.price) * item.quantity, 0)
             ? cartItems.reduce((sum, item) => {
                 return sum + (item.quantity * parseFloat(item.products.price));
             }, 0)

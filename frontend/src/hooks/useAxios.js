@@ -4,7 +4,6 @@ import customaxios from 'axios';
 
 function useAxios(url, method, requestData = null, lazy = true) {
   const token = useSelector((state) => state.token.token);
-
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,7 +20,6 @@ function useAxios(url, method, requestData = null, lazy = true) {
     try {
       setLoading(true);
       let response;
-      console.log(url);
       switch (method) {
         case 'GET':
           response = await axios.get(url);
