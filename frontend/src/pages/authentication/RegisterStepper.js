@@ -7,12 +7,18 @@ import Stack from '@mui/material/Stack';
 import CustomerForm from './CustomerForm';
 import BusinessForm from './BusinessForm';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAxios from 'hooks/useAxios';
+import Swal from 'sweetalert2';
 const steps = ['Register as Customer', 'Register as Business'];
 
-const RegisterStepper = () => {
+const RegisterStepper = (props) => {
+    const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(0);
+    const [payload, setPayload] = useState({});
     const [completed, setCompleted] = useState({});
+    const { data, loading, error, fetchData } = useAxios('profiles', 'POST', payload);
     const totalSteps = () => {
         return steps.length;
     };
@@ -20,7 +26,48 @@ const RegisterStepper = () => {
     const handleStep = (step) => () => {
         setActiveStep(step);
     };
+    useEffect(() => {
+        if (data) {
+            if (data.status === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Account Registration',
+                    text: 'Account registered successfully. Click OK to continue',
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/', { replace: true })
+                    }
+                })
 
+            }
+        }
+    }, [data]);
+    useEffect(() => {
+        if (error && Object.keys(payload).length !== 0) {
+            let msg = '';
+            if (error['response']['status'] === 400) {
+                msg = ('Failed to register account. Please validate all fields.')
+            } else {
+                msg = ('Failed to communicate with server. Please try again.')
+            }
+
+            Swal.fire(
+                'Account',
+                msg,
+                'warning'
+            );
+        }
+    }, [error]);
+    useEffect(() => {
+        if (payload) {
+            console.log(payload);
+            fetchData();
+        }
+
+    }, [payload]);
     return (
         <>
             <Box sx={{ mt: 3 }}>
@@ -39,8 +86,7 @@ const RegisterStepper = () => {
                 </Stepper>
             </Box>
             <Grid container>
-                {console.log(activeStep)}
-                {activeStep == 0 ? <CustomerForm type="CUSTOMER" /> : <BusinessForm type="BUSINESS" />}
+                <CustomerForm setPayload={setPayload} />
             </Grid>
         </>
     );
