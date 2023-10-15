@@ -109,7 +109,6 @@ dist
 # Firebase Deploy
 .firebase/
 .firebaserc
-firebase.json
 
 #output
 build

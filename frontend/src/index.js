@@ -7,13 +7,11 @@ import 'assets/third-party/apex-chart.css';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
-let persistor = persistStore(store);
-
 import App from './App';
 import { store } from 'store';
 import reportWebVitals from './reportWebVitals';
 
-
+let persistor = persistStore(store);
 
 const container = document.getElementById('root');
 const root = createRoot(container);
