@@ -44,7 +44,7 @@ const HistoryTable = (props) => {
             headerName: 'Date Dispatched',
             editable: false,
             flex: 1,
-            valueGetter: (params) => params.row.dispatchedDate ? `${params.row.dispatchedDate.substring(0, 10)}` : ''
+            valueGetter: (params) => params.row.dateDispatched ? `${params.row.dateDispatched.substring(0, 10)}` : ''
 
         },
         {
