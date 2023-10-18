@@ -18,9 +18,7 @@ const InventoryForm = (props) => {
     const inputRef = useRef();
     const [message, setMessage] = useState('');
     const [severity, setSeverity] = useState('success');
-    const [orders, setOrders] = useState([]);
     const [payload, setPayload] = useState({});
-    const [productId, setProductId] = useState('');
     const [open, setOpen] = useState(false);
     const Alert = forwardRef(function Alert(props, ref) {
         return <MuiAlert sx={{ color: 'white' }} elevation={6} ref={ref} variant="filled" {...props} />;
@@ -102,6 +100,8 @@ const InventoryForm = (props) => {
                             value={formik.values.expiration}
                             autoFocus
                             inputRef={inputRef}
+                            onFocus={(e) => e.currentTarget.type = 'date'}
+                            onBlur={(e) => e.currentTarget.value === '' && (e.currentTarget.type = 'text')}
                         />
                     </Grid>
                     <Grid item xs={12}>
