@@ -145,7 +145,8 @@ const Checkout = () => {
         </Snackbar>
         {
             profile.accType.accType === 'CUSTOMER' ?
-                <Grid item xs={12} md={9}>
+                <>
+                <Grid item xs={12} md={8}>
                     <Box >
                         <Stepper nonLinear activeStep={activeStep}>
                             {steps.map((label, index) => (
@@ -166,10 +167,12 @@ const Checkout = () => {
                             activeStep === 0 ? <Cart setFinalCart={setFinalCart} /> : (activeStep === 1) ? <Payment setPayMethod={setPayMethod} /> : <Confirmation />
                         }
                     </Box>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
                     {
                         activeStep < (totalSteps() - 1) ? <Price increment={incrementStep} decrement={decrementStep} isCompleted={isCompleted} isInitial={isInitial} parsePayload={parsePayload} payMethod={payMethod} /> : <></>
                     }
-                </Grid> :
+                </Grid></> :
                 <>
                     <Grid item xs={12} md={4}>
                         <Grid container spacing={1}>
