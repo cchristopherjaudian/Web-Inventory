@@ -86,7 +86,7 @@ const RegisterStepper = (props) => {
                 </Stepper>
             </Box>
             <Grid container>
-                <CustomerForm setPayload={setPayload} />
+                <CustomerForm setPayload={setPayload} activeStep={activeStep} />
             </Grid>
         </>
     );

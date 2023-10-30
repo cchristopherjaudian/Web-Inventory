@@ -47,7 +47,7 @@ const Register = () => {
           <Typography component="h1" variant="h5">
             {"Oxiaire Member's Portal"}
           </Typography>
-          <Typography component="h1" variant="caption">
+          <Typography component="h1" variant="body2">
             Please select an account type below
           </Typography>
           <RegisterStepper selectedTab={selectedTab}/>

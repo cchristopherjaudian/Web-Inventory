@@ -8,33 +8,115 @@ import {
     Button,
     Box,
     Grid,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material'
 
 const CustomerForm = (props) => {
     const navigate = useNavigate();
     const [payload, setPayload] = useState({});
-    
+    const baseValues = {
+        firstname: '',
+        middlename: '',
+        lastname: '',
+        address: '',
+        email: '',
+        contact: '',
+        password: ''
+    };
+
+    const initVal = {
+        ...(props.activeStep !== 0 && { businessname: '' }),
+        ...baseValues
+    };
+
     const formik = useFormik({
-        initialValues: {
-            firstname: '',
-            middlename: '',
-            lastname: '',
-            address: ''
-        },
+        initialValues: initVal,
         onSubmit: values => {
-            console.log("Submit Formik")
-            let newPayload = {...values,account:{accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS'}};
+            let newPayload = {
+                ...values,
+                account: { accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS' }
+            };
             props.setPayload(newPayload);
         },
     });
-    
+
+
     return (<Grid item xs={12} sx={{ mt: 2 }}>
         <Grid direction="column" container >
             <Grid item xs={12} style={{ display: 'flex', flex: 1 }}>
                 <MainCard title="Account Details" sx={{ width: '100%' }}>
                     <Box component="form" noValidate sx={{ height: '100%' }} onSubmit={formik.handleSubmit}>
                         <Grid container spacing={2}>
+
+                            {
+                                props.activeStep === 1 &&
+                                <>
+                                    <Grid item xs={12}>
+                                        <Typography variant="body1">
+                                            Business Information
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            name="businessname"
+                                            required
+                                            fullWidth
+                                            id="businessname"
+                                            label="Business Name"
+                                            type="text"
+                                            onChange={formik.handleChange}
+                                            value={formik.values.businessname}
+                                            autofocus
+                                        />
+                                    </Grid>
+                                </>
+                            }
+
+                            <Grid item xs={12} lg={6} >
+                                <TextField
+                                    name="email"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email"
+                                    type="email"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.email}
+                                    autofocus
+                                />
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <TextField
+                                    name="contact"
+                                    required
+                                    fullWidth
+                                    id="contact"
+                                    label="Contact"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.contact}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="address"
+                                    label="Address"
+                                    name="address"
+                                    autoComplete="address"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.address}
+                                />
+                            </Grid>
+                            {
+                                props.activeStep === 1 && 
+                                <Grid item xs={12}>
+                                <Typography variant="body1">
+                                    Business Owner&apos;s Information
+                                </Typography>
+                            </Grid>
+                            }
                             <Grid item xs={12} >
                                 <TextField
                                     name="firstname"
@@ -44,7 +126,6 @@ const CustomerForm = (props) => {
                                     label="First Name"
                                     onChange={formik.handleChange}
                                     value={formik.values.firstname}
-                                    autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12} >
@@ -69,16 +150,16 @@ const CustomerForm = (props) => {
                                     value={formik.values.lastname}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} >
                                 <TextField
                                     required
                                     fullWidth
-                                    id="address"
-                                    label="Address"
-                                    name="address"
-                                    autoComplete="address"
+                                    id="password"
+                                    label="Password"
+                                    name="password"
+                                    type="password"
                                     onChange={formik.handleChange}
-                                    value={formik.values.address}
+                                    value={formik.values.password}
                                 />
                             </Grid>
                         </Grid>
