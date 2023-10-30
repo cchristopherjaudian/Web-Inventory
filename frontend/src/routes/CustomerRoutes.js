@@ -7,7 +7,7 @@ import MainLayout from 'layout/MainLayout';
 const Home = Loadable(lazy(() => import('pages/customer/home/')));
 const About = Loadable(lazy(() => import('pages/customer/about/')));
 const Shop = Loadable(lazy(() => import('pages/customer/shop/')));
-const Schedule = Loadable(lazy(() => import('pages/customer/schedule/')));
+const Schedule = Loadable(lazy(() => import('pages/admin/routesched/')));
 const Product = Loadable(lazy(()=> import('pages/customer/product/')));
 const Checkout = Loadable(lazy(()=>import('pages/customer/checkout/')));
 const Invoice = Loadable(lazy(()=>import('pages/customer/invoice/')));
