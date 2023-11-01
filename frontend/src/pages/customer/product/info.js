@@ -2,12 +2,13 @@ import { IconButton, Button, Box, Chip, Typography, Card, CardMedia, CardContent
 import { ShoppingCartOutlined, HeartOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import useInventoryAxios from 'hooks/useInventoryAxios';
+import { useSelector } from 'react-redux';
 const Info = (props) => {
     const [stock, setStock] = useState(0);
     const [productId, setProductId] = useState('');
     const [productInfo, setProductInfo] = useState({});
     const { inventoryData, inventoryFetchData } = useInventoryAxios('products/' + productId + '/inventories', 'GET', null, false);
-
+    const isBusiness = useSelector((state) => state.token.customertype.customertype);
     useEffect(() => {
         if (props.itemInfo) {
             setProductId(props.itemInfo.id);
@@ -47,7 +48,6 @@ const Info = (props) => {
                     <Typography gutterBottom variant="h4">
                         {props.itemInfo.name}
                     </Typography>
-                    {/* <Chip label=" 50 lbs" color="error" size="small" /> */}
                 </Box>
                 <Typography variant="body2" color="text.secondary">
                     {stock} stocks available
@@ -89,9 +89,12 @@ const Info = (props) => {
                                 </Button>
                                 :
                                 (stock > 0) ?
-                                    <Button variant="contained" startIcon={<ShoppingCartOutlined />} onClick={() => props.setCartItem(props.itemInfo)}>
-                                        Add to Cart
-                                    </Button>
+                                    (
+                                        isBusiness === 0 &&
+                                        <Button variant="contained" startIcon={<ShoppingCartOutlined />} onClick={() => props.setCartItem(props.itemInfo)}>
+                                            Add to Cart
+                                        </Button>
+                                    )
                                     :
                                     <Button variant="contained" color="error" startIcon={<CloseCircleOutlined />}>
                                         Out of Stock

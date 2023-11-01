@@ -3,11 +3,12 @@ import { Snackbar, Box, Button, Card, CardContent, CardMedia, CardActionArea, Ca
 import { useNavigate } from 'react-router-dom';
 import useAxios from "hooks/useAxios";
 import useAxiosBackup from "hooks/useAxiosBackup";
-import { useState, useEffect,forwardRef } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "store/reducers/cart";
 import MuiAlert from '@mui/material/Alert';
 const Shop = () => {
+    const isBusiness = useSelector((state) => state.token.customertype.customertype);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const reduxcart = useSelector((state) => state.cart.cart);
@@ -122,9 +123,13 @@ const Shop = () => {
                                         <Button size="small" color="secondary" variant="outlined" onClick={() => navigate('/product/' + product.id)}>
                                             Learn More
                                         </Button>
-                                        <Button size="small" color="primary" variant="contained" onClick={() => setCartItem(product)}>
-                                            Add to Cart
-                                        </Button>
+                                        {
+                                            isBusiness === 0 &&
+                                            <Button size="small" color="primary" variant="contained" onClick={() => setCartItem(product)}>
+                                                Add to Cart
+                                            </Button>
+                                        }
+
                                     </Box>
                                 </CardActions>
                             </Card>

@@ -7,12 +7,12 @@ import customerNavigation from 'menu-items/customer';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import Notification from './Notification';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setToken, setAuth } from 'store/reducers/token';
 
 const Navbar = () => {
 
-
+    const isBusiness = useSelector((state)=> state.token.customertype.customertype);
     const settings = ['Profile', 'History', 'Logout'];
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -103,7 +103,10 @@ const Navbar = () => {
                 </Box>
                 <Box sx={{ flexGrow: 0, mr: 2 }}>
                     {
-                        location.pathname !== '/checkout' && <Notification />
+                        (location.pathname !== '/checkout' && isBusiness !== 1) && <Notification />
+                    }
+                    {
+                        isBusiness === 1 && <Button variant="contained" onClick={()=>navigate('/purchase/request')} sx={{mr:2}}>Create Purchase Request</Button>
                     }
 
                 </Box>

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import { useMediaQuery, Button, Stack } from '@mui/material';
 import Google from 'assets/images/icons/google.svg';
-import { setToken, setAuth, setAdmin, setAdminType } from 'store/reducers/token';
+import { setToken, setAuth, setAdmin, setAdminType,setCustomerType } from 'store/reducers/token';
 import { setFirstName, setMiddleName, setLastName, setAddress,setAccType } from 'store/reducers/profile';
 
 const FirebaseSocial = () => {
@@ -54,7 +54,10 @@ const FirebaseSocial = () => {
         'SUB_1': 1,
         'SUB_2': 2
       };
-
+      const customerTypes = {
+        'CUSTOMER': 0,
+        'BUSINESS': 1
+      };
       const newData = data['data']['newData'];
       const accountType = profile['data']['account']['accountType'];
       dispatch(setAuth({ authenticated: true }));
@@ -69,6 +72,8 @@ const FirebaseSocial = () => {
         dispatch(setAdmin({ isadmin: true }));
         navigate('/', { replace: true });
       } else {
+        const customerType = profile['data']['account']['accountType'];
+        dispatch(setCustomerType({ customertype: customerTypes[customerType] }));
         dispatch(setAdmin({ isadmin: false }));
         navigate('/home', { replace: true });
       }
