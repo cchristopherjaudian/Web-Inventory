@@ -12,7 +12,7 @@ import { setToken, setAuth } from 'store/reducers/token';
 
 const Navbar = () => {
 
-    const isBusiness = useSelector((state)=> state.token.customertype.customertype);
+    const isBusiness = useSelector((state) => state.token.customertype.customertype);
     const settings = ['Profile', 'History', 'Logout'];
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -48,6 +48,20 @@ const Navbar = () => {
                 break;
         }
     };
+    console.log(customerNavigation);
+    if (isBusiness === 1) {
+        customerNavigation[2]['title'] = 'Products'
+        const pohistory = {
+            id: 'history',
+            title: 'Purchase List',
+            url: '/purchase/history'
+        };
+        if (!customerNavigation.some(e => e.id === pohistory.id)) {
+            customerNavigation.push(pohistory);
+        }
+    } else {
+        customerNavigation[2]['title'] = 'Shop'
+    }
     return (<AppBar position="static" color='default'>
         <Container maxWidth={false}>
             <Toolbar disableGutters>
@@ -82,6 +96,7 @@ const Navbar = () => {
                         }}
                     >
                         {customerNavigation.map((page) => (
+
                             <MenuItem key={page.id} onClick={() => handleCloseNavMenu(page.url)}>
                                 <Typography textAlign="center" sx={{ color: '#2c3e50' }}>{page.title}</Typography>
                             </MenuItem>
@@ -106,7 +121,7 @@ const Navbar = () => {
                         (location.pathname !== '/checkout' && isBusiness !== 1) && <Notification />
                     }
                     {
-                        isBusiness === 1 && <Button variant="contained" onClick={()=>navigate('/purchase/request')} sx={{mr:2}}>Create Purchase Request</Button>
+                        (!location.pathname.startsWith('/purchase') && isBusiness === 1) && <Button variant="contained" onClick={() => navigate('/purchase/request')} sx={{ mr: 2 }}>Create Purchase Request</Button>
                     }
 
                 </Box>

@@ -13,6 +13,10 @@ const Checkout = Loadable(lazy(()=>import('pages/customer/checkout/')));
 const Invoice = Loadable(lazy(()=>import('pages/customer/invoice/')));
 const Profile = Loadable(lazy(()=> import('pages/common/profile/')));
 const History = Loadable(lazy(()=> import('pages/customer/history/')));
+const Purchase = Loadable(lazy(()=> import('pages/customer/purchase/')));
+const Quotation = Loadable(lazy(()=> import('pages/customer/purchase/quotation/')));
+const Order = Loadable(lazy(()=> import('pages/customer/purchase/order/')));
+const POHistory = Loadable(lazy(()=> import('pages/customer/purchase/history/')));
 const CustomerRoutes = {
     path: '/',
     element: <MainLayout />,
@@ -52,6 +56,22 @@ const CustomerRoutes = {
       {
         path: 'history',
         element: <History />
+      },
+      {
+        path: 'purchase/request',
+        element: <Purchase />
+      },
+      {
+        path: 'purchase/quotation/:id',
+        element: <Quotation />
+      },
+      {
+        path: 'purchase/order/:id',
+        element: <Order />
+      },
+      {
+        path: 'purchase/history',
+        element: <POHistory />
       }
     ]
   };
