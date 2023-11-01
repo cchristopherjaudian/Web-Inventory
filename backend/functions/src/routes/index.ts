@@ -7,6 +7,7 @@ import cartRoutes from './cart-routes';
 import orderRoutes from './order-routes';
 import scheduleRoutes from './schedule-routes';
 import metricsRoutes from './metrics-routes';
+import purchaseRoutes from './purchase-routes';
 
 const router = Router();
 
@@ -48,6 +49,10 @@ const defaultRoutes: TRoutelist = [
     {
         path: '/metrics',
         controller: metricsRoutes,
+    },
+    {
+        path: '/purchase',
+        controller: purchaseRoutes,
     },
 ];
 

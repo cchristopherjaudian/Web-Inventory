@@ -20,4 +20,15 @@ const register = catchAsync(async (req, res) => {
     );
 });
 
-export default { register };
+const login = catchAsync(async (req, res) => {
+    const account = await accountInstance.login(req.body);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_CREATED,
+        account
+    );
+});
+
+export default { register, login };

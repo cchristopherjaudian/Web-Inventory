@@ -28,7 +28,7 @@ class AdminService {
                         },
                         {
                             account: {
-                                email: {
+                                username: {
                                     contains: params?.search ?? '',
                                     mode: 'insensitive',
                                 },

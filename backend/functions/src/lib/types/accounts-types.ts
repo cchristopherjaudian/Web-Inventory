@@ -13,7 +13,8 @@ export enum AccountTypes {
 
 export type TAccounts = {
     id?: string;
-    email: string;
+    username: string;
+    password: string;
     status?: AccountStatuses;
     accountType: AccountTypes;
     createdAt?: string;

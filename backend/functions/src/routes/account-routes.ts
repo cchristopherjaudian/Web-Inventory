@@ -9,6 +9,7 @@ import JoiMiddleware from '../middleware/joi-middleware';
 import {
     registerSchema,
     getB2cListSchema,
+    loginSchema,
 } from '../lib/joi-schemas/account-schema';
 import AuthMiddleware from '../middleware/auth-middleware';
 import Prisma from '../lib/prisma';
@@ -22,6 +23,12 @@ router.post(
     '/',
     joi.requestSchemaValidate(registerSchema),
     AccountController.register
+);
+
+router.post(
+    '/login',
+    joi.requestSchemaValidate(loginSchema),
+    AccountController.login
 );
 
 // ADMIN ROUTES

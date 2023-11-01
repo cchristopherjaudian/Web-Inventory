@@ -28,7 +28,7 @@ class B2cService {
                         },
                         {
                             account: {
-                                email: {
+                                username: {
                                     contains: params?.search ?? '',
                                     mode: 'insensitive',
                                 },

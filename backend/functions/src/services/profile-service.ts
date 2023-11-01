@@ -18,7 +18,6 @@ class ProfileService {
             this._db.account.update({
                 where: { id: payload.account.id },
                 data: {
-                    accountType: payload.account.accountType,
                     status: AccountStatuses.ACTIVE,
                 },
             }),
@@ -51,15 +50,17 @@ class ProfileService {
     }
 
     public async updateProfile(payload: Partial<TProfile>) {
-        let hasEmail;
-        if (payload.account?.email) {
-            hasEmail = await this._db.account.findFirst({
+        let hasAccount;
+        if (payload.account?.username) {
+            hasAccount = await this._db.account.findFirst({
                 where: {
-                    email: payload.account.email,
+                    username: payload.account.username,
                 },
             });
         }
-        if (hasEmail) throw new ResourceConflictError('Email already exists.');
+        if (hasAccount) {
+            throw new ResourceConflictError('Email already exists.');
+        }
 
         const hasProfile = await this.getProfile({
             accountId: payload.account?.id,

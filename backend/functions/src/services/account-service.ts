@@ -1,7 +1,9 @@
-import { AccountStatuses, PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+
 import { TAccounts } from '../lib/types/accounts-types';
 import TokenService from './token-service';
 import { TPrismaClient } from '../lib/prisma';
+import { BadRequestError } from '../lib/custom-errors/class-errors';
 
 class AccountService {
     private _db: TPrismaClient;
@@ -13,24 +15,58 @@ class AccountService {
 
     public async createAccount(payload: Omit<TAccounts, 'status'>) {
         try {
-            let newData = false;
-            // checks if email exists
-            let account = await this._db.account.findFirst({
-                where: { email: payload.email },
+            // checks if username exists
+            const account = await this._db.account.findFirst({
+                where: { username: payload.username },
+            });
+            if (account) {
+                throw new BadRequestError('Username already exists.');
+            }
+
+            payload.password = await bcrypt.hashSync(payload.password, 10);
+            const { id, username, status, accountType } =
+                await this._db.account.create({
+                    data: payload,
+                });
+            const token = await this._token.sign({
+                id,
+                username,
+                status,
+                accountType,
+            });
+            return {
+                token,
+                account: { id, username, status, accountType },
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async login(payload: Omit<TAccounts, 'status'>) {
+        try {
+            // checks if username exists
+            const account = await this._db.account.findFirst({
+                where: { username: payload.username },
             });
             if (!account) {
-                account = await this._db.account.create({ data: payload });
-                newData = true;
+                throw new BadRequestError('Wrong username or password');
             }
 
-            if (account.status === AccountStatuses.INACTIVE) {
-                newData = true;
+            const isPasswordMatched = await bcrypt.compareSync(
+                payload.password,
+                account.password as string
+            );
+
+            if (!isPasswordMatched) {
+                throw new BadRequestError('Wrong username or password');
             }
 
+            account.password = '';
             const token = await this._token.sign(account);
             return {
                 token,
-                newData,
+                account,
             };
         } catch (error) {
             throw error;

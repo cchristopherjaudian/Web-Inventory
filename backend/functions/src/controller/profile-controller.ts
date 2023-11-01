@@ -16,7 +16,6 @@ const create = catchAsync(async (req, res) => {
         ...request.body,
         account: {
             id: request.account.id,
-            accountType: request.body.account.accountType,
         },
     });
     await db.$disconnect();

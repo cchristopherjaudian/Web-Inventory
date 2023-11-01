@@ -54,7 +54,8 @@ enum PaymentMethods {
 
 model Account {
   id          String          @id @default(uuid())
-  email       String          @db.VarChar(100)
+  username    String          @db.VarChar(100)
+  password    String          @db.VarChar(100)
   status      AccountStatuses @default(INACTIVE)
   accountType AccountTypes?
   createdAt   DateTime        @default(now())
@@ -65,13 +66,14 @@ model Account {
 }
 
 model Profile {
-  id         String   @id @default(uuid())
-  firstname  String   @db.VarChar(100)
-  lastname   String   @db.VarChar(100)
-  middlename String?  @db.VarChar(100)
-  address    String   @db.VarChar(100)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           String   @id @default(uuid())
+  firstname    String   @db.VarChar(100)
+  lastname     String   @db.VarChar(100)
+  middlename   String?  @db.VarChar(100)
+  businessName String?  @db.VarChar(100)
+  address      String   @db.VarChar(100)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   account     Account       @relation(fields: [accountId], references: [id])
   accountId   String        @unique
@@ -122,6 +124,7 @@ model Cart {
   id String @id @default(uuid())
 
   quantity  Int
+  groupNo   String?
   profile   Profile? @relation(fields: [profileId], references: [id])
   profileId String?
 

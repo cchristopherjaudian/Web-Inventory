@@ -24,6 +24,7 @@ module.exports = {
     ],
     plugins: ['@typescript-eslint', 'import'],
     rules: {
+        'space-before-function-paren': 'off',
         'quote-props': ['error', 'as-needed'],
         '@typescript-eslint/no-explicit-any': 'off',
         indent: 'off',
