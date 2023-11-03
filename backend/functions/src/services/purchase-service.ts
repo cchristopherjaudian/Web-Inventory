@@ -14,7 +14,6 @@ class PurchaseService {
     }
 
     public async createPurchaseRequest(payload: TCreatePr) {
-        console.log('payload.profileId', payload.profileId);
         const prCount = await this._db.cart.groupBy({
             by: ['groupNo'],
             where: {
@@ -60,13 +59,38 @@ class PurchaseService {
 
     public async getPurchaseList(query: TPurchaseList) {
         return this._db.cart.groupBy({
-            by: ['groupNo', 'createdAt'],
+            _sum: {
+                quantity: true,
+            },
+            by: ['groupNo', 'createdAt', 'dateRequested', 'dateRequired'],
             where: {
                 profile: {
                     id: query.profileId,
                 },
             },
         });
+    }
+
+    public async getPurchaseRequest(groupNo: string) {
+        const [groupDetails, list] = await Promise.all([
+            this._db.cart.findFirst({
+                where: {
+                    groupNo,
+                },
+            }),
+            this._db.cart.findMany({
+                where: {
+                    groupNo,
+                },
+            }),
+        ]);
+
+        return {
+            groupNo,
+            dateRequested: groupDetails?.dateRequested,
+            dateRequired: groupDetails?.dateRequired,
+            list,
+        };
     }
 }
 
