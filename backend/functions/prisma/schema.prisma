@@ -69,6 +69,7 @@ model Profile {
   id           String   @id @default(uuid())
   firstname    String   @db.VarChar(100)
   lastname     String   @db.VarChar(100)
+  emailAddress String   @db.VarChar(100)
   middlename   String?  @db.VarChar(100)
   businessName String?  @db.VarChar(100)
   address      String   @db.VarChar(100)

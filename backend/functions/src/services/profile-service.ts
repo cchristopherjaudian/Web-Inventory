@@ -14,6 +14,14 @@ class ProfileService {
     }
 
     public async createProfile(payload: TProfile) {
+        const emailExists = await this._db.profile.findFirst({
+            select: { emailAddress: true },
+            where: { emailAddress: payload.emailAddress },
+        });
+        if (emailExists) {
+            throw new ResourceConflictError('Email already exists.');
+        }
+
         const [account, profile] = await Promise.all([
             this._db.account.update({
                 where: { id: payload.account.id },
@@ -59,13 +67,20 @@ class ProfileService {
             });
         }
         if (hasAccount) {
-            throw new ResourceConflictError('Email already exists.');
+            throw new ResourceConflictError('Username already exists.');
         }
 
         const hasProfile = await this.getProfile({
             accountId: payload.account?.id,
         });
         if (!hasProfile) throw new NotFoundError('Profile does not exists.');
+
+        const emailExists = await this.getProfile({
+            emailAddress: payload.emailAddress,
+        });
+        if (emailExists) {
+            throw new ResourceConflictError('Email already exists.');
+        }
 
         payload.id = hasProfile.id;
         const updateProfile = await this._db.profile.update({

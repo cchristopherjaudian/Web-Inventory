@@ -42,6 +42,9 @@ const getProfile = catchAsync(async (req, res) => {
 });
 
 const updateProfile = catchAsync(async (req, res) => {
+    const request = req as IAuthRequest;
+
+    req.body.account.id = request.profile.account.id;
     const profile = await profileInstance.updateProfile(req.body);
     await db.$disconnect();
     response.createResponse(
