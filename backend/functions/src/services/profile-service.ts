@@ -1,4 +1,4 @@
-import { AccountStatuses, PrismaClient } from '@prisma/client';
+import { AccountStatuses } from '@prisma/client';
 import {
     NotFoundError,
     ResourceConflictError,

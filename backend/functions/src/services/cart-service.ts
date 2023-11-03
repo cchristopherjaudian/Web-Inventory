@@ -52,7 +52,7 @@ class CartService {
 
             if (cart) {
                 cart.quantity = cart.quantity + payload.quantity;
-                return await this._db.cart.update({
+                return this._db.cart.update({
                     where: { id: cart.id },
                     data: cart,
                 });
@@ -62,7 +62,7 @@ class CartService {
                 delete payload?.code;
             }
             payload.productId = product.id;
-            return await this._db.cart.create({ data: payload });
+            return this._db.cart.create({ data: payload });
         } catch (error) {
             throw error;
         }
@@ -79,14 +79,14 @@ class CartService {
                 },
             } as TQueryArgs;
 
-            return await this._db.cart.findMany(query);
+            return this._db.cart.findMany(query);
         } catch (error) {
             throw error;
         }
     }
 
     public async getCartItem(id: string) {
-        return await this._db.cart.findFirst({
+        return this._db.cart.findFirst({
             where: { id },
             select: {
                 id: true,
@@ -99,11 +99,11 @@ class CartService {
     public async updateCart(id: string, payload: Partial<TCart>) {
         const cart = await this.getCartItem(id);
         if (!cart) throw new NotFoundError('Cart item does not exists.');
-        return await this._db.cart.update({ where: { id }, data: payload });
+        return this._db.cart.update({ where: { id }, data: payload });
     }
 
     public async deleteCartItem(id: string) {
-        return await this._db.cart.delete({ where: { id } });
+        return this._db.cart.delete({ where: { id } });
     }
 }
 

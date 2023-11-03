@@ -11,7 +11,7 @@ class B2bService {
 
     public async getB2bList(params: TAccountsListQuery) {
         try {
-            return await this._db.profile.findMany({
+            return this._db.profile.findMany({
                 where: {
                     OR: [
                         {

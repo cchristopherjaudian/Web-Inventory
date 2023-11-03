@@ -25,4 +25,10 @@ router.get(
     PurchaseController.getPurchaseList
 );
 
+router.get(
+    '/:groupNo',
+    authMiddleware.endUserValidate as any,
+    PurchaseController.getPurchaseRequest
+);
+
 export default router;

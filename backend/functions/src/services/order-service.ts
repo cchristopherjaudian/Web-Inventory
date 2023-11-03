@@ -111,7 +111,7 @@ class OrderService {
             })
         );
 
-        return await this._db.orders.create({
+        return this._db.orders.create({
             data: {
                 profileId: payload.profileId,
                 paymentMethod: payload.paymentMethod,
@@ -165,7 +165,7 @@ class OrderService {
         if (payload?.orderStatusId) {
             delete payload.orderStatusId;
         }
-        return await this._db.orderStatus.create({
+        return this._db.orderStatus.create({
             data: { ...payload, isCurrent: true },
         });
     }
@@ -178,7 +178,7 @@ class OrderService {
             throw new NotFoundError('Order does not exists.');
         }
 
-        return await this._db.orders.update({
+        return this._db.orders.update({
             where: { id },
             data: payload,
         });
@@ -189,14 +189,14 @@ class OrderService {
             where: { profileId },
             ...this._defaultOrderParams,
         };
-        return await this._db.orders.findMany(params);
+        return this._db.orders.findMany(params);
     }
 
     public async adminOrders() {
         const params = {
             ...this._defaultOrderParams,
         };
-        return await this._db.orders.findMany(params);
+        return this._db.orders.findMany(params);
     }
 
     public async getOrder(id: string) {

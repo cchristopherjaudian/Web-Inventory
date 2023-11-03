@@ -75,7 +75,7 @@ class AccountService {
 
     public async findAccount(payload: Partial<TAccounts>) {
         try {
-            return await this._db.account.findFirst({ where: payload });
+            return this._db.account.findFirst({ where: payload });
         } catch (error) {
             throw error;
         }

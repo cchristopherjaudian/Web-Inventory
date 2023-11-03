@@ -43,7 +43,7 @@ class InventoryService {
             ? moment(payload.expiration).tz('Asia/Manila').toDate()
             : null;
 
-        return await this._db.inventory.create({ data: payload });
+        return this._db.inventory.create({ data: payload });
     }
 
     public async getInventory(id: string) {
@@ -80,7 +80,7 @@ class InventoryService {
                 };
             }
 
-            return await this._db.inventory.findMany(params);
+            return this._db.inventory.findMany(params);
         } catch (error) {
             throw error;
         }
@@ -92,7 +92,7 @@ class InventoryService {
         if (payload?.stock) {
             payload.stockIndicator = getStockIndicator(payload.stock);
         }
-        return await this._db.inventory.update({
+        return this._db.inventory.update({
             where: { id },
             data: payload,
         });

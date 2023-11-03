@@ -37,4 +37,15 @@ const getPurchaseList = catchAsync(async (req, res) => {
     );
 });
 
-export default { createPurchase, getPurchaseList };
+const getPurchaseRequest = catchAsync(async (req, res) => {
+    const newPr = await purchase.getPurchaseRequest(req.params.groupNo);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_RETRIEVED,
+        newPr
+    );
+});
+
+export default { createPurchase, getPurchaseList, getPurchaseRequest };
