@@ -10,15 +10,17 @@ import sub1navigation from 'menu-items/subadmin1';
 import sub2navigation from 'menu-items/subadmin2';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 import { openDrawer } from 'store/reducers/menu';
+import Footer from './Footer/index';
 
 const MainLayout = () => {
   const theme = useTheme();
+  const matchUpMD = useMediaQuery(theme.breakpoints.up('lg'));
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
   const dispatch = useDispatch();
-  const admintype = useSelector((state)=>state.token.admintype.adminType);
+  const admintype = useSelector((state) => state.token.admintype.adminType);
   const { drawerOpen } = useSelector((state) => state.menu);
   const [open, setOpen] = useState(drawerOpen);
-  let navigation = [adminnavigation,sub1navigation,sub2navigation][admintype];
+  let navigation = [adminnavigation, sub1navigation, sub2navigation][admintype];
   const handleDrawerToggle = () => {
     setOpen(!open);
     dispatch(openDrawer({ drawerOpen: !open }));
@@ -34,15 +36,22 @@ const MainLayout = () => {
   }, [drawerOpen]);
 
   return (
-    <Box sx={{ display: 'flex', width: '100%' }}>
-      <Header open={open} handleDrawerToggle={handleDrawerToggle} />
-      <Drawer open={open} handleDrawerToggle={handleDrawerToggle} />
-      <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
-        <Toolbar />
-        <Breadcrumbs navigation={navigation} title />
-        <Outlet />
+    <>
+      <Box sx={{ display: 'flex', width: '100%' }}>
+        <Header open={open} handleDrawerToggle={handleDrawerToggle} />
+        <Drawer open={open} handleDrawerToggle={handleDrawerToggle} />
+        <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+          <Toolbar />
+          <Breadcrumbs navigation={navigation} title />
+          <Outlet />
+        </Box>
+
       </Box>
-    </Box>
+      {
+        matchUpMD && <Footer />
+      }
+      
+    </>
   );
 };
 
