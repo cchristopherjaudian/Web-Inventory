@@ -7,7 +7,8 @@ const initialState = {
     address: '',
     emailAddress: '',
     contact: '',
-    accType: ''
+    accType: '',
+    businessName: ''
 };
 
 
@@ -35,6 +36,9 @@ const profile = createSlice({
         },
         setContact: (state, action) => {
             state.contact = action.payload;
+        },
+        setBusinessName: (state, action) => {
+            state.businessName = action.payload;
         }
     }
 });
@@ -42,4 +46,4 @@ const profile = createSlice({
 
 export default profile.reducer;
 
-export const { setContact, setFirstName, setMiddleName, setLastName, setAddress, setAccType, setEmailAddress } = profile.actions;
+export const { setBusinessName,setContact, setFirstName, setMiddleName, setLastName, setAddress, setAccType, setEmailAddress } = profile.actions;

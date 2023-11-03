@@ -20,15 +20,15 @@ const steps = ['Register as Customer', 'Register as Business'];
 const RegisterStepper = (props) => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token.token);
-    const [temporaryToken,setTemporaryToken] = useState('');
+    const [temporaryToken, setTemporaryToken] = useState('');
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(0);
     const [payload, setPayload] = useState({});
     const [patchProfile, setPatchProfile] = useState({});
     const [registerProfile, setRegisterProfile] = useState({});
     const [completed, setCompleted] = useState({});
-    const { data,error, fetchData } = useAxios('accounts', 'POST', registerProfile);
-    const { metricsData, metricsFetchData } = useMetricsAxios('profiles', 'POST', patchProfile,true,temporaryToken);
+    const { data, error, fetchData } = useAxios('accounts', 'POST', registerProfile);
+    const { metricsData, metricsFetchData } = useMetricsAxios('profiles', 'POST', patchProfile, true, temporaryToken);
     const totalSteps = () => {
         return steps.length;
     };
@@ -67,8 +67,12 @@ const RegisterStepper = (props) => {
                 middlename: payload['middlename'],
                 lastname: payload['lastname'],
                 address: payload['address'],
-                emailAddress: payload['email']
+                emailAddress: payload['email'],
             }
+            if (activeStep === 1) {
+                patchPayload.businessName = payload['businessName'];
+            }
+            console.log(patchPayload);
             setRegisterProfile(registerPayload);
             setPatchProfile(patchPayload);
         }

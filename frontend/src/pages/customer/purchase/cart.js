@@ -5,18 +5,14 @@ import {
     Typography
 } from '@mui/material';
 import CartItemList from './CartItemList';
-import CartItemHeader from './CartItemHeader';
-const Cart = () => {
-    const sampleCart = [
-        { id: 0, name: 'Eyyyy' },
-        { id: 1, name: 'Eyyyy' },
-        { id: 2, name: 'Eyyyy' },
-        { id: 3, name: 'Eyyyy' }
-    ]
+import { useState } from 'react';
+const Cart = (props) => {
+    const newCart = props.productList;
+    
     return (<Grid container sx={{mt:2}}>
         <Grid item xs={12}>
-            {sampleCart.map((s, i) => {
-                return <CartItemList key={s.id} />
+            {newCart.map((s, i) => {
+                return <CartItemList key={i} product={s} updateProductProperty={props.updateProductProperty} />
             })
             }
         </Grid>

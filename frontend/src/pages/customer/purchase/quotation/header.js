@@ -13,8 +13,9 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-const Header = () => {
-
+import { useSelector } from 'react-redux';
+const Header = (props) => {
+    const profile = useSelector((state) => state.profile);
     return (
         <Box>
             <Grid container spacing={1.5}>
@@ -34,9 +35,9 @@ const Header = () => {
                             <Typography variant="h6">Contact No.</Typography>
                         </Grid>
                         <Grid item xs={2}>
-                            <Typography variant="h6">Requester Name</Typography>
-                            <Typography variant="h6">Email Address</Typography>
-                            <Typography variant="h6">Contact No.</Typography>
+                            <Typography variant="h6">{profile.firstName.firstName}</Typography>
+                            <Typography variant="h6">{profile.emailAddress.emailAddress}</Typography>
+                            <Typography variant="h6">{profile.contact.contact}</Typography>
                         </Grid>
 
                     </Grid>
@@ -48,7 +49,7 @@ const Header = () => {
                                 <TableRow>
                                     <TableCell colSpan={2}>Purchase Order</TableCell>
                                 </TableRow>
-                                <TableRow sx={{backgroundColor: '#D1EAFF'}}>
+                                <TableRow sx={{ backgroundColor: '#D1EAFF' }}>
                                     <TableCell>Purchase ID</TableCell>
                                     <TableCell>Date</TableCell>
                                 </TableRow>
@@ -59,9 +60,11 @@ const Header = () => {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        0000010101
+                                        {props.quoteInfo.groupNo}
                                     </TableCell>
-                                    <TableCell>2023-11-01</TableCell>
+                                    <TableCell>
+                                        {props.quoteInfo.dateRequested?.substring(0,10)}
+                                    </TableCell>
 
                                 </TableRow>
 

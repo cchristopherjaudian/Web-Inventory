@@ -11,7 +11,7 @@ import useAxios from 'hooks/useAxios';
 import useAxiosBackup from 'hooks/useAxiosBackup';
 import { setCart } from "store/reducers/cart";
 import { setToken, setAuth, setAdmin, setAdminType, setCustomerType } from 'store/reducers/token';
-import { setContact, setFirstName, setMiddleName, setLastName, setAddress, setAccType, setEmailAddress } from 'store/reducers/profile';
+import { setBusinessName,setContact, setFirstName, setMiddleName, setLastName, setAddress, setAccType, setEmailAddress } from 'store/reducers/profile';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -98,7 +98,7 @@ export default function Login() {
       dispatch(setMiddleName({ middleName: profile['data']['middlename'] }));
       dispatch(setLastName({ lastName: profile['data']['lastname'] }));
       dispatch(setAddress({ address: profile['data']['address'] }));
-
+      dispatch(setBusinessName({businessName: profile['data']['businessName']}));
       if (accountType in adminTypes) {
         dispatch(setAdminType({ adminType: adminTypes[accountType] }));
         dispatch(setAdmin({ isadmin: true }));

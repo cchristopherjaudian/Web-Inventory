@@ -22,7 +22,10 @@ import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
 
 const CartItemList = (props) => {
-
+    console.log(props);
+    const updateProduct = (field, value) => {
+        props.updateProductProperty(props.product.code, { [field]: value });
+    }
     return (<>
         <ListItemButton>
             <ListItemAvatar>
@@ -33,16 +36,16 @@ const CartItemList = (props) => {
                 primary={
                     <Typography variant="h6">
                         <Typography component="span" variant="subtitle1">
-                            Product Name
+                            {props.product.name}
                         </Typography>{' '}
                     </Typography>
                 }
-                secondary={'x44'}
+                secondary={props.product.code}
 
             />
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
-                primary={'₱5555'}
+                primary={props.product.price}
             />
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
@@ -52,18 +55,18 @@ const CartItemList = (props) => {
                         fullWidth
                         id="quantity"
                         label="Quantity"
+                        onChange={(e) => updateProduct('quantity', Number(e.target.value))}
                     />
                 }
             />
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
                 primary={
-                    <FormControlLabel control={<Checkbox />} label="Add to Request" />
+                    <FormControlLabel control={<Checkbox onChange={(e) => updateProduct('isSelected',e.target.checked)} />
+                    } label="Add to Request" />
                 }
             />
-            {/* <Button variant="contained" color="error" size="small" sx={{ ml: 2 }} onClick={() => setCartID(props.item.id)}>
-                Remove
-            </Button> */}
+
         </ListItemButton>
 
         <Divider />

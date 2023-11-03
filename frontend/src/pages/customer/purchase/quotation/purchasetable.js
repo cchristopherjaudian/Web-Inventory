@@ -14,7 +14,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-const PurchaseTable = () => {
+const PurchaseTable = (props) => {
+    const cartList = props.quoteInfo.list;
+
     return (<Grid container>
         <Grid item xs={12} sx={{ pr: 1.5 }}>
             <TableContainer component={Paper}>
@@ -30,18 +32,23 @@ const PurchaseTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow
-                            key={1}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                0000010101
-                            </TableCell>
-                            <TableCell>2023-11-01</TableCell>
-                            <TableCell>2023-11-01</TableCell>
-                            <TableCell>2023-11-01</TableCell>
-                            <TableCell>2023-11-01</TableCell>
-                        </TableRow>
+                        {
+                            cartList?.map((cart, index) => {
+                                return <TableRow
+                                    key={1}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {cart.groupNo}
+                                    </TableCell>
+                                    <TableCell>{cart.groupNo}</TableCell>
+                                    <TableCell>{cart.quantity}</TableCell>
+                                    <TableCell>{cart.groupNo}</TableCell>
+                                    <TableCell>{cart.groupNo}</TableCell>
+                                </TableRow>
+                            })
+                        }
+
                         <TableRow
                             key={2}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

@@ -18,9 +18,10 @@ const Shop = () => {
         return <MuiAlert sx={{ color: 'white' }} elevation={6} ref={ref} variant="filled" {...props} />;
     });
     const [products, setProducts] = useState([]);
+    const [searchItem, setSearchItem] = useState('');
     const [selectedProduct, setSelectedProduct] = useState({});
     const [cartItem, setCartItem] = useState({});
-    const { data, fetchData } = useAxios('products', 'GET', null, false);
+    const { data, fetchData } = useAxios('products' + ((searchItem) ? '?search=' + searchItem : ''), 'GET', null, true);
     const { profile, fetchProfile } = useAxiosBackup('carts', 'POST', selectedProduct);
     const handleClose = () => {
         setOpen(false);
@@ -39,10 +40,15 @@ const Shop = () => {
     useEffect(() => {
         if (Object.keys(cartItem).length !== 0) {
             fetchProfile(selectedProduct);
-
         }
 
     }, [selectedProduct]);
+    useEffect(() => {
+        fetchData();
+    }, []);
+    useEffect(()=>{
+        if(!searchItem) fetchData();
+    },[searchItem]);
     useEffect(() => {
 
         if (profile) {
@@ -79,16 +85,17 @@ const Shop = () => {
             <Grid item xs={12} sx={{ mt: 3 }}>
                 <MainCard>
                     <form style={{ display: 'flex', alignItems: 'center' }}>
-                        <TextField id="searchProduct" label="Search" variant="outlined" sx={{ width: '300px' }} />
-                        {/* <Select id="selectSort" sx={{ marginRight: '10px', marginLeft: '10px', width: '200px' }}>
-                            <MenuItem value={10}>Option 1</MenuItem>
-                            <MenuItem value={20}>Option 2</MenuItem>
-                            <MenuItem value={30}>Option 3</MenuItem>
-                        </Select> */}
-                        <Button variant="contained" color="primary" sx={{ ml: 2 }}>
+                        <TextField
+                            id="searchProduct"
+                            value={searchItem}
+                            onChange={(e) => setSearchItem(e.target.value)}
+                            label="Search"
+                            variant="outlined"
+                            sx={{ width: '300px' }} />
+                        <Button variant="contained" color="primary" sx={{ ml: 2 }} onClick={() => fetchData()}>
                             Search
                         </Button>
-                        <Button variant="contained" color="secondary" type="reset" sx={{ ml: 1 }}>
+                        <Button variant="contained" color="secondary" type="reset" sx={{ ml: 1 }} onClick={() => setSearchItem('')}>
                             Clear
                         </Button>
                     </form>

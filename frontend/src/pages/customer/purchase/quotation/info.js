@@ -6,8 +6,9 @@ import {
     Box,
     Typography
 } from '@mui/material';
-
+import { useSelector } from 'react-redux';
 const Info = () => {
+    const profile = useSelector((state)=>state.profile);
     return (
         <Box sx={{ mt: 2 }}>
 
@@ -21,6 +22,7 @@ const Info = () => {
                                 fullWidth
                                 id="oxiOwner"
                                 label="Owner Name"
+                                value="Oxi Owner Name"
                                 disabled
                                 sx={{ backgroundColor: 'white' }}
                             />
@@ -31,6 +33,7 @@ const Info = () => {
                                 fullWidth
                                 id="oxiCompany"
                                 label="Company Name"
+                                value="Oxiaure Gas Enterprises"
                                 disabled
                                 sx={{ backgroundColor: 'white' }}
                             />
@@ -38,6 +41,7 @@ const Info = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="oxiAddress"
+                                value="1260 Maharlika Highway, Isabang, Lucena City"
                                 fullWidth
                                 id="oxiAddress"
                                 label="Address"
@@ -48,6 +52,7 @@ const Info = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="oxiPhone"
+                                value="042.710.2833 | 042.373.7077"
                                 fullWidth
                                 id="oxiPhone"
                                 label="Phone Number"
@@ -58,6 +63,7 @@ const Info = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="oxiEmail"
+                                value="oxiairegasenterprises@gmail.com"
                                 fullWidth
                                 id="oxiEmail"
                                 label="Email Address"
@@ -73,6 +79,7 @@ const Info = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="customerName"
+                                value={profile.firstName.firstName}
                                 fullWidth
                                 id="customerName"
                                 label="Customer Name"
@@ -82,6 +89,7 @@ const Info = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="customerBusiness"
+                                value={profile.businessName.businessName}
                                 fullWidth
                                 id="customerBusiness"
                                 label="Company Name"
@@ -91,6 +99,7 @@ const Info = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="customerAddress"
+                                value={profile.address.address}
                                 fullWidth
                                 id="customerAddress"
                                 label="Address"
@@ -100,6 +109,7 @@ const Info = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="customerPhone"
+                                value={profile.contact.contact}
                                 fullWidth
                                 id="customerPhone"
                                 label="Phone Number"
@@ -109,6 +119,7 @@ const Info = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="customerEmail"
+                                value={profile.emailAddress.emailAddress}
                                 fullWidth
                                 id="customerEmail"
                                 label="Email Address"

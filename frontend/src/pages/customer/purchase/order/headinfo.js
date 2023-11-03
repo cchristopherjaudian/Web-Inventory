@@ -10,7 +10,9 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Option from "pages/customer/checkout/option";
-const HeadInfo = () => {
+import { useSelector } from 'react-redux';
+const HeadInfo = (props) => {
+    const profile = useSelector((state) => state.profile);
     const [paymethod, setPaymethod] = useState('');
     const methods = [
         { id: 2, img: '/asset/gcash.png', code: 'GCASH', name: 'GCash', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,' },
@@ -26,23 +28,23 @@ const HeadInfo = () => {
                     <img src="https://www.placehold.co/200x100" alt="x" />
                 </Grid>
                 <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <Typography variant="h5">11/01/2023</Typography>
+                    <Typography variant="h5">{props.prInfo.dateRequested?.substring(0,10)}</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ p: 1, display: 'flex', direction: 'row', justifyContent: 'space-between', backgroundColor: '#3498db' }}>
                     <Typography variant="h5" sx={{ color: 'white' }}>Quote ID</Typography>
-                    <Typography variant="h5" sx={{ color: 'white' }}>PQ-001</Typography>
+                    <Typography variant="h5" sx={{ color: 'white' }}>{props.prInfo.groupNo}</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
                     <Typography variant="body1">Requester Name</Typography>
-                    <Typography variant="body1">Requester Name</Typography>
+                    <Typography variant="body1">{profile.firstName.firstName}</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
                     <Typography variant="body1">Email Address</Typography>
-                    <Typography variant="body1">Requester Email</Typography>
+                    <Typography variant="body1">{profile.emailAddress.emailAddress}</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
                     <Typography variant="body1">Contact Number</Typography>
-                    <Typography variant="body1">Requester Contact</Typography>
+                    <Typography variant="body1">{profile.contact.contact}</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2, p: 3, display: 'flex', direction: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#3498db' }}>
                     <Typography variant="h3" sx={{ color: 'white', mt: 2 }}>TOTAL:</Typography>

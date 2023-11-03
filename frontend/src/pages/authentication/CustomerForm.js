@@ -26,7 +26,7 @@ const CustomerForm = (props) => {
     };
 
     const initVal = {
-        ...(props.activeStep !== 0 && { businessname: '' }),
+        ...(props.activeStep !== 0 && { businessName: '' }),
         ...baseValues
     };
 
@@ -59,14 +59,14 @@ const CustomerForm = (props) => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextField
-                                            name="businessname"
+                                            name="businessName"
                                             required
                                             fullWidth
-                                            id="businessname"
+                                            id="businessName"
                                             label="Business Name"
                                             type="text"
                                             onChange={formik.handleChange}
-                                            value={formik.values.businessname}
+                                            value={formik.values.businessName}
                                             autofocus
                                         />
                                     </Grid>

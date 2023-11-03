@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { FilePdfOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
-const Options = () => {
+const Options = (props) => {
     const navigate = useNavigate();
     return (<Grid container mt={3} spacing={5} sx={{display:'flex', justifyContent:'space-between'}}>
         <Grid item xs={12} md={5} >
@@ -32,8 +32,8 @@ const Options = () => {
 
         </Grid>
         <Grid item xs={12} md={4}>
-            <Button variant="contained" color="primary" fullWidth onClick={()=>navigate('/purchase/order/1')}>Continue to Purchase Order</Button>
-            <Button variant="outlined" color="primary" sx={{ mt: 2 }} fullWidth onClick={()=>navigate('/purchase/request')}>Make another request</Button>
+            <Button variant="contained" color="primary" fullWidth onClick={()=>navigate('/purchase/order/' + props.quoteInfo.groupNo,{replace:true})}>Continue to Purchase Order</Button>
+            <Button variant="outlined" color="primary" sx={{ mt: 2 }} fullWidth onClick={()=>navigate('/purchase/request',{replace:true})}>Make another request</Button>
         </Grid>
 
 
