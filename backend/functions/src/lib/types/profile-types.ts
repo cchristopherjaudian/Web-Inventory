@@ -9,6 +9,7 @@ export type TProfile = {
     createdAt?: string;
     updatedAt?: string;
     emailAddress: string;
+    photoUrl?: string;
     accountId?: string;
 
     account: TAccounts;
