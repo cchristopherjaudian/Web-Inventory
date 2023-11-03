@@ -7,18 +7,28 @@ import Stack from '@mui/material/Stack';
 import CustomerForm from './CustomerForm';
 import BusinessForm from './BusinessForm';
 import Typography from '@mui/material/Typography';
+import { setToken } from 'store/reducers/token';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import useAxios from 'hooks/useAxios';
+import useMetricsAxios from 'hooks/useMetricsAxios';
 import Swal from 'sweetalert2';
 const steps = ['Register as Customer', 'Register as Business'];
 
 const RegisterStepper = (props) => {
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.token.token);
+    const [temporaryToken,setTemporaryToken] = useState('');
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(0);
     const [payload, setPayload] = useState({});
+    const [patchProfile, setPatchProfile] = useState({});
+    const [registerProfile, setRegisterProfile] = useState({});
     const [completed, setCompleted] = useState({});
-    const { data, loading, error, fetchData } = useAxios('profiles', 'POST', payload);
+    const { data,error, fetchData } = useAxios('accounts', 'POST', registerProfile);
+    const { metricsData, metricsFetchData } = useMetricsAxios('profiles', 'POST', patchProfile,true,temporaryToken);
     const totalSteps = () => {
         return steps.length;
     };
@@ -26,25 +36,7 @@ const RegisterStepper = (props) => {
     const handleStep = (step) => () => {
         setActiveStep(step);
     };
-    useEffect(() => {
-        if (data) {
-            if (data.status === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Account Registration',
-                    text: 'Account registered successfully. Click OK to continue',
-                    allowOutsideClick: false,
-                    showCancelButton: false,
-                    confirmButtonText: 'Ok'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        navigate('/', { replace: true })
-                    }
-                })
 
-            }
-        }
-    }, [data]);
     useEffect(() => {
         if (error && Object.keys(payload).length !== 0) {
             let msg = '';
@@ -63,11 +55,65 @@ const RegisterStepper = (props) => {
     }, [error]);
     useEffect(() => {
         if (payload) {
+            console.log('Payload');
             console.log(payload);
-            fetchData();
+            const registerPayload = {
+                username: payload['contact'],
+                password: payload['password'],
+                accountType: activeStep === 0 ? 'CUSTOMER' : 'BUSINESS'
+            };
+            const patchPayload = {
+                firstname: payload['firstname'],
+                middlename: payload['middlename'],
+                lastname: payload['lastname'],
+                address: payload['address'],
+                emailAddress: payload['email']
+            }
+            setRegisterProfile(registerPayload);
+            setPatchProfile(patchPayload);
         }
 
     }, [payload]);
+    useEffect(() => {
+        if (registerProfile) {
+            console.log('registerProfile');
+            fetchData();
+        }
+    }, [registerProfile]);
+    useEffect(() => {
+        if (data) {
+            console.log(data['data']['token']);
+            if (data.status === 200) {
+                const newToken = data['data']['token'];
+                setTemporaryToken(newToken);
+                dispatch(setToken({ token: newToken }));
+            }
+        }
+    }, [data]);
+    useEffect(() => {
+        if (temporaryToken) {
+            console.log(temporaryToken);
+            metricsFetchData();
+        }
+    }, [temporaryToken]);
+    useEffect(() => {
+        if (metricsData) {
+            if (metricsData['status'] === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Account Registration',
+                    text: 'Account registered successfully. Click OK to continue',
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/', { replace: true })
+                    }
+                })
+            }
+        }
+    }, [metricsData]);
     return (
         <>
             <Box sx={{ mt: 3 }}>

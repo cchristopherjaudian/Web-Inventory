@@ -16,18 +16,18 @@ const FirebaseSocial = () => {
   const { token } = useSelector((state) => state.menu);
   const [newToken, setNewToken] = useState('');
   const [newData, setNewData] = useState(false);
-  const [emailLogin, setEmailLogin] = useState('');
+  const [mobile, setMobile] = useState('');
   const [user, setUser] = useState('');
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const { data, fetchData } = useAxios('accounts', 'POST', { email: emailLogin });
+  const { data, fetchData } = useAxios('accounts', 'POST', { username: mobile, password: 'Password001*' });
   const { profile, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
 
   useEffect(() => {
-    if (emailLogin) {
+    if (mobile) {
       fetchData();
-      setEmailLogin('');
+      setMobile('');
     }
-  }, [emailLogin]);
+  }, [mobile]);
   useEffect(() => {
     if (data) {
       const createToken = data['data']['token'];
@@ -94,7 +94,7 @@ const FirebaseSocial = () => {
         color="secondary"
         fullWidth={!matchDownSM}
         startIcon={<img src={Google} alt="Google" />}
-        onClick={() => setEmailLogin('customer@gmail.com')}
+        onClick={() => setMobile('09272630001')}
       >
         {!matchDownSM && 'Sign in as Customer'}
       </Button>
@@ -103,7 +103,7 @@ const FirebaseSocial = () => {
         color="secondary"
         fullWidth={!matchDownSM}
         startIcon={<img src={Google} alt="Google" />}
-        onClick={() => setEmailLogin('business@gmail.com')}
+        onClick={() => setMobile('09272630002')}
       >
         {!matchDownSM && 'Sign in as Business'}
       </Button>
@@ -112,7 +112,7 @@ const FirebaseSocial = () => {
         color="secondary"
         fullWidth={!matchDownSM}
         startIcon={<img src={Google} alt="Google" />}
-        onClick={() => setEmailLogin('sub1@gmail.com')}
+        onClick={() => setMobile('09272630003')}
       >
         {!matchDownSM && 'Sign in as SUB1'}
       </Button>
@@ -121,7 +121,7 @@ const FirebaseSocial = () => {
         color="secondary"
         fullWidth={!matchDownSM}
         startIcon={<img src={Google} alt="Google" />}
-        onClick={() => setEmailLogin('sub2@gmail.com')}
+        onClick={() => setMobile('09272630004')}
       >
         {!matchDownSM && 'Sign in as SUB2'}
       </Button>
@@ -130,7 +130,7 @@ const FirebaseSocial = () => {
         color="secondary"
         fullWidth={!matchDownSM}
         startIcon={<img src={Google} alt="Google" />}
-        onClick={() => setEmailLogin('admin@gmail.com')}
+        onClick={() => setMobile('09272630005')}
       >
         {!matchDownSM && 'Sign in as ADMIN'}
       </Button>

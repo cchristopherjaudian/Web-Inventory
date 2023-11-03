@@ -1,10 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Avatar, CssBaseline,  Paper, Box, TextField, Grid, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Avatar, Button, CssBaseline, Paper, Box, TextField, Grid, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FirebaseSocial from './auth-forms/FirebaseSocial';
 import { styled } from '@mui/system';
 import { useState, useEffect, forwardRef } from 'react';
 import { useFormik } from 'formik';
+import useAxios from 'hooks/useAxios';
+import useAxiosBackup from 'hooks/useAxiosBackup';
+import { setCart } from "store/reducers/cart";
+import { setToken, setAuth, setAdmin, setAdminType, setCustomerType } from 'store/reducers/token';
+import { setContact, setFirstName, setMiddleName, setLastName, setAddress, setAccType, setEmailAddress } from 'store/reducers/profile';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -24,8 +31,15 @@ const Input = styled('input')({
 });
 
 export default function Login() {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
+  const [newToken, setNewToken] = useState('');
+  const [newData, setNewData] = useState(false);
   const [payload, setPayload] = useState({});
+  const { data, fetchData } = useAxios('accounts/login', 'POST', payload, true);
+  const { profile, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -38,6 +52,67 @@ export default function Login() {
   useEffect(() => {
     setPayload(formik.values);
   }, [formik.values]);
+  useEffect(() => {
+    if (data) {
+      if (data['status'] === 200) {
+        const createToken = data['data']['token'];
+        dispatch(setToken({ token: createToken }));
+        setNewData(data['data']['newData']);
+        setNewToken(createToken);
+      } else {
+        Swal.fire({
+          icon: 'info',
+          title: 'Login',
+          text: 'Invalid username/password. Please try again.',
+          showCancelButton: false,
+          confirmButtonText: 'Ok'
+        });
+      }
+    }
+  }, [data]);
+  useEffect(() => {
+    if (newToken) {
+      fetchProfile();
+    }
+  }, [newToken]);
+  useEffect(() => {
+    if (profile) {
+      dispatch(setCart([]));
+      const adminTypes = {
+        'ADMIN': 0,
+        'SUB_1': 1,
+        'SUB_2': 2
+      };
+      const customerTypes = {
+        'CUSTOMER': 0,
+        'BUSINESS': 1
+      };
+
+      const newData = data['data']['newData'];
+      const accountType = profile['data']['account']['accountType'];
+      dispatch(setAuth({ authenticated: true }));
+      dispatch(setAccType({ accType: accountType }));
+      dispatch(setContact({ contact: payload['username'] }));
+      dispatch(setEmailAddress({ emailAddress: profile['data']['emailAddress'] }));
+      dispatch(setFirstName({ firstName: profile['data']['firstname'] }));
+      dispatch(setMiddleName({ middleName: profile['data']['middlename'] }));
+      dispatch(setLastName({ lastName: profile['data']['lastname'] }));
+      dispatch(setAddress({ address: profile['data']['address'] }));
+
+      if (accountType in adminTypes) {
+        dispatch(setAdminType({ adminType: adminTypes[accountType] }));
+        dispatch(setAdmin({ isadmin: true }));
+        navigate('/', { replace: true });
+      } else {
+        const customerType = profile['data']['account']['accountType'];
+        dispatch(setCustomerType({ customertype: customerTypes[customerType] }));
+        dispatch(setAdmin({ isadmin: false }));
+        navigate('/home', { replace: true });
+      }
+
+    }
+
+  }, [profile]);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: '100vh' }} >
@@ -87,12 +162,14 @@ export default function Login() {
                     name="username"
                     onChange={formik.handleChange}
                     value={formik.values.username}
+                    inputProps={{ maxLength: 11 }}
                     autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
+                    type="password"
                     fullWidth
                     id="password"
                     label="Password"
@@ -100,6 +177,13 @@ export default function Login() {
                     onChange={formik.handleChange}
                     value={formik.values.password}
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={() => fetchData()}
+                  >Login</Button>
                 </Grid>
               </Grid>
             </Box>

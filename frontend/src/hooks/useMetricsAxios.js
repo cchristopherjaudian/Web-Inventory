@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import customaxios from 'axios';
 
-function useMetricsAxios(url, method, requestData = null, lazy = true) {
+function useMetricsAxios(url, method, requestData = null, lazy = true,tempToken='') {
   const token = useSelector((state) => state.token.token);
 
   const [metricsData, setMetricsData] = useState(null);
@@ -13,15 +13,15 @@ function useMetricsAxios(url, method, requestData = null, lazy = true) {
     baseURL: serviceId,
     timeout: 10000,
     headers: {
-      'Authorization': (token) ? token.token : ''
+      'Authorization': (token.token) ? token.token : (tempToken) ? tempToken : ''
     }
   });
-
+  console.log(token);
   const metricsFetchData = async () => {
     try {
       console.log(url);
       setMetricsLoading(true);
-      
+
       let response;
       switch (method) {
         case 'GET':
