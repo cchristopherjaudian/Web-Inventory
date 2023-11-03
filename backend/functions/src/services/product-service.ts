@@ -102,7 +102,7 @@ class ProductsService {
             throw new ResourceConflictError('Product already exists.');
         }
 
-        return await this._db.products.update({
+        return this._db.products.update({
             where: { id },
             data: {
                 ...payload,

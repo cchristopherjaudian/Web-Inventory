@@ -32,7 +32,7 @@ class ScheduleService {
             query.where.status = params.status;
         }
 
-        return await this._db.routes.findMany(query);
+        return this._db.routes.findMany(query);
     }
 
     public async updateSchedule(id: string, payload: Partial<TRoutes>) {
@@ -44,7 +44,7 @@ class ScheduleService {
             if (!hasAdmin) throw new NotFoundError('Account does not exists.');
         }
 
-        return await this._db.routes.update({
+        return this._db.routes.update({
             where: { id },
             data: payload,
         });
