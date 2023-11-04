@@ -152,6 +152,7 @@ model Orders {
   paymentMethod PaymentMethods  @default(COD)
   status        PaymentStatuses @default(PROCESSING)
   refNo         String?
+  paymentUrl    String?
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt

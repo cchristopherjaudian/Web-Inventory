@@ -35,8 +35,9 @@ const updateOrderSchema = {
     body: Joi.object({
         status: Joi.string()
             .valid(...Object.keys(PaymentStatuses))
-            .required(),
-        refNo: Joi.string().trim().required(),
+            .optional(),
+        refNo: Joi.string().trim().optional(),
+        paymentUrl: Joi.string().trim().optional(),
     }),
 };
 
