@@ -1,5 +1,6 @@
 import MainCard from 'components/MainCard';
 import Header from './header';
+
 import {
     Grid,
     TextField,
@@ -11,15 +12,16 @@ import { useNavigate } from 'react-router-dom';
 import Cart from './cart';
 import useAxios from 'hooks/useAxios';
 import useHighAxios from 'hooks/useHighAxios';
+const groupCode = Date.now();
 const Purchase = () => {
-    const groupCode = Date.now();
+ 
     const navigate = useNavigate();
-    const { data } = useAxios('products', 'GET', null, false);
+    const { data,loading } = useAxios('products', 'GET', null, false);
     const [productList, setProductList] = useState([]);
     const [poProducts, setPoProducts] = useState([]);
     const [dateRequested, setDateRequested] = useState('');
     const [dateRequired, setDateRequired] = useState('');
-    const { highData, highFetchData } = useHighAxios('purchase', 'POST', { cart: poProducts }, true);
+    const { highData,highLoading, highFetchData } = useHighAxios('purchase', 'POST', { cart: poProducts }, true);
     useEffect(() => {
         if (data) {
             const newProducts = [];
@@ -48,6 +50,13 @@ const Purchase = () => {
     }
 
     const createPO = () => {
+        let msg = '';
+        if(!dateRequested){
+            msg = 'Please input a Date Requested'
+        }
+        if(!dateRequired){
+            msg = 'Please input a Date Required'
+        }
         const selectedProducts = productList.filter((p) => p.isSelected);
         let mapProducts = [];
         selectedProducts.map((s, i) => {
@@ -76,7 +85,7 @@ const Purchase = () => {
         }
     }, [highData]);
     return (<MainCard sx={{ pt: 3 }}>
-        <Header createPO={createPO} dateRequested={dateRequested} setDateRequested={setDateRequested} dateRequired={dateRequired} setDateRequired={setDateRequired} />
+        <Header highLoading={highLoading} createPO={createPO} dateRequested={dateRequested} setDateRequested={setDateRequested} dateRequired={dateRequired} setDateRequired={setDateRequired} />
         <Typography variant="h6" sx={{ mt: 3 }}>Enter the item you wish to order</Typography>
         <Cart productList={productList} updateProductProperty={updateProductProperty} />
     </MainCard>);

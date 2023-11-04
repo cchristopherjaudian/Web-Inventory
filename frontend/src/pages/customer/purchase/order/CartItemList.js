@@ -22,7 +22,7 @@ import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
 
 const CartItemList = (props) => {
-
+console.log(props);
     return (<>
         <ListItemButton>
             <ListItemAvatar>
@@ -33,16 +33,16 @@ const CartItemList = (props) => {
                 primary={
                     <Typography variant="h6">
                         <Typography component="span" variant="subtitle1">
-                            Product Name
+                        {props.product.products.name}
                         </Typography>{' '}
                     </Typography>
                 }
-                secondary={'x44'}
+                secondary={props.product.products.code}
 
             />
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
-                primary={'₱5555'}
+                primary={props.product.products.price}
             />
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
@@ -52,13 +52,15 @@ const CartItemList = (props) => {
                         fullWidth
                         id="quantity"
                         label="Quantity"
+                        type="number"
+                        value={props.product.quantity}
                     />
                 }
             />
          
-            <Button variant="contained" color="error" size="medium" sx={{ ml: 2 }} startIcon={<DeleteOutlined />} >
+            {/* <Button variant="contained" color="error" size="medium" sx={{ ml: 2 }} startIcon={<DeleteOutlined />} >
                 Remove
-            </Button>
+            </Button> */}
         </ListItemButton>
 
         <Divider />

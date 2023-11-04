@@ -50,7 +50,7 @@ const MainLayout = () => {
       {
         matchUpMD && <Footer />
       }
-      
+     
     </>
   );
 };

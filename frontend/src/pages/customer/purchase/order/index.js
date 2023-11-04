@@ -4,25 +4,80 @@ import {
 import HeadInfo from './headinfo';
 import Cart from './cart';
 import { useParams } from 'react-router-dom';
-import { useState,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import useAxios from 'hooks/useAxios';
+import useHighAxios from 'hooks/useHighAxios';
+import Swal from 'sweetalert2';
 const Order = () => {
     let { id } = useParams();
+    const navigate = useNavigate();
+    const [mapPayload, setMapPayload] = useState({});
+    const [payMethod, setPaymethod] = useState('');
     const [prInfo, setPrInfo] = useState({});
     const { data } = useAxios('purchase/' + id, 'GET', null, false);
-
+    const { highData, highFetchData } = useHighAxios('orders', 'POST', mapPayload, true);
+    const mainPayload = {};
     useEffect(() => {
         if (data) {
             setPrInfo(data['data']);
         }
     }, [data]);
+    const proceedCheckout = () => {
+        console.log(prInfo.list);
+        let mapProducts = [];
+        let tempPayload = {
+            paymentMethod: payMethod
+        }
+        prInfo.list.map((pr, i) => {
+            mapProducts.push({
+                cartId: pr['id'],
+                productId: pr['products']['id']
+            })
+        })
+        let testPayload = { ...tempPayload, items: mapProducts };
+        console.log(testPayload);
+        setMapPayload({...tempPayload, items:mapProducts});
+    }
+    useEffect(() => {
+        if (mapPayload) {
+            highFetchData();
+        }
+    }, [mapPayload]);
+    useEffect(() => {
+        if (highData) {
+            if (highData['status'] === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Purchase Order',
+                    text: 'PO created successfully. Click OK to continue',
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/purchase/history', { replace: true })
+                    }
+                })
+            } else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Purchase Order',
+                    text: 'Failed to create PO. Please try again',
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    confirmButtonText: 'Ok'
+                })
+            }
+        }
+    }, [highData]);
     return (
         <Grid container spacing={1} sx={{ mt: 2 }}>
             <Grid item xs={12} lg={3}>
-                <HeadInfo prInfo={prInfo}/>
+                <HeadInfo prInfo={prInfo}payMethod={payMethod} setPaymethod={setPaymethod} proceedCheckout={proceedCheckout} />
             </Grid>
             <Grid item xs={12} lg={9}>
-                <Cart prInfo={prInfo}/>
+                <Cart prInfo={prInfo} />
             </Grid>
         </Grid>
     );

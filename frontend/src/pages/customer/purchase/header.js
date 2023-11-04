@@ -1,4 +1,4 @@
-
+import { LoadingOutlined } from '@ant-design/icons';
 import {
     Button,
     Grid,
@@ -6,9 +6,12 @@ import {
     Box,
     Typography
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-const Header = () => {
+const Header = (props) => {
     const navigate = useNavigate();
+    const profile = useSelector((state)=>state.profile);
+  
     return (
         <Box>
             <Grid container spacing={1.5}>
@@ -24,6 +27,7 @@ const Header = () => {
                                 fullWidth
                                 id="name"
                                 label="Name"
+                                value = {profile.firstName.firstName}
                                 disabled
                             />
                         </Grid>
@@ -32,6 +36,8 @@ const Header = () => {
                                 name="dateRequested"
                                 onFocus={(e) => e.currentTarget.type = 'date'}
                                 onBlur={(e) => e.currentTarget.value === '' && (e.currentTarget.type = 'text')}
+                                value = {props.dateRequested}
+                                onChange = {(e)=>props.setDateRequested(e.target.value)}
                                 fullWidth
                                 id="dateRequested"
                                 label="Date Requested"
@@ -43,17 +49,21 @@ const Header = () => {
                                 fullWidth
                                 id="phoneNumber"
                                 label="Phone Number"
+                                value = {profile.contact.contact}
                                 disabled
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <TextField
                                 name="dateRequired"
+                                value = {props.dateRequired}
+                                onChange = {(e)=>props.setDateRequired(e.target.value)}
                                 onFocus={(e) => e.currentTarget.type = 'date'}
                                 onBlur={(e) => e.currentTarget.value === '' && (e.currentTarget.type = 'text')}
                                 fullWidth
                                 id="dateRequired"
                                 label="Date Required"
+
                                 
                             />
                         </Grid>
@@ -62,6 +72,7 @@ const Header = () => {
                                 name="email"
                                 fullWidth
                                 id="email"
+                                value = {profile.emailAddress.emailAddress}
                                 label="Email Address"
                                 disabled
                             />
@@ -69,6 +80,7 @@ const Header = () => {
                         <Grid item xs={12}>
                             <TextField
                                 name="address"
+                                value = {profile.address.address}
                                 fullWidth
                                 id="address"
                                 label="Address"
@@ -76,7 +88,11 @@ const Header = () => {
                             />
                         </Grid>
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <Button variant="contained" onClick={() => navigate('/purchase/quotation/1')} >Create Purchase Request</Button>
+                            <Button 
+                            endIcon={props.highLoading ? <LoadingOutlined /> : null}
+                            variant="contained" 
+                            onClick={() => props.createPO()} 
+                            >Create Purchase Request</Button>
                         </Grid>
                     </Grid>
                 </Grid>

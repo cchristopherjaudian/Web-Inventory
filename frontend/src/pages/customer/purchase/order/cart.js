@@ -10,7 +10,7 @@ const Cart = (props) => {
     const sampleCart = props.prInfo.list;
     return (<Grid container sx={{mt:2}}>
         <Grid item xs={12}>
-            {sampleCart.map((s, i) => {
+            {sampleCart?.map((s, i) => {
                 return <CartItemList key={s.id} product={s} />
             })
             }

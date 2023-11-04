@@ -19,6 +19,7 @@ const HeadInfo = (props) => {
         { id: 3, img: '/asset/bank.png', code: 'BANK_TRANSFER', name: 'Bank Transfer', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,' }
     ]
     const handleChange = (event) => {
+        props.setPaymethod(event.target.value);
         setPaymethod(event.target.value);
     };
     return (
@@ -77,7 +78,7 @@ const HeadInfo = (props) => {
                     }
                 </Grid>
                 <Grid item xs={12} sx={{mt:2}}>
-                    <Button variant="contained" fullWidth>Create Purchase Order</Button>
+                    <Button variant="contained" onClick={()=>props.proceedCheckout()} fullWidth>Create Purchase Order</Button>
                 </Grid>
             </Grid>
         </MainCard>

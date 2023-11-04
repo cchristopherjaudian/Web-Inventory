@@ -6,13 +6,15 @@ import Grid from "@mui/material/Grid";
 
 import { FacebookOutlined, InstagramOutlined, TwitterOutlined } from "@ant-design/icons";
 import { Box } from "@mui/material";
+// (!location.pathname.startsWith('/purchase') && isBusiness === 1) 
 const Footer = () => {
+    console.log(location.pathname);
     return (
         <Box
             component="footer"
             sx={{
-                position: 'fixed',
-                bottom: 0,
+                position: (location.pathname.startsWith('/home')) ? 'fixed' : 'absolute',
+                ...(location.pathname.startsWith('/home') && { bottom: 0 }),
                 width: '100%',
                 backgroundColor: (theme) =>
                     theme.palette.mode === "light"
@@ -28,7 +30,7 @@ const Footer = () => {
                             About Us
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt sollicitudin turpis a aliquam. Duis porttitor venenatis cursus. Duis sodales nunc eget vehicula consequat. Morbi non euismod nisl. Vestibulum imperdiet laoreet ex a consequat. Sed sed sapien libero. Morbi condimentum ac nibh sed vestibulum
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt sollicitudin turpis a aliquam. Duis porttitor venenatis cursus. Duis sodales nunc eget vehicula consequat. Morbi non euismod nisl. Vestibulum imperdiet laoreet ex a consequat. Sed sed sapien libero. Morbi condimentum ac nibh sed vestibulum
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>

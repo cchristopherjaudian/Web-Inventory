@@ -33,18 +33,20 @@ const PurchaseTable = (props) => {
                     </TableHead>
                     <TableBody>
                         {
-                            cartList?.map((cart, index) => {
+                            
+                            cartList?.length > 0 && cartList?.map((cart, index) => {
                                 return <TableRow
                                     key={1}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {cart.groupNo}
+                                        {/* {cart['products']['code']} */}
+                                        {cart.products.code}
                                     </TableCell>
-                                    <TableCell>{cart.groupNo}</TableCell>
+                                    <TableCell>{cart.products.name}</TableCell>
                                     <TableCell>{cart.quantity}</TableCell>
-                                    <TableCell>{cart.groupNo}</TableCell>
-                                    <TableCell>{cart.groupNo}</TableCell>
+                                    <TableCell>₱{cart.products.price}</TableCell>
+                                    <TableCell>₱{cart.quantity * cart.products.price}</TableCell>
                                 </TableRow>
                             })
                         }
