@@ -58,17 +58,32 @@ class PurchaseService {
     }
 
     public async getPurchaseList(query: TPurchaseList) {
-        return this._db.cart.groupBy({
-            _sum: {
-                quantity: true,
+        const rawPurchaseList = await this._db.cart.findMany({
+            include: {
+                products: true,
             },
-            by: ['groupNo', 'createdAt', 'dateRequested', 'dateRequired'],
             where: {
                 profile: {
                     id: query.profileId,
                 },
             },
         });
+
+        let totalAmount;
+        return Object.values(
+            rawPurchaseList.reduce((value, object) => {
+                if (value[object.groupNo!]) {
+                    value[object.groupNo!].total =
+                        parseInt(<any>object.products?.price) * object.quantity;
+
+                    value[object.groupNo!].totalQty =
+                        value[object.groupNo!].quantity + object.quantity;
+                } else {
+                    value[object.groupNo!] = { ...object };
+                }
+                return value;
+            }, {} as any)
+        );
     }
 
     public async getPurchaseRequest(groupNo: string) {
