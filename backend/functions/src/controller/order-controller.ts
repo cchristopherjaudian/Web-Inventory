@@ -57,7 +57,7 @@ const getOrder = catchAsync(async (req, res) => {
     response.createResponse(
         res,
         httpStatus.OK,
-        ResponseCodes.DATA_MODIFIED,
+        ResponseCodes.DATA_RETRIEVED,
         orderInfo!
     );
 });
