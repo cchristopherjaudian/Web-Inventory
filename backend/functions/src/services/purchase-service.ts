@@ -79,6 +79,18 @@ class PurchaseService {
                 },
             }),
             this._db.cart.findMany({
+                select: {
+                    id: true,
+                    quantity: true,
+                    products: {
+                        select: {
+                            id: true,
+                            code: true,
+                            name: true,
+                            price: true,
+                        },
+                    },
+                },
                 where: {
                     groupNo,
                 },
