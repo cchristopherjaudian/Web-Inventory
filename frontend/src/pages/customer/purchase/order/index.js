@@ -16,28 +16,58 @@ const Order = () => {
     const [payMethod, setPaymethod] = useState('');
     const [prInfo, setPrInfo] = useState({});
     const { data } = useAxios('purchase/' + id, 'GET', null, false);
-    const { highData, highFetchData } = useHighAxios('orders', 'POST', mapPayload, true);
+    const { highData, highLoading, highFetchData } = useHighAxios('orders', 'POST', mapPayload, true);
     const mainPayload = {};
     useEffect(() => {
         if (data) {
-            setPrInfo(data['data']);
+            let totalValue = data['data']['list']?.reduce((total, item) => {
+                return total + (item.quantity * item.products.price);
+            }, 0);
+            setPrInfo({ ...data['data'], totalAmount: totalValue });
         }
     }, [data]);
     const proceedCheckout = () => {
-        console.log(prInfo.list);
-        let mapProducts = [];
-        let tempPayload = {
-            paymentMethod: payMethod
+        let msg = '';
+        if (!payMethod) {
+            msg = 'Please select a payment method from the list'
         }
-        prInfo.list.map((pr, i) => {
-            mapProducts.push({
-                cartId: pr['id'],
-                productId: pr['products']['id']
-            })
+        if (prInfo.list.length === 0) {
+            msg = 'No products found for this purchase request/quotation'
+        }
+        if (msg) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Create Purchase Order',
+                text: msg,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonText: 'OK'
+            });
+            return
+        }
+        Swal.fire({
+            icon: 'question',
+            title: 'Purchase Order',
+            text: 'Are you sure you want to proceed with your order?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let mapProducts = [];
+                let tempPayload = {
+                    paymentMethod: payMethod
+                }
+                prInfo.list.map((pr, i) => {
+                    mapProducts.push({
+                        cartId: pr['id'],
+                        productId: pr['products']['id']
+                    })
+                })
+                let testPayload = { ...tempPayload, items: mapProducts };
+                setMapPayload({ ...tempPayload, items: mapProducts });
+            }
         })
-        let testPayload = { ...tempPayload, items: mapProducts };
-        console.log(testPayload);
-        setMapPayload({...tempPayload, items:mapProducts});
+
     }
     useEffect(() => {
         if (mapPayload) {
@@ -56,10 +86,10 @@ const Order = () => {
                     confirmButtonText: 'Ok'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate('/purchase/history', { replace: true })
+                        navigate('/history', { replace: true })
                     }
                 })
-            } else{
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Purchase Order',
@@ -74,7 +104,7 @@ const Order = () => {
     return (
         <Grid container spacing={1} sx={{ mt: 2 }}>
             <Grid item xs={12} lg={3}>
-                <HeadInfo prInfo={prInfo}payMethod={payMethod} setPaymethod={setPaymethod} proceedCheckout={proceedCheckout} />
+                <HeadInfo highLoading={highLoading} prInfo={prInfo} payMethod={payMethod} setPaymethod={setPaymethod} proceedCheckout={proceedCheckout} />
             </Grid>
             <Grid item xs={12} lg={9}>
                 <Cart prInfo={prInfo} />

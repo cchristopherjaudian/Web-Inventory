@@ -89,6 +89,7 @@ const Header = (props) => {
                         </Grid>
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button 
+                            color = {props.highLoading ? 'warning' : 'primary'}
                             endIcon={props.highLoading ? <LoadingOutlined /> : null}
                             variant="contained" 
                             onClick={() => props.createPO()} 

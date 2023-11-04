@@ -42,7 +42,7 @@ console.log(props);
             />
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
-                primary={props.product.products.price}
+                primary={'₱' + props.product.products.price}
             />
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}

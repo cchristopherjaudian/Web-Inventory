@@ -16,7 +16,6 @@ import TableRow from '@mui/material/TableRow';
 
 const PurchaseTable = (props) => {
     const cartList = props.quoteInfo.list;
-
     return (<Grid container>
         <Grid item xs={12} sx={{ pr: 1.5 }}>
             <TableContainer component={Paper}>
@@ -40,7 +39,6 @@ const PurchaseTable = (props) => {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {/* {cart['products']['code']} */}
                                         {cart.products.code}
                                     </TableCell>
                                     <TableCell>{cart.products.name}</TableCell>
@@ -58,7 +56,7 @@ const PurchaseTable = (props) => {
                             <TableCell component="th" scope="row" colSpan={3} sx={{ backgroundColor: '#D1EAFF' }}>
 
                             </TableCell>
-                            <TableCell colSpan={3}>Subtotal: xx.xxx</TableCell>
+                            <TableCell colSpan={3}>Subtotal: ₱{props.quoteInfo.totalAmount}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

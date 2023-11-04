@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import MainCard from "components/MainCard";
 import {
     Button,
@@ -29,7 +30,7 @@ const HeadInfo = (props) => {
                     <img src="https://www.placehold.co/200x100" alt="x" />
                 </Grid>
                 <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <Typography variant="h5">{props.prInfo.dateRequested?.substring(0,10)}</Typography>
+                    <Typography variant="h5">{props.prInfo.dateRequested?.substring(0, 10)}</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ p: 1, display: 'flex', direction: 'row', justifyContent: 'space-between', backgroundColor: '#3498db' }}>
                     <Typography variant="h5" sx={{ color: 'white' }}>Quote ID</Typography>
@@ -49,7 +50,7 @@ const HeadInfo = (props) => {
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2, p: 3, display: 'flex', direction: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#3498db' }}>
                     <Typography variant="h3" sx={{ color: 'white', mt: 2 }}>TOTAL:</Typography>
-                    <Typography variant="h3" sx={{ color: 'white', mt: 2 }}>PHP xx.xx</Typography>
+                    <Typography variant="h3" sx={{ color: 'white', mt: 2 }}>PHP {props.prInfo.totalAmount}</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2 }}>
                     <Typography variant="h5">Payment Method:</Typography>
@@ -77,8 +78,11 @@ const HeadInfo = (props) => {
                         })
                     }
                 </Grid>
-                <Grid item xs={12} sx={{mt:2}}>
-                    <Button variant="contained" onClick={()=>props.proceedCheckout()} fullWidth>Create Purchase Order</Button>
+                <Grid item xs={12} sx={{ mt: 2 }}>
+                    <Button
+                        color={props.highLoading ? 'warning' : 'primary'}
+                        endIcon={props.highLoading ? <LoadingOutlined /> : null}
+                        variant="contained" onClick={() => props.proceedCheckout()} fullWidth>Create Purchase Order</Button>
                 </Grid>
             </Grid>
         </MainCard>

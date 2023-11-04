@@ -13,8 +13,11 @@ const Quotation = () => {
 
     useEffect(()=>{
         if(data){
-            setQuoteInfo(data['data']);
-            console.log(data['data']);
+            
+            let totalValue = data['data']['list']?.reduce((total, item) => {
+                return total + (item.quantity * item.products.price);
+            }, 0);
+            setQuoteInfo({...data['data'],totalAmount: totalValue});
         }
     },[data]);
     return (

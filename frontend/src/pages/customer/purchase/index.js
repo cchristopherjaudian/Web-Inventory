@@ -1,6 +1,6 @@
 import MainCard from 'components/MainCard';
 import Header from './header';
-
+import Swal from 'sweetalert2';
 import {
     Grid,
     TextField,
@@ -14,14 +14,14 @@ import useAxios from 'hooks/useAxios';
 import useHighAxios from 'hooks/useHighAxios';
 const groupCode = Date.now();
 const Purchase = () => {
- 
+
     const navigate = useNavigate();
-    const { data,loading } = useAxios('products', 'GET', null, false);
+    const { data, loading } = useAxios('products', 'GET', null, false);
     const [productList, setProductList] = useState([]);
     const [poProducts, setPoProducts] = useState([]);
     const [dateRequested, setDateRequested] = useState('');
     const [dateRequired, setDateRequired] = useState('');
-    const { highData,highLoading, highFetchData } = useHighAxios('purchase', 'POST', { cart: poProducts }, true);
+    const { highData, highLoading, highFetchData } = useHighAxios('purchase', 'POST', { cart: poProducts }, true);
     useEffect(() => {
         if (data) {
             const newProducts = [];
@@ -51,25 +51,50 @@ const Purchase = () => {
 
     const createPO = () => {
         let msg = '';
-        if(!dateRequested){
+        const selectedProducts = productList.filter((p) => p.isSelected);
+
+        if (!dateRequested) {
             msg = 'Please input a Date Requested'
         }
-        if(!dateRequired){
+        if (!dateRequired) {
             msg = 'Please input a Date Required'
         }
-        const selectedProducts = productList.filter((p) => p.isSelected);
-        let mapProducts = [];
-        selectedProducts.map((s, i) => {
-            mapProducts.push({
-                code: s['code'],
-                quantity: s['quantity'],
-                groupNo: groupCode.toString(),
-                dateRequested: dateRequested,
-                dateRequired: dateRequired
+        if (selectedProducts.length === 0) {
+            msg = 'Please select atleast 1 product from the list below'
+        }
+        if (msg) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Create Purchase Request',
+                text: msg,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                confirmButtonText: 'OK'
             });
-        });
-        console.log(mapProducts);
-        setPoProducts(mapProducts);
+            return;
+        }
+        Swal.fire({
+            icon: 'question',
+            title: 'Purchase Order',
+            text: 'Are you sure you want to proceed with your order?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let mapProducts = [];
+                selectedProducts.map((s, i) => {
+                    mapProducts.push({
+                        code: s['code'],
+                        quantity: s['quantity'],
+                        groupNo: groupCode.toString(),
+                        dateRequested: dateRequested,
+                        dateRequired: dateRequired
+                    });
+                });
+                setPoProducts(mapProducts);
+            }
+        })
+
     }
     useEffect(() => {
         if (poProducts.length > 0) {
@@ -80,7 +105,7 @@ const Purchase = () => {
     useEffect(() => {
         if (highData) {
             if (highData['status'] === 200) {
-                navigate('/purchase/quotation/' + groupCode,{replace:true});
+                navigate('/purchase/quotation/' + groupCode, { replace: true });
             }
         }
     }, [highData]);

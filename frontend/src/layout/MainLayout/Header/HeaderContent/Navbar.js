@@ -51,14 +51,14 @@ const Navbar = () => {
     console.log(customerNavigation);
     if (isBusiness === 1) {
         customerNavigation[2]['title'] = 'Products'
-        const pohistory = {
-            id: 'history',
-            title: 'Purchase List',
-            url: '/purchase/history'
-        };
-        if (!customerNavigation.some(e => e.id === pohistory.id)) {
-            customerNavigation.push(pohistory);
-        }
+        // const pohistory = {
+        //     id: 'history',
+        //     title: 'Purchase List',
+        //     url: '/purchase/history'
+        // };
+        // if (!customerNavigation.some(e => e.id === pohistory.id)) {
+        //     customerNavigation.push(pohistory);
+        // }
     } else {
         customerNavigation[2]['title'] = 'Shop'
     }
