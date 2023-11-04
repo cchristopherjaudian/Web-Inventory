@@ -7,13 +7,14 @@ import QuotationTable from "./QuotationTable";
 import { tr } from "date-fns/locale";
 const History = () => {
     const isBusiness = useSelector((state) => state.token.customertype.customertype);
-    const { data } = useAxios((isBusiness === 0 ? 'orders/endusers' : 'purchase'), 'GET', null, false);
+    const [requestType,setRequestType] = useState(0);
+    const { data,fetchData } = useAxios((requestType === 0 ? 'orders/endusers' : 'purchase'), 'GET', null, false);
     const [transactions, setTransactions] = useState([]);
     useEffect(() => {
         if (data) {
             let newData = [];
             data['data'].map((d, i) => {
-                isBusiness === 0 ?
+                requestType === 0 ?
                 newData.push({
                     id: d['id'],
                     dateOrdered: d['createdAt'],
@@ -35,13 +36,16 @@ const History = () => {
             setTransactions(newData);
         }
     }, [data]);
+    // useEffect(()=>{
+    //     fetchData();
+    // },[requestType]);
     return (<MainCard>
         <h3>History</h3>
         {
             isBusiness === 0 ?
-                <HistoryTable transactions={transactions} />
+                <HistoryTable transactions={transactions}/>
                 :
-                <QuotationTable transactions={transactions} />
+                <QuotationTable transactions={transactions} setRequestType={setRequestType} />
         }
 
     </MainCard>);

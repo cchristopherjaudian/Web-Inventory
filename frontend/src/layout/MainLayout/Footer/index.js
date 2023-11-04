@@ -6,15 +6,14 @@ import Grid from "@mui/material/Grid";
 
 import { FacebookOutlined, InstagramOutlined, TwitterOutlined } from "@ant-design/icons";
 import { Box } from "@mui/material";
-// (!location.pathname.startsWith('/purchase') && isBusiness === 1) 
+// position: (location.pathname.startsWith('/home')) ? 'fixed' : '',
+//                 ...(location.pathname.startsWith('/home') && { bottom: 0 }),
 const Footer = () => {
     console.log(location.pathname);
     return (
         <Box
             component="footer"
             sx={{
-                position: (location.pathname.startsWith('/home')) ? 'fixed' : 'absolute',
-                ...(location.pathname.startsWith('/home') && { bottom: 0 }),
                 width: '100%',
                 backgroundColor: (theme) =>
                     theme.palette.mode === "light"
