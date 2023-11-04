@@ -30,7 +30,7 @@ router
     .patch(
         '/:orderId',
         joi.requestSchemaValidate(updateOrderSchema),
-        authMiddleware.adminValidate(['ADMIN', 'SUB_1']) as any,
+        authMiddleware.endUserValidate as any,
         OrderController.updateOrder
     )
     .get(
