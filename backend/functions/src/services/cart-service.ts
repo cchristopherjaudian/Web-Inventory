@@ -24,12 +24,23 @@ class CartService {
                 throw new NotFoundError('Products does not exists.');
             }
 
-            const cart = await this._db.cart.findFirst({
-                where: {
-                    profileId: payload.profileId,
-                    productId: product?.id,
-                },
-            });
+            let cart;
+            if (payload.groupNo) {
+                cart = await this._db.cart.findFirst({
+                    where: {
+                        profileId: payload.profileId,
+                        groupNo: payload.groupNo,
+                        productId: product?.id,
+                    },
+                });
+            } else {
+                cart = await this._db.cart.findFirst({
+                    where: {
+                        profileId: payload.profileId,
+                        productId: product?.id,
+                    },
+                });
+            }
 
             const inventories = await this._db.inventory.findMany({
                 where: {
@@ -50,7 +61,10 @@ class CartService {
                 throw new BadRequestError('Insufficient stock.');
             }
 
-            if (cart) {
+            if (
+                cart &&
+                (!payload.groupNo || payload.groupNo === cart.groupNo)
+            ) {
                 cart.quantity = cart.quantity + payload.quantity;
                 return this._db.cart.update({
                     where: { id: cart.id },
