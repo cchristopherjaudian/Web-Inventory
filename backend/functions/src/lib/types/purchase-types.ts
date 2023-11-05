@@ -8,3 +8,11 @@ export type TCreatePr = {
     products: TCart & { code?: string; profileId: string; createdAt?: Date }[];
     profileId: string;
 };
+
+export type TQuotationList = {
+    total: number;
+    qty: number;
+    group: string;
+    dateRequired: Date;
+    dateRequested: Date;
+};

@@ -1,7 +1,11 @@
 import moment from 'moment-timezone';
 import { TPrismaClient } from '../lib/prisma';
 import { TCart } from '../lib/types/cart-types';
-import { TCreatePr, TPurchaseList } from '../lib/types/purchase-types';
+import {
+    TCreatePr,
+    TPurchaseList,
+    TQuotationList,
+} from '../lib/types/purchase-types';
 import CartService from './cart-service';
 import { BadRequestError } from '../lib/custom-errors/class-errors';
 
@@ -69,21 +73,37 @@ class PurchaseService {
             },
         });
 
-        let totalAmount;
-        return Object.values(
-            rawPurchaseList.reduce((value, object) => {
-                if (value[object.groupNo!]) {
-                    value[object.groupNo!].total =
-                        parseInt(<any>object.products?.price) * object.quantity;
+        const groupHistory = [] as string[];
+        const output = [] as TQuotationList[];
+        rawPurchaseList.forEach((purchase, index, purchases) => {
+            if (!groupHistory.includes(purchase.groupNo as string)) {
+                const sumTotal = purchases
+                    .filter((pur) => pur.groupNo === purchase.groupNo)
+                    .reduce(
+                        (acc, curr) => {
+                            acc.total =
+                                acc.total +
+                                parseInt(<any>curr.products?.price) *
+                                    curr.quantity;
 
-                    value[object.groupNo!].totalQty =
-                        value[object.groupNo!].quantity + object.quantity;
-                } else {
-                    value[object.groupNo!] = { ...object };
-                }
-                return value;
-            }, {} as any)
-        );
+                            acc.qty = acc.qty + curr.quantity;
+                            return acc;
+                        },
+                        { total: 0, qty: 0 }
+                    );
+
+                output?.push({
+                    ...sumTotal,
+                    group: purchase.groupNo as string,
+                    dateRequested: purchase.dateRequested as Date,
+                    dateRequired: purchase.dateRequired as Date,
+                });
+            }
+
+            groupHistory.push(purchase.groupNo as string);
+        });
+
+        return output;
     }
 
     public async getPurchaseRequest(groupNo: string) {
