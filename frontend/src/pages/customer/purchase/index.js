@@ -31,6 +31,7 @@ const Purchase = () => {
                     name: s['name'],
                     size: s['size'],
                     price: s['price'],
+                    photoUrl: s['photoUrl'],
                     quantity: 0,
                     isSelected: false
                 });

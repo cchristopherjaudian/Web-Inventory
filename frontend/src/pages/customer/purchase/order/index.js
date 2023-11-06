@@ -63,7 +63,6 @@ const Order = () => {
                         productId: pr['products']['id']
                     })
                 })
-                let testPayload = { ...tempPayload, items: mapProducts };
                 setMapPayload({ ...tempPayload, items: mapProducts });
             }
         })

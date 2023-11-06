@@ -39,7 +39,7 @@ const CartItemList = (props) => {
     return (<>
         <ListItemButton>
             <ListItemAvatar>
-                <img src='https://placehold.co/100' alt={props.item.products.name} />
+                <img src={props.item.products.photoUrl ? props.item.products.photoUrl : 'https://placehold.co/100'} alt={props.item.products.name} />
             </ListItemAvatar>
             <ListItemText
                 sx={{ ml: 2 }}
@@ -53,7 +53,7 @@ const CartItemList = (props) => {
                 secondary={'x' + props.item.quantity}
 
             />
-            
+
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
                 secondary={'₱' + price}

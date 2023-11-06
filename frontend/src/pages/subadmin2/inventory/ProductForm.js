@@ -1,4 +1,10 @@
 import MainCard from 'components/MainCard';
+import firebaseConfig from 'config/firebase';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import {
     Box,
@@ -14,13 +20,20 @@ import MuiAlert from '@mui/material/Alert';
 import Swal from 'sweetalert2';
 import useAxios from 'hooks/useAxios';
 const ProductForm = (props) => {
+
+    const [file, setFile] = useState(null);
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [severity, setSeverity] = useState('success');
     const [selectedImage, setSelectedImage] = useState();
     const [payload, setPayload] = useState({});
+    const [image, setImage] = useState(null);
+    const handleImageChange = (e) => {
+        setImage(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
 
 
+    };
     const Input = styled('input')({
         display: 'none',
     });
@@ -35,12 +48,7 @@ const ProductForm = (props) => {
         setOpen(false);
         setMessage('');
     };
-    const handleImageChange = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            let img = e.target.files[0];
-            setSelectedImage(URL.createObjectURL(img));
-        }
-    };
+
     const { data, loading, error, fetchData } = useAxios('products', 'POST', payload, true);
 
     const formik = useFormik({
@@ -53,10 +61,28 @@ const ProductForm = (props) => {
             content: 0
         },
         onSubmit: values => {
-            setPayload(values);
-            fetchData();
+            let newValues = values;
+            firebase.initializeApp(firebaseConfig);
+            const storage = getStorage();
+            const storageRef = ref(storage, 'products/' + values['code'] + Date.now() + '.jpg');
+            uploadBytes(storageRef, file).then((snapshot) => {
+                console.log('Uploaded a blob or file!');
+                getDownloadURL(snapshot.ref)
+                    .then((downloadURL) => {
+                        console.log(`File available at ${downloadURL}`);
+                        newValues = {...values,photoUrl: downloadURL};
+                        setPayload(newValues);
+                    });
+            });
+            
         },
     });
+    useEffect(()=>{
+        if(Object.prototype.hasOwnProperty.call(payload, "photoUrl"))
+        {
+            fetchData();
+        }
+    },[payload])
     useEffect(() => {
         if (data) {
             if (data['status'] === 200) {
@@ -64,6 +90,7 @@ const ProductForm = (props) => {
                 setSeverity('success');
                 setMessage('Product registered successfully')
                 formik.resetForm();
+                setImage(null);
                 setOpen(true);
             }
         }
@@ -96,6 +123,23 @@ const ProductForm = (props) => {
         <MainCard title="New Product" sx={{ width: '100%' }}>
             <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: -3, height: '100%' }}>
                 <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        {image && <img src={image} alt="preview" />}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <input
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id="contained-button-file"
+                            type="file"
+                            onChange={handleImageChange}
+                        />
+                        <label htmlFor="contained-button-file">
+                            <Button variant="contained" component="span" color="info">
+                                Browse Image
+                            </Button>
+                        </label>
+                    </Grid>
                     <Grid item xs={12}>
                         <TextField
                             required

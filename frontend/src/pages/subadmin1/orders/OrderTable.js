@@ -1,5 +1,5 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { RightOutlined, LoadingOutlined } from '@ant-design/icons';
+import { RightOutlined, FolderViewOutlined } from '@ant-design/icons';
 import {
     Box,
     Button,
@@ -74,9 +74,15 @@ const OrderTable = (props) => {
             field: 'paymentMethod',
             headerName: 'Payment Method',
             editable: false,
-            flex: 1
+            flex: 1,
+            renderCell: (params) => {
+                const onClick = (event) => {
+                    event.stopPropagation();
+                };
+                return <Button variant="outlined" color="info" onClick={onClick}>{params.row.paymentMethod}</Button>;
+            }
         }, {
-            field: 'action',
+            field: 'action2',
             headerName: '',
             sortable: false,
             width: 150,
@@ -106,7 +112,6 @@ const OrderTable = (props) => {
     const gridClick = (params, event, details) => {
         let selectedData = params['row'];
         setOrderId(selectedData.id);
-        //props.setSelectedOrder(selectedData);
     }
     useEffect(() => {
         if (orderId) {

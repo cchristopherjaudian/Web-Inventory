@@ -26,7 +26,7 @@ console.log(props);
     return (<>
         <ListItemButton>
             <ListItemAvatar>
-                <img src='https://placehold.co/100' alt="Test" />
+                <img src={props.product.products.photoUrl ? props.product.products.photoUrl : 'https://placehold.co/100'} alt={props.product.products.name} width={100} height={100} />
             </ListItemAvatar>
             <ListItemText
                 sx={{ ml: 2 }}

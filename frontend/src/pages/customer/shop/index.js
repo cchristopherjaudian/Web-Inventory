@@ -110,7 +110,9 @@ const Shop = () => {
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
-                                        image="https://placehold.co/300"
+                                        width="300"
+                                        height="300"
+                                        image={product.photoUrl ? product.photoUrl : 'https://www.placehold.co/300'}
                                         alt={product.name}
                                     />
                                     <CardContent>

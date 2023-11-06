@@ -38,7 +38,8 @@ const Info = (props) => {
             <CardMedia
                 component="img"
                 height="300"
-                image={"https://placehold.co/300"}
+                width="300"
+                image={props.itemInfo.photoUrl ? props.itemInfo.photoUrl : 'https://placehold.co/300'}
                 alt="placeholder"
             />
         </Box>

@@ -29,7 +29,7 @@ const CartItemList = (props) => {
     return (<>
         <ListItemButton>
             <ListItemAvatar>
-                <img src='https://placehold.co/100' alt="Test" />
+                <img src={props.product.photoUrl ? props.product.photoUrl : 'https://placehold.co/100'} alt={props.product.name} width={100} height={100} />
             </ListItemAvatar>
             <ListItemText
                 sx={{ ml: 2 }}
