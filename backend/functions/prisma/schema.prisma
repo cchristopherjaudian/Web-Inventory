@@ -96,6 +96,7 @@ model Products {
   price    Decimal  @db.Decimal(9, 2)
   content  Decimal? @db.Decimal(9, 2)
   category String   @db.VarChar(100)
+  photoUrl String?
 
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
