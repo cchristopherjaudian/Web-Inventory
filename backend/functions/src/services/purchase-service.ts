@@ -123,6 +123,7 @@ class PurchaseService {
                             code: true,
                             name: true,
                             price: true,
+                            photoUrl: true,
                         },
                     },
                 },
