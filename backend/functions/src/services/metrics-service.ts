@@ -16,45 +16,49 @@ class MetricsService {
     }
 
     public async sales(query: TOrderSales) {
-        const startsAt = moment(query.startsAt)
-            .startOf('day')
-            .tz('Asia/Manila')
-            .toDate();
-        const endsAt = moment(query.endsAt)
-            .endOf('day')
-            .tz('Asia/Manila')
-            .toDate();
+        const startsAt = query.startsAt
+            ? moment(query.startsAt).startOf('day').tz('Asia/Manila').toDate()
+            : moment()
+                  .startOf('year')
+                  .startOf('day')
+                  .tz('Asia/Manila')
+                  .toDate();
+        const endsAt = query.endsAt
+            ? moment(query.endsAt).endOf('day').tz('Asia/Manila').toDate()
+            : moment().endOf('year').endOf('day').tz('Asia/Manila').toDate();
 
-        const orders = await this._db.orders.findMany({
-            include: {
-                orderItems: {
-                    include: {
-                        products: true,
-                    },
+        const [orders, products] = await Promise.all([
+            this._db.orderItems.groupBy({
+                _sum: {
+                    quantity: true,
                 },
-            },
-            where: {
-                status: PaymentStatuses.PAID,
-                AND: [
-                    { createdAt: { lte: endsAt } },
-                    { createdAt: { gte: startsAt } },
-                ],
-            },
-        });
-
+                by: ['productId'],
+                where: {
+                    AND: [
+                        { createdAt: { lte: endsAt } },
+                        { createdAt: { gte: startsAt } },
+                    ],
+                },
+            }),
+            this._db.products.findMany({}),
+        ]);
         if (orders.length === 0) return orders;
 
-        const flatOrders = orders.flatMap((order) => order.orderItems);
+        const mappedOrders = await Promise.all(
+            products.map(async (product) => {
+                const order = orders.find(
+                    (orderObj) => orderObj.productId === product.id
+                );
+                return {
+                    name: product.name,
+                    productId: product.id,
+                    totalQty: order ? order?._sum.quantity : 0,
+                    size: product.size,
+                };
+            })
+        );
 
-        const sales = flatOrders.reduce((acc, { quantity, products }) => {
-            const total = <any>products?.price * quantity;
-
-            return acc + total;
-        }, 0);
-
-        return {
-            sales,
-        };
+        return mappedOrders;
     }
 
     public async getPanels() {
