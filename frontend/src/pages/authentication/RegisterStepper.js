@@ -1,17 +1,11 @@
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepButton from '@mui/material/StepButton';
-import Stack from '@mui/material/Stack';
-import CustomerForm from './CustomerForm';
-import BusinessForm from './BusinessForm';
-import Typography from '@mui/material/Typography';
-import { setToken } from 'store/reducers/token';
+import { Box, Grid, Stepper, Step, StepButton, Stack, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken } from 'store/reducers/token';
+import CustomerForm from './CustomerForm';
+import BusinessForm from './BusinessForm';
+
 import useAxios from 'hooks/useAxios';
 import useMetricsAxios from 'hooks/useMetricsAxios';
 import Swal from 'sweetalert2';

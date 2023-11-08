@@ -1,11 +1,15 @@
 import { DataGrid } from '@mui/x-data-grid';
 import {
     Box,
+    Button,
     Grid
 } from '@mui/material';
 import MainCard from 'components/MainCard';
 import { useState, useEffect } from 'react';
+import { RightOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 const HistoryTable = (props) => {
+    const navigate = useNavigate();
     const [gridRows, setGridRows] = useState([]);
     console.log(props);
     useEffect(() => {
@@ -54,6 +58,21 @@ const HistoryTable = (props) => {
             flex: 1,
             valueGetter: (params) => params.row.dateDelivered ? `${params.row.dateDelivered.substring(0, 10)}` : ''
 
+        },
+        {
+            field: 'action',
+            headerName: '',
+            sortable: false,
+            width: 150,
+            disableClickEventBubbling: true,
+            renderCell: (params) => {
+                const onClick = (event) => {
+                    event.stopPropagation();
+                    navigate('/order/' + params.row.id);
+                };
+
+                return <Button endIcon={<RightOutlined />} variant="contained" color="primary" onClick={onClick}>View</Button>;
+            }
         }
     ];
 

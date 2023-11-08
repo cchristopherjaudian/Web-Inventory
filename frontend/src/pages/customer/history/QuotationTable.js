@@ -128,7 +128,7 @@ const QuotationTable = (props) => {
                     renderCell: (params) => {
                         const onClick = (event) => {
                             event.stopPropagation();
-                            navigate('/');
+                            navigate('/order/' + params.row.id);
                         };
 
                         return <Button endIcon={<RightOutlined />} variant="contained" color="primary" onClick={onClick}>View</Button>;
