@@ -102,13 +102,6 @@ class MetricsService {
         return { categories, products, lowStocks, topSelling };
     }
 
-    private _mapReportList({ list, sales }: TMappedRptPayload) {
-        return {
-            list: list.length === 0 ? [] : list,
-            sales: sales === 0 ? 0 : sales,
-        };
-    }
-
     public async getReportsList(query: TRptListQuery) {
         const startsAt = query.startsAt
             ? moment(query.startsAt).startOf('day').tz('Asia/Manila').toDate()
@@ -232,12 +225,14 @@ class MetricsService {
                     where: { id: productId as string },
                 });
                 const accumulator = await acc;
-                accumulator.sales = <any>product?.price * <any>_sum.quantity;
-                accumulator.code.push(product?.code as string);
+                accumulator.code.push({
+                    code: product?.code as string,
+                    sales: <any>product?.price * <any>_sum.quantity,
+                });
 
                 return accumulator;
             },
-            Promise.resolve({ sales: 0, code: [] as string[] })
+            Promise.resolve({ code: [] as { code: string; sales: number }[] })
         );
 
         return {
