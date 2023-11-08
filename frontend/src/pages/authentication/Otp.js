@@ -2,6 +2,7 @@ import { Avatar, Box, Button, CssBaseline, Grid, Paper, TextField, Typography } 
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import OtpInput from 'react-otp-input';
 const defaultTheme = createTheme();
 const Otp = () => {
 
@@ -11,7 +12,7 @@ const Otp = () => {
   const handleChange = (e) => {
     setOtp(e.target.value);
   }
-  const verifyOtp = () =>{
+  const verifyOtp = () => {
     alert(otp);
   }
   return (<ThemeProvider theme={defaultTheme}>
@@ -53,17 +54,15 @@ const Otp = () => {
           </Typography>
           <Grid container spacing={2} >
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <TextField
-                sx={{ mt: 3 }}
-                required
-                id="otp"
-                label="Verification Code"
-                name="otp"
-                inputProps={{ maxLength: 6 }}
-                fullWidth
-                autoFocus
-                onChange={(e) => handleChange(e)}
+              <OtpInput
+                value={otp}
+                onChange={setOtp}
+                numInputs={6}
+                renderSeparator={<span>-</span>}
+                inputStyle={{ width: '2rem', height: '2rem' }} 
+                renderInput={(props) => <input {...props} />}
               />
+
             </Grid>
           </Grid>
           <Button variant="contained" sx={{ mt: 3 }} fullWidth onClick={verifyOtp}>Verify</Button>
