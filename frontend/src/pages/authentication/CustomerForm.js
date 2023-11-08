@@ -1,5 +1,4 @@
 import MainCard from 'components/MainCard';
-
 import { useFormik } from 'formik';
 import useAxios from 'hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +36,10 @@ const CustomerForm = (props) => {
                 ...values,
                 account: { accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS' }
             };
-            props.setPayload(newPayload);
+            localStorage.setItem('signUpData', JSON.stringify(newPayload));
+            navigate('/verification',{replace:true});
+            //props.setPayload(newPayload);
+           
         },
     });
 
@@ -110,12 +112,12 @@ const CustomerForm = (props) => {
                                 />
                             </Grid>
                             {
-                                props.activeStep === 1 && 
+                                props.activeStep === 1 &&
                                 <Grid item xs={12}>
-                                <Typography variant="body1">
-                                    Business Owner&apos;s Information
-                                </Typography>
-                            </Grid>
+                                    <Typography variant="body1">
+                                        Business Owner&apos;s Information
+                                    </Typography>
+                                </Grid>
                             }
                             <Grid item xs={12} >
                                 <TextField

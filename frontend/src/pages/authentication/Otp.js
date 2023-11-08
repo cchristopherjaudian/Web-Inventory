@@ -1,15 +1,22 @@
+import firebaseConfig from 'config/firebase';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 import { Avatar, Box, Button, CssBaseline, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import OtpInput from 'react-otp-input';
 const defaultTheme = createTheme();
 const Otp = () => {
+  firebase.initializeApp(firebaseConfig);
   const auth = getAuth();
   const navigate = useNavigate();
   const [otp, setOtp] = useState('');
- 
+  const signUpData = JSON.parse(localStorage.getItem('signUpData'));
+  console.log(signUpData);
+  //localStorage.removeItem('signUpData');
   function onCaptchVerify() {
     window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       'size': 'invisible',
@@ -24,10 +31,10 @@ const Otp = () => {
   function onSignUp() {
     onCaptchVerify();
     const appVerifier = window.recaptchaVerifier;
-    const phoneNumber = '+639272636223';
+    const phoneNumber = signUpData.contact.replace('0','+63');
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmationResult) => {
-
+        console.log(confirmationResult);
         window.confirmationResult = confirmationResult;
 
       }).catch((error) => {
@@ -38,11 +45,14 @@ const Otp = () => {
     const code = otp;
     confirmationResult.confirm(code).then((result) => {
       const user = result.user;
-
+      console.log(user);
     }).catch((error) => {
-
+      console.log(error);
     });
   }
+  useEffect(()=>{
+    onSignUp();
+  },[])
   return (<ThemeProvider theme={defaultTheme}>
     <Grid container component="main" sx={{ height: '100vh' }} >
       <CssBaseline />
@@ -77,8 +87,8 @@ const Otp = () => {
           <Typography component="h1" variant="h5">
             {"Oxiaire Member's Portal"}
           </Typography>
-          <Typography component="h1" variant="h6">
-            Please enter the code send to your mobile number
+          <Typography component="h1" variant="body1">
+            Please enter the code send to your mobile number {signUpData.contact}
           </Typography>
           <div id='recaptcha-container'></div>
           <Grid container spacing={2} >
