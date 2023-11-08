@@ -1,19 +1,47 @@
 import { Avatar, Box, Button, CssBaseline, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import OtpInput from 'react-otp-input';
 const defaultTheme = createTheme();
 const Otp = () => {
-
+  const auth = getAuth();
   const navigate = useNavigate();
   const [otp, setOtp] = useState('');
+ 
+  function onCaptchVerify() {
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'invisible',
+      'callback': (response) => {
 
-  const handleChange = (e) => {
-    setOtp(e.target.value);
+      },
+      'expired-callback': () => {
+
+      }
+    });
   }
-  const verifyOtp = () => {
-    alert(otp);
+  function onSignUp() {
+    onCaptchVerify();
+    const appVerifier = window.recaptchaVerifier;
+    const phoneNumber = '+639272636223';
+    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+      .then((confirmationResult) => {
+
+        window.confirmationResult = confirmationResult;
+
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
+  function onOTPVerify() {
+    const code = otp;
+    confirmationResult.confirm(code).then((result) => {
+      const user = result.user;
+
+    }).catch((error) => {
+
+    });
   }
   return (<ThemeProvider theme={defaultTheme}>
     <Grid container component="main" sx={{ height: '100vh' }} >
@@ -52,6 +80,7 @@ const Otp = () => {
           <Typography component="h1" variant="h6">
             Please enter the code send to your mobile number
           </Typography>
+          <div id='recaptcha-container'></div>
           <Grid container spacing={2} >
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <OtpInput
@@ -59,13 +88,13 @@ const Otp = () => {
                 onChange={setOtp}
                 numInputs={6}
                 renderSeparator={<span>-</span>}
-                inputStyle={{ width: '2rem', height: '2rem' }} 
+                inputStyle={{ width: '2rem', height: '2rem' }}
                 renderInput={(props) => <input {...props} />}
               />
 
             </Grid>
           </Grid>
-          <Button variant="contained" sx={{ mt: 3 }} fullWidth onClick={verifyOtp}>Verify</Button>
+          <Button variant="contained" sx={{ mt: 3 }} fullWidth onClick={onOTPVerify}>Verify</Button>
           <Button variant="outlined" sx={{ mt: 1 }} fullWidth onClick={() => navigate('/')}>Cancel</Button>
         </Box>
       </Grid>
