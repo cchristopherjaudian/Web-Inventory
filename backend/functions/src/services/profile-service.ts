@@ -77,7 +77,7 @@ class ProfileService {
 
         let hasEmail;
         if (payload.emailAddress) {
-            const hasEmail = await this.getProfile({
+            hasEmail = await this.getProfile({
                 emailAddress: payload.emailAddress,
             });
         }
