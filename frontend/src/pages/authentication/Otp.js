@@ -8,6 +8,14 @@ import { useEffect, useState } from 'react';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import OtpInput from 'react-otp-input';
+import Swal from 'sweetalert2';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken } from 'store/reducers/token';
+
+import useAxios from 'hooks/useAxios';
+import useMetricsAxios from 'hooks/useMetricsAxios';
+
 const defaultTheme = createTheme();
 const Otp = () => {
   firebase.initializeApp(firebaseConfig);
@@ -15,8 +23,15 @@ const Otp = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState('');
   const signUpData = JSON.parse(localStorage.getItem('signUpData'));
-  console.log(signUpData);
-  //localStorage.removeItem('signUpData');
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.token.token);
+  const [temporaryToken, setTemporaryToken] = useState('');
+  const [payload, setPayload] = useState({});
+  const [patchProfile, setPatchProfile] = useState({});
+  const [registerProfile, setRegisterProfile] = useState({});
+  const { data, error, fetchData } = useAxios('accounts', 'POST', registerProfile);
+  const { metricsData, metricsError, metricsFetchData } = useMetricsAxios('profiles', 'POST', patchProfile, true, temporaryToken);
+
   function onCaptchVerify() {
     window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       'size': 'invisible',
@@ -31,28 +46,131 @@ const Otp = () => {
   function onSignUp() {
     onCaptchVerify();
     const appVerifier = window.recaptchaVerifier;
-    const phoneNumber = signUpData.contact.replace('0','+63');
+    const phoneNumber = signUpData.contact.replace('0', '+63');
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmationResult) => {
-        console.log(confirmationResult);
         window.confirmationResult = confirmationResult;
 
       }).catch((error) => {
-        console.log(error);
+        Swal.fire({
+          title: 'Account Verification',
+          text: 'Failed to connect to authentication service. Please try again later',
+          icon: 'error'
+        })
       });
   }
   function onOTPVerify() {
     const code = otp;
+    if(!otp) return;
     confirmationResult.confirm(code).then((result) => {
-      const user = result.user;
-      console.log(user);
+      setPayload(signUpData);
     }).catch((error) => {
-      console.log(error);
+      Swal.fire({
+        title: 'Account Verification',
+        text: 'Failed to connect to authentication service. Please try again later',
+        icon: 'error'
+      })
     });
+
   }
-  useEffect(()=>{
+  useEffect(() => {
     onSignUp();
-  },[])
+  }, [])
+  useEffect(() => {
+    if (error && Object.keys(payload).length !== 0) {
+      let msg = '';
+      if (error['response']['status'] === 400) {
+        msg = ('Failed to register account. Please validate all fields.')
+      } else {
+        msg = ('Failed to communicate with server. Please try again.')
+      }
+
+      Swal.fire(
+        'Account',
+        msg,
+        'warning'
+      );
+    }
+  }, [error]);
+  useEffect(() => {
+    if (metricsError) {
+      console.log(metricsError);
+      Swal.fire(
+        'Account Registration',
+        metricsError,
+        'error'
+      );
+    }
+  }, [metricsError])
+  useEffect(() => {
+
+    if (payload && Object.keys(payload).length > 0) {
+      console.log('setPayload');
+      console.log(payload);
+      const registerPayload = {
+        username: payload['contact'],
+        password: payload['password'],
+        accountType: payload['account']['accountType'],
+      };
+      const patchPayload = {
+        firstname: payload['firstname'],
+        middlename: payload['middlename'],
+        lastname: payload['lastname'],
+        address: payload['address'],
+        emailAddress: payload['email'],
+      }
+      if (payload['account']['accountType'] === 'BUSINESS') {
+        patchPayload.businessName = payload['businessName'];
+      }
+      console.log(patchPayload);
+      setRegisterProfile(registerPayload);
+      setPatchProfile(patchPayload);
+    }
+
+  }, [payload]);
+  useEffect(() => {
+    if (registerProfile && Object.keys(registerProfile).length > 0) {
+      console.log('registerProfile');
+      fetchData();
+    }
+  }, [registerProfile]);
+  useEffect(() => {
+    if (data && Object.keys(data).length > 0) {
+      console.log('if Data');
+      console.log(data['data']['token']);
+      if (data.status === 200) {
+        const newToken = data['data']['token'];
+        setTemporaryToken(newToken);
+        dispatch(setToken({ token: newToken }));
+      }
+    }
+  }, [data]);
+  useEffect(() => {
+    if (temporaryToken) {
+      console.log('temp Token');
+      console.log(temporaryToken);
+      metricsFetchData();
+    }
+  }, [temporaryToken]);
+  useEffect(() => {
+    if (metricsData && Object.keys(metricsData).length > 0) {
+      console.log('metricsData');
+      if (metricsData['status'] === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Account Registration',
+          text: 'Account registered successfully. Click OK to continue',
+          allowOutsideClick: false,
+          showCancelButton: false,
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/', { replace: true })
+          }
+        })
+      }
+    }
+  }, [metricsData]);
   return (<ThemeProvider theme={defaultTheme}>
     <Grid container component="main" sx={{ height: '100vh' }} >
       <CssBaseline />

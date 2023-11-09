@@ -69,7 +69,7 @@ const CustomerForm = (props) => {
                                             type="text"
                                             onChange={formik.handleChange}
                                             value={formik.values.businessName}
-                                            autofocus
+                                            autoFocus
                                         />
                                     </Grid>
                                 </>
@@ -85,7 +85,7 @@ const CustomerForm = (props) => {
                                     type="email"
                                     onChange={formik.handleChange}
                                     value={formik.values.email}
-                                    autofocus
+                                    autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12} lg={6}>
