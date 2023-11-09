@@ -75,13 +75,15 @@ class ProfileService {
         });
         if (!hasProfile) throw new NotFoundError('Profile does not exists.');
 
-        const emailExists = await this.getProfile({
-            emailAddress: payload.emailAddress,
-        });
-        if (emailExists) {
+        let hasEmail;
+        if (payload.emailAddress) {
+            const hasEmail = await this.getProfile({
+                emailAddress: payload.emailAddress,
+            });
+        }
+        if (hasEmail) {
             throw new ResourceConflictError('Email already exists.');
         }
-
         payload.id = hasProfile.id;
         const updateProfile = await this._db.profile.update({
             where: { id: payload?.id },
