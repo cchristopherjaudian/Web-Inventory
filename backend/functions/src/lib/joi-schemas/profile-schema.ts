@@ -22,7 +22,7 @@ const updateProfileSchema = {
         middlename: Joi.string().trim().optional(),
         photoUrl: Joi.string().trim().optional(),
         account: Joi.object({
-            username: Joi.string().min(11).max(11).trim().required(),
+            username: Joi.string().min(11).max(11).trim().optional(),
             password: Joi.string()
                 .pattern(
                     /^[A-Z]/,
@@ -41,7 +41,7 @@ const updateProfileSchema = {
                     'Password should be 8 characters length'
                 )
                 .trim()
-                .required(),
+                .optional(),
         }).default({}),
     }),
 };
