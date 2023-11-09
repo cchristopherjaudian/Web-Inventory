@@ -38,12 +38,12 @@ const Oxichat = () => (
           <Typography sx={{ mt: 1 }}>B2C</Typography>
           <Box
             sx={{
-              height: "32vh",
-              display: "flex",
-              flexDirection: "column"
+              height: '32vh',
+              display: 'flex',
+              flexDirection: 'column'
             }}
           >
-            <Box sx={{ flexGrow: 1, overflow: "auto", p: 2 }}>
+            <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
               <Inbox />
               <Inbox />
               <Inbox />
@@ -55,12 +55,12 @@ const Oxichat = () => (
           <Typography sx={{ mt: 1 }}>B2B</Typography>
           <Box
             sx={{
-              height: "32vh",
-              display: "flex",
-              flexDirection: "column"
+              height: '32vh',
+              display: 'flex',
+              flexDirection: 'column'
             }}
           >
-            <Box sx={{ flexGrow: 1, overflow: "auto", p: 2 }}>
+            <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
               <Inbox />
               <Inbox />
               <Inbox />
@@ -76,7 +76,6 @@ const Oxichat = () => (
           <MainCard title="Test User" sx={{ width: '100%' }}>
             <Chatbox />
           </MainCard>
-
         </Grid>
       </Grid>
     </Grid>

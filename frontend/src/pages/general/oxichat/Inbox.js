@@ -10,7 +10,7 @@ const Inbox = () => {
               <Avatar />
               <Stack direction="column" justifyContent="space-between" sx={{ ml: -5 }}>
                 <Typography component="caption" variant="caption" textAlign="left">
-                  Test User
+                  Admin
                 </Typography>
                 <Typography component="caption" variant="caption" textAlign="left">
                   Hello!Hello!Hello!Hello!Hello!Hello!Hello!

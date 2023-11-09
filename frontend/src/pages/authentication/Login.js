@@ -9,9 +9,18 @@ import { useState, useEffect, forwardRef } from 'react';
 import { useFormik } from 'formik';
 import useAxios from 'hooks/useAxios';
 import useAxiosBackup from 'hooks/useAxiosBackup';
-import { setCart } from "store/reducers/cart";
+import { setCart } from 'store/reducers/cart';
 import { setToken, setAuth, setAdmin, setAdminType, setCustomerType } from 'store/reducers/token';
-import { setBusinessName,setContact, setFirstName, setMiddleName, setLastName, setAddress, setAccType, setEmailAddress } from 'store/reducers/profile';
+import {
+  setBusinessName,
+  setContact,
+  setFirstName,
+  setMiddleName,
+  setLastName,
+  setAddress,
+  setAccType,
+  setEmailAddress
+} from 'store/reducers/profile';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -27,11 +36,10 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 const Input = styled('input')({
-  display: 'none',
+  display: 'none'
 });
 
 export default function Login() {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -45,9 +53,9 @@ export default function Login() {
       username: '',
       password: ''
     },
-    onSubmit: values => {
+    onSubmit: (values) => {
       setPayload(values);
-    },
+    }
   });
   useEffect(() => {
     setPayload(formik.values);
@@ -79,13 +87,13 @@ export default function Login() {
     if (profile) {
       dispatch(setCart([]));
       const adminTypes = {
-        'ADMIN': 0,
-        'SUB_1': 1,
-        'SUB_2': 2
+        ADMIN: 0,
+        SUB_1: 1,
+        SUB_2: 2
       };
       const customerTypes = {
-        'CUSTOMER': 0,
-        'BUSINESS': 1
+        CUSTOMER: 0,
+        BUSINESS: 1
       };
 
       const newData = data['data']['newData'];
@@ -98,7 +106,7 @@ export default function Login() {
       dispatch(setMiddleName({ middleName: profile['data']['middlename'] }));
       dispatch(setLastName({ lastName: profile['data']['lastname'] }));
       dispatch(setAddress({ address: profile['data']['address'] }));
-      dispatch(setBusinessName({businessName: profile['data']['businessName']}));
+      dispatch(setBusinessName({ businessName: profile['data']['businessName'] }));
       if (accountType in adminTypes) {
         dispatch(setAdminType({ adminType: adminTypes[accountType] }));
         dispatch(setAdmin({ isadmin: true }));
@@ -109,13 +117,11 @@ export default function Login() {
         dispatch(setAdmin({ isadmin: false }));
         navigate('/home', { replace: true });
       }
-
     }
-
   }, [profile]);
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh' }} >
+      <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
           item
@@ -125,10 +131,9 @@ export default function Login() {
           sx={{
             backgroundImage: 'url(https://placehold.co/600x400)',
             backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundPosition: 'center'
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -140,11 +145,10 @@ export default function Login() {
             minHeight="100vh"
             sx={{
               my: 8,
-              mx: 4,
+              mx: 4
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-            </Avatar>
+            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}></Avatar>
             <Typography component="h1" variant="h5">
               {"Oxiaire Member's Portal"}
             </Typography>
@@ -179,11 +183,9 @@ export default function Login() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => fetchData()}
-                  >Login</Button>
+                  <Button variant="contained" fullWidth onClick={() => fetchData()}>
+                    Login
+                  </Button>
                 </Grid>
               </Grid>
             </Box>
@@ -195,12 +197,11 @@ export default function Login() {
                 Sign Up
               </Typography>
             </Box>
-
           </Box>
-          <FirebaseSocial />
+          {/* <FirebaseSocial /> */}
         </Grid>
         <Copyright sx={{ mt: 1 }} />
-      </Grid >
-    </ThemeProvider >
+      </Grid>
+    </ThemeProvider>
   );
 }

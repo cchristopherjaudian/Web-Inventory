@@ -1,4 +1,3 @@
-
 import { Box, useMediaQuery } from '@mui/material';
 import { useSelector } from 'react-redux';
 
@@ -12,17 +11,16 @@ const HeaderContent = () => {
   const isadmin = useSelector((state) => state.token.isadmin.isadmin);
   return (
     <>
-      {isadmin ?
+      {isadmin ? (
         <>
           {!matchesXs && <Search />}
           {matchesXs && <Box sx={{ width: '100%', ml: 1 }} />}
           {!matchesXs && <Profile />}
           {matchesXs && <MobileSection />}
         </>
-        :
+      ) : (
         <Navbar />
-      }
-
+      )}
     </>
   );
 };
