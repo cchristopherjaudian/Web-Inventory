@@ -7,6 +7,8 @@ import InventoryHeader from 'components/inventoryheader/index';
 import useMetricsAxios from 'hooks/useMetricsAxios';
 import useHighAxios from 'hooks/useHighAxios';
 import useLowAxios from 'hooks/useLowAxios';
+import useRadialAxios from 'hooks/useRadialAxios';
+import useIncomeAxios from 'hooks/useIncomeAxios';
 import { useState, useEffect } from 'react';
 import {
   Box,
@@ -20,23 +22,59 @@ import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import { SearchOutlined } from '@ant-design/icons';
 
 const Dashboard = () => {
-  const [slot, setSlot] = useState('week');
+  const [radial, setRadial] = useState([]);
+  const [salesData, setSalesData] = useState([]);
+  const [radialQuery, setRadialQuery] = useState('');
+  const [incomeQuery, setIncomeQuery] = useState('');
   const [lowStocks, setLowStocks] = useState([]);
   const [highStocks, setHighStocks] = useState([]);
   const [metrics, setMetrics] = useState({});
   const { metricsData, fetchMetricsData } = useMetricsAxios('metrics/panels', 'GET', null, false);
   const { lowData, fetchLowData } = useLowAxios('inventories?stock=LOW', 'GET', null, false);
   const { highData, fetchHighData } = useHighAxios('inventories?stock=HIGH', 'GET', null, false);
-  const [dateFilter, setDateFilter] = useState({ txfrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
-  const data = [
-    { label: 'Product Info 1', value: 400, id: 0 },
-    { label: 'Product Info 2', value: 300, id: 1 }
-  ];
+  const [dateFilter, setDateFilter] = useState({ txFrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
+  const { radialData, fetchRadialData } = useRadialAxios(radialQuery, 'GET');
+  const { incomeData, fetchIncomeData } = useIncomeAxios(incomeQuery, 'GET');
+
   const handleFilter = (e) => {
     let newFilter = { ...dateFilter, [e.target.name]: e.target.value };
     setDateFilter(newFilter);
     console.log(dateFilter);
   }
+  const handleButtonFilter = () =>{
+    fetchRadialData();
+    fetchIncomeData();
+  }
+  useEffect(() => {
+    if (dateFilter) {
+      setRadialQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=DELIVERED');
+      setIncomeQuery('metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
+    }
+  }, [dateFilter]);
+  useEffect(() => {
+    if (radialQuery) {
+      fetchRadialData();
+    }
+  }, [radialQuery])
+  useEffect(() => {
+    if (radialData) {
+            let radialSrc = radialData['data']['sales']['code'];
+      console.log(radialSrc);
+      setRadial(radialSrc);
+    }
+  }, [radialData])
+  useEffect(() => {
+    if (incomeQuery) {
+      fetchIncomeData();
+    }
+  }, [incomeQuery])
+  useEffect(() => {
+    if (incomeData) {
+      let incomeDataNew = incomeData['data'];
+      setSalesData(incomeDataNew);
+    }
+
+  }, [incomeData])
   useEffect(() => {
     if (metricsData) {
       setMetrics(metricsData['data']);
@@ -71,7 +109,9 @@ const Dashboard = () => {
       setHighStocks(newData);
     }
   }, [highData]);
-  
+  useEffect(()=>{
+    handleButtonFilter();
+  },[])
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       <InventoryHeader metrics={metrics} />
@@ -83,8 +123,9 @@ const Dashboard = () => {
         <MainCard content={false} sx={{ mt: 1.5 }}>
           <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>Earnings</Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-
-            <RadialChart />
+            {
+              radial.length > 0 && <RadialChart radialData={radial} />
+            }
           </Box>
         </MainCard>
       </Grid>
@@ -103,13 +144,13 @@ const Dashboard = () => {
                     <OutlinedInput
                       size="small"
                       type="date"
-                      id="txfrom"
-                      name="txfrom"
+                      id="txFrom"
+                      name="txFrom"
                       inputProps={{
                         'aria-label': 'weight'
                       }}
-                      onClick={handleFilter}
-                      value={dateFilter['txfrom']}
+                      onChange={handleFilter}
+                      value={dateFilter['txFrom']}
                     />
                   </FormControl>
                   <Typography variant="h5"> to </Typography>
@@ -122,11 +163,11 @@ const Dashboard = () => {
                       inputProps={{
                         'aria-label': 'weight'
                       }}
-                      onClick={handleFilter}
+                      onChange={handleFilter}
                       value={dateFilter['txTo']}
                     />
                   </FormControl>
-                  <Button sx={{ width: '60%', pl: 2, pr: 2 }}  endIcon={<SearchOutlined />} size="medium" variant="contained">Filter</Button>
+                  <Button sx={{ width: '60%', pl: 2, pr: 2 }} endIcon={<SearchOutlined />} size="medium" variant="contained" onClick ={handleButtonFilter}>Filter</Button>
 
                 </Stack>
               </Grid>
@@ -134,7 +175,9 @@ const Dashboard = () => {
                 <Typography variant="h5"></Typography>
               </Grid>
             </Grid>
-            <IncomeAreaChart />
+            {
+              salesData && <IncomeAreaChart salesData={salesData} />
+            }
           </Box>
         </MainCard>
       </Grid>

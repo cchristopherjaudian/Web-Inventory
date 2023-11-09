@@ -15,6 +15,7 @@ import {
 import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import { SearchOutlined } from '@ant-design/icons';
 import useAxios from 'hooks/useAxios';
+import useMetricsAxios from 'hooks/useMetricsAxios';
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -24,15 +25,21 @@ function a11yProps(index) {
 
 const SalesReport = () => {
   const [query, setQuery] = useState('');
+  const [salesQuery, setSalesQuery] = useState('');
   const [dateFilter, setDateFilter] = useState({ txFrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
   const [slot, setSlot] = useState('week');
   const [orders, setOrders] = useState([]);
-  const [status, setStatus] = useState('');
-  const [value, setValue] = useState(0);
+  const [radial, setRadial] = useState([]);
+  const [chart, setChart] = useState([]);
+  const [salesData, setSalesData] = useState([]);
+  const [status, setStatus] = useState('DELIVERED');
+  const [value, setValue] = useState(2);
   const { data, fetchData } = useAxios(query, 'GET');
-  const tabStatus = ['', 'PREPARING', 'DISPATCHED', 'DELIVERED'];
-  const handleFilterClick = () =>{
+  const { metricsData, metricsFetchData } = useMetricsAxios(salesQuery, 'GET');
+  const tabStatus = ['PREPARING', 'DISPATCHED', 'DELIVERED'];
+  const handleFilterClick = () => {
     setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status);
+    setSalesQuery('metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
   }
   const handleFilter = (e) => {
     let newFilter = { ...dateFilter, [e.target.name]: e.target.value };
@@ -44,19 +51,28 @@ const SalesReport = () => {
   };
   useEffect(() => {
     if (dateFilter && status) {
-      console.log(dateFilter);
       setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status);
+      setSalesQuery('metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
     }
   }, [dateFilter, status]);
   useEffect(() => {
     if (query) {
+      console.log(query);
       fetchData();
     }
   }, [query]);
   useEffect(() => {
+    if (salesQuery) {
+      console.log(salesQuery);
+      metricsFetchData();
+    }
+  }, [salesQuery]);
+  useEffect(() => {
     if (data) {
+      let radialSrc = data['data']['sales']['code'];
+      console.log(radialSrc);
       let newData = [];
-      data['data']['list'].map((d,i)=>{
+      data['data']['list'].map((d, i) => {
         newData.push({
           id: d['orderId'],
           fullName: d['customerName'],
@@ -68,17 +84,32 @@ const SalesReport = () => {
           dateDelivered: d['dateDelivered']
         })
       });
+      console.log(newData);
+      setRadial(radialSrc);
       setOrders(newData);
     }
   }, [data]);
+  useEffect(() => {
+    if (metricsData) {
+      let incomeData = metricsData['data'];
+      console.log(incomeData);
+      setSalesData(incomeData);
+    }
+  }, [metricsData])
+  useEffect(()=>{
+    fetchData();
+    metricsFetchData();
+  },[]);
   return (
     <Grid container spacing={0.5}>
       <Grid item xs={12} md={3}>
         <MainCard content={false} sx={{ mt: 1.5 }}>
           <Typography variant="h6" sx={{ mt: 2.0, mb: 3.0, ml: 2.0 }}>Earnings</Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {
+              radial.length > 0 && <RadialChart radialData={radial} />
+            }
 
-            <RadialChart />
           </Box>
         </MainCard>
       </Grid>
@@ -127,17 +158,19 @@ const SalesReport = () => {
                 <Typography variant="h5"></Typography>
               </Grid>
             </Grid>
-            <IncomeAreaChart />
+            {
+              salesData && <IncomeAreaChart salesData={salesData} />
+            }
+
           </Box>
         </MainCard>
       </Grid>
       <Grid item xs={12}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="order-tabs">
-            <Tab label="All Orders" {...a11yProps(0)} />
-            <Tab label="Preparing" {...a11yProps(1)} />
-            <Tab label="Dispatched" {...a11yProps(2)} />
-            <Tab label="Delivered" {...a11yProps(3)} />
+            <Tab label="Preparing" {...a11yProps(0)} />
+            <Tab label="Dispatched" {...a11yProps(1)} />
+            <Tab label="Delivered" {...a11yProps(2)} />
           </Tabs>
         </Box>
       </Grid>
