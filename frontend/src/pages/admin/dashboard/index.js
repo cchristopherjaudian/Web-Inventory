@@ -1,4 +1,3 @@
-
 import MainCard from 'components/MainCard';
 import IncomeAreaChart from './IncomeAreaChart';
 import RadialChart from './RadialChart';
@@ -10,13 +9,7 @@ import useLowAxios from 'hooks/useLowAxios';
 import useRadialAxios from 'hooks/useRadialAxios';
 import useIncomeAxios from 'hooks/useIncomeAxios';
 import { useState, useEffect } from 'react';
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  Typography
-} from '@mui/material';
+import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 
 import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import { SearchOutlined } from '@ant-design/icons';
@@ -32,7 +25,10 @@ const Dashboard = () => {
   const { metricsData, fetchMetricsData } = useMetricsAxios('metrics/panels', 'GET', null, false);
   const { lowData, fetchLowData } = useLowAxios('inventories?stock=LOW', 'GET', null, false);
   const { highData, fetchHighData } = useHighAxios('inventories?stock=HIGH', 'GET', null, false);
-  const [dateFilter, setDateFilter] = useState({ txFrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
+  const [dateFilter, setDateFilter] = useState({
+    txFrom: new Date().toLocaleDateString('en-CA'),
+    txTo: new Date().toLocaleDateString('en-CA')
+  });
   const { radialData, fetchRadialData } = useRadialAxios(radialQuery, 'GET');
   const { incomeData, fetchIncomeData } = useIncomeAxios(incomeQuery, 'GET');
 
@@ -40,11 +36,11 @@ const Dashboard = () => {
     let newFilter = { ...dateFilter, [e.target.name]: e.target.value };
     setDateFilter(newFilter);
     console.log(dateFilter);
-  }
-  const handleButtonFilter = () =>{
+  };
+  const handleButtonFilter = () => {
     fetchRadialData();
     fetchIncomeData();
-  }
+  };
   useEffect(() => {
     if (dateFilter) {
       setRadialQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=DELIVERED');
@@ -55,26 +51,25 @@ const Dashboard = () => {
     if (radialQuery) {
       fetchRadialData();
     }
-  }, [radialQuery])
+  }, [radialQuery]);
   useEffect(() => {
     if (radialData) {
-            let radialSrc = radialData['data']['sales']['code'];
+      let radialSrc = radialData['data']['sales']['code'];
       console.log(radialSrc);
       setRadial(radialSrc);
     }
-  }, [radialData])
+  }, [radialData]);
   useEffect(() => {
     if (incomeQuery) {
       fetchIncomeData();
     }
-  }, [incomeQuery])
+  }, [incomeQuery]);
   useEffect(() => {
     if (incomeData) {
       let incomeDataNew = incomeData['data'];
       setSalesData(incomeDataNew);
     }
-
-  }, [incomeData])
+  }, [incomeData]);
   useEffect(() => {
     if (metricsData) {
       setMetrics(metricsData['data']);
@@ -109,9 +104,9 @@ const Dashboard = () => {
       setHighStocks(newData);
     }
   }, [highData]);
-  useEffect(()=>{
+  useEffect(() => {
     handleButtonFilter();
-  },[])
+  }, []);
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       <InventoryHeader metrics={metrics} />
@@ -119,13 +114,12 @@ const Dashboard = () => {
         <Typography variant="h5">Sales Report</Typography>
       </Grid>
       <Grid item xs={12} md={3}>
-
         <MainCard content={false} sx={{ mt: 1.5 }}>
-          <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>Earnings</Typography>
+          <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>
+            Earnings
+          </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {
-              radial.length > 0 && <RadialChart radialData={radial} />
-            }
+            {radial.length > 0 && <RadialChart radialData={radial} />}
           </Box>
         </MainCard>
       </Grid>
@@ -133,10 +127,8 @@ const Dashboard = () => {
         <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
         <MainCard content={false} sx={{ mt: 1.5 }}>
-
           <Box sx={{ py: 1, px: 2 }}>
             <Grid container alignItems="center" justifyContent="space-between">
-
               <Grid item>
                 <Typography variant="h4">Sales</Typography>
                 <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={{ mt: 2 }}>
@@ -167,17 +159,22 @@ const Dashboard = () => {
                       value={dateFilter['txTo']}
                     />
                   </FormControl>
-                  <Button sx={{ width: '60%', pl: 2, pr: 2 }} endIcon={<SearchOutlined />} size="medium" variant="contained" onClick ={handleButtonFilter}>Filter</Button>
-
+                  <Button
+                    sx={{ width: '60%', pl: 2, pr: 2 }}
+                    endIcon={<SearchOutlined />}
+                    size="medium"
+                    variant="contained"
+                    onClick={handleButtonFilter}
+                  >
+                    Filter
+                  </Button>
                 </Stack>
               </Grid>
               <Grid item>
                 <Typography variant="h5"></Typography>
               </Grid>
             </Grid>
-            {
-              salesData && <IncomeAreaChart salesData={salesData} />
-            }
+            {salesData && <IncomeAreaChart salesData={salesData} />}
           </Box>
         </MainCard>
       </Grid>
@@ -186,13 +183,17 @@ const Dashboard = () => {
       </Grid>
       <Grid item xs={12} md={6}>
         <MainCard sx={{ mt: 2 }} content={false}>
-          <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>Low Quantity Stock</Typography>
+          <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>
+            Low Quantity Stock
+          </Typography>
           <ReportTable products={lowStocks} />
         </MainCard>
       </Grid>
       <Grid item xs={12} md={6}>
         <MainCard sx={{ mt: 2 }} content={false}>
-          <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>High Quantity Stock</Typography>
+          <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>
+            High Quantity Stock
+          </Typography>
           <ReportTable products={highStocks} />
         </MainCard>
       </Grid>
