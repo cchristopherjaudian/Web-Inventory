@@ -26,7 +26,7 @@ const Orders = () => {
     fetchData();
   }
   useEffect(() => {
-    if (data) {
+    if (data && Object.keys(data).length > 0 ) {
       const result = data['data'].filter(item => item.status !== 'PAID').map(item => ({
         createdAt: item.createdAt,
         id: item.id,
@@ -39,11 +39,11 @@ const Orders = () => {
       setOrders(result)
     }
   }, [data]);
-  useEffect(() => {
-    if (orderSteps) {
-      console.log(orderSteps);
-    }
-  }, [orderSteps]);
+  // useEffect(() => {
+  //   if (orderSteps) {
+  //     console.log(orderSteps);
+  //   }
+  // }, [orderSteps]);
 
   return <MainCard title="Orders">
     <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

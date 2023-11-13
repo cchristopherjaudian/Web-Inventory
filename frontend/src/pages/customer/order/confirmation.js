@@ -73,12 +73,13 @@ const Confirmation = (props) => {
             <Typography variant="h1">{props.status.length >= 2 ? 'Delivery Completed' : 'Waiting for Delivery'}</Typography>
         </Grid>
         {
+            props.status.length >= 2 &&
             <>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Typography variant="h4" mt={3}>Your order has been delivered to you.</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Typography variant="h5">Date Delivered: {props.status[2].createdAt?.substring(0, 10)}</Typography>
+                    <Typography variant="h5">Date Delivered: {props.status[2]?.createdAt?.substring(0, 10)}</Typography>
                 </Grid>
             </>
         }

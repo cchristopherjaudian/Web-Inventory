@@ -10,10 +10,12 @@ import sub1navigation from 'menu-items/subadmin1';
 import sub2navigation from 'menu-items/subadmin2';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 import { openDrawer } from 'store/reducers/menu';
+import { useLocation } from 'react-router-dom';
 import Footer from './Footer/index';
 
 const MainLayout = () => {
   const theme = useTheme();
+  const location = useLocation();
   const matchUpMD = useMediaQuery(theme.breakpoints.up('lg'));
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
   const dispatch = useDispatch();
@@ -34,7 +36,7 @@ const MainLayout = () => {
   useEffect(() => {
     if (open !== drawerOpen) setOpen(drawerOpen);
   }, [drawerOpen]);
-
+  console.log(location.pathname);
   return (
     <>
       <Box sx={{ display: 'flex', width: '100%' }}>
@@ -48,7 +50,8 @@ const MainLayout = () => {
 
       </Box>
       {
-        matchUpMD && <Footer />
+        (matchUpMD && !location.pathname.startsWith('/home')) && <Footer />
+        //(matchUpMD) && <Footer />
       }
      
     </>

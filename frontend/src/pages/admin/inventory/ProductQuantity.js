@@ -18,13 +18,16 @@ const ProductQuantity = (props) => {
                     <CardMedia
                         component="img"
                         sx={{ width: 100, height: 100, display: { xs: 'none', sm: 'block' } }}
-                        image="https://placehold.co/100"
+                        image={props.stock.photoUrl ? props.stock.photoUrl : "https://placehold.co/100"}
                         alt={props.stock?.code}
                     />
                     <CardContent sx={{ flex: 1, ml: -1, mt: -1 }}>
                         <Stack direction="column" justifyContent="center">
                             <Typography component="caption" variant="caption" textAlign="left" sx={{ lineHeight: 2 }}>
-                                {props.stock?.name}
+                                {props.stock?.name.substring(0,30)}
+                                {
+                                    props.stock?.name.length > 30 && '.....'
+                                }
                             </Typography>
                             <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1, fontSize: '0.6rem' }}>
                                 Remaining Qty: {props.stock?.quantity}

@@ -66,10 +66,8 @@ const ProductForm = (props) => {
             const storage = getStorage();
             const storageRef = ref(storage, 'products/' + values['code'] + Date.now() + '.jpg');
             uploadBytes(storageRef, file).then((snapshot) => {
-                console.log('Uploaded a blob or file!');
                 getDownloadURL(snapshot.ref)
                     .then((downloadURL) => {
-                        console.log(`File available at ${downloadURL}`);
                         newValues = {...values,photoUrl: downloadURL};
                         setPayload(newValues);
                     });
@@ -124,7 +122,7 @@ const ProductForm = (props) => {
             <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: -3, height: '100%' }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        {image && <img src={image} alt="preview" />}
+                        {image && <img src={image} alt="preview" width={300} height={300 } />}
                     </Grid>
                     <Grid item xs={12}>
                         <input

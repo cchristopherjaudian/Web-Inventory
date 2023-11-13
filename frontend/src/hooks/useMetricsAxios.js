@@ -16,12 +16,9 @@ function useMetricsAxios(url, method, requestData = null, lazy = true,tempToken=
       'Authorization': (token.token) ? token.token : (tempToken) ? tempToken : ''
     }
   });
-  console.log(token);
   const metricsFetchData = async () => {
     try {
-      console.log(url);
       setMetricsLoading(true);
-
       let response;
       switch (method) {
         case 'GET':

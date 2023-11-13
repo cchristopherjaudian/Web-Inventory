@@ -12,7 +12,6 @@ import useAxios from 'hooks/useAxios';
 const steps = ['Preparing', 'Dispatched', 'Delivered'];
 
 const OrderSteps = (props) => {
-    console.log(props);
     const initialState = [
         {
             "PREPARING": ''
@@ -68,13 +67,12 @@ const OrderSteps = (props) => {
         setStepDate(initialState);
     };
     useEffect(() => {
-        if (payload) {
-            console.log(payload);
+        if (payload && Object.keys(payload).length > 0) {
             fetchData();
         }
     }, [payload]);
     useEffect(() => {
-        if (data) {
+        if (data && Object.keys(data).length > 0) {
 
             if (data['status'] === 200) {
                 let tempStatus = orderStatus;
@@ -83,6 +81,7 @@ const OrderSteps = (props) => {
                 props.handleClick();
                 props.setMessage('Order status updated successfully');
             }
+            setPayload({});
         }
     }, [data]);
     const handleStep = (step) => () => {
@@ -111,6 +110,8 @@ const OrderSteps = (props) => {
                                             </InputAdornment>
                                         }
                                         onChange={(event) => {
+                                            let d = new Date(event.target.value);
+                                            if (Number(d.getTime()) < 0) return;
                                             let newStepDate = [...stepDate];
                                             let previousStatusId = (orderStatus[index - 1]['id']);
                                             if (Object.keys(newStepDate[index]).length > 0) {
@@ -121,11 +122,15 @@ const OrderSteps = (props) => {
                                             let objKey = Object.keys(stepDate[objIndex])[0];
                                             setPayload({ orderId: props.id, createdAt: event.target.value, status: objKey, orderStatusId: previousStatusId })
                                         }}
+                                        onKeyPress={(event) => {
+                                            event.preventDefault();
+                                        }}
                                         inputProps={{
                                             'aria-label': 'weight'
                                         }}
                                         value={status && Array.isArray(status) && status[index] && status[index]['createdAt'] ? status[index]['createdAt'].substring(0, 10) : stepDate[index][Object.keys(stepDate[index])[0]].substring(0, 10)}
                                     />
+
                                 </FormControl>
                             </Stack>
 

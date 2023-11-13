@@ -1,7 +1,6 @@
-import MainCard from "components/MainCard";
-import { Grid, Paper, Typography, Button } from '@mui/material'
-import { UnorderedListOut, SettingOutlined } from '@ant-design/icons';
 
+import Footer from 'layout/MainLayout/Footer/index';
+import { Grid, Paper, Typography, Button } from '@mui/material'
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from "react";
 import useAxios from "hooks/useAxios";
@@ -15,8 +14,8 @@ const Home = () => {
             if (data['data'].length > 0) dispatch(setCart(data['data']));
         }
     }, [data]);
-    return (<Grid container sx={{ height: '100%' }}>
-        <Grid item xs={12} sx={{ height: '120%' }}>
+    return (<><Grid container sx={{ height: '70%' }}>
+        <Grid item xs={12} sx={{ height: '100%' }}>
             <Paper
                 elevation={10}
                 sx={{
@@ -98,8 +97,13 @@ const Home = () => {
         <Grid item xs={1} sx={{ mt: -5, zIndex: 30 }}>
 
         </Grid>
+        <Grid item xs={12} sx={{mt: 5, zIndex: 30, height: '100%' }}>
+            <Footer />
+        </Grid>
+
     </Grid>
 
+    </>
     );
 }
 

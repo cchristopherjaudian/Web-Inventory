@@ -117,7 +117,10 @@ const Shop = () => {
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {product.name}
+                                            {product.name.substring(0,30)}
+                                            {
+                                                product.name.length > 30 && '....'
+                                            }
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             Size: {product.size}

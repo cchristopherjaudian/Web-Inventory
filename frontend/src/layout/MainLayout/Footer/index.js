@@ -3,23 +3,27 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
-
+import { useLocation } from 'react-router-dom';
 import { FacebookOutlined, InstagramOutlined, TwitterOutlined } from "@ant-design/icons";
 import { Box } from "@mui/material";
-// position: (location.pathname.startsWith('/home')) ? 'fixed' : '',
-//                 ...(location.pathname.startsWith('/home') && { bottom: 0 }),
+
+
+
 const Footer = () => {
+    const location = useLocation();
     console.log(location.pathname);
     return (
         <Box
             component="footer"
             sx={{
+                ...(location.pathname.startsWith('/home') && { position: 'fixed' }),
+                ...(location.pathname.startsWith('/home') && { bottom: 0 }),
                 width: '100%',
                 backgroundColor: (theme) =>
                     theme.palette.mode === "light"
                         ? theme.palette.grey[200]
                         : theme.palette.grey[800],
-                p: 6,
+                p: 1,
             }}
         >
             <Container maxWidth="sm">
@@ -37,13 +41,13 @@ const Footer = () => {
                             Contact Us
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Address Line 1
+                            1260 Maharlika Highway, Isabang, Lucena City
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Email: ggwp@gmail.com
+                            Email: oxiairegasenterprises@gmail.com
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Phone: +1 234 567 8901
+                            Phone: 042 710 2833 | 042 373 7077
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -69,7 +73,7 @@ const Footer = () => {
                     <Typography variant="body2" color="text.secondary" align="center">
                         {"Copyright © "}
                         <Link color="inherit" href="#">
-                            GGWP Oxi
+                            Oxiaire Gas Enterprises
                         </Link>{" "}
                         {new Date().getFullYear()}
                         {"."}

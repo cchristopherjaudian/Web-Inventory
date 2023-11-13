@@ -61,7 +61,7 @@ const Otp = () => {
   }
   function onOTPVerify() {
     const code = otp;
-    if(!otp) return;
+    if (!otp) return;
     confirmationResult.confirm(code).then((result) => {
       setPayload(signUpData);
     }).catch((error) => {
@@ -105,8 +105,6 @@ const Otp = () => {
   useEffect(() => {
 
     if (payload && Object.keys(payload).length > 0) {
-      console.log('setPayload');
-      console.log(payload);
       const registerPayload = {
         username: payload['contact'],
         password: payload['password'],
@@ -136,8 +134,6 @@ const Otp = () => {
   }, [registerProfile]);
   useEffect(() => {
     if (data && Object.keys(data).length > 0) {
-      console.log('if Data');
-      console.log(data['data']['token']);
       if (data.status === 200) {
         const newToken = data['data']['token'];
         setTemporaryToken(newToken);
@@ -147,14 +143,11 @@ const Otp = () => {
   }, [data]);
   useEffect(() => {
     if (temporaryToken) {
-      console.log('temp Token');
-      console.log(temporaryToken);
       metricsFetchData();
     }
   }, [temporaryToken]);
   useEffect(() => {
     if (metricsData && Object.keys(metricsData).length > 0) {
-      console.log('metricsData');
       if (metricsData['status'] === 200) {
         Swal.fire({
           icon: 'success',
@@ -206,7 +199,7 @@ const Otp = () => {
             {"Oxiaire Member's Portal"}
           </Typography>
           <Typography component="h1" variant="body1">
-            Please enter the code send to your mobile number {signUpData.contact}
+            Please enter the code sent to your mobile number {signUpData.contact}
           </Typography>
           <div id='recaptcha-container'></div>
           <Grid container spacing={2} >

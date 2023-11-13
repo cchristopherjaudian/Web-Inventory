@@ -34,12 +34,10 @@ const CustomerForm = (props) => {
         onSubmit: values => {
             let newPayload = {
                 ...values,
-                account: { accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS' }
+                account: { accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS' },
             };
             localStorage.setItem('signUpData', JSON.stringify(newPayload));
             navigate('/verification',{replace:true});
-            //props.setPayload(newPayload);
-           
         },
     });
 

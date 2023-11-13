@@ -23,9 +23,9 @@ const OrderConfirmation = (props) => {
                         <Stack direction="row" gap={1}>
                             <Typography variant="caption">Order Date:</Typography>
                             {orderInfo.createdAt && <Typography variant="caption">{orderInfo.createdAt?.substring(0,10)}</Typography>}
-                            <Typography variant="caption">|</Typography>
+                            {/* <Typography variant="caption">|</Typography>
                             <Typography variant="caption">Estimated Delivery Date:</Typography>
-                            <Typography variant="caption">{''}</Typography>
+                            <Typography variant="caption">{''}</Typography> */}
                         </Stack>
                     </Stack>
                 </Grid>

@@ -5,7 +5,6 @@ const RadialChart = ({ radialData = [] }) => {
   const [radial, setRadial] = useState([]);
   const [chartData, setChartData] = useState({});
   useEffect(() => {
-    console.log(radialData);
     setRadial(radialData);
   }, []);
   useEffect(() => {

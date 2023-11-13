@@ -21,6 +21,7 @@ import {
   setAccType,
   setEmailAddress
 } from 'store/reducers/profile';
+import Swal from 'sweetalert2';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -46,7 +47,7 @@ export default function Login() {
   const [newToken, setNewToken] = useState('');
   const [newData, setNewData] = useState(false);
   const [payload, setPayload] = useState({});
-  const { data, fetchData } = useAxios('accounts/login', 'POST', payload, true);
+  const { data,error, fetchData } = useAxios('accounts/login', 'POST', payload, true);
   const { profile, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
   const formik = useFormik({
     initialValues: {
@@ -54,12 +55,24 @@ export default function Login() {
       password: ''
     },
     onSubmit: (values) => {
-      setPayload(values);
+      const newValues = { ...values, username: values.username.replace('+63', '0') }
+      console.log(newValues);
+      setPayload(newValues);
     }
   });
   useEffect(() => {
-    setPayload(formik.values);
+    const newValues = { ...formik.values, username: formik.values.username.replace('+63', '0') }
+    setPayload(newValues);
   }, [formik.values]);
+  useEffect(()=>{
+    if(error){
+      Swal.fire({
+        title: 'Member\'s Portal',
+        text:'Invalid mobile number or password. Please try again',
+        icon:'error'
+      });
+    }
+  },[error])
   useEffect(() => {
     if (data) {
       if (data['status'] === 200) {
@@ -162,11 +175,11 @@ export default function Login() {
                     required
                     fullWidth
                     id="username"
-                    label="Username"
+                    label="Phone Number"
                     name="username"
                     onChange={formik.handleChange}
                     value={formik.values.username}
-                    inputProps={{ maxLength: 11 }}
+                    inputProps={{ maxLength: 13 }}
                     autoFocus
                   />
                 </Grid>
@@ -196,9 +209,15 @@ export default function Login() {
               <Typography component={Link} to="register" variant="body2">
                 Sign Up
               </Typography>
+
+            </Box>
+            <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+              <Typography component={Link} to="forgot" variant="body2">
+                Forgot Password
+              </Typography>
             </Box>
           </Box>
-          {/* <FirebaseSocial /> */}
+          <FirebaseSocial />
         </Grid>
         <Copyright sx={{ mt: 1 }} />
       </Grid>

@@ -4,7 +4,7 @@ import MuiAlert from '@mui/material/Alert';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect, forwardRef } from 'react';
 import { useFormik } from 'formik';
-import { setFirstName, setMiddleName, setLastName, setAddress } from 'store/reducers/profile';
+import { setFirstName, setMiddleName, setLastName, setAddress, setEmailAddress } from 'store/reducers/profile';
 import Swal from 'sweetalert2';
 import useAxios from 'hooks/useAxios';
 const Profile = () => {
@@ -25,7 +25,8 @@ const Profile = () => {
       firstname: userAccount.firstName.firstName,
       middlename: userAccount.middleName.middleName ?? '',
       lastname: userAccount.lastName.lastName,
-      address: userAccount.address.address
+      address: userAccount.address.address,
+      emailAddress: userAccount.emailAddress.emailAddress,
     },
     onSubmit: (values) => {
       fetchData();
@@ -47,6 +48,7 @@ const Profile = () => {
         dispatch(setMiddleName({ middleName: data['data']['middlename'] }));
         dispatch(setLastName({ lastName: data['data']['lastname'] }));
         dispatch(setAddress({ address: data['data']['address'] }));
+        dispatch(setEmailAddress({ emailAddress: data['data']['emailAddress'] }));
 
         setSeverity('success');
         setMessage('Account updated successfully');
@@ -135,7 +137,18 @@ const Profile = () => {
                   value={formik.values.lastname}
                 />
               </Grid>
-
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="email-address"
+                  name="emailAddress"
+                  required
+                  fullWidth
+                  id="emailAddress"
+                  label="Email Address"
+                  onChange={formik.handleChange}
+                  value={formik.values.emailAddress}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
