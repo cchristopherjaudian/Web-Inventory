@@ -154,6 +154,7 @@ model Orders {
   status        PaymentStatuses @default(PROCESSING)
   refNo         String?
   paymentUrl    String?
+  deliveryUrl   String?
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt

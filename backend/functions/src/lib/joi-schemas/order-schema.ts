@@ -38,6 +38,7 @@ const updateOrderSchema = {
             .optional(),
         refNo: Joi.string().trim().optional(),
         paymentUrl: Joi.string().trim().optional(),
+        deliveryUrl: Joi.string().trim().optional(),
     }),
 };
 
