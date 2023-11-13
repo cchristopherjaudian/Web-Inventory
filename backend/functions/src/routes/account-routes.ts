@@ -10,6 +10,7 @@ import {
     registerSchema,
     getB2cListSchema,
     loginSchema,
+    forgotPasswordSchema,
 } from '../lib/joi-schemas/account-schema';
 import AuthMiddleware from '../middleware/auth-middleware';
 import Prisma from '../lib/prisma';
@@ -29,6 +30,12 @@ router.post(
     '/login',
     joi.requestSchemaValidate(loginSchema),
     AccountController.login
+);
+
+router.patch(
+    '/forgot-password',
+    joi.requestSchemaValidate(forgotPasswordSchema),
+    AccountController.forgotPassword
 );
 
 // ADMIN ROUTES

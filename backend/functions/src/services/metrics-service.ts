@@ -1,11 +1,7 @@
 import { OrderStatuses, PaymentStatuses, StockIndicator } from '@prisma/client';
 import moment from 'moment-timezone';
 import { TOrderSales } from '../lib/types/order-types';
-import {
-    TGroupedQuantity,
-    TMappedRptPayload,
-    TRptListQuery,
-} from '../lib/types/metrics-types';
+import { TGroupedQuantity, TRptListQuery } from '../lib/types/metrics-types';
 import { TPrismaClient } from '../lib/prisma';
 
 class MetricsService {

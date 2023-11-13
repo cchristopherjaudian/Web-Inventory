@@ -26,9 +26,20 @@ const login = catchAsync(async (req, res) => {
     response.createResponse(
         res,
         httpStatus.OK,
-        ResponseCodes.DATA_CREATED,
+        ResponseCodes.DATA_RETRIEVED,
         account
     );
 });
 
-export default { register, login };
+const forgotPassword = catchAsync(async (req, res) => {
+    const account = await accountInstance.forgotPassword(req.body);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_RETRIEVED,
+        account
+    );
+});
+
+export default { register, login, forgotPassword };

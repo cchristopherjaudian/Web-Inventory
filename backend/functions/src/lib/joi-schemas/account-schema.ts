@@ -28,6 +28,28 @@ const registerSchema = {
     }),
 };
 
+const forgotPasswordSchema = {
+    body: Joi.object({
+        username: Joi.string().min(11).max(11).trim().required(),
+        password: Joi.string()
+            .pattern(/^[A-Z]/, 'Password should start with a capital letter')
+            .pattern(
+                /(?=.*\d)/,
+                'Password should contain atleast contain 1 numeric value'
+            )
+            .pattern(
+                /(?=.*[@#$!%*?&])/,
+                'Password should atleast contain 1 special character'
+            )
+            .pattern(
+                /[A-Za-z\d@$!%*?&]{7,}/,
+                'Password should be 8 characters length'
+            )
+            .trim()
+            .required(),
+    }),
+};
+
 const loginSchema = {
     body: Joi.object({
         username: Joi.string().min(11).max(11).trim().required(),
@@ -45,4 +67,4 @@ const getB2cListSchema = {
     }),
 };
 
-export { registerSchema, getB2cListSchema, loginSchema };
+export { registerSchema, getB2cListSchema, loginSchema, forgotPasswordSchema };

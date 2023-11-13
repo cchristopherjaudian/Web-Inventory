@@ -3,7 +3,10 @@ import bcrypt from 'bcrypt';
 import { TAccounts } from '../lib/types/accounts-types';
 import TokenService from './token-service';
 import { TPrismaClient } from '../lib/prisma';
-import { BadRequestError } from '../lib/custom-errors/class-errors';
+import {
+    BadRequestError,
+    NotFoundError,
+} from '../lib/custom-errors/class-errors';
 
 class AccountService {
     private _db: TPrismaClient;
@@ -79,6 +82,22 @@ class AccountService {
         } catch (error) {
             throw error;
         }
+    }
+
+    public async forgotPassword({
+        username,
+        password,
+    }: Pick<TAccounts, 'username' | 'password'>) {
+        const account = await this._db.account.findFirst({
+            where: { username },
+        });
+        if (!account) throw new NotFoundError('Wrong username');
+
+        password = await bcrypt.hashSync(password, 10);
+        return this._db.account.update({
+            where: { id: account.id },
+            data: { password },
+        });
     }
 }
 
