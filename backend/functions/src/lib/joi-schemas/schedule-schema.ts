@@ -4,8 +4,8 @@ import Joi from 'joi';
 const createScheduleSchema = {
     body: Joi.object({
         route: Joi.string().trim().required(),
-        date: Joi.string().trim().required(),
-        time: Joi.string().trim().required(),
+        date: Joi.string().trim().optional(),
+        time: Joi.string().trim().optional(),
         description: Joi.string().trim().required(),
         plateNumber: Joi.string().trim().required(),
         adminId: Joi.string().trim().required(),
