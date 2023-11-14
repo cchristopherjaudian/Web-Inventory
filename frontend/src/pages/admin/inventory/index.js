@@ -65,13 +65,13 @@ const Inventory = () => {
       setHighStock(newData);
     }
   }, [highData]);
-  return <Grid container direction="row" spacing={1}>
+  return <Grid container direction="row" spacing={2}>
     <InventoryHeader metrics={metrics} />
 
     <Grid item xs={12} md={6} >
       <Grid direction="column" container>
         <Grid item xs={12} >
-          <MainCard title="Product Stocks" sx={{ width: '100%' }}>
+          <MainCard title="Product Stocks">
             <InventoryTable inventory={inventory} />
           </MainCard>
         </Grid>

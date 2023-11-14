@@ -15,7 +15,7 @@ const Oxichat = () => (
     <Grid item xs={12} lg={4} sx={{ height: '90vh' }}>
       <Grid direction="row" container spacing={0.5} sx={{ display: 'flex', height: '100%' }}>
         <Grid item xs={12}>
-          {/* <MainCard sx={{ mt: 0.6 }}>
+          <MainCard sx={{ mt: 0.6 }}>
             <FormControl sx={{ width: { xs: '100%' } }}>
               <OutlinedInput
                 size="small"
@@ -32,7 +32,7 @@ const Oxichat = () => (
                 placeholder="Search"
               />
             </FormControl>
-          </MainCard> */}
+          </MainCard>
         </Grid>
         <Grid item xs={12}>
           <Typography sx={{ mt: 1 }}>B2C</Typography>

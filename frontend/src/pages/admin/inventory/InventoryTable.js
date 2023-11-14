@@ -16,23 +16,23 @@ const InventoryTable = (props) => {
             field: 'code',
             headerName: 'Product Code',
             editable: false,
-            flex: 1
+          
         },
         {
             field: 'name',
             headerName: 'Product Name',
             editable: false,
-            flex: 1
+            flex:1
         },
         {
             field: 'price',
             headerName: 'Price',
             sortable: false,
-            flex: 1
+         
         },
     ];
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box>
             <Grid container>
                 <Grid item xs={12}>
                     <DataGrid
