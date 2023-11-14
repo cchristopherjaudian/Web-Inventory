@@ -12,7 +12,7 @@ import { setToken, setAuth } from 'store/reducers/token';
 
 const Navbar = () => {
   const isBusiness = useSelector((state) => state.token.customertype.customertype);
-  const settings = ['Profile', 'History', 'Logout'];
+  const settings = ['Profile', 'History', 'Messages', 'Logout'];
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -41,6 +41,9 @@ const Navbar = () => {
         navigate('/history', { replace: true });
         break;
       case 2:
+        navigate('/oxichat');
+        break;
+      case 3:
         dispatch(setToken(''));
         dispatch(setAuth(false));
         navigate('/', { replace: true });

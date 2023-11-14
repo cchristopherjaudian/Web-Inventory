@@ -12,24 +12,8 @@ const Oxichat = () => (
         Oxichat
       </Typography>
     </Grid>
-    <Grid item xs={12} lg={4} sx={{ height: '90vh' }}>
-      <Grid direction="row" container spacing={0.5} sx={{ display: 'flex', height: '100%' }}>
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              height: '32vh',
-              display: 'flex',
-              flexDirection: 'column'
-            }}
-          >
-            <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
-              <Inbox />
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-    </Grid>
-    <Grid item xs={12} lg={8} style={{ height: '83vh' }}>
+    
+    <Grid item xs={12}>
       <Grid direction="column" container style={{ display: 'flex', height: '100%' }}>
         <Grid item xs={12}>
           <MainCard title="Admin" sx={{ width: '100%' }}>

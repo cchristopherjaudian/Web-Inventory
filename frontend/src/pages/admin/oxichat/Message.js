@@ -2,7 +2,7 @@ import { Avatar, Box, Typography, Paper } from '@mui/material';
 import { useSelector } from 'react-redux';
 const Message = (props) => {
   const myMobile = useSelector((state)=>state.profile.contact.contact);
-  const isBot = props.src === myMobile;
+  const isBot = props.src !== myMobile;
   return (
     <Box
       sx={{

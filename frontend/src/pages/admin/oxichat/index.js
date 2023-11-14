@@ -11,36 +11,57 @@ import Inbox from './Inbox';
 import Chatbox from './Chatbox';
 
 const Oxichat = () => {
-  let b2bList = [];
-  let b2cList = [];
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-  let ref = database.ref('/');
+  const [firebaseApp] = useState(() => {
+    if (!firebase.apps.length) {
+      return firebase.initializeApp(firebaseConfig);
+    } else {
+      return firebase.app();
+    }
+  });
+  const database = firebaseApp.database();
+
+  const [cList, setCList] = useState([]);
+  const [bList, setBList] = useState([]);
   const [selectedChat, setSelectedChat] = useState('');
   const [chatProfile, setChatProfile] = useState({});
-  ref.on("value", snapshot => {
-    const data = snapshot.val();
 
-    data.B2C.recipients.map((s, i) => {
-      b2cList.push({
-        index: i,
-        mobile: s.mobile,
-        photoUrl: s.photoUrl,
-        name: s.name
-      })
+  useEffect(() => {
+    let ref = database.ref('/');
+    const handleNewData = snapshot => {
+      const data = snapshot.val();
+      console.log(data);
+      let b2cList = [];
+      let b2bList = [];
+      if (data) {
+        if (data.B2C) {
+          Object.values(data.B2C.recipients).map((s, i) => {
+            const userProfile = s.chat.messages[Object.keys(s.chat.messages).at(0)];
+            b2cList.push({
+              mobile: userProfile.mobile,
+              photoUrl: userProfile.photoUrl,
+              name: userProfile.name,
+            });
+          });
+        }
+        if (data.B2B) {
+          Object.values(data.B2B.recipients).map((s, i) => {
+            const userProfile = s.chat.messages[Object.keys(s.chat.messages).at(0)];
+            b2bList.push({
+              mobile: userProfile.mobile,
+              photoUrl: userProfile.photoUrl,
+              name: userProfile.name,
+            });
+          });
+        }
+      }
 
-    });
-    data.B2B.recipients.map((s, i) => {
-      b2bList.push({
-        index: i,
-        mobile: s.mobile,
-        photoUrl: s.photoUrl,
-        name: s.name
-      })
 
-    });
-  });
-
+      setCList(b2cList);
+      setBList(b2bList);
+    };
+    ref.on("value", handleNewData);
+    return () => ref.off("value", handleNewData);
+  }, [database]);
 
   return (
     <Grid container spacing={0.5}>
@@ -51,26 +72,7 @@ const Oxichat = () => {
       </Grid>
       <Grid item xs={12} lg={4} sx={{ height: '90vh' }}>
         <Grid direction="row" container spacing={0.5} sx={{ display: 'flex', height: '100%' }}>
-          <Grid item xs={12}>
-            <MainCard sx={{ mt: 0.6 }}>
-              <FormControl sx={{ width: { xs: '100%' } }}>
-                <OutlinedInput
-                  size="small"
-                  id="header-search"
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <SearchOutlined />
-                    </InputAdornment>
-                  }
-                  aria-describedby="header-search-text"
-                  inputProps={{
-                    'aria-label': 'weight'
-                  }}
-                  placeholder="Search"
-                />
-              </FormControl>
-            </MainCard>
-          </Grid>
+
           <Grid item xs={12}>
             <Typography sx={{ mt: 1 }}>B2C</Typography>
             <Box
@@ -82,7 +84,7 @@ const Oxichat = () => {
             >
               <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
                 {
-                  b2cList.map((s, i) => {
+                  cList.map((s, i) => {
                     return <Inbox key={i} profile={s} setSelectedChat={setSelectedChat} ctype="B2C" setChatProfile={setChatProfile} />
                   })
                 }
@@ -100,7 +102,7 @@ const Oxichat = () => {
             >
               <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
                 {
-                  b2bList.map((s, i) => {
+                  bList.map((s, i) => {
                     return <Inbox key={i} profile={s} setSelectedChat={setSelectedChat} ctype="B2B" setChatProfile={setChatProfile} />
                   })
                 }
@@ -113,7 +115,10 @@ const Oxichat = () => {
         <Grid direction="column" container style={{ display: 'flex', height: '100%' }}>
           <Grid item xs={12}>
             <MainCard title={chatProfile.name} sx={{ width: '100%' }}>
-              <Chatbox selectedChat={selectedChat} chatProfile={chatProfile} />
+              {
+                selectedChat && <Chatbox selectedChat={selectedChat} chatProfile={chatProfile} />
+              }
+              
             </MainCard>
           </Grid>
         </Grid>

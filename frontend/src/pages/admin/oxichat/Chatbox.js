@@ -11,6 +11,9 @@ import Message from './Message';
 let ref = null;
 const Chatbox = (props) => {
   const myMobile = useSelector((state) => state.profile.contact.contact);
+  const fn = useSelector((state) => state.profile.firstName.firstName);
+  const ln = useSelector((state) => state.profile.lastName.lastName);
+  const myName = fn + ' ' + ln;
   const [firebaseApp] = useState(() => {
     if (!firebase.apps.length) {
       return firebase.initializeApp(firebaseConfig);
@@ -53,10 +56,11 @@ const Chatbox = (props) => {
       let newMessage = {
         content: sendMessage,
         time: new Date().toISOString(),
-        src: myMobile
+        src: myMobile,
+        mobile: myMobile,
+        name: myName,
+        photoUrl: 'https://placehold.co/100'
       }
-
-      console.log(newMessage);
       ref.push(newMessage);
       setSendMessage('');
       setInput('');
@@ -75,7 +79,7 @@ const Chatbox = (props) => {
     >
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
         {
-         
+
           Object.values(chatMessages).map((s, i) => {
             return <Message key={i} message={s.content} src={s.src} />;
           })
@@ -85,8 +89,13 @@ const Chatbox = (props) => {
       <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
         <Grid container spacing={2}>
           <Grid item xs={10}>
-            <TextField size="small" fullWidth placeholder="Type a message" variant="outlined" value={input} onChange={handleInputChange} />
+            <TextField size="small" fullWidth placeholder="Type a message" variant="outlined" value={input} onChange={handleInputChange} onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSend();
+              }
+            }} />
           </Grid>
+
           <Grid item xs={2}>
             <Button fullWidth color="primary" variant="contained" endIcon={<MessageOutlined />} onClick={handleSend}>
               Send

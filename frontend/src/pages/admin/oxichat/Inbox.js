@@ -4,7 +4,7 @@ const Inbox = (props) => {
 
   return (
     <Grid item xs={12} sx={{ mt: 0.2 }} onClick={() => {
-      props.setSelectedChat(props.ctype + '/recipients/' + props.profile.index + '/chat/');
+      props.setSelectedChat(props.ctype + '/recipients/' + props.profile.mobile + '/chat/');
       props.setChatProfile(props.profile);
     }} >
       <CardActionArea>

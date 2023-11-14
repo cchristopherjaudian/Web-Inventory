@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import { useMediaQuery, Button, Stack } from '@mui/material';
 import Google from 'assets/images/icons/google.svg';
-import { setToken, setAuth, setAdmin, setAdminType,setCustomerType } from 'store/reducers/token';
-import { setFirstName, setMiddleName, setLastName, setAddress,setAccType } from 'store/reducers/profile';
+import { setToken, setAuth, setAdmin, setAdminType, setCustomerType } from 'store/reducers/token';
+import { setContact, setFirstName, setMiddleName, setLastName, setAddress, setAccType } from 'store/reducers/profile';
 
 const FirebaseSocial = () => {
   const navigate = useNavigate();
@@ -66,7 +66,7 @@ const FirebaseSocial = () => {
       dispatch(setMiddleName({ middleName: profile['data']['middlename'] }));
       dispatch(setLastName({ lastName: profile['data']['lastname'] }));
       dispatch(setAddress({ address: profile['data']['address'] }));
-
+      dispatch(setContact({contact: '111'}))
       if (accountType in adminTypes) {
         dispatch(setAdminType({ adminType: adminTypes[accountType] }));
         dispatch(setAdmin({ isadmin: true }));

@@ -77,11 +77,11 @@ const CustomerRoutes = {
     {
       path: 'order/:id',
       element: <OrderPreview />
+    },
+    {
+      path: 'oxichat',
+      element: <OxiChat />
     }
-    // {
-    //   path: 'oxichat/',
-    //   element: <OxiChat />
-    // }
   ]
 };
 
