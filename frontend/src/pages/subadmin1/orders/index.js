@@ -31,6 +31,7 @@ const Orders = () => {
         createdAt: item.createdAt,
         id: item.id,
         paymentMethod: item.paymentMethod,
+        paymentUrl: item.paymentUrl,
         status: item.status,
         firstname: item.profile.firstname,
         middlename: item.profile.middlename,
@@ -39,12 +40,6 @@ const Orders = () => {
       setOrders(result)
     }
   }, [data]);
-  // useEffect(() => {
-  //   if (orderSteps) {
-  //     console.log(orderSteps);
-  //   }
-  // }, [orderSteps]);
-
   return <MainCard title="Orders">
     <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>

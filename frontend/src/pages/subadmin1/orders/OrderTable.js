@@ -78,6 +78,8 @@ const OrderTable = (props) => {
             renderCell: (params) => {
                 const onClick = (event) => {
                     event.stopPropagation();
+                    if(params.row.paymentMethod !== 'COD') window.open(params.row.paymentUrl, '_blank');
+                    
                 };
                 return <Button variant="outlined" color="info" onClick={onClick}>{params.row.paymentMethod}</Button>;
             }

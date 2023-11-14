@@ -16,15 +16,15 @@ const home = {
       url: '/',
       icon: icons.AppstoreOutlined,
       breadcrumbs: false
+    },
+    {
+      id: 'oxichat',
+      title: 'Oxichat',
+      type: 'item',
+      url: '/oxichat',
+      icon: icons.MessageOutlined,
+      breadcrumbs: false
     }
-    // {
-    //   id: 'oxichat',
-    //   title: 'Oxichat',
-    //   type: 'item',
-    //   url: '/oxichat',
-    //   icon: icons.MessageOutlined,
-    //   breadcrumbs: false
-    // }
   ]
 };
 

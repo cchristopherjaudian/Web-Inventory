@@ -18,6 +18,7 @@ const Checkout = () => {
     const navigate = useNavigate();
     const cartItems = useSelector((state) => state.cart.cart);
     const profile = useSelector((state) => state.profile);
+    const [paymentUrl,setPaymentUrl] = useState('');
     const [message, setMessage] = useState('');
     const [severity, setSeverity] = useState('success');
     const [open, setOpen] = useState(false);
@@ -66,7 +67,14 @@ const Checkout = () => {
             )
             return;
         }
-
+        if ((payMethod === 'GCASH' || payMethod === 'BANK_TRANSFER') && paymentUrl === '') {
+            Swal.fire(
+                'Checkout Order',
+                'Please upload a payment image',
+                'warning'
+            )
+            return;
+        }
         Swal.fire({
             icon: 'question',
             title: 'Checkout Orders',
@@ -82,7 +90,7 @@ const Checkout = () => {
                         productId: item.products.id
                     });
                 });
-                let finalPayload = { paymentMethod: payMethod, items: newCart };
+                let finalPayload = { paymentMethod: payMethod, items: newCart, paymentUrl: paymentUrl };
                 setPayload(finalPayload);
             }
         })
@@ -164,7 +172,7 @@ const Checkout = () => {
                     </Box>
                     <Box sx={{ mt: 2 }}>
                         {
-                            activeStep === 0 ? <Cart setFinalCart={setFinalCart} /> : (activeStep === 1) ? <Payment setPayMethod={setPayMethod} /> : <Confirmation />
+                            activeStep === 0 ? <Cart setFinalCart={setFinalCart} /> : (activeStep === 1) ? <Payment setPaymentUrl={setPaymentUrl} setPayMethod={setPayMethod} /> : <Confirmation />
                         }
                     </Box>
                     </Grid>

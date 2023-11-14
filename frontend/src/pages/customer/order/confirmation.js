@@ -1,4 +1,3 @@
-
 import firebaseConfig from 'config/firebase';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -9,7 +8,7 @@ import useAxios from 'hooks/useAxios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 const Confirmation = (props) => {
-    console.log(props)
+   
     const [file, setFile] = useState(null);
     const [payload, setPayload] = useState({});
     const [image, setImage] = useState(null);
@@ -29,13 +28,12 @@ const Confirmation = (props) => {
         }
         firebase.initializeApp(firebaseConfig);
         const storage = getStorage();
-        const storageRef = ref(storage, 'payment/' + props.id + Date.now() + '.jpg');
+        const storageRef = ref(storage, 'delivery/' + props.id + Date.now() + '.jpg');
         uploadBytes(storageRef, file).then((snapshot) => {
             console.log('Uploaded a blob or file!');
             getDownloadURL(snapshot.ref)
                 .then((downloadURL) => {
-                    console.log(`File available at ${downloadURL}`);
-                    setPayload({ paymentUrl: downloadURL });
+                    setPayload({ deliveryUrl: downloadURL });
                 });
         });
     }

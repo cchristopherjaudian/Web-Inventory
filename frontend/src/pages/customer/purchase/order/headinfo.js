@@ -1,3 +1,4 @@
+
 import { LoadingOutlined } from '@ant-design/icons';
 import MainCard from "components/MainCard";
 import {
@@ -12,9 +13,12 @@ import {
 import { useState, useEffect } from 'react';
 import Option from "pages/customer/checkout/option";
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 const HeadInfo = (props) => {
     const profile = useSelector((state) => state.profile);
+   
     const [paymethod, setPaymethod] = useState('');
+    
     const methods = [
         { id: 2, img: '/asset/gcash.png', code: 'GCASH', name: 'GCash', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,' },
         { id: 3, img: '/asset/bank.png', code: 'BANK_TRANSFER', name: 'Bank Transfer', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,' }
@@ -22,7 +26,9 @@ const HeadInfo = (props) => {
     const handleChange = (event) => {
         props.setPaymethod(event.target.value);
         setPaymethod(event.target.value);
+        props.setShowQR(true);
     };
+    
     return (
         <MainCard>
             <Grid container spacing={1} >

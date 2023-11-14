@@ -9,8 +9,12 @@ import { useState, useEffect } from 'react';
 import useAxios from 'hooks/useAxios';
 import useHighAxios from 'hooks/useHighAxios';
 import Swal from 'sweetalert2';
+import Payment from './payment';
 const Order = () => {
     let { id } = useParams();
+
+    const [showQR, setShowQR] = useState(false);
+    const [paymentUrl, setPaymentUrl] = useState('');
     const navigate = useNavigate();
     const [mapPayload, setMapPayload] = useState({});
     const [payMethod, setPaymethod] = useState('');
@@ -63,7 +67,7 @@ const Order = () => {
                         productId: pr['products']['id']
                     })
                 })
-                setMapPayload({ ...tempPayload, items: mapProducts });
+                setMapPayload({ ...tempPayload, items: mapProducts, paymentUrl: paymentUrl });
             }
         })
 
@@ -103,10 +107,16 @@ const Order = () => {
     return (
         <Grid container spacing={1} sx={{ mt: 2 }}>
             <Grid item xs={12} lg={3}>
-                <HeadInfo highLoading={highLoading} prInfo={prInfo} payMethod={payMethod} setPaymethod={setPaymethod} proceedCheckout={proceedCheckout} />
+                <HeadInfo setShowQR={setShowQR} setPaymentUrl={setPaymentUrl} highLoading={highLoading} prInfo={prInfo} payMethod={payMethod} setPaymethod={setPaymethod} proceedCheckout={proceedCheckout} />
             </Grid>
             <Grid item xs={12} lg={9}>
-                <Cart prInfo={prInfo} />
+                {
+                    showQR ?
+                    <Payment setPaymentUrl={setPaymentUrl}/>
+                    :
+                    <Cart prInfo={prInfo} />
+                }
+                
             </Grid>
         </Grid>
     );

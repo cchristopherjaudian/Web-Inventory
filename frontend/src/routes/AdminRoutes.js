@@ -24,10 +24,10 @@ const AdminRoutes = {
       path: '/',
       element: <Dashboard />
     },
-    // {
-    //   path: 'oxichat',
-    //   element: <Oxichat />
-    // },
+    {
+      path: 'oxichat',
+      element: <Oxichat />
+    },
     {
       path: 'transactions',
       element: <TransactionRecords />
