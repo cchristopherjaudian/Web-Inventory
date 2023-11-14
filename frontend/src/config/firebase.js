@@ -6,7 +6,8 @@ const firebaseConfig = {
   projectId: "cf-boilerplate",
   storageBucket: "cf-boilerplate.appspot.com",
   messagingSenderId: "275909908271",
-  appId: "1:275909908271:web:d4fd82f0fc1ae052fa73da"
+  appId: "1:275909908271:web:d4fd82f0fc1ae052fa73da",
+  databaseURL: "https://cf-boilerplate-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 export default firebaseConfig;

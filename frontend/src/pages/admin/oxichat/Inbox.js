@@ -1,24 +1,23 @@
 import { Avatar, Card, CardActionArea, CardContent, Grid, Stack, Typography } from '@mui/material';
 
-const Inbox = () => {
+const Inbox = (props) => {
+
   return (
-    <Grid item xs={12} sx={{ mt: 0.2 }}>
+    <Grid item xs={12} sx={{ mt: 0.2 }} onClick={() => {
+      props.setSelectedChat(props.ctype + '/recipients/' + props.profile.index + '/chat/');
+      props.setChatProfile(props.profile);
+    }} >
       <CardActionArea>
         <Card sx={{ display: 'flex', height: 60 }}>
           <CardContent sx={{ flex: 1, ml: -1, mt: -1 }}>
-            <Stack direction="row" justifyContent="space-between">
-              <Avatar />
-              <Stack direction="column" justifyContent="space-between" sx={{ ml: -5 }}>
+            <Stack direction="row">
+              <Avatar alt={props.profile.name} src={props.profile.photoUrl} />
+              <Stack direction="column" sx={{ ml: 2 }}>
                 <Typography component="caption" variant="caption" textAlign="left">
-                  Test User
+                  {props.profile.name}
                 </Typography>
                 <Typography component="caption" variant="caption" textAlign="left">
-                  Hello!Hello!Hello!Hello!Hello!Hello!Hello!
-                </Typography>
-              </Stack>
-              <Stack direction="column">
-                <Typography component="caption" variant="caption" textAlign="left">
-                  00:00
+                  {props.profile.mobile}
                 </Typography>
               </Stack>
             </Stack>
