@@ -115,6 +115,7 @@ class OrderService {
             data: {
                 profileId: payload.profileId,
                 paymentMethod: payload.paymentMethod,
+                paymentUrl: payload.paymentUrl || null,
                 orderItems: {
                     createMany: {
                         data: mappedItems,

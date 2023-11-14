@@ -10,6 +10,7 @@ const createOrderSchema = {
             .trim()
             .valid(...Object.keys(PaymentMethods))
             .required(),
+        paymentUrl: Joi.string().optional(),
         items: Joi.array().items(
             Joi.object({
                 productId: Joi.string().trim().required(),
