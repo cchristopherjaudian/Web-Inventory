@@ -5,9 +5,11 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from "react";
 import useAxios from "hooks/useAxios";
 import { setCart } from "store/reducers/cart";
+import { useNavigate } from 'react-router-dom';
 const Home = () => {
     const { data, fetchData } = useAxios('carts/auth', 'GET', null, false);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     useEffect(() => {
         if (data) {
             console.log(data['data']);
@@ -42,7 +44,7 @@ const Home = () => {
                         <Typography variant="h1" component="div" sx={{ color: '#16a085', display: 'flex', justifyContent: 'center', alignItems: 'center' }} gutterBottom>
                             OUR PRIORITY
                         </Typography>
-                        <Button variant="outlined" size="large">Shop Now</Button>
+                        <Button variant="contained" size="large" onClick={() => navigate('/shop')}>Shop Now</Button>
                     </Grid>
                     <Grid item xs={6}>
 
@@ -52,10 +54,10 @@ const Home = () => {
 
             </Paper>
         </Grid>
-        <Grid item xs={1} sx={{ mt: -5, zIndex: 30 }}>
+        <Grid item xs={1}>
 
         </Grid>
-        <Grid item xs={10} sx={{ mt: -5, zIndex: 30 }}>
+        <Grid item xs={10} sx={{mt:-5, zIndex:20}}>
             <Paper elevation={10} sx={{ p: 4 }}>
                 <Grid container spacing={5}>
                     <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -94,10 +96,10 @@ const Home = () => {
             </Paper>
 
         </Grid>
-        <Grid item xs={1} sx={{ mt: -5, zIndex: 30 }}>
+        <Grid item xs={1} >
 
         </Grid>
-        <Grid item xs={12} sx={{mt: 5, zIndex: 30, height: '100%' }}>
+        <Grid item xs={12} sx={{ mt: 5 }}>
             <Footer />
         </Grid>
 

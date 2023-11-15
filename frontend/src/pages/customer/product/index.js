@@ -72,7 +72,7 @@ const Product = () => {
     return (
         <MainCard>
             <Grid container spacing={1}>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} >
                     <Info itemInfo={itemInfo} setCartItem={setCartItem} cartItems={cartItems} productId={id} />
                     <Card mt={2} sx={{ width: '100%', display: 'flex', padding: 2 }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -83,13 +83,13 @@ const Product = () => {
                         </Box>
                     </Card>
                 </Grid>
-                <Grid item xs={12} md={3} sx={{ height: '80vh', overflowY: 'auto' }}>
+                {/* <Grid item xs={12} md={3} sx={{ height: '80vh', overflowY: 'auto' }}>
                     <Typography variant="h5" color="#2980b9" mb={2}>Related Products</Typography>
                     <RelatedProducts />
                     <RelatedProducts />
                     <RelatedProducts />
                     <RelatedProducts />
-                </Grid>
+                </Grid> */}
 
             </Grid>
         </MainCard >

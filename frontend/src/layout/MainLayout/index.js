@@ -51,9 +51,8 @@ const MainLayout = () => {
       </Box>
       {
         (matchUpMD && !location.pathname.startsWith('/home')) && <Footer />
-        //(matchUpMD) && <Footer />
       }
-     
+
     </>
   );
 };

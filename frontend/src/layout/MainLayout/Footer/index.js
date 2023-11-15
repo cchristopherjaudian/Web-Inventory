@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useMediaQuery } from '@mui/material';
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -6,18 +6,20 @@ import Grid from "@mui/material/Grid";
 import { useLocation } from 'react-router-dom';
 import { FacebookOutlined, InstagramOutlined, TwitterOutlined } from "@ant-design/icons";
 import { Box } from "@mui/material";
-
+import { useTheme } from '@mui/material/styles';
 
 
 const Footer = () => {
+    const theme = useTheme();
     const location = useLocation();
+    const matchUpMD = useMediaQuery(theme.breakpoints.up('lg'));
     console.log(location.pathname);
     return (
         <Box
             component="footer"
             sx={{
-                ...(location.pathname.startsWith('/home') && { position: 'fixed' }),
-                ...(location.pathname.startsWith('/home') && { bottom: 0 }),
+                // ...((location.pathname.startsWith('/home') && matchUpMD) && { position: 'fixed' }),
+                // ...((location.pathname.startsWith('/home') && matchUpMD) && { bottom: 0 }),
                 width: '100%',
                 backgroundColor: (theme) =>
                     theme.palette.mode === "light"

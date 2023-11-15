@@ -79,7 +79,7 @@ const Shop = () => {
                 </Alert>
             </Snackbar>
             <Grid item xs={12}>
-                <Box component="img" src="https://placehold.co/700x200" alt="Featured" sx={{ width: '100%', height: '200' }} />
+                <img src="asset/featured-image.png" alt="featured" height={500} style={{width:'100%'}}/>
             </Grid>
 
             <Grid item xs={12} sx={{ mt: 3 }}>

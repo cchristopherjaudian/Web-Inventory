@@ -47,7 +47,7 @@ export default function Login() {
   const [newToken, setNewToken] = useState('');
   const [newData, setNewData] = useState(false);
   const [payload, setPayload] = useState({});
-  const { data,error, fetchData } = useAxios('accounts/login', 'POST', payload, true);
+  const { data, error, fetchData } = useAxios('accounts/login', 'POST', payload, true);
   const { profile, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
   const formik = useFormik({
     initialValues: {
@@ -64,15 +64,15 @@ export default function Login() {
     const newValues = { ...formik.values, username: formik.values.username.replace('+63', '0') }
     setPayload(newValues);
   }, [formik.values]);
-  useEffect(()=>{
-    if(error){
+  useEffect(() => {
+    if (error) {
       Swal.fire({
         title: 'Member\'s Portal',
-        text:'Invalid mobile number or password. Please try again',
-        icon:'error'
+        text: 'Invalid mobile number or password. Please try again',
+        icon: 'error'
       });
     }
-  },[error])
+  }, [error])
   useEffect(() => {
     if (data) {
       if (data['status'] === 200) {
@@ -142,13 +142,36 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://placehold.co/600x400)',
+            backgroundImage: 'url(asset/login-left.png)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
-        />
+        >
+          <Grid container sx={{ height: '100%' }}>
+            <Grid item xs={12} sx={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              p: 4,
+              mt: 2
+            }}>
+              <Typography variant="h3" component="div" sx={{ color: '#2980b9', display: 'flex', justifyContent: 'center', alignItems: 'center' }} gutterBottom>
+                QUALITY and SAFETY
+              </Typography>
+              <Typography variant="h3" component="div" sx={{ color: '#16a085', display: 'flex', justifyContent: 'center', alignItems: 'center' }} gutterBottom>
+                OUR PRIORITY
+              </Typography>
+              <Typography variant="h5" component="div" sx={{  display: 'flex', justifyContent: 'center', alignItems: 'center' }} gutterBottom>
+                Description Description Description Description Description
+              </Typography>
+            </Grid>
+           
+          </Grid>
+        </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             flexDirection="column"
@@ -215,6 +238,9 @@ export default function Login() {
               <Typography component={Link} to="forgot" variant="body2">
                 Forgot Password
               </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+              <img style={{borderRadius: '20px'}} src="asset/login-bottom.jpg" alt="bottom" width={300} height={600} />
             </Box>
           </Box>
           <FirebaseSocial />
