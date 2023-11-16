@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Button, CssBaseline, Paper, Box, TextField, Grid, Typography } from '@mui/material';
+import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { Avatar, Button, CssBaseline, Paper, Box, TextField, Grid, Typography, InputAdornment, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FirebaseSocial from './auth-forms/FirebaseSocial';
 import { styled } from '@mui/system';
-import { useState, useEffect, forwardRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import useAxios from 'hooks/useAxios';
 import useAxiosBackup from 'hooks/useAxiosBackup';
@@ -47,8 +48,12 @@ export default function Login() {
   const [newToken, setNewToken] = useState('');
   const [newData, setNewData] = useState(false);
   const [payload, setPayload] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const { data, error, fetchData } = useAxios('accounts/login', 'POST', payload, true);
   const { profile, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -226,13 +231,22 @@ export default function Login() {
                 <Grid item xs={12}>
                   <TextField
                     required
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     fullWidth
                     id="password"
                     label="Password"
                     name="password"
                     onChange={formik.handleChange}
                     value={formik.values.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} edge="end" size="large">
+                            {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>

@@ -1,12 +1,14 @@
 import Footer from 'layout/MainLayout/Footer/index';
 import { Grid, Paper, Typography, Button } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import useAxios from 'hooks/useAxios';
 import { setCart } from 'store/reducers/cart';
 import { useNavigate } from 'react-router-dom';
+
 const Home = () => {
   const { data, fetchData } = useAxios('carts/auth', 'GET', null, false);
+  const isBusiness = useSelector((state) => state.token.customertype.customertype);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -14,6 +16,7 @@ const Home = () => {
       if (data['data'].length > 0) dispatch(setCart(data['data']));
     }
   }, [data]);
+
   return (
     <>
       <Grid container sx={{ height: '70%' }}>
@@ -59,7 +62,7 @@ const Home = () => {
                 >
                   OUR PRIORITY
                 </Typography>
-                <Button variant="contained" size="large" onClick={() => navigate('/shop')}>
+                <Button variant="contained" size="large" onClick={() => navigate(isBusiness ? '/purchase/request' : '/shop')}>
                   Shop Now
                 </Button>
               </Grid>
