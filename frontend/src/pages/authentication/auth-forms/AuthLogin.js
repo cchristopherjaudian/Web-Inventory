@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import {
@@ -16,7 +16,6 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-
 
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -36,6 +35,10 @@ const AuthLogin = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  useEffect(() => {
+    console.log('showPassword', showPassword);
+  }, []);
 
   return (
     <>
@@ -144,9 +147,9 @@ const AuthLogin = () => {
                 </Grid>
               )}
               <Grid item xs={12}>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Login
-                  </Button>
+                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  Login
+                </Button>
               </Grid>
               <Grid item xs={12}>
                 <Divider>

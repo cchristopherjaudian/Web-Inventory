@@ -67,8 +67,8 @@ const Inventory = () => {
       <InventoryHeader metrics={metrics} />
 
       <Grid item xs={12} md={6}>
-        <Grid direction="column" container>
-          <Grid item xs={12}>
+        <Grid direction="column">
+          <Grid item xs={12} md={6}>
             <MainCard title="Product Stocks">
               <InventoryTable inventory={inventory} />
             </MainCard>
