@@ -74,41 +74,41 @@ const Home = () => {
         <Grid item xs={10} sx={{ mt: -5, zIndex: 20 }}>
           <Paper elevation={10} sx={{ p: 4 }}>
             <Grid container spacing={5}>
-              <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Grid item xs={12} md={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <img src="/asset/list.png" alt="list" />
                 <Typography variant="h5" sx={{ mt: 2 }}>
                   PRODUCTS
                 </Typography>
-                <Typography variant="h6" sx={{ textAlign: 'justify', display: 'flex', justifyContent: 'center' }}>
+                {/* <Typography variant="h6" sx={{ textAlign: 'justify', display: 'flex', justifyContent: 'center' }}>
                   lorem impsum lorem impsum lorem impsum
-                </Typography>
+                </Typography> */}
               </Grid>
-              <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Grid item xs={12} md={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <img src="/asset/customer-service.png" alt="service" />
                 <Typography variant="h5" sx={{ mt: 2 }}>
                   SERVICES
                 </Typography>
-                <Typography variant="h6" sx={{ textAlign: 'justify', display: 'flex', justifyContent: 'center' }}>
+                {/* <Typography variant="h6" sx={{ textAlign: 'justify', display: 'flex', justifyContent: 'center' }}>
                   lorem impsum lorem impsum lorem impsum
-                </Typography>
+                </Typography> */}
               </Grid>
-              <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Grid item xs={12} md={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <img src="/asset/routes.png" alt="routes" />
                 <Typography variant="h5" sx={{ mt: 2 }}>
                   ROUTE SCHEDULE
                 </Typography>
-                <Typography variant="h6" sx={{ textAlign: 'justify', display: 'flex', justifyContent: 'center' }}>
+                {/* <Typography variant="h6" sx={{ textAlign: 'justify', display: 'flex', justifyContent: 'center' }}>
                   lorem impsum lorem impsum lorem impsum
-                </Typography>
+                </Typography> */}
               </Grid>
-              <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Grid item xs={12} md={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <img src="/asset/statistics.png" alt="statistics" />
                 <Typography variant="h5" sx={{ mt: 2 }}>
                   REPORTS
                 </Typography>
-                <Typography variant="h6" sx={{ textAlign: 'justify', display: 'flex', justifyContent: 'center' }}>
+                {/* <Typography variant="h6" sx={{ textAlign: 'justify', display: 'flex', justifyContent: 'center' }}>
                   lorem impsum lorem impsum lorem impsum
-                </Typography>
+                </Typography> */}
               </Grid>
             </Grid>
           </Paper>
