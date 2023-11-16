@@ -22,81 +22,75 @@ const areaChartOptions = {
   }
 };
 
-
-const IncomeAreaChart = ({ salesData =[] }) => {
+const IncomeAreaChart = ({ salesData = [] }) => {
   const theme = useTheme();
-  const [chartData,setChartData] = useState([]);
+  const [chartData, setChartData] = useState([]);
   const { primary, secondary } = theme.palette.text;
   const line = theme.palette.divider;
   const [series, setSeries] = useState([]);
   const [options, setOptions] = useState(areaChartOptions);
-    useEffect(()=>{
+  useEffect(() => {
     setChartData(salesData);
-  },[])
-  useEffect(()=>{
-    
-    if(chartData.length === 0) return;
-    console.log(chartData);
-    const cCategories = []
+  }, []);
+  useEffect(() => {
+    if (chartData.length === 0) return;
+    const cCategories = [];
     const cSeries = [];
-    chartData.map((s,i)=>{
+    chartData.map((s, i) => {
       cCategories.push(s['name']);
       cSeries.push(s['totalQty']);
     });
-    console.log(cCategories);
-    console.log(cSeries);
-    setOptions((prevState)=> (
-      {
-        ...prevState,
-        colors: [theme.palette.primary.main, theme.palette.primary[700]],
-        xaxis: {
-          categories:cCategories,
-          labels: {
-            style: {
-              colors: [
-                secondary,
-                secondary,
-                secondary,
-                secondary,
-                secondary,
-                secondary,
-                secondary,
-                secondary,
-                secondary,
-                secondary,
-                secondary,
-                secondary
-              ]
-            }
-          },
-          axisBorder: {
-            show: true,
-            color: line
-          },
-          tickAmount: 1
-        },
-        yaxis: {
-          labels: {
-            style: {
-              colors: [secondary]
-            }
+    setOptions((prevState) => ({
+      ...prevState,
+      colors: [theme.palette.primary.main, theme.palette.primary[700]],
+      xaxis: {
+        categories: cCategories,
+        labels: {
+          style: {
+            colors: [
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary
+            ]
           }
         },
-        grid: {
-          borderColor: line
+        axisBorder: {
+          show: true,
+          color: line
         },
-        tooltip: {
-          theme: 'light'
+        tickAmount: 1
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: [secondary]
+          }
         }
+      },
+      grid: {
+        borderColor: line
+      },
+      tooltip: {
+        theme: 'light'
       }
-    ));
-    setSeries([{
-      name: '',
-      data: cSeries
-    }])
-  },[chartData]);
+    }));
+    setSeries([
+      {
+        name: '',
+        data: cSeries
+      }
+    ]);
+  }, [chartData]);
   return <ReactApexChart options={options} series={series} type="area" height={250} />;
 };
-
 
 export default IncomeAreaChart;

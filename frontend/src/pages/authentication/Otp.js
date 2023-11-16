@@ -5,7 +5,7 @@ import 'firebase/compat/firestore';
 import { Avatar, Box, Button, CssBaseline, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import OtpInput from 'react-otp-input';
 import Swal from 'sweetalert2';
@@ -34,13 +34,9 @@ const Otp = () => {
 
   function onCaptchVerify() {
     window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      'size': 'invisible',
-      'callback': (response) => {
-
-      },
-      'expired-callback': () => {
-
-      }
+      size: 'invisible',
+      callback: (response) => {},
+      'expired-callback': () => {}
     });
   }
   function onSignUp() {
@@ -50,85 +46,74 @@ const Otp = () => {
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
-
-      }).catch((error) => {
+      })
+      .catch((error) => {
         Swal.fire({
           title: 'Account Verification',
           text: 'Failed to connect to authentication service. Please try again later',
           icon: 'error'
-        })
+        });
       });
   }
   function onOTPVerify() {
     const code = otp;
     if (!otp) return;
-    confirmationResult.confirm(code).then((result) => {
-      setPayload(signUpData);
-    }).catch((error) => {
-      Swal.fire({
-        title: 'Account Verification',
-        text: 'Failed to connect to authentication service. Please try again later',
-        icon: 'error'
+    confirmationResult
+      .confirm(code)
+      .then((result) => {
+        setPayload(signUpData);
       })
-    });
-
+      .catch((error) => {
+        Swal.fire({
+          title: 'Account Verification',
+          text: 'Failed to connect to authentication service. Please try again later',
+          icon: 'error'
+        });
+      });
   }
   useEffect(() => {
     onSignUp();
-  }, [])
+  }, []);
   useEffect(() => {
     if (error && Object.keys(payload).length !== 0) {
       let msg = '';
       if (error['response']['status'] === 400) {
-        msg = ('Failed to register account. Please validate all fields.')
+        msg = 'Failed to register account. Please validate all fields.';
       } else {
-        msg = ('Failed to communicate with server. Please try again.')
+        msg = 'Failed to communicate with server. Please try again.';
       }
 
-      Swal.fire(
-        'Account',
-        msg,
-        'warning'
-      );
+      Swal.fire('Account', msg, 'warning');
     }
   }, [error]);
   useEffect(() => {
     if (metricsError) {
-      console.log(metricsError);
-      Swal.fire(
-        'Account Registration',
-        metricsError,
-        'error'
-      );
+      Swal.fire('Account Registration', metricsError, 'error');
     }
-  }, [metricsError])
+  }, [metricsError]);
   useEffect(() => {
-
     if (payload && Object.keys(payload).length > 0) {
       const registerPayload = {
         username: payload['contact'],
         password: payload['password'],
-        accountType: payload['account']['accountType'],
+        accountType: payload['account']['accountType']
       };
       const patchPayload = {
         firstname: payload['firstname'],
         middlename: payload['middlename'],
         lastname: payload['lastname'],
         address: payload['address'],
-        emailAddress: payload['email'],
-      }
+        emailAddress: payload['email']
+      };
       if (payload['account']['accountType'] === 'BUSINESS') {
         patchPayload.businessName = payload['businessName'];
       }
-      console.log(patchPayload);
       setRegisterProfile(registerPayload);
       setPatchProfile(patchPayload);
     }
-
   }, [payload]);
   useEffect(() => {
     if (registerProfile && Object.keys(registerProfile).length > 0) {
-      console.log('registerProfile');
       fetchData();
     }
   }, [registerProfile]);
@@ -158,71 +143,72 @@ const Otp = () => {
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate('/', { replace: true })
+            navigate('/', { replace: true });
           }
-        })
+        });
       }
     }
   }, [metricsData]);
-  return (<ThemeProvider theme={defaultTheme}>
-    <Grid container component="main" sx={{ height: '100vh' }} >
-      <CssBaseline />
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-          backgroundImage: 'url(https://placehold.co/600x400)',
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: (t) =>
-            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <Box
-          flexDirection="column"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="100vh"
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
           sx={{
-            my: 8,
-            mx: 4,
+            backgroundImage: 'url(https://placehold.co/600x400)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
           }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            {"Oxiaire Member's Portal"}
-          </Typography>
-          <Typography component="h1" variant="body1">
-            Please enter the code sent to your mobile number {signUpData.contact}
-          </Typography>
-          <div id='recaptcha-container'></div>
-          <Grid container spacing={2} >
-            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <OtpInput
-                value={otp}
-                onChange={setOtp}
-                numInputs={6}
-                renderSeparator={<span>-</span>}
-                inputStyle={{ width: '2rem', height: '2rem' }}
-                renderInput={(props) => <input {...props} />}
-              />
-
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            flexDirection="column"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+            sx={{
+              my: 8,
+              mx: 4
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}></Avatar>
+            <Typography component="h1" variant="h5">
+              {"Oxiaire Member's Portal"}
+            </Typography>
+            <Typography component="h1" variant="body1">
+              Please enter the code sent to your mobile number {signUpData.contact}
+            </Typography>
+            <div id="recaptcha-container"></div>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <OtpInput
+                  value={otp}
+                  onChange={setOtp}
+                  numInputs={6}
+                  renderSeparator={<span>-</span>}
+                  inputStyle={{ width: '2rem', height: '2rem' }}
+                  renderInput={(props) => <input {...props} />}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-          <Button variant="contained" sx={{ mt: 3 }} fullWidth onClick={onOTPVerify}>Verify</Button>
-          <Button variant="outlined" sx={{ mt: 1 }} fullWidth onClick={() => navigate('/')}>Cancel</Button>
-        </Box>
+            <Button variant="contained" sx={{ mt: 3 }} fullWidth onClick={onOTPVerify}>
+              Verify
+            </Button>
+            <Button variant="outlined" sx={{ mt: 1 }} fullWidth onClick={() => navigate('/')}>
+              Cancel
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
-    </Grid>
-  </ThemeProvider>);
-
-
+    </ThemeProvider>
+  );
 };
 
 export default Otp;

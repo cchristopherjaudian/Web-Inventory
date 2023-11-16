@@ -35,7 +35,6 @@ const Dashboard = () => {
   const handleFilter = (e) => {
     let newFilter = { ...dateFilter, [e.target.name]: e.target.value };
     setDateFilter(newFilter);
-    console.log(dateFilter);
   };
   const handleButtonFilter = () => {
     fetchRadialData();
@@ -55,7 +54,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (radialData) {
       let radialSrc = radialData['data']['sales']['code'];
-      console.log(radialSrc);
       setRadial(radialSrc);
     }
   }, [radialData]);

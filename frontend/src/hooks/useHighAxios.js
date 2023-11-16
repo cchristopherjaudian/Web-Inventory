@@ -13,15 +13,14 @@ function useHighAxios(url, method, requestData = null, lazy = true) {
     baseURL: serviceId,
     timeout: 10000,
     headers: {
-      'Authorization': (token) ? token.token : ''
+      Authorization: token ? token.token : ''
     }
   });
 
   const highFetchData = async () => {
     try {
-      console.log(url);
       setHighLoading(true);
-      
+
       let response;
       switch (method) {
         case 'GET':
@@ -47,7 +46,6 @@ function useHighAxios(url, method, requestData = null, lazy = true) {
       setHighLoading(false);
     }
   };
-
 
   useEffect(() => {
     if (!lazy) highFetchData();

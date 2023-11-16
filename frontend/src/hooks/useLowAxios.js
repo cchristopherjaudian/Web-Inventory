@@ -13,15 +13,14 @@ function useLowAxios(url, method, requestData = null, lazy = true) {
     baseURL: serviceId,
     timeout: 10000,
     headers: {
-      'Authorization': (token) ? token.token : ''
+      Authorization: token ? token.token : ''
     }
   });
 
   const lowFetchData = async () => {
     try {
-      console.log(url);
       setLowLoading(true);
-      
+
       let response;
       switch (method) {
         case 'GET':
@@ -47,7 +46,6 @@ function useLowAxios(url, method, requestData = null, lazy = true) {
       setLowLoading(false);
     }
   };
-
 
   useEffect(() => {
     if (!lazy) lowFetchData();

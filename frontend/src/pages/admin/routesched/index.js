@@ -18,7 +18,6 @@ const RouteSched = () => {
       const newSpap = [];
       const newTruck = [];
 
-      console.log('data', data);
       if (data?.data.length > 0) {
         data['data'].forEach((s, i) => {
           newRoutes.push({ route: s?.route, id: s?.id });
@@ -30,7 +29,6 @@ const RouteSched = () => {
         setListSchedule(newSched);
         setListspap(newSpap);
         setListtruck(newTruck);
-        console.log(listRoutes);
       }
     }
   }, [data]);

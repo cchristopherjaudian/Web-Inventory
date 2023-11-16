@@ -6,7 +6,6 @@ import useAxios from 'hooks/useAxios';
 import { useEffect, useState } from 'react';
 
 const OrderNotice = () => {
-
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState(0);
   const [keyword, setKeyword] = useState('');
@@ -18,14 +17,15 @@ const OrderNotice = () => {
     }
   }, [data]);
   useEffect(() => {
-    console.log(filter);
     fetchData();
   }, [filter]);
-  return <MainCard title="Order Notice">
-    <Grid container>
-      <OrderTable orderRows={orders} />
-    </Grid>
-  </MainCard>
+  return (
+    <MainCard title="Order Notice">
+      <Grid container>
+        <OrderTable orderRows={orders} />
+      </Grid>
+    </MainCard>
+  );
 };
 
 export default OrderNotice;

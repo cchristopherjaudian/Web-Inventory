@@ -1,6 +1,4 @@
-import {
-  Grid,
-} from '@mui/material';
+import { Grid } from '@mui/material';
 
 import MainCard from 'components/MainCard';
 import ProductQuantity from './ProductQuantity';
@@ -43,9 +41,8 @@ const Inventory = () => {
           name: d['products']['name'],
           quantity: d['stock'],
           indicator: d['stockIndicator']
-        })
+        });
       });
-      console.log(newData);
       setLowStock(newData);
     }
   }, [lowData]);
@@ -60,50 +57,48 @@ const Inventory = () => {
           name: d['products']['name'],
           quantity: d['stock'],
           indicator: d['stockIndicator']
-        })
+        });
       });
       setHighStock(newData);
     }
   }, [highData]);
-  return <Grid container direction="row" spacing={2}>
-    <InventoryHeader metrics={metrics} />
+  return (
+    <Grid container direction="row" spacing={2}>
+      <InventoryHeader metrics={metrics} />
 
-    <Grid item xs={12} md={6} >
-      <Grid direction="column" container>
-        <Grid item xs={12} >
-          <MainCard title="Product Stocks">
-            <InventoryTable inventory={inventory} />
-          </MainCard>
+      <Grid item xs={12} md={6}>
+        <Grid direction="column" container>
+          <Grid item xs={12}>
+            <MainCard title="Product Stocks">
+              <InventoryTable inventory={inventory} />
+            </MainCard>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Grid direction="column" container spacing={0.5} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Grid item xs={12} style={{ display: 'flex', flex: 1 }}>
+            <MainCard title="Low Quantity Stock" sx={{ width: '100%' }}>
+              <Grid direction="row" container spacing={0.8} sx={{ mt: -4 }}>
+                {lowStock.map((stock, index) => {
+                  return <ProductQuantity stock={stock} key={index} />;
+                })}
+              </Grid>
+            </MainCard>
+          </Grid>
+          <Grid item xs={12} style={{ display: 'flex', flex: 1 }}>
+            <MainCard title="High Quantity Stock" sx={{ width: '100%' }}>
+              <Grid direction="row" container spacing={0.8} sx={{ mt: -4 }}>
+                {highStock.map((stock, index) => {
+                  return <ProductQuantity stock={stock} key={index} />;
+                })}
+              </Grid>
+            </MainCard>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
-    <Grid item xs={12} md={6}>
-      <Grid direction="column" container spacing={0.5} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Grid item xs={12} style={{ display: 'flex', flex: 1 }}>
-          <MainCard title="Low Quantity Stock" sx={{ width: '100%' }}>
-            <Grid direction="row" container spacing={0.8} sx={{ mt: -4 }}>
-              {
-                lowStock.map((stock, index) => {
-                  return <ProductQuantity stock={stock} key={index} />
-                })
-              }
-            </Grid>
-          </MainCard>
-        </Grid>
-        <Grid item xs={12} style={{ display: 'flex', flex: 1 }}>
-          <MainCard title="High Quantity Stock" sx={{ width: '100%' }}>
-            <Grid direction="row" container spacing={0.8} sx={{ mt: -4 }}>
-              {
-                highStock.map((stock, index) => {
-                  return <ProductQuantity stock={stock} key={index} />
-                })
-              }
-            </Grid>
-          </MainCard>
-        </Grid>
-      </Grid>
-    </Grid>
-  </Grid>
+  );
 };
 
 export default Inventory;

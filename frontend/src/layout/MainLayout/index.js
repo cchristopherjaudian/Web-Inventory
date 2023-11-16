@@ -36,7 +36,6 @@ const MainLayout = () => {
   useEffect(() => {
     if (open !== drawerOpen) setOpen(drawerOpen);
   }, [drawerOpen]);
-  console.log(location.pathname);
   return (
     <>
       <Box sx={{ display: 'flex', width: '100%' }}>
@@ -47,12 +46,8 @@ const MainLayout = () => {
           <Breadcrumbs navigation={navigation} title />
           <Outlet />
         </Box>
-
       </Box>
-      {
-        (matchUpMD && !location.pathname.startsWith('/home')) && <Footer />
-      }
-
+      {matchUpMD && !location.pathname.startsWith('/home') && <Footer />}
     </>
   );
 };

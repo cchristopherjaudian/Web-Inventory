@@ -26,7 +26,7 @@ const Profile = () => {
       middlename: userAccount.middleName.middleName ?? '',
       lastname: userAccount.lastName.lastName,
       address: userAccount.address.address,
-      emailAddress: userAccount.emailAddress.emailAddress,
+      emailAddress: userAccount.emailAddress.emailAddress
     },
     onSubmit: (values) => {
       fetchData();
@@ -42,7 +42,6 @@ const Profile = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       if (data['status'] === 200) {
         dispatch(setFirstName({ firstName: data['data']['firstname'] }));
         dispatch(setMiddleName({ middleName: data['data']['middlename'] }));

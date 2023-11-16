@@ -55,24 +55,23 @@ export default function Login() {
       password: ''
     },
     onSubmit: (values) => {
-      const newValues = { ...values, username: values.username.replace('+63', '0') }
-      console.log(newValues);
+      const newValues = { ...values, username: values.username.replace('+63', '0') };
       setPayload(newValues);
     }
   });
   useEffect(() => {
-    const newValues = { ...formik.values, username: formik.values.username.replace('+63', '0') }
+    const newValues = { ...formik.values, username: formik.values.username.replace('+63', '0') };
     setPayload(newValues);
   }, [formik.values]);
   useEffect(() => {
     if (error) {
       Swal.fire({
-        title: 'Member\'s Portal',
+        title: "Member's Portal",
         text: 'Invalid mobile number or password. Please try again',
         icon: 'error'
       });
     }
-  }, [error])
+  }, [error]);
   useEffect(() => {
     if (data) {
       if (data['status'] === 200) {
@@ -150,26 +149,44 @@ export default function Login() {
           }}
         >
           <Grid container sx={{ height: '100%' }}>
-            <Grid item xs={12} sx={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              p: 4,
-              mt: 2
-            }}>
-              <Typography variant="h3" component="div" sx={{ color: '#2980b9', display: 'flex', justifyContent: 'center', alignItems: 'center' }} gutterBottom>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                p: 4,
+                mt: 2
+              }}
+            >
+              <Typography
+                variant="h3"
+                component="div"
+                sx={{ color: '#2980b9', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                gutterBottom
+              >
                 QUALITY and SAFETY
               </Typography>
-              <Typography variant="h3" component="div" sx={{ color: '#16a085', display: 'flex', justifyContent: 'center', alignItems: 'center' }} gutterBottom>
+              <Typography
+                variant="h3"
+                component="div"
+                sx={{ color: '#16a085', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                gutterBottom
+              >
                 OUR PRIORITY
               </Typography>
-              <Typography variant="h5" component="div" sx={{  display: 'flex', justifyContent: 'center', alignItems: 'center' }} gutterBottom>
+              <Typography
+                variant="h5"
+                component="div"
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                gutterBottom
+              >
                 Description Description Description Description Description
               </Typography>
             </Grid>
-           
           </Grid>
         </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -232,7 +249,6 @@ export default function Login() {
               <Typography component={Link} to="register" variant="body2">
                 Sign Up
               </Typography>
-
             </Box>
             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
               <Typography component={Link} to="forgot" variant="body2">
@@ -240,7 +256,7 @@ export default function Login() {
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-              <img style={{borderRadius: '20px'}} src="asset/login-bottom.jpg" alt="bottom" width={300} height={600} />
+              <img style={{ borderRadius: '20px' }} src="asset/login-bottom.jpg" alt="bottom" width={300} height={600} />
             </Box>
           </Box>
           <FirebaseSocial />

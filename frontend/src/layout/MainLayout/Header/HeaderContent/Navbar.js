@@ -50,7 +50,6 @@ const Navbar = () => {
         break;
     }
   };
-  console.log(customerNavigation);
   if (isBusiness === 1) {
     customerNavigation[2]['title'] = 'Products';
   } else {

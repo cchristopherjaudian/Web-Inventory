@@ -3,15 +3,7 @@ import MainCard from 'components/MainCard';
 import IncomeAreaChart from './IncomeAreaChart';
 import RadialChart from './RadialChart';
 import OrderTable from './SalesTable';
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  Tab,
-  Tabs,
-  Typography
-} from '@mui/material';
+import { Box, Button, Grid, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import { SearchOutlined } from '@ant-design/icons';
 import useAxios from 'hooks/useAxios';
@@ -19,14 +11,17 @@ import useMetricsAxios from 'hooks/useMetricsAxios';
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`
   };
 }
 
 const SalesReport = () => {
   const [query, setQuery] = useState('');
   const [salesQuery, setSalesQuery] = useState('');
-  const [dateFilter, setDateFilter] = useState({ txFrom: new Date().toLocaleDateString('en-CA'), txTo: new Date().toLocaleDateString('en-CA') });
+  const [dateFilter, setDateFilter] = useState({
+    txFrom: new Date().toLocaleDateString('en-CA'),
+    txTo: new Date().toLocaleDateString('en-CA')
+  });
   const [slot, setSlot] = useState('week');
   const [orders, setOrders] = useState([]);
   const [radial, setRadial] = useState([]);
@@ -40,11 +35,11 @@ const SalesReport = () => {
   const handleFilterClick = () => {
     setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status);
     setSalesQuery('metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
-  }
+  };
   const handleFilter = (e) => {
     let newFilter = { ...dateFilter, [e.target.name]: e.target.value };
     setDateFilter(newFilter);
-  }
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setStatus(tabStatus[newValue]);
@@ -57,20 +52,17 @@ const SalesReport = () => {
   }, [dateFilter, status]);
   useEffect(() => {
     if (query) {
-      console.log(query);
       fetchData();
     }
   }, [query]);
   useEffect(() => {
     if (salesQuery) {
-      console.log(salesQuery);
       metricsFetchData();
     }
   }, [salesQuery]);
   useEffect(() => {
     if (data) {
       let radialSrc = data['data']['sales']['code'];
-      console.log(radialSrc);
       let newData = [];
       data['data']['list'].map((d, i) => {
         newData.push({
@@ -82,9 +74,8 @@ const SalesReport = () => {
           dateOrdered: d['dateOrdered'],
           dateDispatched: d['dispatchedDate'],
           dateDelivered: d['dateDelivered']
-        })
+        });
       });
-      console.log(newData);
       setRadial(radialSrc);
       setOrders(newData);
     }
@@ -92,24 +83,22 @@ const SalesReport = () => {
   useEffect(() => {
     if (metricsData) {
       let incomeData = metricsData['data'];
-      console.log(incomeData);
       setSalesData(incomeData);
     }
-  }, [metricsData])
-  useEffect(()=>{
+  }, [metricsData]);
+  useEffect(() => {
     fetchData();
     metricsFetchData();
-  },[]);
+  }, []);
   return (
     <Grid container spacing={0.5}>
       <Grid item xs={12} md={3}>
         <MainCard content={false} sx={{ mt: 1.5 }}>
-          <Typography variant="h6" sx={{ mt: 2.0, mb: 3.0, ml: 2.0 }}>Earnings</Typography>
+          <Typography variant="h6" sx={{ mt: 2.0, mb: 3.0, ml: 2.0 }}>
+            Earnings
+          </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {
-              radial.length > 0 && <RadialChart radialData={radial} />
-            }
-
+            {radial.length > 0 && <RadialChart radialData={radial} />}
           </Box>
         </MainCard>
       </Grid>
@@ -117,10 +106,8 @@ const SalesReport = () => {
         <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
         <MainCard content={false} sx={{ mt: 1.5 }}>
-
           <Box sx={{ py: 1, px: 2 }}>
             <Grid container alignItems="center" justifyContent="space-between">
-
               <Grid item>
                 <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={{ mt: 2 }}>
                   <FormControl sx={{ width: '90%', mt: 1 }}>
@@ -150,18 +137,22 @@ const SalesReport = () => {
                       value={dateFilter['txTo']}
                     />
                   </FormControl>
-                  <Button sx={{ width: '60%', pl: 2, pr: 2 }} endIcon={<SearchOutlined />} size="medium" variant="contained" onClick={handleFilterClick}>Filter</Button>
-
+                  <Button
+                    sx={{ width: '60%', pl: 2, pr: 2 }}
+                    endIcon={<SearchOutlined />}
+                    size="medium"
+                    variant="contained"
+                    onClick={handleFilterClick}
+                  >
+                    Filter
+                  </Button>
                 </Stack>
               </Grid>
               <Grid item>
                 <Typography variant="h5"></Typography>
               </Grid>
             </Grid>
-            {
-              salesData && <IncomeAreaChart salesData={salesData} />
-            }
-
+            {salesData && <IncomeAreaChart salesData={salesData} />}
           </Box>
         </MainCard>
       </Grid>
@@ -179,8 +170,6 @@ const SalesReport = () => {
       </Grid>
     </Grid>
   );
-
-
 };
 
 export default SalesReport;

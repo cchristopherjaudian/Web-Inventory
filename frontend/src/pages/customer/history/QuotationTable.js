@@ -139,7 +139,6 @@ const QuotationTable = (props) => {
     setColumns(newColumns);
     props.setRequestType(value);
   }, [value]);
-  console.log('gridRows', gridRows);
   return (
     <MainCard sx={{ mt: 1 }}>
       <Box sx={{ width: '100%' }}>

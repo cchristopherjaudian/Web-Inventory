@@ -10,19 +10,13 @@ import CustomerTable from './CustomerTable';
 const handleSubmit = (event) => {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
-  console.log({
-    email: data.get('email'),
-    password: data.get('password'),
-  });
 };
 
 const Customers = (props) => {
-  
   return (
     <Grid container spacing={0.5}>
       <Grid item xs={12}>
         <Grid direction="row" container spacing={0.5} sx={{ display: 'flex', height: '100%' }}>
-
           <Grid item xs={12} style={{ display: 'flex', flex: 1 }}>
             <MainCard sx={{ width: '100%', flexGrow: 1 }}>
               <FormControl sx={{ width: { xs: '100%' } }}>
@@ -47,7 +41,7 @@ const Customers = (props) => {
         </Grid>
       </Grid>
     </Grid>
-  )
+  );
 };
 
 export default Customers;

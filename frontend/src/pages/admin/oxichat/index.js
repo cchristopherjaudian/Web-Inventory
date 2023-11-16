@@ -27,9 +27,8 @@ const Oxichat = () => {
 
   useEffect(() => {
     let ref = database.ref('/');
-    const handleNewData = snapshot => {
+    const handleNewData = (snapshot) => {
       const data = snapshot.val();
-      console.log(data);
       let b2cList = [];
       let b2bList = [];
       if (data) {
@@ -39,7 +38,7 @@ const Oxichat = () => {
             b2cList.push({
               mobile: userProfile.mobile,
               photoUrl: userProfile.photoUrl,
-              name: userProfile.name,
+              name: userProfile.name
             });
           });
         }
@@ -49,18 +48,17 @@ const Oxichat = () => {
             b2bList.push({
               mobile: userProfile.mobile,
               photoUrl: userProfile.photoUrl,
-              name: userProfile.name,
+              name: userProfile.name
             });
           });
         }
       }
 
-
       setCList(b2cList);
       setBList(b2bList);
     };
-    ref.on("value", handleNewData);
-    return () => ref.off("value", handleNewData);
+    ref.on('value', handleNewData);
+    return () => ref.off('value', handleNewData);
   }, [database]);
 
   return (
@@ -72,7 +70,6 @@ const Oxichat = () => {
       </Grid>
       <Grid item xs={12} lg={4} sx={{ height: '90vh' }}>
         <Grid direction="row" container spacing={0.5} sx={{ display: 'flex', height: '100%' }}>
-
           <Grid item xs={12}>
             <Typography sx={{ mt: 1 }}>B2C</Typography>
             <Box
@@ -83,11 +80,9 @@ const Oxichat = () => {
               }}
             >
               <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
-                {
-                  cList.map((s, i) => {
-                    return <Inbox key={i} profile={s} setSelectedChat={setSelectedChat} ctype="B2C" setChatProfile={setChatProfile} />
-                  })
-                }
+                {cList.map((s, i) => {
+                  return <Inbox key={i} profile={s} setSelectedChat={setSelectedChat} ctype="B2C" setChatProfile={setChatProfile} />;
+                })}
               </Box>
             </Box>
           </Grid>
@@ -101,11 +96,9 @@ const Oxichat = () => {
               }}
             >
               <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
-                {
-                  bList.map((s, i) => {
-                    return <Inbox key={i} profile={s} setSelectedChat={setSelectedChat} ctype="B2B" setChatProfile={setChatProfile} />
-                  })
-                }
+                {bList.map((s, i) => {
+                  return <Inbox key={i} profile={s} setSelectedChat={setSelectedChat} ctype="B2B" setChatProfile={setChatProfile} />;
+                })}
               </Box>
             </Box>
           </Grid>
@@ -115,16 +108,13 @@ const Oxichat = () => {
         <Grid direction="column" container style={{ display: 'flex', height: '100%' }}>
           <Grid item xs={12}>
             <MainCard title={chatProfile.name} sx={{ width: '100%' }}>
-              {
-                selectedChat && <Chatbox selectedChat={selectedChat} chatProfile={chatProfile} />
-              }
-              
+              {selectedChat && <Chatbox selectedChat={selectedChat} chatProfile={chatProfile} />}
             </MainCard>
           </Grid>
         </Grid>
       </Grid>
     </Grid>
   );
-}
+};
 
 export default Oxichat;

@@ -19,7 +19,7 @@ const FirebaseSocial = () => {
   const [mobile, setMobile] = useState('');
   const [user, setUser] = useState('');
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const { data, fetchData } = useAxios('accounts/login', 'POST', { username: mobile, password: 'Password001*' });
+  const { data, fetchData } = useAxios('accounts/login', 'POST', { username: mobile, password: 'Jaudian#29' });
   const { profile, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
 
   useEffect(() => {
@@ -39,24 +39,22 @@ const FirebaseSocial = () => {
   useEffect(() => {
     if (newToken) {
       if (newData) {
-        navigate('/register', { replace: true })
+        navigate('/register', { replace: true });
       } else {
         fetchProfile();
       }
-
     }
   }, [newToken]);
   useEffect(() => {
     if (profile) {
-
       const adminTypes = {
-        'ADMIN': 0,
-        'SUB_1': 1,
-        'SUB_2': 2
+        ADMIN: 0,
+        SUB_1: 1,
+        SUB_2: 2
       };
       const customerTypes = {
-        'CUSTOMER': 0,
-        'BUSINESS': 1
+        CUSTOMER: 0,
+        BUSINESS: 1
       };
       const newData = data['data']['newData'];
       const accountType = profile['data']['account']['accountType'];
@@ -66,7 +64,7 @@ const FirebaseSocial = () => {
       dispatch(setMiddleName({ middleName: profile['data']['middlename'] }));
       dispatch(setLastName({ lastName: profile['data']['lastname'] }));
       dispatch(setAddress({ address: profile['data']['address'] }));
-      dispatch(setContact({contact: '111'}))
+      dispatch(setContact({ contact: '111' }));
       if (accountType in adminTypes) {
         dispatch(setAdminType({ adminType: adminTypes[accountType] }));
         dispatch(setAdmin({ isadmin: true }));
@@ -77,9 +75,7 @@ const FirebaseSocial = () => {
         dispatch(setAdmin({ isadmin: false }));
         navigate('/home', { replace: true });
       }
-
     }
-
   }, [profile]);
 
   return (

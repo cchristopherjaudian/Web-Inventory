@@ -15,7 +15,7 @@ const Chatbox = () => {
   const fn = useSelector((state) => state.profile.firstName.firstName);
   const ln = useSelector((state) => state.profile.lastName.lastName);
   const myName = fn + ' ' + ln;
-  const customerType = (isBusiness === 0) ? 'B2C' : 'B2B';
+  const customerType = isBusiness === 0 ? 'B2C' : 'B2B';
   const [firebaseApp] = useState(() => {
     if (!firebase.apps.length) {
       return firebase.initializeApp(firebaseConfig);
@@ -29,21 +29,19 @@ const Chatbox = () => {
   const [chatMessages, setChatMessages] = useState([]);
   useEffect(() => {
     if (database) {
-      console.log(myMobile);
       messageRef = database.ref(customerType + '/recipients/' + myMobile + '/chat/messages/');
-      console.log(messageRef);
-      const handleNewMessage = snapshot => {
+      const handleNewMessage = (snapshot) => {
         const data = snapshot.val();
 
         if (data) {
           setChatMessages(data);
         }
       };
-      messageRef.on("value", handleNewMessage);
-      return () => messageRef.off("value", handleNewMessage);
+      messageRef.on('value', handleNewMessage);
+      return () => messageRef.off('value', handleNewMessage);
     }
   }, [database]);
- 
+
   const handleSend = () => {
     setSendMessage(input);
   };
@@ -59,13 +57,13 @@ const Chatbox = () => {
         mobile: myMobile,
         name: myName,
         photoUrl: 'https://placehold.co/100'
-      }
+      };
 
       messageRef.push(newMessage);
       setSendMessage('');
       setInput('');
     }
-  }, [sendMessage])
+  }, [sendMessage]);
   return (
     <Box
       sx={{
@@ -77,21 +75,26 @@ const Chatbox = () => {
       }}
     >
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
-        {
-
-          Object.values(chatMessages).map((s, i) => {
-            return <Message key={i} message={s.content} src={s.src} />;
-          })
-        }
+        {Object.values(chatMessages).map((s, i) => {
+          return <Message key={i} message={s.content} src={s.src} />;
+        })}
       </Box>
       <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
         <Grid container spacing={2}>
           <Grid item xs={10}>
-            <TextField size="small" fullWidth placeholder="Type a message" variant="outlined" value={input} onChange={handleInputChange} onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSend();
-              }
-            }} />
+            <TextField
+              size="small"
+              fullWidth
+              placeholder="Type a message"
+              variant="outlined"
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSend();
+                }
+              }}
+            />
           </Grid>
           <Grid item xs={2}>
             <Button fullWidth color="primary" variant="contained" endIcon={<MessageOutlined />} onClick={handleSend}>
