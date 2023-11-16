@@ -28,7 +28,10 @@ const Navbar = () => {
 
   const handleCloseNavMenu = (path) => {
     setAnchorElNav(null);
-    navigate(path);
+
+    if (typeof path === 'string') {
+      navigate(path);
+    }
   };
 
   const handleCloseUserMenu = (index) => {
@@ -83,14 +86,14 @@ const Navbar = () => {
                 vertical: 'top',
                 horizontal: 'left'
               }}
-              open={Boolean(anchorElNav)}
+              open={!!anchorElNav}
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {customerNavigation.map((page) => (
-                <MenuItem key={page.id} onClick={() => handleCloseNavMenu(page.url)}>
+              {customerNavigation.map((page, index) => (
+                <MenuItem key={index} onClick={() => handleCloseNavMenu(page.url)}>
                   <Typography textAlign="center" sx={{ color: '#2c3e50' }}>
                     {page.title}
                   </Typography>
