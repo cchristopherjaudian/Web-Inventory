@@ -36,10 +36,6 @@ const AuthLogin = () => {
     event.preventDefault();
   };
 
-  useEffect(() => {
-    console.log('showPassword', showPassword);
-  }, []);
-
   return (
     <>
       <Formik
