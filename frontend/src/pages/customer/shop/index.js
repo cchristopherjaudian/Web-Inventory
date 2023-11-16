@@ -93,7 +93,6 @@ const Shop = () => {
       <Grid item xs={12}>
         <img src="asset/featured-image.png" alt="featured" height={500} style={{ width: '100%' }} />
       </Grid>
-
       <Grid item xs={12} sx={{ mt: 3 }}>
         <MainCard>
           <form style={{ display: 'flex', alignItems: 'center' }}>
@@ -114,10 +113,9 @@ const Shop = () => {
           </form>
         </MainCard>
       </Grid>
-
       {products.map((product, index) => {
         return (
-          <Grid item xs={3} key={index}>
+          <Grid item xs={12} md={3} key={index}>
             <Card>
               <CardActionArea>
                 <CardMedia

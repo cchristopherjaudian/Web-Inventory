@@ -139,6 +139,7 @@ const QuotationTable = (props) => {
     setColumns(newColumns);
     props.setRequestType(value);
   }, [value]);
+
   return (
     <MainCard sx={{ mt: 1 }}>
       <Box sx={{ width: '100%' }}>

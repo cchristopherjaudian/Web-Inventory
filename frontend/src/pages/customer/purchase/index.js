@@ -71,7 +71,7 @@ const Purchase = () => {
     Swal.fire({
       icon: 'question',
       title: 'Purchase Request',
-      text: 'Are you sure you want to proceed with your order?',
+      text: 'Are you sure you want to proceed with your purchase request?',
       showCancelButton: true,
       confirmButtonText: 'Yes'
     }).then((result) => {
