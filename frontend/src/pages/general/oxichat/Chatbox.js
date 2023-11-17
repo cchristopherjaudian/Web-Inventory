@@ -139,7 +139,7 @@ const Chatbox = () => {
               onChange={handleImageChange}
             />
             <label htmlFor="contained-button-file">
-              <Button variant="contained" fullWidth component="span"endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>
+              <Button variant="contained" fullWidth component="span" startIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>
               
               </Button>
             </label>
