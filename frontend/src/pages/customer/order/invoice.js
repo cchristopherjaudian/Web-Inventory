@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 const Invoice = (props) => {
+  console.log(props);
   const profile = props.orderInfo['profile'];
   let totalAmount = props.orderInfo['orderItems'].reduce((sum, item) => {
     return sum + item.quantity * parseFloat(item.products.price);
@@ -66,28 +67,138 @@ const Invoice = (props) => {
             <Table aria-label="pr table">
               <TableHead>
                 <TableRow sx={{ backgroundColor: '#D1EAFF' }}>
-                  <TableCell>Code</TableCell>
-                  <TableCell>Product Description</TableCell>
+                  <TableCell>Item</TableCell>
+                  <TableCell>Cost</TableCell>
                   <TableCell>Quantity</TableCell>
-                  <TableCell>Unit Price</TableCell>
-                  <TableCell>Amount</TableCell>
+                  <TableCell>Price</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {props.orderInfo['orderItems']?.length > 0 &&
                   props.orderInfo['orderItems']?.map((cart, index) => {
                     return (
-                      <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                      <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                         <TableCell component="th" scope="row">
-                          {cart.products.code}
+                          {cart.products.name}
                         </TableCell>
-                        <TableCell>{cart.products.name}</TableCell>
-                        <TableCell>{cart.quantity}</TableCell>
                         <TableCell>₱{cart.products.price}</TableCell>
+                        <TableCell>{cart.quantity}</TableCell>
                         <TableCell>₱{cart.quantity * cart.products.price}</TableCell>
                       </TableRow>
                     );
                   })}
+                <TableRow>
+                  <TableCell colSpan={4}>
+
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <Typography variant="h5">Notes</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h5">Subtotal</Typography>
+                  </TableCell>
+                  <TableCell>
+                    ₱{totalAmount}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell rowSpan={4} colSpan={2}>
+                    Some Notes...
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="h5">Deposit</Typography>
+                  </TableCell>
+                  <TableCell>
+                    ₱00.00
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="h5">Subject to change</Typography>
+                  </TableCell>
+                  <TableCell>
+                    ₱00.00
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="h5">Subject to change</Typography>
+                  </TableCell>
+                  <TableCell>
+                    ₱00.00
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={4}>
+
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <Typography variant="h4">Payment Info</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h4">Total</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h4"> ₱{totalAmount}</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={6}>
+                        <Typography variant="body1">Account Name</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body1">{profile['businessName']
+                          ? profile['businessName']
+                          : profile['firstname'] + ' ' + profile['middlename'] + ' ' + profile['lastname']}</Typography>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={6}>
+                        <Typography variant="body1">Invoice No</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body1">{props.orderInfo['id']}</Typography>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={6}>
+                        <Typography variant="body1">Mode of Payment</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body1">{props.orderInfo['paymentMethod']}</Typography>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+                
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="h4">Terms and Conditions</Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="body1">By paying this invoice, you accept that you are satisified with provided work and have nomore correnctions</Typography>
+                    <Typography variant="body1">The payment should be made within 15 banking days</Typography>
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
