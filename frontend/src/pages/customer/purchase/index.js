@@ -7,9 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import Cart from './cart';
 import useAxios from 'hooks/useAxios';
 import useHighAxios from 'hooks/useHighAxios';
-const groupCode = Date.now();
+
 const Purchase = () => {
   const navigate = useNavigate();
+  const [groupC,setGroupC] = useState('');
   const { data, loading } = useAxios('products', 'GET', null, false);
   const [productList, setProductList] = useState([]);
   const [poProducts, setPoProducts] = useState([]);
@@ -77,6 +78,8 @@ const Purchase = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         let mapProducts = [];
+        const groupCode = Date.now();
+        setGroupC(groupCode);
         selectedProducts.map((s, i) => {
           mapProducts.push({
             code: s['code'],
@@ -97,8 +100,9 @@ const Purchase = () => {
   }, [poProducts]);
   useEffect(() => {
     if (highData) {
+      setGroupC('');
       if (highData['status'] === 200) {
-        navigate('/purchase/quotation/' + groupCode, { replace: true });
+        navigate('/purchase/quotation/' + groupC, { replace: true });
       }
     }
   }, [highData]);
