@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Box, TextField, Button, Grid } from '@mui/material';
-import { MessageOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, LoadingOutlined } from '@ant-design/icons';
+
 import Message from './Message';
 import firebaseConfig from 'config/firebase';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
-
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 let messageRef = null;
 const Chatbox = () => {
+  const [attachLoading, setAttachLoading] = useState(false);
+  const [file, setFile] = useState(null);
   const isBusiness = useSelector((state) => state.token.customertype.customertype);
   const myMobile = useSelector((state) => state.profile.contact.contact);
   const fn = useSelector((state) => state.profile.firstName.firstName);
@@ -45,6 +48,36 @@ const Chatbox = () => {
   const handleSend = () => {
     setSendMessage(input);
   };
+  const handleImageChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  useEffect(() => {
+    if (file) {
+      setAttachLoading(true);
+      const storage = getStorage();
+      const storageRef = ref(storage, 'chat/' + myMobile + Date.now() + '.jpg');
+      uploadBytes(storageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            let newMessage = {
+              content: '',
+              img: downloadURL,
+              time: new Date().toISOString(),
+              src: myMobile,
+              mobile: myMobile,
+              name: myName,
+              photoUrl: 'https://placehold.co/100'
+            };
+            messageRef.push(newMessage);
+            setSendMessage('');
+            setInput('');
+            setFile(null);
+            setAttachLoading(false);
+          });
+      });
+    }
+  }, [file])
+
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
@@ -52,6 +85,7 @@ const Chatbox = () => {
     if (sendMessage) {
       let newMessage = {
         content: sendMessage,
+        img: '',
         time: new Date().toISOString(),
         src: myMobile,
         mobile: myMobile,
@@ -76,7 +110,7 @@ const Chatbox = () => {
     >
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
         {Object.values(chatMessages).map((s, i) => {
-          return <Message key={i} message={s.content} src={s.src} />;
+          return <Message key={i} message={s.content} src={s.src} img={s.img} />;
         })}
       </Box>
       <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
@@ -96,10 +130,20 @@ const Chatbox = () => {
               }}
             />
           </Grid>
-          <Grid item xs={2}>
-            <Button fullWidth color="primary" variant="contained" endIcon={<MessageOutlined />} onClick={handleSend}>
-              Send
-            </Button>
+          <Grid item xs={1}>
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="contained-button-file"
+              type="file"
+              onChange={handleImageChange}
+            />
+            <label htmlFor="contained-button-file">
+              <Button variant="contained" fullWidth component="span"endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>
+              
+              </Button>
+            </label>
+
           </Grid>
         </Grid>
       </Box>

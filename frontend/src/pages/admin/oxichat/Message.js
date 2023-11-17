@@ -1,7 +1,7 @@
 import { Avatar, Box, Typography, Paper } from '@mui/material';
 import { useSelector } from 'react-redux';
 const Message = (props) => {
-  const myMobile = useSelector((state)=>state.profile.contact.contact);
+  const myMobile = useSelector((state) => state.profile.contact.contact);
   const isBot = props.src !== myMobile;
   return (
     <Box
@@ -18,7 +18,7 @@ const Message = (props) => {
           alignItems: 'center'
         }}
       >
-        <Avatar sx={{p:2, bgcolor: isBot ? 'primary.main' : 'secondary.main' }}>{isBot ? 'U' : 'O'}</Avatar>
+        <Avatar sx={{ p: 2, bgcolor: isBot ? 'primary.main' : 'secondary.main' }}>{isBot ? 'U' : 'O'}</Avatar>
         <Paper
           variant="outlined"
           sx={{
@@ -29,7 +29,11 @@ const Message = (props) => {
             borderRadius: isBot ? '20px 20px 20px 5px' : '20px 20px 5px 20px'
           }}
         >
-          <Typography variant="body1">{props.message}</Typography>
+          {
+            props.img === '' ? <Typography variant="body1">{props.message}</Typography>
+              :
+              <img src={props.img} width={250} height={250} alt={myMobile} />
+          }
         </Paper>
       </Box>
     </Box>

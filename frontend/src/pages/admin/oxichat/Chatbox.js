@@ -6,9 +6,10 @@ import 'firebase/compat/database';
 import { useSelector } from 'react-redux';
 import { useState, useEffect, useRef } from 'react';
 import { Box, TextField, Button, Grid } from '@mui/material';
-import { MessageOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, LoadingOutlined } from '@ant-design/icons';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Message from './Message';
-let ref = null;
+let messageRef = null;
 const Chatbox = (props) => {
   const myMobile = useSelector((state) => state.profile.contact.contact);
   const fn = useSelector((state) => state.profile.firstName.firstName);
@@ -22,14 +23,15 @@ const Chatbox = (props) => {
     }
   });
   const database = firebaseApp.database();
-
+  const [attachLoading, setAttachLoading] = useState(false);
+  const [file, setFile] = useState(null);
   const [input, setInput] = useState('');
   const [sendMessage, setSendMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
 
   useEffect(() => {
     if (props.selectedChat) {
-      ref = database.ref(props.selectedChat + 'messages/');
+      messageRef = database.ref(props.selectedChat + 'messages/');
       const handleNewMessage = (snapshot) => {
         const data = snapshot.val();
 
@@ -37,8 +39,8 @@ const Chatbox = (props) => {
           setChatMessages(data);
         }
       };
-      ref.on('value', handleNewMessage);
-      return () => ref.off('value', handleNewMessage);
+      messageRef.on('value', handleNewMessage);
+      return () => messageRef.off('value', handleNewMessage);
     }
   }, [props.selectedChat, database]);
 
@@ -48,17 +50,47 @@ const Chatbox = (props) => {
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
+  const handleImageChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  useEffect(() => {
+    if (file) {
+      setAttachLoading(true);
+      const storage = getStorage();
+      const storageRef = ref(storage, 'chat/' + myMobile + Date.now() + '.jpg');
+      uploadBytes(storageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            let newMessage = {
+              content: '',
+              img: downloadURL,
+              time: new Date().toISOString(),
+              src: myMobile,
+              mobile: myMobile,
+              name: myName,
+              photoUrl: 'https://placehold.co/100'
+            };
+            messageRef.push(newMessage);
+            setSendMessage('');
+            setInput('');
+            setFile(null);
+            setAttachLoading(false);
+          });
+      });
+    }
+  }, [file])
   useEffect(() => {
     if (sendMessage) {
       let newMessage = {
         content: sendMessage,
+        img: '',
         time: new Date().toISOString(),
         src: myMobile,
         mobile: myMobile,
         name: myName,
         photoUrl: 'https://placehold.co/100'
       };
-      ref.push(newMessage);
+      messageRef.push(newMessage);
       setSendMessage('');
       setInput('');
     }
@@ -76,7 +108,7 @@ const Chatbox = (props) => {
     >
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
         {Object.values(chatMessages).map((s, i) => {
-          return <Message key={i} message={s.content} src={s.src} />;
+          return <Message key={i} message={s.content} src={s.src} img={s.img} />;
         })}
       </Box>
       <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
@@ -97,10 +129,19 @@ const Chatbox = (props) => {
             />
           </Grid>
 
-          <Grid item xs={2}>
-            <Button fullWidth color="primary" variant="contained" endIcon={<MessageOutlined />} onClick={handleSend}>
-              Send
-            </Button>
+          <Grid item xs={1}>
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="contained-button-file"
+              type="file"
+              onChange={handleImageChange}
+            />
+            <label htmlFor="contained-button-file">
+              <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>
+
+              </Button>
+            </label>
           </Grid>
         </Grid>
       </Box>

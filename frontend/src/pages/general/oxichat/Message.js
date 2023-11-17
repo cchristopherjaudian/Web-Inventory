@@ -29,7 +29,12 @@ const Message = (props) => {
             borderRadius: isBot ? '20px 20px 20px 5px' : '20px 20px 5px 20px'
           }}
         >
-          <Typography variant="body1">{props.message}</Typography>
+          {
+            props.img === '' ? <Typography variant="body1">{props.message}</Typography>
+            :
+            <img src={props.img} width={250} height={250} alt={myMobile}/>
+          }
+          
         </Paper>
       </Box>
     </Box>

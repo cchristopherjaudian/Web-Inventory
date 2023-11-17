@@ -19,7 +19,7 @@ const FirebaseSocial = () => {
   const [mobile, setMobile] = useState('');
   const [user, setUser] = useState('');
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const { data, fetchData } = useAxios('accounts/login', 'POST', { username: mobile, password: 'Jaudian#29' });
+  const { data, fetchData } = useAxios('accounts/login', 'POST', { username: mobile, password: 'Password001*' });
   const { profile, fetchProfile } = useAxiosBackup('profiles/auth', 'GET');
 
   useEffect(() => {

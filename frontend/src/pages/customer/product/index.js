@@ -87,13 +87,7 @@ const Product = () => {
             </Box>
           </Card>
         </Grid>
-        {/* <Grid item xs={12} md={3} sx={{ height: '80vh', overflowY: 'auto' }}>
-                    <Typography variant="h5" color="#2980b9" mb={2}>Related Products</Typography>
-                    <RelatedProducts />
-                    <RelatedProducts />
-                    <RelatedProducts />
-                    <RelatedProducts />
-                </Grid> */}
+       
       </Grid>
     </MainCard>
   );
