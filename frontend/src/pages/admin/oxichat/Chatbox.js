@@ -3,6 +3,7 @@ import firebaseConfig from 'config/firebase';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
+import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useState, useEffect, useRef } from 'react';
 import { Box, TextField, Button, Grid } from '@mui/material';
@@ -51,6 +52,15 @@ const Chatbox = (props) => {
     setInput(event.target.value);
   };
   const handleImageChange = (e) => {
+    let file = e.target.files[0];
+    if (file.size >= 2 * 1024 * 1024) {
+      Swal.fire({
+        title: 'Image Attachment',
+        text: 'File size must be 2mb or less',
+        icon: 'error'
+      });
+      return;
+    }
     setFile(e.target.files[0]);
   };
   useEffect(() => {
@@ -95,7 +105,13 @@ const Chatbox = (props) => {
       setInput('');
     }
   }, [sendMessage]);
+  const messagesEndRef = useRef(null);
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToBottom, [chatMessages]);
   return (
     <Box
       sx={{
@@ -110,26 +126,26 @@ const Chatbox = (props) => {
         {Object.values(chatMessages).map((s, i) => {
           return <Message key={i} message={s.content} src={s.src} img={s.img} />;
         })}
+        <div ref={messagesEndRef} />
       </Box>
       <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
-        <Grid container spacing={2}>
-          <Grid item xs={10}>
-            <TextField
-              size="small"
-              fullWidth
-              placeholder="Type a message"
-              variant="outlined"
-              value={input}
-              onChange={handleInputChange}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleSend();
-                }
-              }}
-            />
-          </Grid>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <TextField
+            size="small"
+            fullWidth
+            placeholder="Type a message"
+            variant="outlined"
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSend();
+              }
+            }}
+            sx={{ flexGrow: 1 }}
+          />
 
-          <Grid item xs={1}>
+          <Box>
             <input
               accept="image/*"
               style={{ display: 'none' }}
@@ -138,12 +154,10 @@ const Chatbox = (props) => {
               onChange={handleImageChange}
             />
             <label htmlFor="contained-button-file">
-              <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>
-
-              </Button>
+              <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />} >Attach</Button>
             </label>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
