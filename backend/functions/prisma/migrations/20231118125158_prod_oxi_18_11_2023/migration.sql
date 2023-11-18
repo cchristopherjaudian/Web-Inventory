@@ -1,0 +1,9 @@
+-- AlterTable
+ALTER TABLE "orders" ADD COLUMN     "deliveryUrl" TEXT;
+
+-- AlterTable
+ALTER TABLE "routes" ALTER COLUMN "route" DROP NOT NULL,
+ALTER COLUMN "date" DROP NOT NULL,
+ALTER COLUMN "time" DROP NOT NULL,
+ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "plateNumber" DROP NOT NULL;

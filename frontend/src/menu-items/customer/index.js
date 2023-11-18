@@ -18,6 +18,11 @@ const b2c = [
     id: 'schedule',
     title: 'Schedule',
     url: '/schedule'
+  },
+  {
+    id: 'oxichat',
+    title: 'oxichat',
+    url: '/oxichat'
   }
 ];
 

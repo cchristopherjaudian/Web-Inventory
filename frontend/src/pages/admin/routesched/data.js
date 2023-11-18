@@ -15,7 +15,7 @@ const Data = (props) => {
   return (
     <Grid item xs={6} sx={{ mt: 0.5 }}>
       <CardActionArea>
-        <Card sx={{ backgroundColor: props.background ? props.background : 'white' }}>
+        <Card sx={{ backgroundColor: props.background ? props.background : 'white' }} style={{ height: '100px', textAlign: 'justify' }}>
           <IconButton
             aria-label="edit"
             sx={{ position: 'absolute', top: 0, right: 0 }}

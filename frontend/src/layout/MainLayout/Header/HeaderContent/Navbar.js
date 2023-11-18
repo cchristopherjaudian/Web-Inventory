@@ -1,15 +1,15 @@
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem } from '@mui/material';
-import { UnorderedListOutlined, AndroidOutlined } from '@ant-design/icons';
+import { UnorderedListOutlined } from '@ant-design/icons';
 import Logo from 'components/Logo';
 import avatar from 'assets/images/users/user.png';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import customerNavigation from 'menu-items/customer';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import Notification from './Notification';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToken, setAuth } from 'store/reducers/token';
-import {setUserOffline} from 'config/chat/index';
+import { setUserOffline } from 'config/chat/index';
 const Navbar = () => {
   const myMobile = useSelector((state) => state.profile.contact.contact);
   const isBusiness = useSelector((state) => state.token.customertype.customertype);
@@ -50,7 +50,7 @@ const Navbar = () => {
       case 3:
         dispatch(setToken(''));
         dispatch(setAuth(false));
-        setUserOffline(myMobile)
+        setUserOffline(myMobile);
         navigate('/', { replace: true });
         break;
     }
