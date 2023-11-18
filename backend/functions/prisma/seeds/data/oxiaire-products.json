@@ -6,7 +6,8 @@
             "size": "5 lbs",
             "price": 6000,
             "content": 300,
-            "category": "Medical"
+            "category": "Medical",
+            "photoUrl": "https://i.ibb.co/S7Z6K5p/Flask-Type-Regular.png"
         },
         {
             "code": "FTR-10",
@@ -14,7 +15,8 @@
             "size": "10 lbs",
             "price": 6500,
             "category": "Medical",
-            "content": 350
+            "content": 350,
+            "photoUrl": "https://i.ibb.co/S7Z6K5p/Flask-Type-Regular.png"
         },
         {
             "code": "FTR-15",
@@ -22,7 +24,8 @@
             "size": "15 lbs.",
             "price": 5500,
             "category": "Medical",
-            "content": 400
+            "content": 400,
+            "photoUrl": "https://i.ibb.co/S7Z6K5p/Flask-Type-Regular.png"
         },
         {
             "code": "FTR-20",
@@ -30,7 +33,8 @@
             "size": "20 lbs",
             "price": 7600,
             "category": "Medical",
-            "content": 450
+            "content": 450,
+            "photoUrl": "https://i.ibb.co/yQnSqqm/Flask-Type-Large.png"
         },
         {
             "code": "FTR-25",
@@ -38,7 +42,8 @@
             "size": "25 lbs.",
             "price": 7800,
             "category": "Medical",
-            "content": 500
+            "content": 500,
+            "photoUrl": "https://i.ibb.co/w6hykXt/Flask-Type-Medium.png"
         },
         {
             "code": "Mo2-50",
@@ -46,7 +51,8 @@
             "size": "50 lbs.",
             "price": 9500,
             "category": "Medical",
-            "content": 600
+            "content": 600,
+            "photoUrl": "https://i.ibb.co/b77jLP1/O2-Medical.png"
         },
         {
             "code": "To2-50",
@@ -54,7 +60,8 @@
             "size": "50 lbs.",
             "category": "Industrial",
             "price": 9500,
-            "content": 500
+            "content": 500,
+            "photoUrl": "https://i.ibb.co/r7VMF04/O2-Industrial.png"
         },
         {
             "code": "To2-FTR-15",
@@ -62,7 +69,8 @@
             "size": "15 lbs.",
             "category": "Industrial",
             "price": 7500,
-            "content": 400
+            "content": 400,
+            "photoUrl": "https://i.ibb.co/L9hXLGP/O2-Industrial-Ftr.png"
         },
         {
             "code": "CA-21X",
@@ -70,7 +78,8 @@
             "size": "50 lbs.",
             "category": "Industrial",
             "price": 10000,
-            "content": 1000
+            "content": 1000,
+            "photoUrl": "https://i.ibb.co/9ch7Vyp/Compressed-Air.png"
         },
         {
             "code": "C2H2-50",
@@ -78,7 +87,8 @@
             "category": "Special Grade Gasses",
             "size": "50 lbs",
             "price": 10000,
-            "content": 2000
+            "content": 2000,
+            "photoUrl": "https://i.ibb.co/h18jgcK/Acetylene.png"
         },
         {
             "code": "C2H2-15",
@@ -86,7 +96,8 @@
             "category": "Special Grade Gasses",
             "size": "15 lbs.",
             "price": 7500,
-            "content": 1200
+            "content": 1200,
+            "photoUrl": "https://i.ibb.co/h18jgcK/Acetylene.png"
         },
         {
             "code": "C2H2-10",
@@ -94,7 +105,8 @@
             "category": "Special Grade Gasses",
             "size": "10 lbs.",
             "price": 6000,
-            "content": 1200
+            "content": 1200,
+            "photoUrl": "https://i.ibb.co/h18jgcK/Acetylene.png"
         },
         {
             "code": "N2-50",
@@ -102,7 +114,8 @@
             "size": "50 lbs.",
             "category": "Special Grade Gasses",
             "price": 10000,
-            "content": 850
+            "content": 850,
+            "photoUrl": "https://i.ibb.co/sW0MYzR/Nitrogen.png"
         },
         {
             "code": "N2-15",
@@ -110,7 +123,8 @@
             "size": "15 lbs.",
             "category": "Special Grade Gasses",
             "price": 7500,
-            "content": 650
+            "content": 650,
+            "photoUrl": "https://i.ibb.co/sW0MYzR/Nitrogen.png"
         },
         {
             "code": "N2-10",
@@ -118,7 +132,8 @@
             "size": "10 lbs.",
             "category": "Special Grade Gasses",
             "price": 6000,
-            "content": 550
+            "content": 550,
+            "photoUrl": "https://i.ibb.co/sW0MYzR/Nitrogen.png"
         },
         {
             "code": "N2-Mo2-50",
@@ -126,7 +141,8 @@
             "category": "Medical",
             "size": "50 lbs.",
             "price": 10000,
-            "content": 1000
+            "content": 1000,
+            "photoUrl": "https://i.ibb.co/23Ms10L/Nitrogen-Medical.png"
         },
         {
             "code": "AR-50",
@@ -134,7 +150,8 @@
             "size": "50 lbs.",
             "category": "Special Grade Gasses",
             "price": 10000,
-            "content": 2800
+            "content": 2800,
+            "photoUrl": "https://i.ibb.co/xhH9Ymx/Argon.png"
         },
         {
             "code": "AR-15",
@@ -142,7 +159,8 @@
             "size": "15 lbs.",
             "category": "Special Grade Gasses",
             "price": 7500,
-            "content": 2000
+            "content": 2000,
+            "photoUrl": "https://i.ibb.co/xhH9Ymx/Argon.png"
         },
         {
             "code": "Co2-50",
@@ -150,7 +168,8 @@
             "category": "Special Grade Gasses",
             "size": "50 lbs.",
             "price": 10000,
-            "content": 1500
+            "content": 1500,
+            "photoUrl": "https://i.ibb.co/KFrpTwY/Co2.png"
         },
         {
             "code": "Co2-15",
@@ -158,7 +177,8 @@
             "category": "Special Grade Gasses",
             "size": "15 lbs.",
             "price": 7500,
-            "content": 750
+            "content": 750,
+            "photoUrl": "https://i.ibb.co/KFrpTwY/Co2.png"
         },
         {
             "code": "Co2-Mo2-50",
@@ -166,7 +186,8 @@
             "category": "Medical",
             "size": "50 lbs.",
             "price": 10000,
-            "content": 2000
+            "content": 2000,
+            "photoUrl": "https://i.ibb.co/xJtCZ9M/Co2-Medical.png"
         },
         {
             "code": "H2-50",
@@ -174,80 +195,93 @@
             "category": "Special-grade Gases",
             "size": "50 lbs.",
             "price": 10000,
-            "content": 1800
+            "content": 1800,
+            "photoUrl": "https://i.ibb.co/x6RyN8b/Hydrogen.png"
         },
         {
             "code": "LPG-11",
             "name": "Lpg",
             "category": "Industrial",
             "size": "11 kg.",
-            "price": 2000
+            "price": 2000,
+            "photoUrl": "https://i.ibb.co/J3y3F81/Lpg.png"
         },
         {
             "code": "WC-21X",
             "category": "Equipment",
             "name": "Wheel Chair",
-            "price": 5500
+            "price": 5500,
+            "photoUrl": "https://i.ibb.co/YjsJPRs/Wheel-Chair.png"
         },
         {
             "code": "DB-21X",
             "category": "Equipment",
             "name": "Digital Bp",
-            "price": 580
+            "price": 580,
+            "photoUrl": "https://i.ibb.co/KsjLtg1/Digital-Bp.png"
         },
         {
             "code": "2CHB-21X",
             "name": "2 Crank Hospital Bed",
             "category": "Equipment",
-            "price": 12500
+            "price": 12500,
+            "photoUrl": "https://i.ibb.co/23yrvPS/2-Crank-Hospital-Bed.png"
         },
         {
             "code": "3CHB-21X",
             "name": "3 Crank Hospital Bed",
             "category": "Equipment",
-            "price": 30000
+            "price": 30000,
+            "photoUrl": "https://i.ibb.co/HVHpN66/3-Crank-Hospital-Bed.png"
         },
         {
             "code": "MR-21X",
             "name": "Medical Regulator",
             "category": "Equipment",
-            "price": 2500
+            "price": 2500,
+            "photoUrl": "https://i.ibb.co/2vHkKV8/Medical-Regulator.png"
         },
         {
             "code": "HBC-21X",
             "name": "High Back Chair",
             "category": "Equipment",
-            "price": 8700
+            "price": 8700,
+            "photoUrl": "https://i.ibb.co/8Xbh2Wf/HIgh-Back-Chair.png"
         },
         {
             "code": "NSFCTC-21X",
             "name": "Non-Slip Foldable Commode Toilet Chair",
             "category": "Equipment",
-            "price": 3530
+            "price": 3530,
+            "photoUrl": "https://i.ibb.co/KDPKrTn/Non-Slip-Foldable-Commode-Toilet-Chair.png"
         },
         {
             "code": "WWOW-21X",
             "name": "Walker W/O Wheels",
             "category": "Equipment",
-            "price": 1800
+            "price": 1800,
+            "photoUrl": "https://i.ibb.co/KhXpq4q/Walker-WO-Wheels.jpg"
         },
         {
             "code": "BHDC-21X",
             "name": "Bariatric Heavy Duty Cane",
             "category": "Equipment",
-            "price": 588
+            "price": 588,
+            "photoUrl": "https://i.ibb.co/7GV4pL2/Bariatric-Heavy-Duty-Cane.jpg"
         },
         {
             "code": "AECWS-21X",
             "name": "Adjustable Elderly Crutch With Stool",
             "category": "Equipment",
-            "price": 588
+            "price": 588,
+            "photoUrl": "https://i.ibb.co/k88ryTd/Adjustable-Elderly-Crutch-With-Stool.jpg"
         },
         {
             "code": "FSCB-21X",
             "name": "Foldable Single Cane Bronze",
             "category": "Equipment",
-            "price": 420
+            "price": 420,
+            "photoUrl": "https://i.ibb.co/t3bJ2Vs/Foldable-Single-Cane-Bronze.jpg"
         }
     ]
 }
