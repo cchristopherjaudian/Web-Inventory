@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState,useEffect } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { setToken,setAuth } from 'store/reducers/token';
 import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-
+import {setUserOffline} from 'config/chat/index';
 import { EditOutlined, ProfileOutlined, LogoutOutlined, UserOutlined, WalletOutlined } from '@ant-design/icons';
 
 
@@ -14,6 +14,7 @@ const ProfileTab = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const myMobile = useSelector((state) => state.profile.contact.contact);
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
@@ -21,6 +22,7 @@ const ProfileTab = () => {
   const handleLogout = () => {
     dispatch(setToken(''));
     dispatch(setAuth(false));
+    setUserOffline(myMobile)
     navigate('/',{replace:true});
   };
   const goToProfile = () =>{

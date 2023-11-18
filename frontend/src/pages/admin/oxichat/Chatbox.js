@@ -6,16 +6,19 @@ import 'firebase/compat/database';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useState, useEffect, useRef } from 'react';
-import { Box, TextField, Button, Grid } from '@mui/material';
+import { Avatar, Box, TextField, Button, Grid, Typography } from '@mui/material';
 import { PaperClipOutlined, LoadingOutlined } from '@ant-design/icons';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import Message from './Message';
 let messageRef = null;
 const Chatbox = (props) => {
+  
   const myMobile = useSelector((state) => state.profile.contact.contact);
   const fn = useSelector((state) => state.profile.firstName.firstName);
   const ln = useSelector((state) => state.profile.lastName.lastName);
   const myName = fn + ' ' + ln;
+
   const [firebaseApp] = useState(() => {
     if (!firebase.apps.length) {
       return firebase.initializeApp(firebaseConfig);
@@ -29,6 +32,7 @@ const Chatbox = (props) => {
   const [input, setInput] = useState('');
   const [sendMessage, setSendMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
+  
 
   useEffect(() => {
     if (props.selectedChat) {
@@ -113,53 +117,57 @@ const Chatbox = (props) => {
 
   useEffect(scrollToBottom, [chatMessages]);
   return (
-    <Box
-      sx={{
-        height: '70vh',
-        display: 'flex',
-        flexDirection: 'column',
-        bgcolor: 'grey.100',
-        mt: -2
-      }}
-    >
-      <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
-        {Object.values(chatMessages).map((s, i) => {
-          return <Message key={i} message={s.content} src={s.src} img={s.img} />;
-        })}
-        <div ref={messagesEndRef} />
-      </Box>
-      <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <TextField
-            size="small"
-            fullWidth
-            placeholder="Type a message"
-            variant="outlined"
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSend();
-              }
-            }}
-            sx={{ flexGrow: 1 }}
-          />
+    <>
+      <Box
+        sx={{
+          height: '70vh',
+          display: 'flex',
+          flexDirection: 'column',
+          bgcolor: 'grey.100',
+          mt: -2
+        }}
+      >
 
-          <Box>
-            <input
-              accept="image/*"
-              style={{ display: 'none' }}
-              id="contained-button-file"
-              type="file"
-              onChange={handleImageChange}
+        <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
+          {Object.values(chatMessages).map((s, i) => {
+            return <Message key={i} message={s.content} src={s.src} img={s.img}/>;
+          })}
+          <div ref={messagesEndRef} />
+        </Box>
+        <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <TextField
+              size="small"
+              fullWidth
+              placeholder="Type a message"
+              variant="outlined"
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSend();
+                }
+              }}
+              sx={{ flexGrow: 1 }}
             />
-            <label htmlFor="contained-button-file">
-              <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />} >Attach</Button>
-            </label>
+
+            <Box>
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="contained-button-file"
+                type="file"
+                onChange={handleImageChange}
+              />
+              <label htmlFor="contained-button-file">
+                <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />} >Attach</Button>
+              </label>
+            </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
+
   );
 };
 

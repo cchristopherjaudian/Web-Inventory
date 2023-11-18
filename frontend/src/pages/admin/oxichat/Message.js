@@ -3,8 +3,6 @@ import { useSelector } from 'react-redux';
 const Message = (props) => {
   const myMobile = useSelector((state) => state.profile.contact.contact);
   const isBot = props.src !== myMobile;
-  console.log(props);
-  console.log(myMobile);
   return (
     <Box
       sx={{

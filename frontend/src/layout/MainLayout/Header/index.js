@@ -5,6 +5,8 @@ import AppBarStyled from './AppBarStyled';
 import HeaderContent from './HeaderContent';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
+import {setUserOnlineStatus} from 'config/chat/index';
+import { useEffect } from 'react';
 const Header = ({ open, handleDrawerToggle }) => {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
@@ -12,6 +14,12 @@ const Header = ({ open, handleDrawerToggle }) => {
   const iconBackColor = 'grey.100';
   const iconBackColorOpen = 'grey.200';
   const isadmin = useSelector((state) => state.token.isadmin.isadmin);
+  const myMobile = useSelector((state) => state.profile.contact.contact);
+  useEffect(()=>{
+    if(myMobile){
+      setUserOnlineStatus(myMobile);
+    }
+  },[myMobile]);
   const mainHeader = (
     <Toolbar>
       {

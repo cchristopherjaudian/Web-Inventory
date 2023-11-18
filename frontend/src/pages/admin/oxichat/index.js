@@ -3,7 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import { useState, useEffect } from 'react';
-import { Box, Grid, Typography, FormControl, InputAdornment, OutlinedInput } from '@mui/material';
+import { Avatar, Box, Grid, Typography, FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import MainCard from 'components/MainCard';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -19,11 +19,27 @@ const Oxichat = () => {
     }
   });
   const database = firebaseApp.database();
-
+  const [render, setRender] = useState(false);
   const [cList, setCList] = useState([]);
   const [bList, setBList] = useState([]);
   const [selectedChat, setSelectedChat] = useState('');
   const [chatProfile, setChatProfile] = useState({});
+  const [status, setStatus] = useState(false);
+  let userStatusDatabaseRef = null;
+  useEffect(()=>{
+    if(Object.keys(chatProfile).length > 0){
+      userStatusDatabaseRef = firebase.database().ref('/status/' + chatProfile.mobile);
+      userStatusDatabaseRef.on('value', (snapshot) => {
+        const isOnline = snapshot.val();
+        setStatus(isOnline);
+      }); 
+    }
+  },[chatProfile])
+
+  useEffect(() => {
+    console.log("User is " + status);
+    setRender(true);
+  }, [status])
 
   useEffect(() => {
     let ref = database.ref('/');
@@ -104,15 +120,23 @@ const Oxichat = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} lg={8} style={{ height: '83vh' }}>
-        <Grid direction="column" container style={{ display: 'flex', height: '100%' }}>
-          <Grid item xs={12}>
-            <MainCard title={chatProfile.name} sx={{ width: '100%' }}>
-              {selectedChat && <Chatbox selectedChat={selectedChat} chatProfile={chatProfile} />}
-            </MainCard>
+      {
+        render &&
+        <Grid item xs={12} lg={8} style={{ height: '83vh' }}>
+          <Grid direction="column" container style={{ display: 'flex', height: '100%' }}>
+            <Grid item xs={12} sx={{ width: '100%' }}>
+              {selectedChat && <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+                <Avatar sx={{ width: 24, height: 24, bgcolor: status ? '#2ecc71' : '#2c3e50', mr: 1 }} />
+                <Typography variant="body1">
+                  {chatProfile.name}
+                </Typography>
+              </Box>}
+              {selectedChat && <Chatbox  selectedChat={selectedChat} chatProfile={chatProfile} />}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+
+      }
     </Grid>
   );
 };

@@ -13,6 +13,8 @@ import { openDrawer } from 'store/reducers/menu';
 import { useLocation } from 'react-router-dom';
 import Footer from './Footer/index';
 
+import {setUserOnlineStatus} from 'config/chat/index';
+
 const MainLayout = () => {
   const theme = useTheme();
   const location = useLocation();
@@ -22,12 +24,17 @@ const MainLayout = () => {
   const admintype = useSelector((state) => state.token.admintype.adminType);
   const { drawerOpen } = useSelector((state) => state.menu);
   const [open, setOpen] = useState(drawerOpen);
+  const myMobile = useSelector((state) => state.profile.contact.contact);
   let navigation = [adminnavigation, sub1navigation, sub2navigation][admintype];
   const handleDrawerToggle = () => {
     setOpen(!open);
     dispatch(openDrawer({ drawerOpen: !open }));
   };
-
+  useEffect(()=>{
+    if(myMobile){
+      setUserOnlineStatus(myMobile);
+    }
+  },[myMobile]);
   useEffect(() => {
     setOpen(!matchDownLG);
     dispatch(openDrawer({ drawerOpen: !matchDownLG }));

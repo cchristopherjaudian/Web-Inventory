@@ -12,6 +12,7 @@ import useAxios from 'hooks/useAxios';
 import useAxiosBackup from 'hooks/useAxiosBackup';
 import { setCart } from 'store/reducers/cart';
 import { setToken, setAuth, setAdmin, setAdminType, setCustomerType } from 'store/reducers/token';
+
 import {
   setBusinessName,
   setContact,
@@ -115,6 +116,8 @@ export default function Login() {
 
       const newData = data['data']['newData'];
       const accountType = profile['data']['account']['accountType'];
+      
+     
       dispatch(setAuth({ authenticated: true }));
       dispatch(setAccType({ accType: accountType }));
       dispatch(setContact({ contact: payload['username'] }));

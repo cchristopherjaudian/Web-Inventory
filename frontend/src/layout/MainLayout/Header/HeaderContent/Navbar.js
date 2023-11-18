@@ -9,8 +9,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Notification from './Notification';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToken, setAuth } from 'store/reducers/token';
-
+import {setUserOffline} from 'config/chat/index';
 const Navbar = () => {
+  const myMobile = useSelector((state) => state.profile.contact.contact);
   const isBusiness = useSelector((state) => state.token.customertype.customertype);
   const settings = ['Profile', 'History', 'Messages', 'Logout'];
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const Navbar = () => {
       case 3:
         dispatch(setToken(''));
         dispatch(setAuth(false));
+        setUserOffline(myMobile)
         navigate('/', { replace: true });
         break;
     }
