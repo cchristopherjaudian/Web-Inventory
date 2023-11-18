@@ -273,7 +273,6 @@ export default function Login() {
               <img style={{ borderRadius: '20px' }} src="asset/login-bottom.jpg" alt="bottom" width={300} height={600} />
             </Box>
           </Box>
-          <FirebaseSocial />
         </Grid>
         <Copyright sx={{ mt: 1 }} />
       </Grid>
