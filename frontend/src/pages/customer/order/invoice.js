@@ -88,9 +88,7 @@ const Invoice = (props) => {
                     );
                   })}
                 <TableRow>
-                  <TableCell colSpan={4}>
-
-                  </TableCell>
+                  <TableCell colSpan={4}></TableCell>
                 </TableRow>
 
                 <TableRow>
@@ -100,9 +98,7 @@ const Invoice = (props) => {
                   <TableCell>
                     <Typography variant="h5">Subtotal</Typography>
                   </TableCell>
-                  <TableCell>
-                    ₱{totalAmount}
-                  </TableCell>
+                  <TableCell>₱{totalAmount}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell rowSpan={4} colSpan={2}>
@@ -113,30 +109,22 @@ const Invoice = (props) => {
                   <TableCell>
                     <Typography variant="h5">Deposit</Typography>
                   </TableCell>
-                  <TableCell>
-                    ₱00.00
-                  </TableCell>
+                  <TableCell>₱00.00</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <Typography variant="h5">Subject to change</Typography>
                   </TableCell>
-                  <TableCell>
-                    ₱00.00
-                  </TableCell>
+                  <TableCell>₱00.00</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <Typography variant="h5">Subject to change</Typography>
                   </TableCell>
-                  <TableCell>
-                    ₱00.00
-                  </TableCell>
+                  <TableCell>₱00.00</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell colSpan={4}>
-
-                  </TableCell>
+                  <TableCell colSpan={4}></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={2}>
@@ -156,9 +144,11 @@ const Invoice = (props) => {
                         <Typography variant="body1">Account Name</Typography>
                       </Grid>
                       <Grid item xs={6}>
-                        <Typography variant="body1">{profile['businessName']
-                          ? profile['businessName']
-                          : profile['firstname'] + ' ' + profile['middlename'] + ' ' + profile['lastname']}</Typography>
+                        <Typography variant="body1">
+                          {profile['businessName']
+                            ? profile['businessName']
+                            : profile['firstname'] + ' ' + profile['middlename'] + ' ' + profile['lastname']}
+                        </Typography>
                       </Grid>
                     </Grid>
                   </TableCell>
@@ -187,7 +177,7 @@ const Invoice = (props) => {
                     </Grid>
                   </TableCell>
                 </TableRow>
-                
+
                 <TableRow>
                   <TableCell>
                     <Typography variant="h4">Terms and Conditions</Typography>
@@ -195,7 +185,9 @@ const Invoice = (props) => {
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Typography variant="body1">By paying this invoice, you accept that you are satisified with provided work and have nomore correnctions</Typography>
+                    <Typography variant="body1">
+                      By paying this invoice, you accept that you are satisified with provided work and have nomore correnctions
+                    </Typography>
                     <Typography variant="body1">The payment should be made within 15 banking days</Typography>
                   </TableCell>
                 </TableRow>

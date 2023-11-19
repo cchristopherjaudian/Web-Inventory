@@ -75,14 +75,21 @@ const Checkout = () => {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
-        let newCart = [];
+        const newCart = [];
         finalCart.forEach((item, index) => {
           newCart.push({
             cartId: item.id,
             productId: item.products.id
           });
         });
-        let finalPayload = { paymentMethod: payMethod, items: newCart, paymentUrl: paymentUrl };
+        const finalPayload = { paymentMethod: payMethod, items: newCart, paymentUrl: paymentUrl };
+
+        if (payMethod === 'COD') {
+          Object.keys(finalPayload).forEach((key) => {
+            if (!finalPayload[key]) delete finalPayload[key];
+          });
+        }
+
         setPayload(finalPayload);
       }
     });
