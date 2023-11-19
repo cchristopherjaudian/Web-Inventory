@@ -35,9 +35,6 @@ const History = () => {
       setTransactions(newData);
     }
   }, [data]);
-  // useEffect(()=>{
-  //     fetchData();
-  // },[requestType]);
   return (
     <MainCard>
       <h3>History</h3>

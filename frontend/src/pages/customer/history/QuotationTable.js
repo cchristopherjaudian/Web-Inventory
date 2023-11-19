@@ -154,7 +154,7 @@ const QuotationTable = (props) => {
             {gridRows.length > 0 && (
               <DataGrid
                 autoHeight
-                rows={gridRows ? gridRows : []}
+                rows={gridRows}
                 columns={columns}
                 initialState={{
                   pagination: {
@@ -163,7 +163,7 @@ const QuotationTable = (props) => {
                     }
                   }
                 }}
-                getRowId={() => Date.now}
+                getRowId={(data) => data?.groupNo}
                 pageSizeOptions={[10]}
                 disableRowSelectionOnClick
                 sx={{
