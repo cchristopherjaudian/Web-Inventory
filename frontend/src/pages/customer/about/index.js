@@ -44,7 +44,7 @@ const About = () => {
         </Grid>
 
         <Grid item xs={12} lg={5}>
-          <Box component="img" src="asset/about-us.jpg" alt="About Us" width={600} height={400} sx={{ mr: 3, ml: 3 }} />
+          <Box component="img" src="https://i.ibb.co/9hB9JCG/about-us.jpg" alt="About Us" width={600} height={400} sx={{ mr: 3, ml: 3 }} />
         </Grid>
       </Grid>
     </MainCard>
