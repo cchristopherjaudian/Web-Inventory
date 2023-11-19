@@ -27,7 +27,7 @@ const CartItemList = (props) => {
   };
   return (
     <>
-      <ListItemButton>
+      <ListItemButton style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         <ListItemAvatar>
           <img
             src={props.product.photoUrl ? props.product.photoUrl : 'https://placehold.co/100'}
@@ -47,9 +47,9 @@ const CartItemList = (props) => {
           }
           secondary={props.product.code}
         />
-        <ListItemText sx={{ display: 'flex', justifyContent: 'flex-end' }} primary={props.product.price} />
+        <ListItemText sx={{ display: 'flex' }} primary={props.product.price} />
         <ListItemText
-          sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          sx={{ display: 'flex' }}
           primary={
             <TextField
               name="quantity"
@@ -61,7 +61,7 @@ const CartItemList = (props) => {
           }
         />
         <ListItemText
-          sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          sx={{ display: 'flex' }}
           primary={
             <FormControlLabel
               control={<Checkbox onChange={(e) => updateProduct('isSelected', e.target.checked)} />}
