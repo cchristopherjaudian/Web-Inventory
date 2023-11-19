@@ -19,56 +19,57 @@ const Home = () => {
 
   return (
     <>
-      <Grid container sx={{ height: '70%' }}>
-        <Grid item xs={12} sx={{ height: '100%' }}>
+      <Grid container sx={{ height: '90%' }}>
+        <Grid item xs={12} sx={{ height: '100%', position: 'relative' }}>
           <Paper
             elevation={10}
             sx={{
               bgcolor: '#FAFAFA',
-              backgroundImage: `url('https://placehold.co/900')`,
+              backgroundImage: `url('https://i.ibb.co/8xJ423W/Home-Screen-Image.png')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              maskImage: 'linear-gradient(to left, transparent, black)',
-              height: '100%'
+              maskImage: 'linear-gradient(to right, transparent, black)',
+              height: 'inherit',
+              zIndex: -1
             }}
-          >
-            <Grid container sx={{ height: '100%' }}>
-              <Grid
-                item
-                xs={6}
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  p: 4,
-                  mt: 2
-                }}
+          ></Paper>
+
+          <Grid container sx={{ height: '100%' }}>
+            <Grid
+              item
+              xs={6}
+              sx={{
+                position: 'absolute',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                top: '110px',
+                left: '70px'
+              }}
+            >
+              <Typography
+                variant="h1"
+                component="div"
+                sx={{ color: '#2980b9', display: 'flex', justifyContent: 'flex-start', fontWeight: 700 }}
+                gutterBottom
               >
-                <Typography
-                  variant="h1"
-                  component="div"
-                  sx={{ color: '#2980b9', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                  gutterBottom
-                >
-                  QUALITY and SAFETY
-                </Typography>
-                <Typography
-                  variant="h1"
-                  component="div"
-                  sx={{ color: '#16a085', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                  gutterBottom
-                >
-                  OUR PRIORITY
-                </Typography>
-                <Button variant="contained" size="large" onClick={() => navigate(isBusiness ? '/purchase/request' : '/shop')}>
-                  Shop Now
-                </Button>
-              </Grid>
-              <Grid item xs={6}></Grid>
+                QUALITY and SAFETY
+              </Typography>
+              <Typography
+                variant="h1"
+                component="div"
+                sx={{ color: '#16a085', display: 'flex', justifyContent: 'flex-start', fontWeight: 700 }}
+                gutterBottom
+              >
+                OUR PRIORITY
+              </Typography>
+              <Button variant="contained" size="large" onClick={() => navigate(isBusiness ? '/purchase/request' : '/shop')}>
+                Shop Now
+              </Button>
             </Grid>
-          </Paper>
+            <Grid item xs={6}></Grid>
+          </Grid>
         </Grid>
         <Grid item xs={1}></Grid>
         <Grid item xs={10} sx={{ mt: -5, zIndex: 20 }}>

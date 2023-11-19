@@ -4,6 +4,8 @@ import MainCard from 'components/MainCard';
 import { useState, useEffect } from 'react';
 import { RightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+
 const HistoryTable = (props) => {
   const navigate = useNavigate();
   const [gridRows, setGridRows] = useState([]);
@@ -78,28 +80,31 @@ const HistoryTable = (props) => {
       <Box sx={{ width: '100%' }}>
         <Grid container>
           <Grid item xs={12}>
-            <DataGrid
-              autoHeight
-              rows={gridRows ? gridRows : []}
-              columns={columns}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 10
+            {gridRows.length > 0 && (
+              <DataGrid
+                autoHeight
+                rows={gridRows}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 10
+                    }
                   }
-                }
-              }}
-              pageSizeOptions={[10]}
-              disableRowSelectionOnClick
-              sx={{
-                '.MuiDataGrid-cell:focus': {
-                  outline: 'none'
-                },
-                '& .MuiDataGrid-row:hover': {
-                  cursor: 'pointer'
-                }
-              }}
-            />
+                }}
+                getRowId={() => uuidv4()}
+                pageSizeOptions={[10]}
+                disableRowSelectionOnClick
+                sx={{
+                  '.MuiDataGrid-cell:focus': {
+                    outline: 'none'
+                  },
+                  '& .MuiDataGrid-row:hover': {
+                    cursor: 'pointer'
+                  }
+                }}
+              />
+            )}
           </Grid>
         </Grid>
       </Box>

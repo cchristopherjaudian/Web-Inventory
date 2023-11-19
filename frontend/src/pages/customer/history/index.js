@@ -12,10 +12,9 @@ const History = () => {
   const [transactions, setTransactions] = useState([]);
   useEffect(() => {
     if (data) {
-      let newData = [];
-      data['data'].map((d, i) => {
-        requestType === 0
-          ? newData.push({
+      const newData = data['data'].map((d, i) => {
+        return requestType === 0
+          ? {
               id: d['id'],
               dateOrdered: d['createdAt'],
               paymentMethod: d['paymentMethod'],
@@ -23,18 +22,19 @@ const History = () => {
               status: d['status'],
               dateDispatched: d['orderStatus'][1] ? d['orderStatus'][1]['createdAt'] : null,
               dateDelivered: d['orderStatus'][2] ? d['orderStatus'][2]['createdAt'] : null
-            })
-          : newData.push({
+            }
+          : {
               id: d['id'],
               groupNo: d['group'],
               dateRequested: d['dateRequested'],
               dateRequired: d['dateRequired'],
               quantity: d['qty']
-            });
+            };
       });
       setTransactions(newData);
     }
   }, [data]);
+
   return (
     <MainCard>
       <h3>History</h3>

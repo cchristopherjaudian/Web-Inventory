@@ -26,20 +26,19 @@ const Oxichat = () => {
   const [chatProfile, setChatProfile] = useState({});
   const [status, setStatus] = useState(false);
   let userStatusDatabaseRef = null;
-  useEffect(()=>{
-    if(Object.keys(chatProfile).length > 0){
+  useEffect(() => {
+    if (Object.keys(chatProfile).length > 0) {
       userStatusDatabaseRef = firebase.database().ref('/status/' + chatProfile.mobile);
       userStatusDatabaseRef.on('value', (snapshot) => {
         const isOnline = snapshot.val();
         setStatus(isOnline);
-      }); 
+      });
     }
-  },[chatProfile])
+  }, [chatProfile]);
 
   useEffect(() => {
-    console.log("User is " + status);
     setRender(true);
-  }, [status])
+  }, [status]);
 
   useEffect(() => {
     let ref = database.ref('/');
@@ -120,23 +119,21 @@ const Oxichat = () => {
           </Grid>
         </Grid>
       </Grid>
-      {
-        render &&
+      {render && (
         <Grid item xs={12} lg={8} style={{ height: '83vh' }}>
           <Grid direction="column" container style={{ display: 'flex', height: '100%' }}>
             <Grid item xs={12} sx={{ width: '100%' }}>
-              {selectedChat && <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-                <Avatar sx={{ width: 24, height: 24, bgcolor: status ? '#2ecc71' : '#2c3e50', mr: 1 }} />
-                <Typography variant="body1">
-                  {chatProfile.name}
-                </Typography>
-              </Box>}
-              {selectedChat && <Chatbox  selectedChat={selectedChat} chatProfile={chatProfile} />}
+              {selectedChat && (
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+                  <Avatar sx={{ width: 24, height: 24, bgcolor: status ? '#2ecc71' : '#2c3e50', mr: 1 }} />
+                  <Typography variant="body1">{chatProfile.name}</Typography>
+                </Box>
+              )}
+              {selectedChat && <Chatbox selectedChat={selectedChat} chatProfile={chatProfile} />}
             </Grid>
           </Grid>
         </Grid>
-
-      }
+      )}
     </Grid>
   );
 };

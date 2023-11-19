@@ -5,6 +5,8 @@ import { RightOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+
 const QuotationTable = (props) => {
   function a11yProps(index) {
     return {
@@ -163,7 +165,7 @@ const QuotationTable = (props) => {
                     }
                   }
                 }}
-                getRowId={(data) => data?.groupNo}
+                getRowId={() => uuidv4()}
                 pageSizeOptions={[10]}
                 disableRowSelectionOnClick
                 sx={{

@@ -6,7 +6,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 const Invoice = (props) => {
-  console.log(props);
   const profile = props.orderInfo['profile'];
   let totalAmount = props.orderInfo['orderItems'].reduce((sum, item) => {
     return sum + item.quantity * parseFloat(item.products.price);
