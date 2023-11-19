@@ -119,3 +119,6 @@ package-lock.json
 
 # build files
 build/
+
+#environment variables
+.env
