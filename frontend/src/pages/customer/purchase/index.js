@@ -10,13 +10,13 @@ import useHighAxios from 'hooks/useHighAxios';
 
 const Purchase = () => {
   const navigate = useNavigate();
-  const [groupC,setGroupC] = useState('');
+  const [groupC, setGroupC] = useState('');
   const { data, loading } = useAxios('products', 'GET', null, false);
   const [productList, setProductList] = useState([]);
   const [poProducts, setPoProducts] = useState([]);
   const [dateRequested, setDateRequested] = useState('');
   const [dateRequired, setDateRequired] = useState('');
-  const { highData, highLoading, highFetchData } = useHighAxios('purchase', 'POST', { cart: poProducts }, true);
+  const { highData, highLoading, highFetchData, highError } = useHighAxios('purchase', 'POST', { cart: poProducts }, true);
   useEffect(() => {
     if (data) {
       const newProducts = [];
@@ -77,17 +77,16 @@ const Purchase = () => {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
-        let mapProducts = [];
         const groupCode = Date.now();
         setGroupC(groupCode);
-        selectedProducts.map((s, i) => {
-          mapProducts.push({
+        const mapProducts = selectedProducts.map((s) => {
+          return {
             code: s['code'],
             quantity: s['quantity'],
             groupNo: groupCode.toString(),
             dateRequested: dateRequested,
             dateRequired: dateRequired
-          });
+          };
         });
         setPoProducts(mapProducts);
       }
@@ -98,6 +97,17 @@ const Purchase = () => {
       highFetchData();
     }
   }, [poProducts]);
+
+  useEffect(() => {
+    if (highError && highError?.response.status === 400) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Purchase Request',
+        text: highError?.response?.data.data.message
+      });
+    }
+  }, [highError]);
+
   useEffect(() => {
     if (highData) {
       setGroupC('');

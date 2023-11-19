@@ -50,6 +50,29 @@ class PurchaseService {
             );
         }
 
+        await Promise.all(
+            payload.products.map(async (product) => {
+                const inventory = await this._db.inventory.findFirst({
+                    where: {
+                        products: {
+                            code: product.code,
+                        },
+                    },
+                    include: {
+                        products: true,
+                    },
+                });
+
+                if (!inventory || inventory?.stock < product.quantity) {
+                    throw new BadRequestError(
+                        `Insufficient stock ${
+                            inventory?.products?.code || product.code
+                        }.`
+                    );
+                }
+            })
+        );
+
         this._cart = new CartService(this._db);
         const newDate = new Date();
         return Promise.all(

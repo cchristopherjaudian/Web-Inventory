@@ -5,7 +5,13 @@ export type TPurchaseList = {
 };
 
 export type TCreatePr = {
-    products: TCart & { code?: string; profileId: string; createdAt?: Date }[];
+    products: TCart &
+        {
+            code?: string;
+            profileId: string;
+            createdAt?: Date;
+            quantity: number;
+        }[];
     profileId: string;
 };
 
