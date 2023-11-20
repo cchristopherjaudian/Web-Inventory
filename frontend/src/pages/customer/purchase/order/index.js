@@ -38,6 +38,9 @@ const Order = () => {
         if (prInfo.list.length === 0) {
             msg = 'No products found for this purchase request/quotation'
         }
+        if(paymentUrl === ''){
+            msg = 'Please attach an image of your payment.'
+        }
         if (msg) {
             Swal.fire({
                 icon: 'info',
@@ -112,7 +115,7 @@ const Order = () => {
             <Grid item xs={12} lg={9}>
                 {
                     showQR ?
-                    <Payment setPaymentUrl={setPaymentUrl}/>
+                    <Payment setPaymentUrl={setPaymentUrl} setShowQR={setShowQR}/>
                     :
                     <Cart prInfo={prInfo} />
                 }
