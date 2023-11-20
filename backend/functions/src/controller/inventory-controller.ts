@@ -56,9 +56,23 @@ const updateInventory = catchAsync(async (req, res) => {
     );
 });
 
+const deleteInventory = catchAsync(async (req, res) => {
+    const deletedInventory = await inventory.deleteInventory(
+        req.params.inventoryId
+    );
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_DELETED,
+        deletedInventory
+    );
+});
+
 export default {
     createInventory,
     getInventory,
     getInventories,
     updateInventory,
+    deleteInventory,
 };

@@ -97,6 +97,10 @@ class InventoryService {
             data: payload,
         });
     }
+
+    public async deleteInventory(id: string) {
+        return this._db.inventory.delete({ where: { id } });
+    }
 }
 
 export default InventoryService;

@@ -37,6 +37,11 @@ router
         authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
         joi.requestSchemaValidate(updateInventorySchema),
         InventoryController.updateInventory
+    )
+    .delete(
+        '/:inventoryId',
+        authMiddleware.adminValidate(['ADMIN', 'SUB_2']) as any,
+        InventoryController.deleteInventory
     );
 
 export default router;
