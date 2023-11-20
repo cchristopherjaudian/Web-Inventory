@@ -56,37 +56,37 @@ const InventoryTable = (props) => {
       headerName: 'Content',
       editable: false,
       flex: 1
-    },
-    {
-      field: 'action',
-      headerName: '',
-      sortable: false,
-      width: 150,
-      disableClickEventBubbling: true,
-      renderCell: (params) => {
-        const onClick = (event) => {
-          event.stopPropagation();
-          Swal.fire({
-            icon: 'question',
-            title: 'Product Management',
-            text: 'Are you sure you want to delete this product?',
-            showCancelButton: true,
-            confirmButtonText: 'Yes'
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              // const inventories = await axiosClient.get('/inventories');
-              // console.log('id', params.row);
-            }
-          });
-        };
-
-        return (
-          <Button endIcon={<DeleteOutlined />} variant="outlined" color="error" onClick={onClick}>
-            Delete
-          </Button>
-        );
-      }
     }
+    // {
+    //   field: 'action',
+    //   headerName: '',
+    //   sortable: false,
+    //   width: 150,
+    //   disableClickEventBubbling: true,
+    //   renderCell: (params) => {
+    //     const onClick = (event) => {
+    //       event.stopPropagation();
+    //       Swal.fire({
+    //         icon: 'question',
+    //         title: 'Product Management',
+    //         text: 'Are you sure you want to delete this product?',
+    //         showCancelButton: true,
+    //         confirmButtonText: 'Yes'
+    //       }).then(async (result) => {
+    //         if (result.isConfirmed) {
+    //           // const inventories = await axiosClient.get('/inventories');
+    //           // console.log('id', params.row);
+    //         }
+    //       });
+    //     };
+
+    //     return (
+    //       <Button endIcon={<DeleteOutlined />} variant="outlined" color="error" onClick={onClick}>
+    //         Delete
+    //       </Button>
+    //     );
+    //   }
+    // }
   ];
   const gridClick = (params, event, details) => {
     let selectedData = params['row'];
