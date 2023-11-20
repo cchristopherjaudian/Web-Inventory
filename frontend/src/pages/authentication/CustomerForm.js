@@ -31,6 +31,10 @@ const CustomerForm = (props) => {
   const formik = useFormik({
     initialValues: initVal,
     onSubmit: (values) => {
+      if (!approved) {
+        console.log('T&C is not checked');
+        return;
+      }
       let newPayload = {
         ...values,
         account: { accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS' }
