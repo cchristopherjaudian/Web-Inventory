@@ -10,9 +10,7 @@ const AuthFooter = () => {
         justifyContent={matchDownSM ? 'center' : 'space-between'}
         spacing={2}
         textAlign={matchDownSM ? 'center' : 'inherit'}
-      >
-      
-      </Stack>
+      ></Stack>
     </Container>
   );
 };

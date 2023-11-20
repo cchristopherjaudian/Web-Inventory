@@ -3,12 +3,12 @@ import { useFormik } from 'formik';
 import useAxios from 'hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Button, Box, Grid, TextField, Typography, InputAdornment, IconButton } from '@mui/material';
+import { Button, Box, Grid, TextField, Typography, InputAdornment, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
 const CustomerForm = (props) => {
   const navigate = useNavigate();
-  const [payload, setPayload] = useState({});
+  const [approved, setApprove] = useState(false);
   const baseValues = {
     firstname: '',
     middlename: '',
@@ -163,9 +163,16 @@ const CustomerForm = (props) => {
                     }}
                   />
                 </Grid>
+
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={<Checkbox checked={approved} onChange={() => setApprove(() => !approved)} name="jason" />}
+                    label="I agree to the terms and conditions and privacy policy as set out by the user agreement"
+                  />
+                </Grid>
               </Grid>
               <Box sx={{ mb: 2, mt: 2 }}>
-                <Button type="submit" fullWidth variant="contained">
+                <Button type="submit" fullWidth variant="contained" disabled={!approved}>
                   Register
                 </Button>
               </Box>

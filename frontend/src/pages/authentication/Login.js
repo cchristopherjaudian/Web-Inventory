@@ -116,8 +116,7 @@ export default function Login() {
 
       const newData = data['data']['newData'];
       const accountType = profile['data']['account']['accountType'];
-      
-     
+
       dispatch(setAuth({ authenticated: true }));
       dispatch(setAccType({ accType: accountType }));
       dispatch(setContact({ contact: payload['username'] }));
@@ -273,7 +272,13 @@ export default function Login() {
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-              <img style={{ borderRadius: '20px' }} src="asset/login-bottom.jpg" alt="bottom" width={300} height={600} />
+              <img
+                style={{ borderRadius: '20px' }}
+                src="https://i.ibb.co/SXwBMQ8/homepage-image.png"
+                alt="bottom"
+                width={600}
+                height={600}
+              />
             </Box>
           </Box>
         </Grid>

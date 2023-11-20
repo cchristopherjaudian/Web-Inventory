@@ -1,13 +1,25 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button, Grid } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const InventoryTable = (props) => {
   const [productRows, setProductRows] = useState([]);
   const navigate = useNavigate();
+  const token = useSelector((state) => state.token.token);
+
+  const axiosClient = axios.create({
+    baseURL: process.env.REACT_APP_BASE_URL,
+    timeout: 10000,
+    headers: {
+      Authorization: token ? token.token : ''
+    }
+  });
+
   const columns = [
     {
       field: 'code',
@@ -60,9 +72,10 @@ const InventoryTable = (props) => {
             text: 'Are you sure you want to delete this product?',
             showCancelButton: true,
             confirmButtonText: 'Yes'
-          }).then((result) => {
+          }).then(async (result) => {
             if (result.isConfirmed) {
-              //setDeleteId(params.row.id);
+              // const inventories = await axiosClient.get('/inventories');
+              // console.log('id', params.row);
             }
           });
         };

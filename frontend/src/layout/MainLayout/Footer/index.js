@@ -30,9 +30,9 @@ const Footer = () => {
               About Us
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt sollicitudin turpis a aliquam. Duis porttitor
-              venenatis cursus. Duis sodales nunc eget vehicula consequat. Morbi non euismod nisl. Vestibulum imperdiet laoreet ex a
-              consequat. Sed sed sapien libero. Morbi condimentum ac nibh sed vestibulum
+              Oxiaire, is a manufacturer of advanced gas separation systems, which specializes in the manufacture and supply of on-site PSA
+              Oxygen generation plants to domestic and international markets. Our medical oxygen generator is designed with the highest
+              possible standards complying with ISO 9001:2015 standards WHO technical specification for Oxygen PSA plants
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>

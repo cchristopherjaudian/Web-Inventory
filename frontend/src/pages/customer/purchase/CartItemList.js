@@ -12,7 +12,8 @@ import {
   FormHelperText,
   InputAdornment,
   TextField,
-  Typography
+  Typography,
+  Grid
 } from '@mui/material';
 
 import { ShoppingOutlined } from '@ant-design/icons';
@@ -27,49 +28,61 @@ const CartItemList = (props) => {
   };
   return (
     <>
-      <ListItemButton style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        <ListItemAvatar>
-          <img
-            src={props.product.photoUrl ? props.product.photoUrl : 'https://placehold.co/100'}
-            alt={props.product.name}
-            width={100}
-            height={100}
+      <Grid container alignItems="center" justify="center" style={{ marginBottom: '10px' }} spacing={2}>
+        <Grid item xs={12} md={3}>
+          <ListItemAvatar style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src={props.product.photoUrl ? props.product.photoUrl : 'https://placehold.co/100'}
+              alt={props.product.name}
+              width={100}
+              height={100}
+            />
+
+            <ListItemText
+              sx={{ ml: 2 }}
+              primary={
+                <Typography variant="h6">
+                  <Typography component="span" variant="subtitle1">
+                    {props.product.name}
+                  </Typography>{' '}
+                </Typography>
+              }
+              secondary={props.product.code}
+            />
+          </ListItemAvatar>
+        </Grid>
+
+        <Grid item xs={12} md={3}>
+          <ListItemText primary={props.product.price} />
+        </Grid>
+
+        <Grid item xs={12} md={3}>
+          <ListItemText
+            sx={{ display: 'flex', justifyContent: 'flex-start' }}
+            primary={
+              <TextField
+                name="quantity"
+                fullWidth
+                id="quantity"
+                label="Quantity"
+                onChange={(e) => updateProduct('quantity', Number(e.target.value))}
+              />
+            }
           />
-        </ListItemAvatar>
-        <ListItemText
-          sx={{ ml: 2 }}
-          primary={
-            <Typography variant="h6">
-              <Typography component="span" variant="subtitle1">
-                {props.product.name}
-              </Typography>{' '}
-            </Typography>
-          }
-          secondary={props.product.code}
-        />
-        <ListItemText sx={{ display: 'flex' }} primary={props.product.price} />
-        <ListItemText
-          sx={{ display: 'flex' }}
-          primary={
-            <TextField
-              name="quantity"
-              fullWidth
-              id="quantity"
-              label="Quantity"
-              onChange={(e) => updateProduct('quantity', Number(e.target.value))}
-            />
-          }
-        />
-        <ListItemText
-          sx={{ display: 'flex' }}
-          primary={
-            <FormControlLabel
-              control={<Checkbox onChange={(e) => updateProduct('isSelected', e.target.checked)} />}
-              label="Add to Request"
-            />
-          }
-        />
-      </ListItemButton>
+        </Grid>
+
+        <Grid item xs={12} md={3}>
+          <ListItemText
+            sx={{ display: 'flex', justifyContent: 'flex-start' }}
+            primary={
+              <FormControlLabel
+                control={<Checkbox onChange={(e) => updateProduct('isSelected', e.target.checked)} />}
+                label="Add to Request"
+              />
+            }
+          />
+        </Grid>
+      </Grid>
 
       <Divider />
     </>
