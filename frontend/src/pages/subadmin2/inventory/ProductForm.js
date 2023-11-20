@@ -61,6 +61,19 @@ const ProductForm = (props) => {
             content: 0
         },
         onSubmit: values => {
+            let validInput = true;
+            for (let key in values) {
+                if (values[key] === '') {
+                    validInput = false;
+                    Swal.fire({
+                        title: 'Product Registration',
+                        text: 'All fields are required',
+                        icon: 'info'
+                    });
+
+                }
+            }
+            if(!validInput) return;
             let newValues = values;
             firebase.initializeApp(firebaseConfig);
             const storage = getStorage();
@@ -68,19 +81,18 @@ const ProductForm = (props) => {
             uploadBytes(storageRef, file).then((snapshot) => {
                 getDownloadURL(snapshot.ref)
                     .then((downloadURL) => {
-                        newValues = {...values,photoUrl: downloadURL};
+                        newValues = { ...values, photoUrl: downloadURL };
                         setPayload(newValues);
                     });
             });
-            
+
         },
     });
-    useEffect(()=>{
-        if(Object.prototype.hasOwnProperty.call(payload, "photoUrl"))
-        {
+    useEffect(() => {
+        if (Object.prototype.hasOwnProperty.call(payload, "photoUrl")) {
             fetchData();
         }
-    },[payload])
+    }, [payload])
     useEffect(() => {
         if (data) {
             if (data['status'] === 200) {
@@ -122,7 +134,7 @@ const ProductForm = (props) => {
             <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: -3, height: '100%' }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        {image && <img src={image} alt="preview" width={300} height={300 } />}
+                        {image && <img src={image} alt="preview" width={300} height={300} />}
                     </Grid>
                     <Grid item xs={12}>
                         <input

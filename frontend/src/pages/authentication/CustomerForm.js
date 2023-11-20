@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Button, Box, Grid, TextField, Typography, InputAdornment, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-
+import Swal from 'sweetalert2';
 const CustomerForm = (props) => {
   const navigate = useNavigate();
   const [approved, setApprove] = useState(false);
@@ -35,6 +35,19 @@ const CustomerForm = (props) => {
         console.log('T&C is not checked');
         return;
       }
+      let validInput = true;
+      for (let key in values) {
+        if (values[key] === '') {
+          validInput = false;
+          Swal.fire({
+            title: 'Account Registration',
+            text: 'All fields are required',
+            icon: 'info'
+          });
+          
+        }
+      }
+      if(!validInput) return;
       let newPayload = {
         ...values,
         account: { accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS' }

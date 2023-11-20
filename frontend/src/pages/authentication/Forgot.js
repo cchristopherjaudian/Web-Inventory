@@ -56,6 +56,7 @@ const Forgot = () => {
       });
   }
   function onSignUp() {
+    if(phoneNumber === '') return;
     setIsWaiting(true);
     onCaptchVerify();
     const appVerifier = window.recaptchaVerifier;
@@ -84,6 +85,14 @@ const Forgot = () => {
       Swal.fire({
         title: 'Change Password',
         text: 'New Password and Confirmed Password are not equal',
+        icon: 'info'
+      });
+      return;
+    }
+    if(newPassword === ''){
+      Swal.fire({
+        title: 'Change Password',
+        text: 'Please input a valid password',
         icon: 'info'
       });
       return;
