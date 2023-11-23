@@ -8,12 +8,11 @@ import { useSelector } from 'react-redux';
 import { useState, useEffect, useRef } from 'react';
 import { Avatar, Box, TextField, Button, Grid, Typography } from '@mui/material';
 import { PaperClipOutlined, LoadingOutlined } from '@ant-design/icons';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import Message from './Message';
 let messageRef = null;
 const Chatbox = (props) => {
-  
   const myMobile = useSelector((state) => state.profile.contact.contact);
   const fn = useSelector((state) => state.profile.firstName.firstName);
   const ln = useSelector((state) => state.profile.lastName.lastName);
@@ -32,7 +31,6 @@ const Chatbox = (props) => {
   const [input, setInput] = useState('');
   const [sendMessage, setSendMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
-  
 
   useEffect(() => {
     if (props.selectedChat) {
@@ -73,26 +71,25 @@ const Chatbox = (props) => {
       const storage = getStorage();
       const storageRef = ref(storage, 'chat/' + myMobile + Date.now() + '.jpg');
       uploadBytes(storageRef, file).then((snapshot) => {
-        getDownloadURL(snapshot.ref)
-          .then((downloadURL) => {
-            let newMessage = {
-              content: '',
-              img: downloadURL,
-              time: new Date().toISOString(),
-              src: myMobile,
-              mobile: myMobile,
-              name: myName,
-              photoUrl: 'https://placehold.co/100'
-            };
-            messageRef.push(newMessage);
-            setSendMessage('');
-            setInput('');
-            setFile(null);
-            setAttachLoading(false);
-          });
+        getDownloadURL(snapshot.ref).then((downloadURL) => {
+          let newMessage = {
+            content: '',
+            img: downloadURL,
+            time: new Date().toISOString(),
+            src: myMobile,
+            mobile: myMobile,
+            name: myName,
+            photoUrl: 'https://placehold.co/100'
+          };
+          messageRef.push(newMessage);
+          setSendMessage('');
+          setInput('');
+          setFile(null);
+          setAttachLoading(false);
+        });
       });
     }
-  }, [file])
+  }, [file]);
   useEffect(() => {
     if (sendMessage) {
       let newMessage = {
@@ -112,7 +109,7 @@ const Chatbox = (props) => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(scrollToBottom, [chatMessages]);
@@ -127,10 +124,9 @@ const Chatbox = (props) => {
           mt: -2
         }}
       >
-
         <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
           {Object.values(chatMessages).map((s, i) => {
-            return <Message key={i} message={s.content} src={s.src} img={s.img}/>;
+            return <Message key={i} message={s.content} src={s.src} img={s.img} />;
           })}
           <div ref={messagesEndRef} />
         </Box>
@@ -152,22 +148,22 @@ const Chatbox = (props) => {
             />
 
             <Box>
-              <input
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="contained-button-file"
-                type="file"
-                onChange={handleImageChange}
-              />
+              <input accept="image/*" style={{ display: 'none' }} id="contained-button-file" type="file" onChange={handleImageChange} />
               <label htmlFor="contained-button-file">
-                <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />} >Attach</Button>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  component="span"
+                  endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}
+                >
+                  Attach
+                </Button>
               </label>
             </Box>
           </Box>
         </Box>
       </Box>
     </>
-
   );
 };
 

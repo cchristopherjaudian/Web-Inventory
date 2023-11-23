@@ -1,10 +1,25 @@
-import { Avatar, Button, CssBaseline, TextField, Snackbar, Checkbox, Link, Grid, Box, Typography, Container } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Snackbar,
+  IconButton,
+  Grid,
+  Box,
+  Typography,
+  CloudUploadIcon,
+  Container
+} from '@mui/material';
+import firebaseConfig from 'config/firebase';
+import firebase from 'firebase/compat/app';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiAlert from '@mui/material/Alert';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect, forwardRef } from 'react';
 import { useFormik } from 'formik';
-import { setFirstName, setMiddleName, setLastName, setAddress, setEmailAddress } from 'store/reducers/profile';
+import { setFirstName, setMiddleName, setLastName, setAddress, setEmailAddress, setPhotoUrl } from 'store/reducers/profile';
 import Swal from 'sweetalert2';
 import useAxios from 'hooks/useAxios';
 const Profile = () => {
@@ -17,23 +32,47 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
+  const [rawFile, setRawFile] = useState(null);
   const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert sx={{ color: 'white' }} elevation={6} ref={ref} variant="filled" {...props} />;
   });
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       firstname: userAccount.firstName.firstName,
       middlename: userAccount.middleName.middleName ?? '',
       lastname: userAccount.lastName.lastName,
       address: userAccount.address.address,
-      emailAddress: userAccount.emailAddress.emailAddress
+      emailAddress: userAccount.emailAddress.emailAddress,
+      photoUrl: userAccount.photoUrl.photoUrl
     },
     onSubmit: (values) => {
       fetchData();
     }
   });
-  const handleClick = () => {
-    setOpen(true);
+
+  const getUploadValue = (e) => {
+    let file = e.target.files[0];
+    const fileType = file.name.split('.').pop();
+    if (file.size >= 2 * 1024 * 1024) {
+      Swal.fire({
+        title: 'Profile Photo',
+        text: 'File size must be 2mb or less.',
+        icon: 'error'
+      });
+      return;
+    }
+
+    if (!['jpg', 'png', 'jpeg'].includes(fileType.toLowerCase())) {
+      Swal.fire({
+        title: 'Profile Photo',
+        text: 'Please upload a valid image file.',
+        icon: 'error'
+      });
+      return;
+    }
+
+    setRawFile(file);
   };
 
   const handleClose = () => {
@@ -48,6 +87,7 @@ const Profile = () => {
         dispatch(setLastName({ lastName: data['data']['lastname'] }));
         dispatch(setAddress({ address: data['data']['address'] }));
         dispatch(setEmailAddress({ emailAddress: data['data']['emailAddress'] }));
+        dispatch(setPhotoUrl({ photoUrl: data['data']['photoUrl'] }));
 
         setSeverity('success');
         setMessage('Account updated successfully');
@@ -56,13 +96,27 @@ const Profile = () => {
     }
   }, [data]);
   useEffect(() => {
-    Object.keys(formik.values).forEach((k) => {
-      if (!formik.values[k]) {
-        delete formik.values[k];
+    const newPayload = { ...formik.values };
+    Object.keys(newPayload).forEach((k) => {
+      if (!newPayload[k] || (k === 'emailAddress' && newPayload[k] === userAccount.emailAddress.emailAddress)) {
+        delete newPayload[k];
       }
     });
-    setPayload(formik.values);
+    setPayload(newPayload);
   }, [formik.values]);
+
+  useEffect(() => {
+    if (!rawFile) return;
+
+    firebase.initializeApp(firebaseConfig);
+    const storage = getStorage();
+    const storageRef = ref(storage, 'profile/' + Date.now() + '.jpg');
+    uploadBytes(storageRef, rawFile).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((downloadURL) => {
+        formik.setFieldValue('photoUrl', downloadURL);
+      });
+    });
+  }, [rawFile]);
   useEffect(() => {
     if (error) {
       let msg = '';
@@ -93,10 +147,26 @@ const Profile = () => {
             alignItems: 'center'
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
+          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar> */}
           <Typography component="h1" variant="h5">
             My Profile
           </Typography>
+
+          <label
+            htmlFor="icon-button-file"
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Avatar
+              src={`${formik.values.photoUrl ? formik.values.photoUrl : '/images/example.jpg'}`}
+              style={{
+                margin: '10px',
+                width: '120px',
+                height: '120px'
+              }}
+            />
+            <input onChange={getUploadValue} accept="image/*" id="icon-button-file" type="file" />
+          </label>
+
           <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>

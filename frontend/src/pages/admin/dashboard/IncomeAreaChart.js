@@ -31,14 +31,14 @@ const IncomeAreaChart = ({ salesData = [] }) => {
   const [options, setOptions] = useState(areaChartOptions);
   useEffect(() => {
     setChartData(salesData);
-  }, []);
+  }, [salesData]);
   useEffect(() => {
     if (chartData.length === 0) return;
     const cCategories = [];
     const cSeries = [];
     chartData.map((s, i) => {
-      cCategories.push(s['name']);
-      cSeries.push(s['totalQty']);
+      cCategories.push(s?.name);
+      cSeries.push(s?.totalQty);
     });
     setOptions((prevState) => ({
       ...prevState,

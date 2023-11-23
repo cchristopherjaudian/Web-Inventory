@@ -21,7 +21,8 @@ import {
   setLastName,
   setAddress,
   setAccType,
-  setEmailAddress
+  setEmailAddress,
+  setPhotoUrl
 } from 'store/reducers/profile';
 import Swal from 'sweetalert2';
 function Copyright(props) {
@@ -126,6 +127,7 @@ export default function Login() {
       dispatch(setLastName({ lastName: profile['data']['lastname'] }));
       dispatch(setAddress({ address: profile['data']['address'] }));
       dispatch(setBusinessName({ businessName: profile['data']['businessName'] }));
+      dispatch(setPhotoUrl({ photoUrl: profile['data']['photoUrl'] }));
       if (accountType in adminTypes) {
         dispatch(setAdminType({ adminType: adminTypes[accountType] }));
         dispatch(setAdmin({ isadmin: true }));

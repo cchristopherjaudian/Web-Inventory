@@ -42,8 +42,8 @@ const Dashboard = () => {
   };
   useEffect(() => {
     if (dateFilter) {
-      setRadialQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=DELIVERED');
-      setIncomeQuery('metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
+      setRadialQuery('/metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=DELIVERED');
+      setIncomeQuery('/metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
     }
   }, [dateFilter]);
   useEffect(() => {
