@@ -1,11 +1,34 @@
 import MainCard from 'components/MainCard';
+import * as Yup from 'yup';
+import axios, { AxiosError } from 'axios';
 import { useFormik } from 'formik';
-import useAxios from 'hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Button, Box, Grid, TextField, Typography, InputAdornment, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
+
+const profileClient = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL || '',
+  timeout: 10000
+});
+
+const profileSchema = Yup.object().shape({
+  firstname: Yup.string().required('Firstname is a required field'),
+  middlename: Yup.string().optional(),
+  lastname: Yup.string().required('Lastname is a required field'),
+  address: Yup.string().required('Address is a required field'),
+  email: Yup.string().email('Please enter a valid email').required('Email is a required field'),
+  contact: Yup.string().min(11).max(11).trim().required('Contact is a required field'),
+  password: Yup.string()
+    .matches(/^[A-Z]/, 'Password should start with a capital letter')
+    .matches(/(?=.*\d)/, 'Password should contain atleast contain 1 numeric value')
+    .matches(/(?=.*[@#$!%*?&])/, 'Password should atleast contain 1 special character')
+    .matches(/[A-Za-z\d@$!%*?&]{7,}/, 'Password should be 8 characters length')
+    .trim()
+    .required('Password is a required field')
+});
+
 const CustomerForm = (props) => {
   const navigate = useNavigate();
   const [approved, setApprove] = useState(false);
@@ -30,30 +53,43 @@ const CustomerForm = (props) => {
 
   const formik = useFormik({
     initialValues: initVal,
-    onSubmit: (values) => {
-      if (!approved) {
-        console.log('T&C is not checked');
-        return;
-      }
-      let validInput = true;
-      for (let key in values) {
-        if (values[key] === '') {
-          validInput = false;
-          Swal.fire({
-            title: 'Account Registration',
-            text: 'All fields are required',
-            icon: 'info'
-          });
-          
+    onSubmit: async (values) => {
+      try {
+        if (!approved) {
+          console.log('T&C is not checked');
+          return;
         }
+        const validated = await profileSchema.validate(values);
+
+        // validates if email and contact already exists
+        await profileClient.get(`/profiles/check?email=${validated.email}&username=${validated.contact}`);
+
+        const newPayload = {
+          ...validated,
+          account: { accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS' }
+        };
+        Object.keys(newPayload).forEach((k) => {
+          if (!newPayload[k]) delete newPayload[k];
+        });
+        localStorage.setItem('signUpData', JSON.stringify(newPayload));
+        navigate('/verification', { replace: true });
+      } catch (error) {
+        let errorMessage = error?.message;
+
+        if (error instanceof AxiosError) {
+          console.log('axios error', error.response?.data?.data.message);
+          errorMessage = error.response?.data?.data.message;
+        }
+
+        await Swal.fire({
+          icon: 'error',
+          title: 'Account Registration',
+          text: errorMessage,
+          allowOutsideClick: false,
+          showCancelButton: false,
+          confirmButtonText: 'Ok'
+        });
       }
-      if(!validInput) return;
-      let newPayload = {
-        ...values,
-        account: { accountType: props.activeStep === 0 ? 'CUSTOMER' : 'BUSINESS' }
-      };
-      localStorage.setItem('signUpData', JSON.stringify(newPayload));
-      navigate('/verification', { replace: true });
     }
   });
 

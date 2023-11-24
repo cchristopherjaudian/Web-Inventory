@@ -76,13 +76,24 @@ class ProductsService {
         const product = await this._db.products.findUnique({ where: { id } });
         if (!product) throw new NotFoundError('Product does not exists.');
 
-        const inventories = await this._db.inventory.findMany({
-            where: { productId: product.id },
+        const groupedProduct = await this._db.inventory.groupBy({
+            _sum: {
+                stock: true,
+            },
+            by: ['productId'],
+            where: {
+                productId: product.id,
+            },
+        });
+
+        const list = await this._db.products.findMany({
+            where: { category: product.category, NOT: [{ id: product.id }] },
         });
 
         return {
             product,
-            inventories,
+            productInventories: groupedProduct,
+            list,
         };
     }
 

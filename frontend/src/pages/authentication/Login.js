@@ -275,7 +275,7 @@ export default function Login() {
             </Box>
             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
               <img
-                style={{ borderRadius: '20px' }}
+                style={{ borderRadius: '20px', maxWidth: '100%' }}
                 src="https://i.ibb.co/SXwBMQ8/homepage-image.png"
                 alt="bottom"
                 width={600}
