@@ -5,6 +5,7 @@ import {
 } from '../lib/custom-errors/class-errors';
 import { TProfile } from '../lib/types/profile-types';
 import { TPrismaClient } from '../lib/prisma';
+import { profile } from 'console';
 
 class ProfileService {
     private _db: TPrismaClient;
@@ -45,6 +46,39 @@ class ProfileService {
             account,
             profile,
         };
+    }
+
+    public async createFullProfile(payload: TProfile) {
+        const hasEmail = await this._db.profile.findFirst({
+            select: { emailAddress: true },
+            where: { emailAddress: payload.emailAddress },
+        });
+        if (hasEmail) {
+            throw new ResourceConflictError('Account already exists.');
+        }
+
+        const hasUsername = await this._db.account.findFirst({
+            select: { username: true },
+            where: { username: payload.account.username },
+        });
+        if (hasUsername) {
+            throw new ResourceConflictError('Account already exists.');
+        }
+        const { account, ...profile } = payload;
+
+        const newUser = await this._db.account.create({
+            data: {
+                ...account,
+                status: AccountStatuses.ACTIVE,
+                Profile: {
+                    create: {
+                        ...profile,
+                    },
+                },
+            },
+        });
+
+        return newUser;
     }
 
     public async getProfile(payload: Partial<TProfile>) {
