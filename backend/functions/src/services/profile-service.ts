@@ -1,11 +1,11 @@
 import { AccountStatuses } from '@prisma/client';
+import bcrypt from 'bcrypt';
 import {
     NotFoundError,
     ResourceConflictError,
 } from '../lib/custom-errors/class-errors';
 import { TProfile } from '../lib/types/profile-types';
 import { TPrismaClient } from '../lib/prisma';
-import { profile } from 'console';
 
 class ProfileService {
     private _db: TPrismaClient;
@@ -66,6 +66,7 @@ class ProfileService {
         }
         const { account, ...profile } = payload;
 
+        account.password = await bcrypt.hashSync(account.password, 10);
         const newUser = await this._db.account.create({
             data: {
                 ...account,

@@ -23,7 +23,7 @@ const createFullProfileSchema = {
         photoUrl: Joi.string().trim().optional(),
         middlename: Joi.string().trim().optional(),
         account: Joi.object({
-            username: Joi.string().required(),
+            username: Joi.string().min(11).max(11).trim().required(),
             password: Joi.string()
                 .pattern(
                     /^[A-Z]/,

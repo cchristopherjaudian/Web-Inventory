@@ -25,7 +25,6 @@ router
     .post(
         '/full',
         joi.requestSchemaValidate(createFullProfileSchema),
-        authMiddleware.inactiveValidate as any,
         ProfileController.createFullProfile
     )
     .get(
