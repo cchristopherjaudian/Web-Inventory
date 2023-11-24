@@ -2,15 +2,64 @@ import MainCard from 'components/MainCard';
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { styled } from '@mui/system';
-import { IconButton, Button, Box, Chip, Typography, Card, CardMedia, CardActions, CardContent, Grid, CardActionArea } from '@mui/material';
+import { Button, Box, Typography, Card, Chip, CardMedia, IconButton, CardContent, Grid, CardActionArea } from '@mui/material';
 import { setCart } from 'store/reducers/cart';
+import { ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import useAxios from 'hooks/useAxios';
 import useAxiosBackup from 'hooks/useAxiosBackup';
-import RelatedProducts from './related';
 import Info from './info';
 import useInventoryAxios from 'hooks/useInventoryAxios';
+
+const OtherProduct = ({ product, setCartItem }) => {
+  const navigate = useNavigate();
+  return (
+    <Card style={{ paddingBottom: '10px' }}>
+      <CardActionArea>
+        <div style={{ position: 'relative' }}>
+          <CardMedia
+            component="img"
+            width="300"
+            height="300"
+            image={product?.photoUrl ? product?.photoUrl : 'https://www.placehold.co/300'}
+            style={{ maxWidth: '100%' }}
+          />
+          <Chip
+            label={product?.size || null}
+            sx={{ position: 'absolute', background: 'red', float: 'left', top: 0, fontWeight: 700, color: 'white', fontSize: '16px' }}
+          />
+        </div>
+        <CardActionArea
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <IconButton variant="contained">
+            <HeartOutlined />
+          </IconButton>
+          <IconButton variant="contained" onClick={() => setCartItem(product)}>
+            <ShoppingCartOutlined />
+          </IconButton>
+        </CardActionArea>
+        <CardContent spacing={3}>
+          <Typography gutterBottom variant="h3" component="div">
+            {product?.name}
+          </Typography>
+          <Typography variant="h4" color="text.secondary" style={{ marginBottom: '10px' }}>
+            &#x20B1; {product?.price}.00
+          </Typography>
+          <Box display="flex" justifyContent="space-between" width="100%">
+            <Button size="small" color="secondary" variant="outlined" onClick={() => navigate('/product/' + product.id)}>
+              Learn More
+            </Button>
+          </Box>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  );
+};
 
 const Product = () => {
   const { id } = useParams();
@@ -24,33 +73,6 @@ const Product = () => {
   const { inventoryData, inventoryFetchData } = useInventoryAxios('products/' + id + '/inventories', 'GET', null, false);
   const { profile, fetchProfile } = useAxiosBackup('carts', 'POST', selectedProduct);
 
-  const OtherProduct = () => {
-    return (
-      <Card>
-        <CardActionArea>
-          <CardMedia component="img" width="300" height="300" image={'https://www.placehold.co/300'} />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              product name
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Size:xxxx
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Content: xxx
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          <Box display="flex" justifyContent="space-between" width="100%">
-            <Button size="small" color="secondary" variant="outlined" onClick={() => navigate('/product/' + product.id)}>
-              Learn More
-            </Button>
-          </Box>
-        </CardActions>
-      </Card>
-    );
-  };
   useEffect(() => {
     if (id) {
       fetchData();
@@ -116,7 +138,10 @@ const Product = () => {
             Other Products
           </Typography>
 
-          <OtherProduct />
+          {inventoryData?.data.list.length > 0 &&
+            inventoryData?.data.list.map((product) => {
+              return <OtherProduct key={product?.id} product={product} setCartItem={setCartItem} />;
+            })}
         </Grid>
       </Grid>
     </MainCard>

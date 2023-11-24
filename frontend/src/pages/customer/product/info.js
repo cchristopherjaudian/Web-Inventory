@@ -1,7 +1,6 @@
 import { IconButton, Button, Box, Chip, Typography, Card, CardMedia, CardContent, Grid } from '@mui/material';
 import { ShoppingCartOutlined, HeartOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
-import useInventoryAxios from 'hooks/useInventoryAxios';
 import { useSelector } from 'react-redux';
 const Info = (props) => {
   const [stock, setStock] = useState(0);
@@ -33,7 +32,8 @@ const Info = (props) => {
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Typography gutterBottom variant="h4">
-              {props.itemInfo.name}
+              {props.itemInfo.name}{' '}
+              <Chip label={props?.itemInfo?.size || null} sx={{ background: 'red', fontWeight: 700, color: 'white', fontSize: '16px' }} />
             </Typography>
           </Box>
           <Typography variant="body2" color="text.secondary">
