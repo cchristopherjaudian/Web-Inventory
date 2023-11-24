@@ -51,6 +51,13 @@ const createFullProfileSchema = {
     }),
 };
 
+const checkExistingSchema = {
+    query: Joi.object({
+        email: Joi.string().required(),
+        username: Joi.string().required(),
+    }),
+};
+
 const updateProfileSchema = {
     body: Joi.object({
         firstname: Joi.string().trim().optional(),
@@ -85,4 +92,9 @@ const updateProfileSchema = {
     }),
 };
 
-export { createProfileSchema, updateProfileSchema, createFullProfileSchema };
+export {
+    createProfileSchema,
+    updateProfileSchema,
+    createFullProfileSchema,
+    checkExistingSchema,
+};

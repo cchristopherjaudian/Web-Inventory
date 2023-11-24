@@ -66,4 +66,21 @@ const createFullProfile = catchAsync(async (req, res) => {
     );
 });
 
-export default { create, getProfile, updateProfile, createFullProfile };
+const checkExisting = catchAsync(async (req, res) => {
+    const profile = await profileInstance.checkExisting(req.query);
+    await db.$disconnect();
+    response.createResponse(
+        res,
+        httpStatus.OK,
+        ResponseCodes.DATA_CREATED,
+        profile!
+    );
+});
+
+export default {
+    create,
+    getProfile,
+    updateProfile,
+    createFullProfile,
+    checkExisting,
+};

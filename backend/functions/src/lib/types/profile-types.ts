@@ -14,3 +14,8 @@ export type TProfile = {
 
     account: TAccounts;
 };
+
+export type TCheckExists = {
+    email?: string;
+    username?: string;
+};

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { ProfileController } from '../controller';
 import JoiMiddleware from '../middleware/joi-middleware';
 import {
+    checkExistingSchema,
     createFullProfileSchema,
     createProfileSchema,
     updateProfileSchema,
@@ -26,6 +27,11 @@ router
         '/full',
         joi.requestSchemaValidate(createFullProfileSchema),
         ProfileController.createFullProfile
+    )
+    .get(
+        '/check',
+        joi.requestSchemaValidate(checkExistingSchema),
+        ProfileController.checkExisting
     )
     .get(
         '/auth',

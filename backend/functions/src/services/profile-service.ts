@@ -4,7 +4,7 @@ import {
     NotFoundError,
     ResourceConflictError,
 } from '../lib/custom-errors/class-errors';
-import { TProfile } from '../lib/types/profile-types';
+import { TCheckExists, TProfile } from '../lib/types/profile-types';
 import { TPrismaClient } from '../lib/prisma';
 
 class ProfileService {
@@ -45,6 +45,28 @@ class ProfileService {
         return {
             account,
             profile,
+        };
+    }
+
+    public async checkExisting(payload: TCheckExists) {
+        const hasEmail = await this._db.profile.findFirst({
+            select: { emailAddress: true },
+            where: { emailAddress: payload.email },
+        });
+        if (hasEmail) {
+            throw new ResourceConflictError('Email already exists.');
+        }
+
+        const hasUsername = await this._db.account.findFirst({
+            select: { username: true },
+            where: { username: payload.username },
+        });
+        if (hasUsername) {
+            throw new ResourceConflictError('Contact already exists.');
+        }
+
+        return {
+            valid: true,
         };
     }
 
