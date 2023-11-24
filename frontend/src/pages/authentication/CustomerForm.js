@@ -77,7 +77,6 @@ const CustomerForm = (props) => {
         let errorMessage = error?.message;
 
         if (error instanceof AxiosError) {
-          console.log('axios error', error.response?.data?.data.message);
           errorMessage = error.response?.data?.data.message;
         }
 

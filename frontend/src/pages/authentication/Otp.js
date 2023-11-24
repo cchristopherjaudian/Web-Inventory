@@ -45,7 +45,6 @@ const Otp = () => {
       const appVerifier = window.recaptchaVerifier;
       const phoneNumber = signUpData.contact.replace('0', '+63');
       const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-      console.log('confirmationResult', confirmationResult);
       window.confirmationResult = confirmationResult;
     } catch (error) {
       console.log('onSignUp error', error);
@@ -62,7 +61,6 @@ const Otp = () => {
       const code = otp;
       if (!otp) return;
       const isConfirmed = await confirmationResult.confirm(code);
-      console.log('isConfirmed', isConfirmed);
       const response = await profileClient.post('/profiles/full', payload);
 
       const buttonConfirmed = await Swal.fire({
@@ -73,8 +71,6 @@ const Otp = () => {
         showCancelButton: false,
         confirmButtonText: 'Ok'
       });
-      console.log('response', response);
-      console.log('buttonConfirmed', buttonConfirmed.isConfirmed);
       if (buttonConfirmed.isConfirmed) {
         navigate('/', { replace: true });
         return;
