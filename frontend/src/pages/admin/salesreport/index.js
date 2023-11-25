@@ -82,7 +82,7 @@ const SalesReport = () => {
   }, [data]);
   useEffect(() => {
     if (metricsData) {
-      let incomeData = metricsData['data'];
+      const incomeData = metricsData['data'];
       setSalesData(incomeData);
     }
   }, [metricsData]);
@@ -152,7 +152,7 @@ const SalesReport = () => {
                 <Typography variant="h5"></Typography>
               </Grid>
             </Grid>
-            {salesData && <IncomeAreaChart salesData={salesData} />}
+            {<IncomeAreaChart salesData={salesData} />}
           </Box>
         </MainCard>
       </Grid>

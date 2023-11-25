@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import ReactApexChart from 'react-apexcharts';
@@ -31,7 +30,7 @@ const IncomeAreaChart = ({ salesData = [] }) => {
   const [options, setOptions] = useState(areaChartOptions);
   useEffect(() => {
     setChartData(salesData);
-  }, []);
+  }, [salesData]);
   useEffect(() => {
     if (chartData.length === 0) return;
     const cCategories = [];

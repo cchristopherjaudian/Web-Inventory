@@ -64,7 +64,7 @@ const Dashboard = () => {
   }, [incomeQuery]);
   useEffect(() => {
     if (incomeData) {
-      let incomeDataNew = incomeData['data'];
+      const incomeDataNew = incomeData['data'];
       setSalesData(incomeDataNew);
     }
   }, [incomeData]);
