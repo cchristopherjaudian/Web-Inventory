@@ -35,27 +35,35 @@ const QuotationTable = (props) => {
               field: 'groupNo',
               headerName: 'Quotation ID',
               editable: false,
-              flex: 1
+              width: 125,
+              minWidth: 150,
+              maxWidth: 200
             },
             {
               field: 'dateRequested',
               headerName: 'Date Requested',
               editable: false,
-              flex: 1,
+              width: 125,
+              minWidth: 150,
+              maxWidth: 200,
               valueGetter: (params) => (params.row.dateRequested ? `${params.row.dateRequested.substring(0, 10)}` : '')
             },
             {
               field: 'dateRequired',
               headerName: 'Date Required',
               editable: false,
-              flex: 1,
+              width: 125,
+              minWidth: 150,
+              maxWidth: 200,
               valueGetter: (params) => (params.row.dateRequired ? `${params.row.dateRequired.substring(0, 10)}` : '')
             },
             {
               field: 'quantity',
               headerName: 'Quantity',
               editable: false,
-              flex: 1
+              width: 125,
+              minWidth: 150,
+              maxWidth: 200
             },
             {
               field: 'action',

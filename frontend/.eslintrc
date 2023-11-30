@@ -37,6 +37,7 @@
   },
   "plugins": ["prettier", "react", "react-hooks"],
   "rules": {
+    "jsx-a11y/label-has-associated-control": "off",
     "no-unused-vars": "off",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",

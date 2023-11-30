@@ -18,40 +18,44 @@ const HistoryTable = (props) => {
     {
       field: 'paymentMethod',
       headerName: 'Payment Method',
+      width: 125, minWidth: 150, maxWidth: 200,
       editable: false,
-      flex: 1
     },
     {
       field: 'orderItems',
       headerName: 'No. of items',
       editable: false,
-      flex: 1
+      width: 125, minWidth: 150, maxWidth: 200,
+
     },
     {
       field: 'status',
       headerName: 'Status',
       editable: false,
-      flex: 1
+      width: 125, minWidth: 150, maxWidth: 200,
+
     },
     {
       field: 'dateOrdered',
       headerName: 'Date Ordered',
       editable: false,
-      flex: 1,
+      width: 125, minWidth: 150, maxWidth: 200,
+
       valueGetter: (params) => (params.row.dateOrdered ? `${params.row.dateOrdered.substring(0, 10)}` : '')
     },
     {
       field: 'dispatchedDate',
       headerName: 'Date Dispatched',
       editable: false,
-      flex: 1,
+      width: 125, minWidth: 150, maxWidth: 200,
+
       valueGetter: (params) => (params.row.dateDispatched ? `${params.row.dateDispatched.substring(0, 10)}` : '')
     },
     {
       field: 'dateDelivered',
       headerName: 'Date Delivered',
       editable: false,
-      flex: 1,
+      width: 125, minWidth: 150, maxWidth: 200,
       valueGetter: (params) => (params.row.dateDelivered ? `${params.row.dateDelivered.substring(0, 10)}` : '')
     },
     {
@@ -79,10 +83,11 @@ const HistoryTable = (props) => {
     <MainCard sx={{ mt: 1 }}>
       <Box sx={{ width: '100%' }}>
         <Grid container>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={12}>
             {gridRows.length > 0 && (
               <DataGrid
-                autoHeight
+                autoHeight={true}
+                disableExtendRowFullWidth={true}
                 rows={gridRows}
                 columns={columns}
                 initialState={{
