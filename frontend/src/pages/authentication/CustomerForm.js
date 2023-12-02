@@ -2,7 +2,7 @@ import MainCard from 'components/MainCard';
 import * as Yup from 'yup';
 import axios, { AxiosError } from 'axios';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Button, Box, Grid, TextField, Typography, InputAdornment, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
@@ -217,10 +217,8 @@ const CustomerForm = (props) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Checkbox checked={approved} onChange={() => setApprove(() => !approved)} name="jason" />}
-                    label="I agree to the terms and conditions and privacy policy as set out by the user agreement"
-                  />
+                  <FormControlLabel control={<Checkbox checked={approved} onChange={() => setApprove(() => !approved)} name="jason" />} />I
+                  agree to the <Link to="/legal">terms and conditions and privacy policy</Link> as set out by the user agreement
                 </Grid>
               </Grid>
               <Box sx={{ mb: 2, mt: 2 }}>
