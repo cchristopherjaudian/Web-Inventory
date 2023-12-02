@@ -216,9 +216,12 @@ const CustomerForm = (props) => {
                   />
                 </Grid>
 
-                <Grid item xs={12}>
-                  <FormControlLabel control={<Checkbox checked={approved} onChange={() => setApprove(() => !approved)} name="jason" />} />I
-                  agree to the <Link to="/legal">terms and conditions and privacy policy</Link> as set out by the user agreement
+                <Grid item xs={12} style={{ fontSize: '1rem' }}>
+                  <FormControlLabel
+                    control={<Checkbox checked={approved} onChange={() => setApprove(() => !approved)} name="jason" />}
+                    style={{ margin: 0 }}
+                  />
+                  I agree to the <Link to="/legal">terms and conditions and privacy policy</Link> as set out by the user agreement
                 </Grid>
               </Grid>
               <Box sx={{ mb: 2, mt: 2 }}>
