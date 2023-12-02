@@ -4,6 +4,7 @@ import AdminRoutes from './AdminRoutes';
 import SubOneRoutes from './SubOneRoutes';
 import SubTwoRoutes from './SubTwoRoutes';
 import CustomerRoutes from './CustomerRoutes';
+import DefaultRoutes from './DefaultRoutes';
 import { useSelector } from 'react-redux';
 export default function ThemeRoutes() {
   const isadmin = useSelector((state) => state.token.isadmin.isadmin);
@@ -28,6 +29,5 @@ export default function ThemeRoutes() {
     }
   }
 
-
-  return useRoutes(allowedRoutes);
+  return useRoutes([...allowedRoutes, DefaultRoutes]);
 }
