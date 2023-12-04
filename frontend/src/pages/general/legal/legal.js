@@ -121,7 +121,7 @@ const Legal = () => {
         </p>
         <p style={{ fontSize: '1.3rem' }}>
           <b>Contact Information</b> - If you have any questions, concerns, or requests regarding this privacy policy, please contact us at
-          [contact information].
+          oxiairecapstone2023@gmail.com.
         </p>
 
         <Grid container justifyContent="center" alignContent="center">

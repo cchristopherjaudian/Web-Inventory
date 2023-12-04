@@ -187,14 +187,6 @@ export default function Login() {
               >
                 OUR PRIORITY
               </Typography>
-              <Typography
-                variant="h5"
-                component="div"
-                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                gutterBottom
-              >
-                Description Description Description Description Description
-              </Typography>
             </Grid>
           </Grid>
         </Grid>
