@@ -44,12 +44,15 @@ enum OrderStatuses {
 enum PaymentStatuses {
   PROCESSING
   PAID
+  PENDING
+  CANCELLED
 }
 
 enum PaymentMethods {
   COD
   GCASH
   BANK_TRANSFER
+  PAY_LATER
 }
 
 model Account {
@@ -151,11 +154,12 @@ model Orders {
   profile   Profile? @relation(fields: [profileId], references: [id])
   profileId String?
 
-  paymentMethod PaymentMethods  @default(COD)
-  status        PaymentStatuses @default(PROCESSING)
-  refNo         String?
-  paymentUrl    String?
-  deliveryUrl   String?
+  paymentMethod   PaymentMethods  @default(COD)
+  status          PaymentStatuses @default(PROCESSING)
+  refNo           String?
+  paymentUrl      String?
+  deliveryUrl     String?
+  paymentDeadline DateTime?
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
