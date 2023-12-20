@@ -20,11 +20,11 @@ app.use(cors());
 app.use(routes);
 
 // route middlewares e.g(not found, error handlers)
-app.use(new RouteMiddleware().errorResponse);
 app.use(new RouteMiddleware().notFound);
+app.use(new RouteMiddleware().errorResponse);
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 export const oxiare = new CloudFunctions()
-    .withRuntime()
-    .handlerV2(<THttpsFunction>(<unknown>app));
+  .withRuntime()
+  .handlerV2(<THttpsFunction>(<unknown>app));
