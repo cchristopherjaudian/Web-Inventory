@@ -18,28 +18,37 @@ const HistoryTable = (props) => {
     {
       field: 'paymentMethod',
       headerName: 'Payment Method',
-      width: 125, minWidth: 150, maxWidth: 200,
-      editable: false,
+      width: 125,
+      minWidth: 150,
+      maxWidth: 200,
+      editable: false
     },
     {
       field: 'orderItems',
       headerName: 'No. of items',
       editable: false,
-      width: 125, minWidth: 150, maxWidth: 200,
-
+      width: 125,
+      minWidth: 150,
+      maxWidth: 200
     },
     {
       field: 'status',
       headerName: 'Status',
       editable: false,
-      width: 125, minWidth: 150, maxWidth: 200,
-
+      width: 125,
+      minWidth: 150,
+      maxWidth: 200,
+      renderCell: (params) => {
+        console.log('params', params);
+      }
     },
     {
       field: 'dateOrdered',
       headerName: 'Date Ordered',
       editable: false,
-      width: 125, minWidth: 150, maxWidth: 200,
+      width: 125,
+      minWidth: 150,
+      maxWidth: 200,
 
       valueGetter: (params) => (params.row.dateOrdered ? `${params.row.dateOrdered.substring(0, 10)}` : '')
     },
@@ -47,7 +56,9 @@ const HistoryTable = (props) => {
       field: 'dispatchedDate',
       headerName: 'Date Dispatched',
       editable: false,
-      width: 125, minWidth: 150, maxWidth: 200,
+      width: 125,
+      minWidth: 150,
+      maxWidth: 200,
 
       valueGetter: (params) => (params.row.dateDispatched ? `${params.row.dateDispatched.substring(0, 10)}` : '')
     },
@@ -55,7 +66,9 @@ const HistoryTable = (props) => {
       field: 'dateDelivered',
       headerName: 'Date Delivered',
       editable: false,
-      width: 125, minWidth: 150, maxWidth: 200,
+      width: 125,
+      minWidth: 150,
+      maxWidth: 200,
       valueGetter: (params) => (params.row.dateDelivered ? `${params.row.dateDelivered.substring(0, 10)}` : '')
     },
     {

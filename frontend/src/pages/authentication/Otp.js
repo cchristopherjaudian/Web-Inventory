@@ -19,32 +19,27 @@ const profileClient = axios.create({
 
 const defaultTheme = createTheme();
 
-if (firebase.apps?.length === 0) {
-  firebase.initializeApp(firebaseConfig);
-}
+firebase.initializeApp(firebaseConfig);
+const auth = getAuth();
 
 const Otp = () => {
-  const auth = getAuth();
   const navigate = useNavigate();
   const [otp, setOtp] = useState('');
   const signUpData = JSON.parse(localStorage.getItem('signUpData'));
   const [payload, setPayload] = useState({});
 
-  const onCaptchVerify = () => {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        size: 'invisible',
-        callback: (response) => {},
-        'expired-callback': () => {}
-      });
-    }
-  };
-
   const onSignUp = async () => {
     try {
-      const appVerifier = window.recaptchaVerifier;
+      window.appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+        callback: (response) => {
+          console.log('response', response);
+        },
+        'expired-callback': () => {}
+      });
       const phoneNumber = signUpData.contact.replace('0', '+63');
       const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+      console.log('confirmationResult', confirmationResult);
       window.confirmationResult = confirmationResult;
     } catch (error) {
       console.log('onSignUp error', error);
@@ -91,11 +86,11 @@ const Otp = () => {
     const { account, contact, password, email: emailAddress, ...profile } = signUpData;
 
     setPayload(() => ({ account: { ...account, password, username: contact }, ...profile, emailAddress }));
-  }, []);
-
-  useEffect(() => {
-    onCaptchVerify();
     onSignUp();
+
+    return () => {
+      window.appVerifier?.clear();
+    };
   }, []);
 
   return (

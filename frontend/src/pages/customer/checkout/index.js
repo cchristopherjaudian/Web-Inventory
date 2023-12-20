@@ -19,6 +19,7 @@ const Checkout = () => {
   const cartItems = useSelector((state) => state.cart.cart);
   const profile = useSelector((state) => state.profile);
   const [paymentUrl, setPaymentUrl] = useState('');
+  const [referenceNo, setReferenceNo] = useState('');
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
   const [open, setOpen] = useState(false);
@@ -63,8 +64,12 @@ const Checkout = () => {
       Swal.fire('Checkout Order', 'Please select a payment method', 'warning');
       return;
     }
-    if ((payMethod === 'GCASH' || payMethod === 'BANK_TRANSFER') && paymentUrl === '') {
+    if ((payMethod === 'GCASH' || payMethod === 'BANK_TRANSFER') && !paymentUrl) {
       Swal.fire('Checkout Order', 'Please upload a payment image', 'warning');
+      return;
+    }
+    if ((payMethod === 'GCASH' || payMethod === 'BANK_TRANSFER') && !referenceNo) {
+      Swal.fire('Checkout Order', 'Please add a reference number.', 'warning');
       return;
     }
     Swal.fire({
@@ -82,14 +87,14 @@ const Checkout = () => {
             productId: item.products.id
           });
         });
-        const finalPayload = { paymentMethod: payMethod, items: newCart, paymentUrl: paymentUrl };
+        const finalPayload = { paymentMethod: payMethod, items: newCart, paymentUrl: paymentUrl, refNo: referenceNo };
 
         if (payMethod === 'COD') {
           Object.keys(finalPayload).forEach((key) => {
             if (!finalPayload[key]) delete finalPayload[key];
           });
         }
-
+        console.log('finalPayload', finalPayload);
         setPayload(finalPayload);
       }
     });
@@ -142,6 +147,7 @@ const Checkout = () => {
       setOpen(true);
     }
   }, [error]);
+
   return (
     <Grid container spacing={3} sx={{ pt: 3 }}>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
@@ -170,7 +176,12 @@ const Checkout = () => {
               {activeStep === 0 ? (
                 <Cart setFinalCart={setFinalCart} />
               ) : activeStep === 1 ? (
-                <Payment setPaymentUrl={setPaymentUrl} setPayMethod={setPayMethod} />
+                <Payment
+                  setPaymentUrl={setPaymentUrl}
+                  setReferenceNumber={setReferenceNo}
+                  paymentMethod={payMethod}
+                  setPayMethod={setPayMethod}
+                />
               ) : (
                 <Confirmation />
               )}

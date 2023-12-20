@@ -5,7 +5,7 @@ import 'firebase/compat/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Option from './option';
 import { Grid } from '@mui/material';
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -105,6 +105,20 @@ const Payment = (props) => {
               </Button>
             </label>
           </Grid>
+          {['GCASH', 'BANK_TRANSFER'].includes(props.paymentMethod) && (
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+              <TextField
+                sx={{ width: '50%' }}
+                required
+                type="text"
+                id="referenceNo"
+                label="Enter reference number."
+                name="referenceNo"
+                onChange={(e) => props.setReferenceNumber(() => e.target.value)}
+                autoFocus
+              />
+            </Grid>
+          )}
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
             <Typography variant="body2" mt={3}>
               By providing a picture and giving us confirmation of your payment
