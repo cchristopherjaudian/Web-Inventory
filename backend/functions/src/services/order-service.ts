@@ -1,17 +1,17 @@
-import { OrderStatuses, PaymentMethods, PaymentStatuses } from '@prisma/client';
+import { OrderStatuses, PaymentMethods, PaymentStatuses } from "@prisma/client";
 import {
   BadRequestError,
   NotFoundError,
   ResourceConflictError,
-} from '../lib/custom-errors/class-errors';
+} from "../lib/custom-errors/class-errors";
 import {
   TOrderPayload,
   TOrderStatus,
   TOrderWithoutItems,
-} from '../lib/types/order-types';
-import moment from 'moment-timezone';
-import { getStockIndicator } from '../helpers/stock-indicator';
-import { TPrismaClient } from '../lib/prisma';
+} from "../lib/types/order-types";
+import moment from "moment-timezone";
+import { getStockIndicator } from "../helpers/stock-indicator";
+import { TPrismaClient } from "../lib/prisma";
 
 class OrderService {
   private _db: TPrismaClient;
@@ -55,7 +55,7 @@ class OrderService {
     let paymentStatus = PaymentStatuses.PROCESSING as PaymentStatuses;
     if (
       [PaymentMethods.BANK_TRANSFER, PaymentMethods.GCASH].includes(
-        payload.paymentMethod as 'GCASH' | 'BANK_TRANSFER'
+        payload.paymentMethod as "GCASH" | "BANK_TRANSFER"
       )
     ) {
       paymentStatus = PaymentStatuses.PENDING;
@@ -64,8 +64,8 @@ class OrderService {
     let paymentDeadline = null;
     if (payload.paymentMethod === PaymentMethods.PAY_LATER) {
       paymentDeadline = moment(new Date())
-        .tz('Asia/Manila')
-        .add(30, 'days')
+        .tz("Asia/Manila")
+        .add(30, "days")
         .format();
     }
 
@@ -74,7 +74,7 @@ class OrderService {
         const cart = await this._db.cart.findUnique({
           where: { id: item.cartId },
         });
-        if (!cart) throw new NotFoundError('Cart does not exists.');
+        if (!cart) throw new NotFoundError("Cart does not exists.");
 
         const inventories = await this._db.inventory.findMany({
           where: {
@@ -82,13 +82,13 @@ class OrderService {
           },
           orderBy: [
             {
-              expiration: 'asc',
+              expiration: "asc",
             },
           ],
         });
 
         if (inventories.length === 0) {
-          throw new BadRequestError('Insufficient stock.');
+          throw new BadRequestError("Insufficient stock.");
         }
 
         const stockTotal = inventories.reduce(
@@ -96,7 +96,7 @@ class OrderService {
           0
         );
         if (cart.quantity > stockTotal) {
-          throw new BadRequestError('Insufficient stock.');
+          throw new BadRequestError("Insufficient stock.");
         }
         let currentQuantity = cart.quantity;
         inventories.every(async (inventory) => {
@@ -135,6 +135,7 @@ class OrderService {
         paymentMethod: payload.paymentMethod,
         paymentUrl: payload.paymentUrl || null,
         refNo: payload.refNo || null,
+        quotationUrl: payload?.quotationUrl || null,
         status: paymentStatus,
         paymentDeadline,
         orderItems: {
@@ -153,11 +154,11 @@ class OrderService {
       where: { id },
     });
     if (!hasOrder) {
-      throw new NotFoundError('Order does not exists.');
+      throw new NotFoundError("Order does not exists.");
     }
 
     if (hasOrder.status !== PaymentStatuses.PENDING) {
-      throw new BadRequestError('error on cancellation.');
+      throw new BadRequestError("error on cancellation.");
     }
 
     return this._db.orders.update({
@@ -173,7 +174,7 @@ class OrderService {
       where: { id: payload.orderId },
     });
     if (!hasOrder) {
-      throw new NotFoundError('Order does not exists.');
+      throw new NotFoundError("Order does not exists.");
     }
     const hasOrderStatus = await this._db.orderStatus.findFirst({
       where: {
@@ -184,10 +185,10 @@ class OrderService {
       },
     });
     if (hasOrderStatus) {
-      throw new ResourceConflictError('Order status already exists.');
+      throw new ResourceConflictError("Order status already exists.");
     }
 
-    payload.createdAt = moment(payload.createdAt).tz('Asia/Manila').toDate();
+    payload.createdAt = moment(payload.createdAt).tz("Asia/Manila").toDate();
     await this._db.orderStatus.update({
       where: {
         id: payload.orderStatusId,
@@ -208,7 +209,7 @@ class OrderService {
       where: { id },
     });
     if (!hasOrder) {
-      throw new NotFoundError('Order does not exists.');
+      throw new NotFoundError("Order does not exists.");
     }
 
     return this._db.orders.update({

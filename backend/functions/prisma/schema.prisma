@@ -154,12 +154,16 @@ model Orders {
   profile   Profile? @relation(fields: [profileId], references: [id])
   profileId String?
 
-  paymentMethod   PaymentMethods  @default(COD)
-  status          PaymentStatuses @default(PROCESSING)
-  refNo           String?
-  paymentUrl      String?
-  deliveryUrl     String?
+  paymentMethod PaymentMethods  @default(COD)
+  status        PaymentStatuses @default(PROCESSING)
+  refNo         String?
+  paymentUrl    String?
+  deliveryUrl   String?
+
   paymentDeadline DateTime?
+
+  // proof of quotation list for {PAY_LATER} payment method
+  quotationUrl String?
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
