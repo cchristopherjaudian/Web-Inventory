@@ -1,6 +1,6 @@
-import { OrderStatuses, PaymentMethods, PaymentStatuses } from "@prisma/client";
-import JoiImport from "joi";
-import joiDate from "@joi/date";
+import { OrderStatuses, PaymentMethods, PaymentStatuses } from '@prisma/client';
+import JoiImport from 'joi';
+import joiDate from '@joi/date';
 
 const Joi = JoiImport.extend(joiDate) as typeof JoiImport;
 
@@ -14,7 +14,7 @@ const createOrderSchema = {
     quotationUrl: Joi.string().optional(),
     refNo: Joi.string()
       .trim()
-      .when("paymentMethod", {
+      .when('paymentMethod', {
         is: Joi.string().valid(
           PaymentMethods.GCASH,
           PaymentMethods.BANK_TRANSFER
@@ -35,7 +35,7 @@ const createOrderStatusSchema = {
   body: Joi.object({
     orderId: Joi.string().trim().required(),
     orderStatusId: Joi.string().trim().required(),
-    createdAt: Joi.date().format("YYYY-MM-DD").required(),
+    createdAt: Joi.date().format('YYYY-MM-DD').required(),
     status: Joi.string()
       .trim()
       .valid(...Object.keys(OrderStatuses))
@@ -56,8 +56,8 @@ const updateOrderSchema = {
 
 const getOrderSalesSchema = {
   query: Joi.object({
-    startsAt: Joi.date().format("YYYY-MM-DD").required(),
-    endsAt: Joi.date().format("YYYY-MM-DD").required(),
+    startsAt: Joi.date().format('YYYY-MM-DD').required(),
+    endsAt: Joi.date().format('YYYY-MM-DD').required(),
   }),
 };
 
