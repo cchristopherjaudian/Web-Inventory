@@ -94,7 +94,6 @@ const Checkout = () => {
             if (!finalPayload[key]) delete finalPayload[key];
           });
         }
-        console.log('finalPayload', finalPayload);
         setPayload(finalPayload);
       }
     });

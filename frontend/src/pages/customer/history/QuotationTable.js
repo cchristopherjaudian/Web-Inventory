@@ -1,6 +1,5 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Grid, Tab, Tabs } from '@mui/material';
-import PropTypes from 'prop-types';
+import { Box, Button, Grid, Tab, Tabs, Typography } from '@mui/material';
 import { RightOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import { useState, useEffect } from 'react';
@@ -14,6 +13,29 @@ const QuotationTable = (props) => {
       'aria-controls': `simple-tabpanel-${index}`
     };
   }
+
+  const getTextColor = (text) => {
+    let textColor = '';
+
+    switch (text) {
+      case 'PENDING':
+        textColor = '#F4933C';
+        break;
+      case 'CANCELLED':
+        textColor = '#FF6363';
+        break;
+      case 'PAID':
+        textColor = '#006503';
+        break;
+
+      default:
+        textColor = '#0000FF';
+        break;
+    }
+
+    return textColor;
+  };
+
   const [columns, setColumns] = useState([]);
   const [gridRows, setGridRows] = useState([]);
   const [value, setValue] = useState(0);
@@ -102,7 +124,14 @@ const QuotationTable = (props) => {
               field: 'status',
               headerName: 'Status',
               editable: false,
-              flex: 1
+              flex: 1,
+              renderCell: (params) => {
+                return (
+                  <Typography variant="p" sx={{ color: getTextColor(params?.value) }}>
+                    {params?.value}
+                  </Typography>
+                );
+              }
             },
             {
               field: 'dateOrdered',

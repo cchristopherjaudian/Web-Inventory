@@ -1,11 +1,45 @@
 import { Grid, Button, Typography, Paper } from '@mui/material';
+import customaxios from 'axios';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+
+const serviceId = process.env.REACT_APP_BASE_URL;
+
 const Invoice = (props) => {
+  const { token } = useSelector((state) => state.token.token);
+  const router = useNavigate();
+
+  const axios = customaxios.create({
+    baseURL: serviceId,
+    timeout: 10000,
+    headers: {
+      Authorization: token ? token : ''
+    }
+  });
+  const cancelOrder = async (e) => {
+    e.preventDefault();
+
+    const forCancellation = await Swal.fire({
+      icon: 'warning',
+      title: 'Confirmation',
+      text: 'Are you sure you want to proceed in cancelling your order?',
+      showCancelButton: true,
+      confirmButtonText: 'Yes'
+    });
+
+    if (!forCancellation.isConfirmed) return false;
+
+    const { data: responseData } = await axios.patch(`/orders/cancellation/${props?.orderInfo.id}`);
+    if (responseData?.code === 'DATA_MODIFIED') router('/history');
+  };
+
   const profile = props.orderInfo['profile'];
   let totalAmount = props.orderInfo['orderItems'].reduce((sum, item) => {
     return sum + item.quantity * parseFloat(item.products.price);
@@ -193,6 +227,12 @@ const Invoice = (props) => {
               </TableBody>
             </Table>
           </TableContainer>
+
+          {props?.orderInfo.status === 'PENDING' && (
+            <Button type="submit" fullWidth variant="contained" sx={{ backgroundColor: '#FF6363' }} onClick={cancelOrder}>
+              Cancel Order
+            </Button>
+          )}
         </Grid>
       </Grid>
     </Grid>
