@@ -123,18 +123,11 @@ const Legal = () => {
           <b>Contact Information</b> - If you have any questions, concerns, or requests regarding this privacy policy, please contact us at
           oxiairecapstone2023@gmail.com.
         </p>
-
-        <Grid container justifyContent="center" alignContent="center">
-          <Button
-            variant="outlined"
-            size="large"
-            onClick={() => navigate(-1)}
-            sx={{ mr: 2 }}
-            style={{ fontWeight: 700, fontSize: '1.1rem' }}
-          >
-            Back
-          </Button>
-        </Grid>
+      </Grid>
+      <Grid container justifyContent="center" alignContent="center">
+        <Button variant="outlined" size="large" onClick={() => navigate(-1)} sx={{ mr: 2 }} style={{ fontWeight: 700, fontSize: '1.1rem' }}>
+          Back
+        </Button>
       </Grid>
     </Grid>
   );

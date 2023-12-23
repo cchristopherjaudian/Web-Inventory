@@ -3,7 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Button, Grid, InputLabel, MenuItem, Select, FormControl, Typography } from '@mui/material';
+import { Button, Grid, Typography, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 const Payment = (props) => {
   const [file, setFile] = useState(null);
@@ -55,9 +55,25 @@ const Payment = (props) => {
           </Button>
         </label>
       </Grid>
+
+      {['GCASH', 'BANK_TRANSFER'].includes(props.paymentMethod) && (
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+          <TextField
+            sx={{ width: '50%' }}
+            required
+            type="text"
+            id="referenceNo"
+            label="Enter reference number."
+            name="referenceNo"
+            onChange={(e) => props.setReferenceNumber(() => e.target.value)}
+            autoFocus
+          />
+        </Grid>
+      )}
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
         <Typography variant="body2" mt={3}>
-          By providing a picture and giving us confirmation of your payment
+          By providing a picture{' '}
+          {props.paymentMethod === 'PAY_LATER' ? 'of your purchase quotation' : 'and giving us confirmation of your payment'}
         </Typography>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
