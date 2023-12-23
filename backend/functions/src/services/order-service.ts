@@ -131,7 +131,11 @@ class OrderService {
 
     return this._db.orders.create({
       data: {
-        profileId: payload.profileId,
+        profile: {
+          connect: {
+            id: payload.profileId as string,
+          },
+        },
         paymentMethod: payload.paymentMethod,
         paymentUrl: payload.paymentUrl || null,
         refNo: payload.refNo || null,
