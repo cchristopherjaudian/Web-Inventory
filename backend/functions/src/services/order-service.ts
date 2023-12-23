@@ -129,6 +129,7 @@ class OrderService {
       })
     );
 
+    console.log('payload', payload);
     return this._db.orders.create({
       data: {
         profile: {
@@ -139,9 +140,9 @@ class OrderService {
         paymentMethod: payload.paymentMethod,
         paymentUrl: payload.paymentUrl || null,
         refNo: payload.refNo || null,
-        quotationUrl: payload?.quotationUrl || null,
         status: paymentStatus,
         paymentDeadline,
+        quotationUrl: payload.quotationUrl || null,
         orderItems: {
           createMany: {
             data: mappedItems,
