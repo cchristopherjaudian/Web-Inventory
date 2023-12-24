@@ -2,6 +2,7 @@ import { lazy } from 'react';
 
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
+import AccountTable from 'pages/admin/account/AccountTable';
 
 const Dashboard = Loadable(lazy(() => import('pages/admin/dashboard/')));
 const Oxichat = Loadable(lazy(() => import('pages/admin/oxichat/')));
@@ -16,6 +17,7 @@ const Settings = Loadable(lazy(() => import('pages/admin/Settings')));
 const OrderNotice = Loadable(lazy(() => import('pages/subadmin1/ordernotice/index')));
 const Orders = Loadable(lazy(() => import('pages/subadmin1/orders/index')));
 const Profile = Loadable(lazy(() => import('pages/common/profile')));
+const AccountRegister = Loadable(lazy(()=>import('pages/admin/account/register')));
 const AdminRoutes = {
   path: '/',
   element: <MainLayout />,
@@ -55,6 +57,10 @@ const AdminRoutes = {
     {
       path: 'account',
       element: <Account />
+    },
+    {
+      path: 'account/register',
+      element: <AccountRegister />
     },
     {
       path: 'maintenance',
