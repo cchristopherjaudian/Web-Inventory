@@ -194,13 +194,15 @@ class OrderService {
     }
 
     payload.createdAt = moment(payload.createdAt).tz('Asia/Manila').toDate();
-    await this._db.orderStatus.update({
-      where: {
-        id: payload.orderStatusId,
-      } as any,
-      data: { isCurrent: false },
-    });
 
+    if (payload.orderStatusId) {
+      await this._db.orderStatus.update({
+        where: {
+          id: payload.orderStatusId,
+        } as any,
+        data: { isCurrent: false },
+      });
+    }
     if (payload?.orderStatusId) {
       delete payload.orderStatusId;
     }
