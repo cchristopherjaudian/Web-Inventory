@@ -195,7 +195,7 @@ class OrderService {
 
     payload.createdAt = moment(payload.createdAt).tz('Asia/Manila').toDate();
 
-    if (hasOrderStatus && payload.orderStatusId) {
+    if (payload.orderStatusId) {
       await this._db.orderStatus.update({
         where: {
           id: payload.orderStatusId,
