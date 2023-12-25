@@ -1,23 +1,52 @@
+import firebaseConfig from 'config/firebase';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/database';
 import { DataGrid } from '@mui/x-data-grid';
-import { RightOutlined, FolderViewOutlined } from '@ant-design/icons';
+import { RightOutlined, MessageOutlined } from '@ant-design/icons';
 import { Box, Button, Grid } from '@mui/material';
 import useAxios from 'hooks/useAxios';
 import useInventoryAxios from 'hooks/useInventoryAxios';
 import { useState, useEffect, forwardRef } from 'react';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
 
+let messageRef = null;
 const OrderTable = (props) => {
+  const myMobile = useSelector((state) => state.profile.contact.contact);
+  const myPhoto = useSelector((state) => state.profile.photoUrl.photoUrl);
+  const fn = useSelector((state) => state.profile.firstName.firstName);
+  const ln = useSelector((state) => state.profile.lastName.lastName);
+  const myName = fn + ' ' + ln;
+  const [customer, setCustomer] = useState({});
   const [gridRows, setGridRows] = useState([]);
   const [orderId, setOrderId] = useState('');
   const [paidOrder, setPaidOrder] = useState('');
   const { data, fetchData } = useAxios('orders/' + orderId, 'GET', null, false);
-  const { inventoryData, inventoryFetchData } = useInventoryAxios('orders/' + paidOrder, 'PATCH', { status: 'PAID', refNo: '1' }, false);
+  const { inventoryData, inventoryFetchData } = useInventoryAxios('orders/' + paidOrder, 'PATCH', { status: 'PAID', refNo: '1' }, true);
+
+  const [firebaseApp] = useState(() => {
+    if (!firebase.apps.length) {
+      return firebase.initializeApp(firebaseConfig);
+    } else {
+      return firebase.app();
+    }
+  });
+  const database = firebaseApp.database();
+
 
   useEffect(() => {
     if (props.orders) {
       setGridRows(props.orders);
+      console.log(props.orders);
     }
   }, [props.orders]);
+  useEffect(() => {
+    if (Object.keys(customer).length > 0) {
+
+      setCustomer({});
+    }
+  }, [customer])
   useEffect(() => {
     if (paidOrder) {
       inventoryFetchData();
@@ -79,6 +108,61 @@ const OrderTable = (props) => {
       }
     },
     {
+      field: 'action3',
+      headerName: 'Reminder',
+      sortable: false,
+      width: 150,
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        const onClick = (event) => {
+          event.stopPropagation();
+          Swal.fire({
+            icon: 'question',
+            title: 'Reminder',
+            text: 'Are you sure you want to send a reminder to this customer?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              let customerType = params.row.customerType === 'CUSTOMER' ? 'B2C' : 'B2B';
+              let customerMobile = params.row.customerId;
+              let cartItems = params.row.orderItems;
+              const totalPrice = Object.keys(cartItems).length
+                ? cartItems.reduce((sum, item) => {
+                  return sum + item.quantity * parseFloat(item.products.price);
+                }, 0)
+                : 0;
+              let newMessage = {
+                content: '',
+                orderId: params.row.id,
+                img: '',
+                html: {
+                  orderId: params.row.id,
+                  price: totalPrice,
+                  orderDate: params.row.createdAt.substring(0, 10)
+                },
+                time: new Date().toISOString(),
+                src: myMobile,
+                mobile: myMobile,
+                name: myName,
+                photoUrl: myPhoto
+              };
+              messageRef = database.ref(customerType + '/recipients/' + customerMobile + '/chat/messages/');
+              messageRef.push(newMessage);
+            }
+          });
+        };
+        if (params.row.paymentMethod === 'PAY_LATER' && needsReminder(params.row.createdAt.substring(0, 10))) {
+          return (
+            <Button endIcon={<MessageOutlined />} variant="contained" color="error" onClick={onClick}>
+              Remind
+            </Button>
+          );
+        }
+
+      }
+    },
+    {
       field: 'action2',
       headerName: '',
       sortable: false,
@@ -109,8 +193,18 @@ const OrderTable = (props) => {
     }
   ];
 
+  function needsReminder(inputDateString) {
+    let inputDate = new Date(inputDateString);
+    let thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    thirtyDaysAgo.setHours(0, 0, 0, 0);
+    inputDate.setHours(0, 0, 0, 0);
+    return inputDate.getTime() < thirtyDaysAgo.getTime();
+  }
+
   const gridClick = (params, event, details) => {
     let selectedData = params['row'];
+    props.setStatusCount(params.row.orderItems.length)
     setOrderId(selectedData.id);
   };
   useEffect(() => {

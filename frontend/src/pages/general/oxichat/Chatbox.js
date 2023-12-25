@@ -9,6 +9,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import PaymentReminder from './PaymentReminder';
 let messageRef = null;
 const Chatbox = () => {
   const [attachLoading, setAttachLoading] = useState(false);
@@ -127,7 +128,10 @@ const Chatbox = () => {
     >
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
         {Object.values(chatMessages).map((s, i) => {
-          return <Message key={i} message={s.content} src={s.src} img={s.img} />;
+          return Object.prototype.hasOwnProperty.call(s, 'html') ? 
+            <PaymentReminder key={i} html={s.html} src={s.src} img={s.img}/>
+            :
+            <Message key={i} message={s.content} src={s.src} img={s.img} />;
         })}
         <div ref={messagesEndRef} />
       </Box>

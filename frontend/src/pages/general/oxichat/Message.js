@@ -18,7 +18,7 @@ const Message = (props) => {
           alignItems: 'center'
         }}
       >
-        <Avatar sx={{p:2, bgcolor: isBot ? 'primary.main' : 'secondary.main' }}>{isBot ? 'U' : 'O'}</Avatar>
+        <Avatar sx={{p:2, bgcolor: isBot ? 'primary.main' : 'secondary.main' }}>{isBot ? 'O' : 'U'}</Avatar>
         <Paper
           variant="outlined"
           sx={{
