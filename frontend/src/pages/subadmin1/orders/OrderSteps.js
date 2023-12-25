@@ -23,6 +23,7 @@ const OrderSteps = (props) => {
             "DELIVERED": ''
         }
     ]
+    const [isPending,setIsPending] = useState(false);
     const [stepIndex, setStepIndex] = useState(0);
     const [stepDate, setStepDate] = useState(initialState);
     const [activeStep, setActiveStep] = useState(0);
@@ -31,13 +32,14 @@ const OrderSteps = (props) => {
     const [orderStatus, setOrderStatus] = useState([]);
     const [orderDate, setOrderDate] = useState('');
     const [payload, setPayload] = useState({});
-    const { data, fetchData } = useAxios('orders/status', 'POST', payload, false);
+    const { data, fetchData } = useAxios('orders/status', 'POST', payload);
     const totalSteps = () => {
         return steps.length;
     };
     useEffect(() => {
         if (props.steps && JSON.stringify(steps) !== JSON.stringify(props.steps)) {
             const steps = props.steps;
+            setIsPending(props.isPending);
             setOrderStatus(props.steps);
             setActiveStep(steps.length - 1);
             setStatus(steps);
@@ -67,7 +69,7 @@ const OrderSteps = (props) => {
         setStepDate(initialState);
     };
     useEffect(() => {
-        if (payload && Object.keys(payload).length > 0) {
+        if (Object.keys(payload).length > 0) {
             fetchData();
         }
     }, [payload]);
@@ -84,6 +86,7 @@ const OrderSteps = (props) => {
             setPayload({});
         }
     }, [data]);
+
     const handleStep = (step) => () => {
         setActiveStep(step);
     };
@@ -100,7 +103,6 @@ const OrderSteps = (props) => {
                                     <OutlinedInput
                                         size="small"
                                         type="date"
-                                        disabled={index === 0}
                                         id={index}
                                         name={index}
                                         tag={index}
@@ -113,7 +115,7 @@ const OrderSteps = (props) => {
                                             let d = new Date(event.target.value);
                                             if (Number(d.getTime()) < 0) return;
                                             let newStepDate = [...stepDate];
-                                            let previousStatusId = (orderStatus[index - 1]['id']);
+                                            let previousStatusId = orderStatus.length > 0 ? (orderStatus[index - 1]['id']) : '';
                                             if (Object.keys(newStepDate[index]).length > 0) {
                                                 newStepDate[index][Object.keys(newStepDate[index])[0]] = event.target.value;
                                                 setStepDate(newStepDate);
@@ -128,6 +130,7 @@ const OrderSteps = (props) => {
                                         inputProps={{
                                             'aria-label': 'weight'
                                         }}
+                                        disabled={isPending}
                                         value={status && Array.isArray(status) && status[index] && status[index]['createdAt'] ? status[index]['createdAt'].substring(0, 10) : stepDate[index][Object.keys(stepDate[index])[0]].substring(0, 10)}
                                     />
 
