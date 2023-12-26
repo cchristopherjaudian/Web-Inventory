@@ -1,6 +1,8 @@
-import { Avatar, Box, Typography, Button, Paper, Grid } from '@mui/material';
+import { Avatar, Box, Divider, Typography, Button, Paper, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 const PaymentReminder = (props) => {
+  const navigate = useNavigate();
   const myMobile = useSelector((state) => state.profile.contact.contact);
   const isBot = props.src !== myMobile;
   return (
@@ -29,20 +31,23 @@ const PaymentReminder = (props) => {
         >
           <Grid container>
             <Grid item align="center" sx={{ textAlign: 'center',px:10 }}>
-              <Typography variant="h6">
+              <img src='asset/oxiaire.png' alt='payment_logo' width={200} height={100}/>
+              <Divider sx={{borderWidth: 1, px: 2 }}/>
+              <Typography variant="h6" sx={{mt:3}}>
                 Payment Reminder
               </Typography>
+              <Divider variant="inset" sx={{ borderWidth: 1, px: 2, my:3 }}/>
               <Typography variant="h2" gutterBottom>
                 ₱ {props.html.price}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                Due on {props.html.orderDate}
+                Due on <span style={{ color: 'red' }}>{props.html.orderDate}</span>
               </Typography>
               <Typography variant="body1" gutterBottom>
                 Hello Customer,
               </Typography>
               <Typography variant="body1" gutterBottom>
-                Our records show that we are still waiting payment of ₱ {props.html.price} for Invoice {props.html.id}, which was initially sent on {props.html.orderDate}. A copy of original Invoice has been attached for your convenience in the instance that it has been lost or misplaced.
+                Our records show that we are still waiting payment of <span style={{ fontWeight: 'bold' }}>₱ {props.html.price}</span> for Invoice {props.html.orderId}, which was initially sent on <span style={{ color: 'red' }}>{props.html.orderDate}</span>. A copy of original Invoice has been attached for your convenience in the instance that it has been lost or misplaced.
               </Typography>
               <Typography variant="body1" gutterBottom>
                 If Payment has been sent, please disregard this reminder. Please let us know if you have any questions or need assistance with the payment process.
@@ -50,10 +55,10 @@ const PaymentReminder = (props) => {
               <Typography variant="body1" gutterBottom>
                 Thank you,
               </Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="h5" gutterBottom>
                 OXIARE GAS ENTERPRISES
               </Typography>
-              <Button variant="contained">PAY INVOICE</Button>
+              <Button variant="contained" onClick={()=>navigate('/order/' + props.html.orderId)}>PAY INVOICE</Button>
             </Grid>
           </Grid>
 
