@@ -16,7 +16,7 @@ const UpdateInventoryTable = (props) => {
   }, [JSON.stringify(props.info)]);
   useEffect(() => {
     if (info) {
-      setProductRows(info['inventories']);
+      setProductRows(info['productInventories']);
     }
   }, [info]);
   const handleAddRow = (newItem) => {

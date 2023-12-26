@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 
 const Header = (props) => {
   const profile = useSelector((state) => state.profile);
+
   return (
     <Box>
       <Grid container spacing={1.5} style={{ padding: '20px' }}>
@@ -22,7 +23,7 @@ const Header = (props) => {
             <Box sx={{ display: 'inline-flex', flexDirection: 'row' }}>
               <img
                 style={{ maxWidth: '120px', maxHeight: 'auto' }}
-                src="https://wallpapers.com/images/hd/naruto-pictures-59j4py5kpauv4mgu.jpg"
+                src={profile.photoUrl?.photoUrl || '/images/example.jpg'}
                 alt="test x"
               />
               <div style={{ marginLeft: '20px' }}>
