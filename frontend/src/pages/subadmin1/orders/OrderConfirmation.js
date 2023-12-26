@@ -61,7 +61,6 @@ const OrderConfirmation = (props) => {
         return `${year}-${month}-${day}`;
     }
 
-    console.log(getCurrentDate()); // Call the function and log the result
 
     return (<Grid item xs={12}>
         <MainCard title={orderInfo.firstname ? orderInfo.firstname + ' ' + orderInfo.middlename + ' ' + orderInfo.lastname : ''}>
@@ -75,7 +74,7 @@ const OrderConfirmation = (props) => {
 
                         </Stack>
                         {
-                            (props.statusCount < 2 && Object.keys(props.selectedOrder).length > 0) && <Stack direction="row" gap={1} mt={2}>
+                            (steps.length ===0 && Object.keys(orderInfo).length > 0) && <Stack direction="row" gap={1} mt={2}>
                                 <Button variant="contained" onClick={() => confirmOrder()}>Confirm Order</Button>
                             </Stack>
                         }
