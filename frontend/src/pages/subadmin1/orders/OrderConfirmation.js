@@ -4,14 +4,16 @@ import OrderSteps from "./OrderSteps";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import useAxios from "hooks/useAxios";
+import useHighAxios from "hooks/useHighAxios";
 const OrderConfirmation = (props) => {
-
+    const [cancelId,setCancelId] = useState('');
     const [orderInfo, setOrderInfo] = useState({});
     const [pending, setPending] = useState(false);
     const [steps, setSteps] = useState([]);
     const [orderId, setOrderId] = useState('');
     const [payload, setPayload] = useState({});
     const { data, fetchData } = useAxios('orders/status', 'POST', payload);
+    const { highData,highFetchData} = useHighAxios('orders/cancellation/' + cancelId,'PATCH');
     useEffect(() => {
         setPending(props.selectedOrder['status']);
         setOrderInfo(props.selectedOrder);
@@ -37,6 +39,40 @@ const OrderConfirmation = (props) => {
             }
         });
     }
+    const cancelOrder = () => {
+        Swal.fire({
+            allowOutsideClick: false,
+            title: "Order Cancellation",
+            text: "Are you sure you want to CANCEL this order?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Cancel",
+            cancelButtonText:"No"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setCancelId(orderId);
+            }
+        });
+    }
+    useEffect(() => {
+        if (cancelId) {
+            highFetchData();
+            setCancelId('');
+        }
+    }, [cancelId])
+    useEffect(() => {
+        if (highData) {
+            if (highData['status'] === 200) {
+                props.refreshTable();
+                setOrderInfo({});
+                Swal.fire({
+                    icon:'success',
+                    title: "Order Cancellation",
+                    text: "Order successfully cancelled"
+                })
+            }
+        }
+    }, [highData]);
     useEffect(() => {
         if (Object.keys(payload).length > 0) {
             fetchData();
@@ -45,7 +81,12 @@ const OrderConfirmation = (props) => {
     useEffect(() => {
         if (data) {
             if (data['status'] === 200) {
-                console.log(data);
+                setOrderInfo({});
+                Swal.fire({
+                    icon:'success',
+                    title: "Order Confirmation",
+                    text: "Order successfully confirmed"
+                })
             }
         }
     }, [data]);
@@ -75,7 +116,11 @@ const OrderConfirmation = (props) => {
                         </Stack>
                         {
                             (steps.length ===0 && Object.keys(orderInfo).length > 0) && <Stack direction="row" gap={1} mt={2}>
+                                <>
                                 <Button variant="contained" onClick={() => confirmOrder()}>Confirm Order</Button>
+                                <Button variant="outlined" color="error" onClick={() => cancelOrder()}>Cancel Order</Button>
+                                </>
+                                
                             </Stack>
                         }
 
