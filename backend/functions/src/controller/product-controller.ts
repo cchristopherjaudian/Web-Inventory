@@ -11,73 +11,84 @@ const response = new ResponseObject();
 const productInstance = new ProductsService(db);
 
 const createProduct = catchAsync(async (req, res) => {
-    const product = await productInstance.createProduct(req.body);
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.DATA_CREATED,
-        product
-    );
+  const product = await productInstance.createProduct(req.body);
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_CREATED,
+    product
+  );
 });
 
 const getProduct = catchAsync(async (req, res) => {
-    const product = await productInstance.findProduct({
-        id: req.params.productId,
-    });
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.DATA_RETRIEVED,
-        product!
-    );
+  const product = await productInstance.findProduct({
+    id: req.params.productId,
+  });
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_RETRIEVED,
+    product!
+  );
+});
+
+const getProductByCategory = catchAsync(async (req, res) => {
+  const product = await productInstance.getProductByCategory(
+    req.params.productId
+  );
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_RETRIEVED,
+    product!
+  );
 });
 
 const getProductInventories = catchAsync(async (req, res) => {
-    const product = await productInstance.productInventories(
-        req.params.productId
-    );
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.DATA_RETRIEVED,
-        product!
-    );
+  const product = await productInstance.productInventories(
+    req.params.productId
+  );
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_RETRIEVED,
+    product!
+  );
 });
 
 const getProductList = catchAsync(async (req, res) => {
-    const product = await productInstance.productList(
-        req.query as TProductsQuery
-    );
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.LIST_RETRIEVED,
-        product!
-    );
+  const product = await productInstance.productList(
+    req.query as TProductsQuery
+  );
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.LIST_RETRIEVED,
+    product!
+  );
 });
 
 const updateProduct = catchAsync(async (req, res) => {
-    const product = await productInstance.update(
-        req.params.productId,
-        req.body
-    );
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.DATA_MODIFIED,
-        product!
-    );
+  const product = await productInstance.update(req.params.productId, req.body);
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_MODIFIED,
+    product!
+  );
 });
 
 export default {
-    createProduct,
-    getProduct,
-    updateProduct,
-    getProductList,
-    getProductInventories,
+  createProduct,
+  getProduct,
+  updateProduct,
+  getProductList,
+  getProductByCategory,
+  getProductInventories,
 };

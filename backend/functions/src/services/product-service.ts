@@ -67,6 +67,31 @@ class ProductsService {
     return product;
   }
 
+  public async getProductByCategory(id: string) {
+    const product = await this._db.products.findUnique({ where: { id } });
+    if (!product) throw new NotFoundError('Product does not exists.');
+
+    const groupedProduct = await this._db.inventory.groupBy({
+      _sum: {
+        stock: true,
+      },
+      by: ['productId'],
+      where: {
+        productId: product.id,
+      },
+    });
+
+    const list = await this._db.products.findMany({
+      where: { category: product.category, NOT: [{ id: product.id }] },
+    });
+
+    return {
+      product,
+      productInventories: groupedProduct,
+      list,
+    };
+  }
+
   public async productInventories(id: string) {
     const product = await this._db.products.findUnique({ where: { id } });
     if (!product) throw new NotFoundError('Product does not exists.');
