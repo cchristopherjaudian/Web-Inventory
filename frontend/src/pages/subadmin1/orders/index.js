@@ -6,6 +6,7 @@ import useAxios from 'hooks/useAxios';
 import MuiAlert from '@mui/material/Alert';
 import { useEffect, useState, forwardRef } from 'react';
 const Orders = () => {
+  const excludedStatuses = ['PAID', 'CANCELLED'];
   const [message, setMessage] = useState('');
   const [statusCount,setStatusCount] = useState(0);
   const [orders, setOrders] = useState([]);
@@ -28,7 +29,7 @@ const Orders = () => {
   }
   useEffect(() => {
     if (data && Object.keys(data).length > 0 ) {
-      const result = data['data'].filter(item => item.status !== 'PAID').map(item => ({
+      const result = data['data'].filter(item => !excludedStatuses.includes(item.status)).map(item => ({
         createdAt: item.createdAt,
         id: item.id,
         orderItems: item.orderItems,
@@ -52,7 +53,7 @@ const Orders = () => {
     </Snackbar>
     <Grid container spacing={1}>
       <OrderTable setStatusCount={setStatusCount} refreshTable={refreshTable} setMessage={setMessage} handleClick={handleClick} orders={orders} setSelectedOrder={setSelectedOrder} setOrderSteps={setOrderSteps} />
-      {selectedOrder && <OrderConfirmation statusCount={statusCount} setMessage={setMessage} handleClick={handleClick} selectedOrder={selectedOrder} orderSteps={orderSteps} />}
+      {selectedOrder && <OrderConfirmation refreshTable={refreshTable} statusCount={statusCount} setMessage={setMessage} handleClick={handleClick} selectedOrder={selectedOrder} orderSteps={orderSteps} />}
     </Grid>
   </MainCard>
 };
