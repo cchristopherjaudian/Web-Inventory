@@ -111,17 +111,17 @@ const Dashboard = () => {
       <Grid item xs={12} sx={{ mb: -5.0 }}>
         <Typography variant="h5">Sales Report</Typography>
       </Grid>
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={4}>
         <MainCard content={false} sx={{ mt: 1.5 }}>
-          <Typography variant="h6" sx={{ mt: 2.0, ml: 2.0 }}>
+          <Typography variant="h4" sx={{ mt: 2.0, ml: 2.0 }}>
             Earnings
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {radial.length > 0 && <RadialChart radialData={radial} />}
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 320 }}>
+            {radial.length > 0 && <RadialChart radialData={radial}/>}
           </Box>
         </MainCard>
       </Grid>
-      <Grid item xs={12} md={9}>
+      <Grid item xs={12} md={8}>
         <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
         <MainCard content={false} sx={{ mt: 1.5 }}>

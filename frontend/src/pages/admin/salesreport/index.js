@@ -97,7 +97,7 @@ const SalesReport = () => {
           <Typography variant="h6" sx={{ mt: 2.0, mb: 3.0, ml: 2.0 }}>
             Earnings
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:275 }}>
             {radial.length > 0 && <RadialChart radialData={radial} />}
           </Box>
         </MainCard>

@@ -19,7 +19,8 @@ const RadialChart = ({ radialData = [] }) => {
       series: [radial1P, radial2P],
       options: {
         chart: {
-          height: 295,
+          height: 450,
+          width: 450,
           type: 'radialBar'
         },
         plotOptions: {
@@ -41,7 +42,10 @@ const RadialChart = ({ radialData = [] }) => {
             }
           }
         },
-        labels: [radial1.code, radial2.code]
+        labels: [radial1.code, radial2.code],
+        legend: { 
+          show: true
+        }
       }
     };
     setChartData(newChart);
@@ -49,7 +53,7 @@ const RadialChart = ({ radialData = [] }) => {
   return (
     <div id="chart">
       {Object.keys(chartData).length > 0 && (
-        <ReactApexChart options={chartData?.options} series={chartData?.series} type="radialBar" height={295} />
+        <ReactApexChart options={chartData?.options} series={chartData?.series} type="radialBar"/>
       )}
     </div>
   );

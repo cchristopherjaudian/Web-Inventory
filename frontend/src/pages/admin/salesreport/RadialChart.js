@@ -41,7 +41,10 @@ const RadialChart = ({ radialData = [] }) => {
             }
           }
         },
-        labels: [radial1.code, radial2.code]
+        labels: [radial1.code, radial2.code],
+        legend: { 
+          show: true
+        }
       }
     };
     setChartData(newChart);
