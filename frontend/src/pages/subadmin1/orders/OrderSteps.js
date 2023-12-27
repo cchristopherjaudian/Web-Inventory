@@ -130,7 +130,7 @@ const OrderSteps = (props) => {
                                         inputProps={{
                                             'aria-label': 'weight'
                                         }}
-                                        disabled={isPending}
+                                        disabled={props.steps.length === 0}
                                         value={status && Array.isArray(status) && status[index] && status[index]['createdAt'] ? status[index]['createdAt'].substring(0, 10) : stepDate[index][Object.keys(stepDate[index])[0]].substring(0, 10)}
                                     />
 
