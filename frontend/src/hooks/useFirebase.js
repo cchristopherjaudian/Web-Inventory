@@ -8,13 +8,12 @@ import { getFirestore } from 'firebase/firestore';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyBeQX_prqNxQeRYpRgoq5kA1ekrWKaUhOo',
-  authDomain: 'padyak-playground.firebaseapp.com',
-  databaseURL: 'https://padyak-playground-default-rtdb.asia-southeast1.firebasedatabase.app',
-  projectId: 'padyak-playground',
-  storageBucket: 'padyak-playground.appspot.com',
-  messagingSenderId: '44865196330',
-  appId: '1:44865196330:web:928a287b73cafca1210e53'
+  apiKey: 'AIzaSyDapJV9eVKWLJz4jgJ87Wbrjd8LdJIskDo',
+  authDomain: 'oxiaire-65bc1.firebaseapp.com',
+  projectId: 'oxiaire-65bc1',
+  storageBucket: 'oxiaire-65bc1.appspot.com',
+  messagingSenderId: '655113414182',
+  appId: '1:655113414182:web:25a047b41b66a44217e8e7'
 };
 
 // Initialize Firebase
