@@ -15,7 +15,7 @@ import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import { SearchOutlined } from '@ant-design/icons';
 
 const Dashboard = () => {
-  const [radial, setRadial] = useState([]);
+  const [radial, setRadial] = useState(null);
   const [salesData, setSalesData] = useState([]);
   const [radialQuery, setRadialQuery] = useState('');
   const [incomeQuery, setIncomeQuery] = useState('');
@@ -53,7 +53,8 @@ const Dashboard = () => {
   }, [radialQuery]);
   useEffect(() => {
     if (radialData) {
-      let radialSrc = radialData['data']['sales']['code'];
+      let radialSrc = radialData['data']['sales'];
+
       setRadial(radialSrc);
     }
   }, [radialData]);
@@ -117,7 +118,7 @@ const Dashboard = () => {
             Earnings
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 320 }}>
-            {radial.length > 0 && <RadialChart radialData={radial}/>}
+            {<RadialChart radialData={radial} />}
           </Box>
         </MainCard>
       </Grid>

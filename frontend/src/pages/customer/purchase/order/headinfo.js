@@ -16,32 +16,29 @@ const HeadInfo = (props) => {
       img: '/asset/gcash.png',
       code: 'GCASH',
       name: 'GCash',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,'
+      description: 'GCash facilitates digital payments, allowing customers to make transactions using their mobile phones.'
     },
     {
       id: 3,
       img: '/asset/bank.png',
       code: 'BANK_TRANSFER',
       name: 'Bank Transfer',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,'
+      description: 'Bank transfer facilitates digital payments, allowing customers to make transactions using their mobile phones.'
     },
     {
       id: 3,
       img: '/asset/cod.png',
       code: 'COD',
       name: 'Cash on Delivery',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,'
+      description: 'COD offers customers the convenience of paying in cash upon product delivery'
     },
     {
       id: 3,
-      img: '/asset/bank.png',
+      img: 'https://i.ibb.co/71jrpKb/30-days-term.png?fbclid=IwAR3S6jNPGFrLtA4jYGv5cdtlD4zLJbne9-rK1i46OVJIh_cvz_lfuSQa1I8',
       code: 'PAY_LATER',
       name: '30 Days Term',
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,'
+        'The primary feature of "30 Days Terms" is the credit period of 30 days. During this time, the buyer is expected to make the payment for the goods or services they have received.'
     }
   ];
   const handleChange = (event) => {

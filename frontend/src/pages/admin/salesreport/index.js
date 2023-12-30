@@ -24,7 +24,7 @@ const SalesReport = () => {
   });
   const [slot, setSlot] = useState('week');
   const [orders, setOrders] = useState([]);
-  const [radial, setRadial] = useState([]);
+  const [radial, setRadial] = useState(null);
   const [chart, setChart] = useState([]);
   const [salesData, setSalesData] = useState([]);
   const [status, setStatus] = useState('DELIVERED');
@@ -62,10 +62,10 @@ const SalesReport = () => {
   }, [salesQuery]);
   useEffect(() => {
     if (data) {
-      let radialSrc = data['data']['sales']['code'];
-      let newData = [];
-      data['data']['list'].map((d, i) => {
-        newData.push({
+      let radialSrc = data['data']['sales'];
+
+      const newData = data['data']['list'].map((d, i) => {
+        return {
           id: d['orderId'],
           fullName: d['customerName'],
           itemnumber: d['itemsCount'],
@@ -74,7 +74,7 @@ const SalesReport = () => {
           dateOrdered: d['dateOrdered'],
           dateDispatched: d['dispatchedDate'],
           dateDelivered: d['dateDelivered']
-        });
+        };
       });
       setRadial(radialSrc);
       setOrders(newData);
@@ -97,8 +97,8 @@ const SalesReport = () => {
           <Typography variant="h6" sx={{ mt: 2.0, mb: 3.0, ml: 2.0 }}>
             Earnings
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:275 }}>
-            {radial.length > 0 && <RadialChart radialData={radial} />}
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 275 }}>
+            {<RadialChart radialData={radial} />}
           </Box>
         </MainCard>
       </Grid>

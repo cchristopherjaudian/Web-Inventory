@@ -22,24 +22,21 @@ const Payment = (props) => {
       img: '/asset/cod.png',
       code: 'COD',
       name: 'Cash on Delivery',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,'
+      description: 'COD offers customers the convenience of paying in cash upon product delivery'
     },
     {
       id: 2,
       img: '/asset/gcash.png',
       code: 'GCASH',
       name: 'GCash',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,'
+      description: 'GCash facilitates digital payments, allowing customers to make transactions using their mobile phones.'
     },
     {
       id: 3,
       img: '/asset/bank.png',
       code: 'BANK_TRANSFER',
       name: 'Bank Transfer',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet faucibus fringilla. In tristique at risus ut sagittis. Proin vel congue ante. Fusce ultrices arcu lectus,'
+      description: 'Bank transfer facilitates digital payments, allowing customers to make transactions using their mobile phones.'
     }
   ];
   let payMethods = accType.accType === 'BUSINESS' ? methods.filter((item) => item.code !== 'COD') : methods;

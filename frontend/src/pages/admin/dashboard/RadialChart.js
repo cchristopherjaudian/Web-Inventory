@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const RadialChart = ({ radialData = [] }) => {
-  const [radial, setRadial] = useState([]);
+const RadialChart = ({ radialData }) => {
+  const [radial, setRadial] = useState(null);
   const [chartData, setChartData] = useState({});
   useEffect(() => {
     setRadial(radialData);
   }, [radialData]);
   useEffect(() => {
-    if (radial.length === 0) return;
+    if (!radial) return;
 
-    const radial1 = radial[0];
-    const radial2 = radial[1];
-    const totalSales = radial1.sales + radial2.sales;
-    const radial1P = +((radial1.sales / totalSales) * 100).toFixed(0);
-    const radial2P = +((radial2.sales / totalSales) * 100).toFixed(0);
+    const totalSales = radial.amount + radial.qty;
+
+    const radial1P = ((radial.amount / totalSales) * 100).toFixed(0);
+    const radial2P = ((radial.qty / totalSales) * 100).toFixed(0);
+
     const newChart = {
       series: [radial1P, radial2P],
       options: {
@@ -42,8 +42,8 @@ const RadialChart = ({ radialData = [] }) => {
             }
           }
         },
-        labels: [radial1.code, radial2.code],
-        legend: { 
+        labels: [`Earnings: ${radial.amount}`, `Total Quantity: ${radial.qty}`],
+        legend: {
           show: true
         }
       }
@@ -52,9 +52,7 @@ const RadialChart = ({ radialData = [] }) => {
   }, [radial]);
   return (
     <div id="chart">
-      {Object.keys(chartData).length > 0 && (
-        <ReactApexChart options={chartData?.options} series={chartData?.series} type="radialBar"/>
-      )}
+      {Object.keys(chartData).length > 0 && <ReactApexChart options={chartData?.options} series={chartData?.series} type="radialBar" />}
     </div>
   );
 };
