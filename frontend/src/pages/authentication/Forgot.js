@@ -13,9 +13,10 @@ import Swal from 'sweetalert2';
 
 import useAxios from 'hooks/useAxios';
 
+firebase.initializeApp(firebaseConfig);
+
 const defaultTheme = createTheme();
 const Forgot = () => {
-  firebase.initializeApp(firebaseConfig);
   const auth = getAuth();
   const navigate = useNavigate();
   const [isSent, setIsSent] = useState(false);
@@ -56,7 +57,7 @@ const Forgot = () => {
       });
   }
   function onSignUp() {
-    if(phoneNumber === '') return;
+    if (!mobileNumber) return;
     setIsWaiting(true);
     onCaptchVerify();
     const appVerifier = window.recaptchaVerifier;
@@ -66,6 +67,7 @@ const Forgot = () => {
         window.confirmationResult = confirmationResult;
       })
       .catch((error) => {
+        console.log('error', error);
         Swal.fire({
           title: 'Account Verification',
           text: 'Failed to connect to authentication service. Please try again later',
@@ -89,7 +91,7 @@ const Forgot = () => {
       });
       return;
     }
-    if(newPassword === ''){
+    if (newPassword === '') {
       Swal.fire({
         title: 'Change Password',
         text: 'Please input a valid password',
