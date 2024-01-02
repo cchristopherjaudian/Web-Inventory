@@ -62,7 +62,8 @@ const AccountRegister = () => {
         return;
       }
       const newPayload = {
-        ...values, account: {
+        ...values,
+        account: {
           username: values.contact,
           password: values.password,
           accountType: values.accountType
@@ -109,21 +110,23 @@ const AccountRegister = () => {
       if (resStatus === 200) {
         Swal.fire({
           title: msgTitle,
-          text: "Account registered successfully. Click OK to continue",
-          icon: "success",
+          text: 'Account registered successfully. Click OK to continue',
+          icon: 'success',
           showCancelButton: false,
-          confirmButtonText: "OK"
+          confirmButtonText: 'OK'
         }).then((result) => {
           if (result.isConfirmed) {
             navigate('/account');
           }
         });
-
       } else if (resStatus === 409 || resStatus === 400) {
         Swal.fire({
           icon: 'error',
           title: msgTitle,
-          text: 'Failed to register account.' + resStatus === 409 ? 'Either contact number or email already exists' : 'Please validate all fields'
+          text:
+            'Failed to register account.' + resStatus === 409
+              ? 'Either contact number or email already exists'
+              : 'Please validate all fields'
         });
       } else {
         Swal.fire({
@@ -139,7 +142,7 @@ const AccountRegister = () => {
     if (Object.keys(payload).length > 0) {
       fetchData();
     }
-  }, [payload])
+  }, [payload]);
   useEffect(() => {
     if (!rawFile) return;
 
@@ -157,7 +160,10 @@ const AccountRegister = () => {
       let msg = '';
       let errStatus = error['response']['status'];
       if (errStatus === 400 || errStatus === 409) {
-        msg = 'Failed to register account.' + errStatus === 400 ? 'Please validate all fields.' : 'Either contact or email address already exists';
+        msg =
+          'Failed to register account.' + errStatus === 400
+            ? 'Please validate all fields.'
+            : 'Either contact or email address already exists';
       } else {
         msg = 'Failed to communicate with server. Please try again.';
       }
@@ -189,7 +195,6 @@ const AccountRegister = () => {
             alignItems: 'center'
           }}
         >
-
           <Typography component="h1" variant="h5">
             Register New Admin
           </Typography>
@@ -318,8 +323,8 @@ const AccountRegister = () => {
                     <MenuItem value="">
                       <em>Please select an account type</em>
                     </MenuItem>
-                    <MenuItem value="SUB_1" >Sub Admin 1</MenuItem>
-                    <MenuItem value="SUB_2">Sub Admin 2</MenuItem>
+                    <MenuItem value="SUB_1">Sales Assistant Officer</MenuItem>
+                    <MenuItem value="SUB_2">Cylinder Management Officer</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

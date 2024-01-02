@@ -8,32 +8,9 @@ import useAxios from 'hooks/useAxios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 const Confirmation = (props) => {
-  const [file, setFile] = useState(null);
   const [payload, setPayload] = useState({});
-  const [image, setImage] = useState(null);
   const { data, fetchData } = useAxios('orders/' + props.id, 'PATCH', payload, true);
-  const handleImageChange = (e) => {
-    setImage(URL.createObjectURL(e.target.files[0]));
-    setFile(e.target.files[0]);
-  };
-  const uploadPayment = () => {
-    if (!image) {
-      Swal.fire({
-        title: 'Upload Payment',
-        text: 'Please select an image to be uploaded',
-        icon: 'info'
-      });
-      return;
-    }
-    firebase.initializeApp(firebaseConfig);
-    const storage = getStorage();
-    const storageRef = ref(storage, 'delivery/' + props.id + Date.now() + '.jpg');
-    uploadBytes(storageRef, file).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        setPayload({ deliveryUrl: downloadURL });
-      });
-    });
-  };
+
   useEffect(() => {
     if (Object.keys(payload).length !== 0) {
       fetchData();
@@ -81,42 +58,6 @@ const Confirmation = (props) => {
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant="h5">Date Delivered: {props.status[2]?.createdAt?.substring(0, 10)}</Typography>
-          </Grid>
-        </>
-      )}
-      {props.paymentUrl && (
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <img src={props.paymentUrl} alt="preview" width={400} height={400} />
-        </Grid>
-      )}
-
-      {props.status.length >= 2 && props.mainStatus !== 'PAID' && !props.paymentUrl && (
-        <>
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Typography variant="h6" mt={3}>
-              Add a picture by browsing from your device
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            {image && <img src={image} alt="preview" width={200} height={200} />}
-          </Grid>
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <input accept="image/*" style={{ display: 'none' }} id="contained-button-file" type="file" onChange={handleImageChange} />
-            <label htmlFor="contained-button-file">
-              <Button variant="contained" component="span" color="info">
-                Browse Image
-              </Button>
-            </label>
-          </Grid>
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-            <Typography variant="body2" mt={3}>
-              By providing a picture and giving us confirmation of the product&apos;s arrival
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button variant="contained" onClick={() => uploadPayment()}>
-              Confirm Delivery
-            </Button>
           </Grid>
         </>
       )}

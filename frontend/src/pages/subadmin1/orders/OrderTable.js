@@ -34,7 +34,6 @@ const OrderTable = (props) => {
   });
   const database = firebaseApp.database();
 
-
   useEffect(() => {
     if (props.orders) {
       setGridRows(props.orders);
@@ -43,10 +42,9 @@ const OrderTable = (props) => {
   }, [props.orders]);
   useEffect(() => {
     if (Object.keys(customer).length > 0) {
-
       setCustomer({});
     }
-  }, [customer])
+  }, [customer]);
   useEffect(() => {
     if (paidOrder) {
       inventoryFetchData();
@@ -98,11 +96,12 @@ const OrderTable = (props) => {
       renderCell: (params) => {
         const onClick = (event) => {
           event.stopPropagation();
-          if (params.row.paymentMethod !== 'COD') window.open(params.row.paymentUrl, '_blank');
+          if (params.row.paymentMethod !== 'COD')
+            window.open(params.row.paymentMethod === 'PAY_LATER' ? params.row.quotationUrl : params.row.paymentUrl, '_blank');
         };
         return (
           <Button variant="outlined" color="info" onClick={onClick}>
-            {params.row.paymentMethod}
+            {params.row.paymentMethod === 'PAY_LATER' ? '30 Days Term' : params.row.paymentMethod}
           </Button>
         );
       }
@@ -129,8 +128,8 @@ const OrderTable = (props) => {
               let cartItems = params.row.orderItems;
               const totalPrice = Object.keys(cartItems).length
                 ? cartItems.reduce((sum, item) => {
-                  return sum + item.quantity * parseFloat(item.products.price);
-                }, 0)
+                    return sum + item.quantity * parseFloat(item.products.price);
+                  }, 0)
                 : 0;
               let newMessage = {
                 content: '',
@@ -152,14 +151,13 @@ const OrderTable = (props) => {
             }
           });
         };
-        if (params.row.paymentMethod === 'PAY_LATER' && needsReminder(params.row.createdAt.substring(0, 10))) {
+        if (params.row.paymentMethod === 'PAY_LATER') {
           return (
             <Button endIcon={<MessageOutlined />} variant="contained" color="error" onClick={onClick}>
               Remind
             </Button>
           );
         }
-
       }
     },
     {
@@ -204,7 +202,7 @@ const OrderTable = (props) => {
 
   const gridClick = (params, event, details) => {
     let selectedData = params['row'];
-    props.setStatusCount(params.row.orderItems.length)
+    props.setStatusCount(params.row.orderItems.length);
     setOrderId(selectedData.id);
   };
   useEffect(() => {

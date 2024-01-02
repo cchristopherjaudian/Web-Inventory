@@ -21,10 +21,10 @@ const InventoryHeader = (props) => {
             <Analytics color="warning.main" title="Total Products" count={metrics['products']} extra="Last 7 days" />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Analytics color="#8e44ad" title="Top Selling" count={metrics['lowStocks']} extra="Last 7 days" />
+            <Analytics color="#8e44ad" title="Top Selling" count={metrics['topSelling']} extra="Last 7 days" />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Analytics color="error" title="Low Stocks" count={metrics['topSelling']} extra="Ordered" />
+            <Analytics color="error" title="Low Stocks" count={metrics['lowStocks']} extra="Ordered" />
           </Grid>
         </Grid>
       </MainCard>

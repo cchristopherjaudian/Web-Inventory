@@ -3,9 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import { useState, useEffect } from 'react';
-import { Avatar, Box, Grid, Typography, FormControl, InputAdornment, OutlinedInput } from '@mui/material';
-import MainCard from 'components/MainCard';
-import { SearchOutlined } from '@ant-design/icons';
+import { Avatar, Box, Grid, Typography } from '@mui/material';
 
 import Inbox from './Inbox';
 import Chatbox from './Chatbox';

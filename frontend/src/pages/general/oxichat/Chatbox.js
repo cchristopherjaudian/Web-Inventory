@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, TextField, Button, Grid } from '@mui/material';
+import { Box, TextField, Button } from '@mui/material';
 import { PaperClipOutlined, LoadingOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import Message from './Message';
@@ -8,7 +8,7 @@ import firebaseConfig from 'config/firebase';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import PaymentReminder from './PaymentReminder';
 let messageRef = null;
 const Chatbox = () => {
@@ -63,31 +63,29 @@ const Chatbox = () => {
   };
   useEffect(() => {
     if (file) {
-
       setAttachLoading(true);
       const storage = getStorage();
       const storageRef = ref(storage, 'chat/' + myMobile + Date.now() + '.jpg');
       uploadBytes(storageRef, file).then((snapshot) => {
-        getDownloadURL(snapshot.ref)
-          .then((downloadURL) => {
-            let newMessage = {
-              content: '',
-              img: downloadURL,
-              time: new Date().toISOString(),
-              src: myMobile,
-              mobile: myMobile,
-              name: myName,
-              photoUrl: 'https://placehold.co/100'
-            };
-            messageRef.push(newMessage);
-            setSendMessage('');
-            setInput('');
-            setFile(null);
-            setAttachLoading(false);
-          });
+        getDownloadURL(snapshot.ref).then((downloadURL) => {
+          let newMessage = {
+            content: '',
+            img: downloadURL,
+            time: new Date().toISOString(),
+            src: myMobile,
+            mobile: myMobile,
+            name: myName,
+            photoUrl: 'https://placehold.co/100'
+          };
+          messageRef.push(newMessage);
+          setSendMessage('');
+          setInput('');
+          setFile(null);
+          setAttachLoading(false);
+        });
       });
     }
-  }, [file])
+  }, [file]);
 
   const handleInputChange = (event) => {
     setInput(event.target.value);
@@ -112,7 +110,7 @@ const Chatbox = () => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(scrollToBottom, [chatMessages]);
@@ -128,10 +126,11 @@ const Chatbox = () => {
     >
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
         {Object.values(chatMessages).map((s, i) => {
-          return Object.prototype.hasOwnProperty.call(s, 'html') ? 
-            <PaymentReminder key={i} html={s.html} src={s.src} img={s.img}/>
-            :
-            <Message key={i} message={s.content} src={s.src} img={s.img} />;
+          return Object.prototype.hasOwnProperty.call(s, 'html') ? (
+            <PaymentReminder key={i} html={s.html} src={s.src} img={s.img} />
+          ) : (
+            <Message key={i} message={s.content} src={s.src} img={s.img} />
+          );
         })}
         <div ref={messagesEndRef} />
       </Box>
@@ -153,15 +152,11 @@ const Chatbox = () => {
           />
 
           <Box>
-            <input
-              accept="image/*"
-              style={{ display: 'none' }}
-              id="contained-button-file"
-              type="file"
-              onChange={handleImageChange}
-            />
+            <input accept="image/*" style={{ display: 'none' }} id="contained-button-file" type="file" onChange={handleImageChange} />
             <label htmlFor="contained-button-file">
-              <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>Attach</Button>
+              <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>
+                Attach
+              </Button>
             </label>
           </Box>
         </Box>

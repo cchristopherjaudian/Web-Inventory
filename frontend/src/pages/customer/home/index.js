@@ -25,7 +25,7 @@ const Home = () => {
             elevation={10}
             sx={{
               bgcolor: '#FAFAFA',
-              backgroundImage: `url('https://i.ibb.co/8xJ423W/Home-Screen-Image.png')`,
+              backgroundImage: `url('https://iili.io/J5qzoOl.png')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               maskImage: 'linear-gradient(to right, transparent, black)',
