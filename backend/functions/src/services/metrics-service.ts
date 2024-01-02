@@ -147,7 +147,6 @@ class MetricsService {
       },
     });
 
-    console.log('list', list);
     const mappedOrders = list.map((order) => {
       const sumProducts = order.orderItems.reduce(
         (acc, item) => {
