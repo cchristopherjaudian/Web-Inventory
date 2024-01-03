@@ -1,4 +1,3 @@
-
 import { AuditOutlined } from '@ant-design/icons';
 
 const icons = {

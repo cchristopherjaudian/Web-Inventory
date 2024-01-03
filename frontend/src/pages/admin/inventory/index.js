@@ -35,7 +35,7 @@ const Inventory = () => {
       let newData = [];
       lowData['data'].map((d, i) => {
         newData.push({
-          id: i,
+          // id: i,
           photoUrl: d['products']['photoUrl'],
           code: d['products']['code'],
           name: d['products']['name'],

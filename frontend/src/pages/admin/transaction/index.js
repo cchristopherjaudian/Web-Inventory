@@ -15,9 +15,11 @@ const TransactionRecords = () => {
       setTransactions(newData);
     }
   }, [data]);
-  return <MainCard title="Transaction Records">
-    <TransactionTable transactions={transactions}/>
-  </MainCard>
+  return (
+    <MainCard title="Transaction Records">
+      <TransactionTable transactions={transactions} />
+    </MainCard>
+  );
 };
 
 export default TransactionRecords;

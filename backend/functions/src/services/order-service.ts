@@ -288,6 +288,7 @@ class OrderService {
         totalPrice: sumProducts.amount,
         dispatchedDate: dispatchedDate?.createdAt || null,
         dateDelivered: dateDelivered?.createdAt || null,
+        refNo: txn.refNo ?? null,
       };
     });
 

@@ -85,7 +85,6 @@ model Profile {
   Cart        Cart[]
   Orders      Orders[]
   OrderStatus OrderStatus[]
-  Routes      Routes[]
 
   @@map("profile")
 }
@@ -220,8 +219,7 @@ model Routes {
 
   status RouteStatuses @default(ACTIVE)
 
-  profile Profile? @relation(fields: [adminId], references: [id])
-  adminId String?
+  assigned String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

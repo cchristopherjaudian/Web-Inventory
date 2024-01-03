@@ -7,17 +7,18 @@ const TransactionRecords = () => {
   const { data, fetchData } = useAxios('orders/transactions', 'GET');
   useEffect(() => {
     if (data) {
-      let newData = [];
-      data['data'].map((d, i) => {
-        newData.push({ ...d, id: i });
+      let newData = data['data'].map((d, i) => {
+        return { ...d, id: i };
       });
       setTransactions(newData);
     }
   }, [data]);
-  return <>
-    <CustomerInfo fetchData={fetchData} />
-    <TransactionTable transactions={transactions} />
-  </>
+  return (
+    <>
+      <CustomerInfo fetchData={fetchData} />
+      <TransactionTable transactions={transactions} />
+    </>
+  );
 };
 
 export default TransactionRecords;
