@@ -22,7 +22,7 @@ const RouteSched = () => {
         data['data'].forEach((s, i) => {
           newRoutes.push({ route: s?.route, id: s?.id });
           newSched.push({ description: s?.description, id: s?.id });
-          newSpap.push({ spap: s?.profile?.fullName || 'N/A', id: s?.id });
+          newSpap.push({ spap: s?.assigned || 'N/A', id: s?.id });
           newTruck.push({ plate: s?.plateNumber, id: s?.id });
         });
         setListRoutes(newRoutes);
@@ -60,7 +60,7 @@ const RouteSched = () => {
           <Header title="SP/AP" img="./asset/03.png" />
           {listspap.map((item, index) => {
             return (
-              <Data field="description" title={item.spap} rowId={item.id} key={index} background={index % 2 === 0 ? '#f2f2f2' : 'white'} />
+              <Data field="assigned" title={item.spap} rowId={item.id} key={index} background={index % 2 === 0 ? '#f2f2f2' : 'white'} />
             );
           })}
         </Grid>

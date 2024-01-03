@@ -60,7 +60,7 @@ const Data = (props) => {
                   variant="h6"
                   textAlign="center"
                   sx={{ color: props.color ? props.color : 'black' }}
-                  style={{ whiteSpace: 'pre', textAlign: 'justify' }}
+                  style={{ whiteSpace: 'pre', textAlign: 'center' }}
                 >
                   {title}
                 </Typography>

@@ -28,7 +28,7 @@ const updateScheduleSchema = {
     time: Joi.string().trim().optional(),
     description: Joi.string().trim().optional(),
     plateNumber: Joi.string().trim().optional(),
-    adminId: Joi.string().trim().optional(),
+    assigned: Joi.string().trim().optional(),
   }),
 };
 
