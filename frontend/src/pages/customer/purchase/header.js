@@ -30,6 +30,10 @@ const Header = (props) => {
                 value={props.dateRequested}
                 onChange={(e) => props.setDateRequested(e.target.value)}
                 fullWidth
+                inputProps={{
+                  'aria-label': 'weight',
+                   min: new Date().toISOString().split('T')[0]
+                }}
                 id="dateRequested"
                 label="Date Requested"
               />
@@ -45,6 +49,10 @@ const Header = (props) => {
                 onFocus={(e) => (e.currentTarget.type = 'date')}
                 onBlur={(e) => e.currentTarget.value === '' && (e.currentTarget.type = 'text')}
                 fullWidth
+                inputProps={{
+                  'aria-label': 'weight',
+                   min: new Date().toISOString().split('T')[0]
+                }}
                 id="dateRequired"
                 label="Date Required"
               />
