@@ -144,7 +144,7 @@ const Legal = () => {
           <b>Second Reminder:</b> - If payment is still not received after the initial reminder, a second reminder will be issued.
         </p>
         <p style={{ fontSize: '1.3rem' }}>
-          <b>Order Blocking:</b> Failure to settle the outstanding balance after the second reminder will lead to the temporary blocking of the establishment's ability to place new orders until the account is brought up to date.
+          <b>Order Blocking:</b> Failure to settle the outstanding balance after the second reminder will lead to the temporary blocking of the establishment&apos;s ability to place new orders until the account is brought up to date.
         </p>
         <p style={{ fontSize: '1.3rem' }}>
           We value your business and hope for a prompt settlement of invoices. If you have any questions or concerns regarding the payment terms, please contact our finance department at 09126424026.
