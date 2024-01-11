@@ -128,7 +128,8 @@ const OrderSteps = (props) => {
                                             event.preventDefault();
                                         }}
                                         inputProps={{
-                                            'aria-label': 'weight'
+                                            'aria-label': 'weight',
+                                             min: new Date().toISOString().split('T')[0]
                                         }}
                                         disabled={props.steps.length === 0}
                                         value={status && Array.isArray(status) && status[index] && status[index]['createdAt'] ? status[index]['createdAt'].substring(0, 10) : stepDate[index][Object.keys(stepDate[index])[0]].substring(0, 10)}
