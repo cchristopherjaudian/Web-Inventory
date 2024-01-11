@@ -36,6 +36,7 @@ const Orders = () => {
 
           return {
             createdAt: item.createdAt,
+            paymentDeadline: item.paymentDeadline,
             id: item.id,
             orderItems: item.orderItems,
             paymentMethod: item.paymentMethod,

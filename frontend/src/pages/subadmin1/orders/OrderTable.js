@@ -138,7 +138,8 @@ const OrderTable = (props) => {
                 html: {
                   orderId: params.row.id,
                   price: totalPrice,
-                  orderDate: params.row.createdAt.substring(0, 10)
+                  orderDate: params.row.createdAt.substring(0, 10),
+                  deadlineDate: params.row.paymentDeadline.substring(0, 10)
                 },
                 time: new Date().toISOString(),
                 src: myMobile,

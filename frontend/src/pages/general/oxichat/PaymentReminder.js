@@ -47,7 +47,7 @@ const PaymentReminder = (props) => {
                 Hello Customer,
               </Typography>
               <Typography variant="body1" gutterBottom>
-                Our records show that we are still waiting payment of <span style={{ fontWeight: 'bold' }}>₱ {props.html.price}</span> for Invoice {props.html.orderId}, which was initially sent on <span style={{ color: 'red' }}>{props.html.orderDate}</span>. A copy of original Invoice has been attached for your convenience in the instance that it has been lost or misplaced.
+                Our records show that we are still waiting payment of <span style={{ fontWeight: 'bold' }}>₱ {props.html.price}</span> for Invoice {props.html.orderId}, which was initially sent on <span style={{ color: 'red' }}>{props.html.deadlineDate}</span>. A copy of original Invoice has been attached for your convenience in the instance that it has been lost or misplaced.
               </Typography>
               <Typography variant="body1" gutterBottom>
                 If Payment has been sent, please disregard this reminder. Please let us know if you have any questions or need assistance with the payment process.
