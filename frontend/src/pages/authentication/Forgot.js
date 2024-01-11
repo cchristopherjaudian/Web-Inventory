@@ -78,8 +78,8 @@ const Forgot = () => {
   function onCaptchVerify() {
     window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       size: 'invisible',
-      callback: (response) => {},
-      'expired-callback': () => {}
+      callback: (response) => { },
+      'expired-callback': () => { }
     });
   }
   function processChange() {
@@ -227,6 +227,11 @@ const Forgot = () => {
                         )
                       }}
                     />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography component="p" variant="caption">
+                    Use mix of uppercase and lowercase letter, numbers, and special characters
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Button variant="contained" sx={{ mt: 3 }} fullWidth onClick={processChange}>
