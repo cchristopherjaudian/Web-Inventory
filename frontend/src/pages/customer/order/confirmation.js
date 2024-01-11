@@ -8,6 +8,7 @@ import useAxios from 'hooks/useAxios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 const Confirmation = (props) => {
+  console.log(props);
   const [payload, setPayload] = useState({});
   const { data, fetchData } = useAxios('orders/' + props.id, 'PATCH', payload, true);
 
@@ -40,14 +41,21 @@ const Confirmation = (props) => {
     <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
         <img
-          src={props.status.length < 3 ? '/asset/delivery-truck.png' : '/asset/shopping-basket.png'}
+          src={props.status.length < 3 ? 
+            props.method === 'PAY_LATER' ? '/asset/Gcash-MyQR.png' : '/asset/shopping-basket.png' 
+            : '/asset/delivery-truck.png'}
           width={400}
-          height={400}
+          height={
+            props.status.length < 3 && props.method === 'PAY_LATER' ? 600 : 400
+          }
           alt="payment"
         />
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Typography variant="h1">{props.status.length >= 3 ? 'Delivery Completed' : 'Waiting for Delivery'}</Typography>
+        <Typography variant="h1">{props.status.length >= 3 ? 
+        'Delivery Completed' 
+        : 'Waiting for Delivery'}
+        </Typography>
       </Grid>
       {props.status.length >= 3 && (
         <>
