@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useState, useEffect, useRef } from 'react';
 import { Avatar, Box, TextField, Button, Grid, Typography } from '@mui/material';
-import { PaperClipOutlined, LoadingOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, LoadingOutlined, SendOutlined } from '@ant-design/icons';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import Message from './Message';
@@ -151,7 +151,7 @@ const Chatbox = (props) => {
               <input accept="image/*" style={{ display: 'none' }} id="contained-button-file" type="file" onChange={handleImageChange} />
               <label htmlFor="contained-button-file">
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   fullWidth
                   component="span"
                   endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}
@@ -159,6 +159,18 @@ const Chatbox = (props) => {
                   Attach
                 </Button>
               </label>
+            </Box>
+            <Box>
+              <Button
+                variant="contained"
+                fullWidth
+                component="span"
+                onClick={() => handleSend()}
+                endIcon={<SendOutlined />}
+              >
+                Send
+              </Button>
+
             </Box>
           </Box>
         </Box>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, TextField, Button } from '@mui/material';
-import { PaperClipOutlined, LoadingOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, LoadingOutlined, SendOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import Message from './Message';
 import firebaseConfig from 'config/firebase';
@@ -154,10 +154,15 @@ const Chatbox = () => {
           <Box>
             <input accept="image/*" style={{ display: 'none' }} id="contained-button-file" type="file" onChange={handleImageChange} />
             <label htmlFor="contained-button-file">
-              <Button variant="contained" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>
+              <Button variant="outlined" fullWidth component="span" endIcon={attachLoading ? <LoadingOutlined /> : <PaperClipOutlined />}>
                 Attach
               </Button>
             </label>
+          </Box>
+          <Box>
+            <Button onClick={() => handleSend()} variant="contained" fullWidth component="span" endIcon={<SendOutlined />}>
+              Send
+            </Button>
           </Box>
         </Box>
       </Box>
