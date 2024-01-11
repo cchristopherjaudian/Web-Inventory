@@ -40,16 +40,16 @@ const Confirmation = (props) => {
     <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
         <img
-          src={props.status.length < 2 ? '/asset/delivery-truck.png' : '/asset/shopping-basket.png'}
+          src={props.status.length < 3 ? '/asset/delivery-truck.png' : '/asset/shopping-basket.png'}
           width={400}
           height={400}
           alt="payment"
         />
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Typography variant="h1">{props.status.length >= 2 ? 'Delivery Completed' : 'Waiting for Delivery'}</Typography>
+        <Typography variant="h1">{props.status.length >= 3 ? 'Delivery Completed' : 'Waiting for Delivery'}</Typography>
       </Grid>
-      {props.status.length >= 2 && (
+      {props.status.length >= 3 && (
         <>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant="h4" mt={3}>
