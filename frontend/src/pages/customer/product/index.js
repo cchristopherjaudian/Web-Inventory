@@ -8,8 +8,8 @@ import { ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import useAxios from 'hooks/useAxios';
 import useAxiosBackup from 'hooks/useAxiosBackup';
-import Info from './info';
 import useInventoryAxios from 'hooks/useInventoryAxios';
+import InfoV2 from './infov2';
 
 const OtherProduct = ({ product, setCartItem }) => {
   const navigate = useNavigate();
@@ -120,7 +120,7 @@ const Product = () => {
     <MainCard>
       <Grid container spacing={1}>
         <Grid item md={8} xs={12}>
-          <Info itemInfo={itemInfo} inventoryData={inventoryData} setCartItem={setCartItem} cartItems={cartItems} productId={id} />
+          <InfoV2 itemInfo={itemInfo} inventoryData={inventoryData} setCartItem={setCartItem} cartItems={cartItems} productId={id} />
           <Card mt={2} sx={{ width: '100%', display: 'flex', padding: 2 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant="h3" color="#2980b9">

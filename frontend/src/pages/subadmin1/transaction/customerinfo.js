@@ -23,7 +23,7 @@ const CustomerInfo = (props) => {
                 Load Records
               </Button>
             </Stack>
-          </Grid>r
+          </Grid>
         </Grid>
       </Box>
     </MainCard>

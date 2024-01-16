@@ -125,35 +125,39 @@ const Legal = () => {
         </p>
 
         <p style={{ fontSize: '1.3rem' }}>
-          <b>Payment Terms Statement</b> - Thank you for choosing Oxiaire Gas Enterprises. We appreciate your business. To ensure a smooth transaction process, please be aware of our payment terms outlined below:
+          <b>Payment Terms Statement</b> - Thank you for choosing Oxiaire Gas Enterprises. We appreciate your business. To ensure a smooth
+          transaction process, please be aware of our payment terms outlined below:
         </p>
         <p style={{ fontSize: '1.3rem' }}>
           <b>Payment Period</b> - The establishment is required to settle the balance within 30 days of the invoice date.
         </p>
         <p style={{ fontSize: '1.3rem' }}>
-          <b>Payment Extension</b> - In the event of unforeseen circumstances, an extension of an additional 15 days may be granted upon request. 
+          <b>Payment Extension</b> - In the event of unforeseen circumstances, an extension of an additional 15 days may be granted upon
+          request.
         </p>
 
         <p style={{ fontSize: '1.3rem' }}>
-          <b>Consequences of Non-Payment</b> - Failure to make payment within the stipulated terms, including any approved extensions, may result in the following actions:
+          <b>Consequences of Non-Payment</b> - Failure to make payment within the stipulated terms, including any approved extensions, may
+          result in the following actions:
         </p>
         <p style={{ fontSize: '1.3rem' }}>
-          <b>First Reminder:</b>  A courtesy reminder will be sent.
+          <b>First Reminder:</b> A courtesy reminder will be sent.
         </p>
         <p style={{ fontSize: '1.3rem' }}>
           <b>Second Reminder:</b> - If payment is still not received after the initial reminder, a second reminder will be issued.
         </p>
         <p style={{ fontSize: '1.3rem' }}>
-          <b>Order Blocking:</b> Failure to settle the outstanding balance after the second reminder will lead to the temporary blocking of the establishment&apos;s ability to place new orders until the account is brought up to date.
+          <b>Order Blocking:</b> Failure to settle the outstanding balance after the second reminder will lead to the temporary blocking of
+          the establishment&apos;s ability to place new orders until the account is brought up to date.
         </p>
         <p style={{ fontSize: '1.3rem' }}>
-          We value your business and hope for a prompt settlement of invoices. If you have any questions or concerns regarding the payment terms, please contact our finance department at 09126424026.
+          We value your business and hope for a prompt settlement of invoices. If you have any questions or concerns regarding the payment
+          terms, please contact our finance department at 09126424026.
         </p>
+        <p style={{ fontSize: '1.3rem' }}>Thank you for your understanding and cooperation.</p>
         <p style={{ fontSize: '1.3rem' }}>
-          Thank you for your understanding and cooperation.
-        </p>
-        <p style={{ fontSize: '1.3rem' }}>
-          Sincerely,<br/> Oxiaire Gas Enterprises.
+          Sincerely,
+          <br /> Oxiaire Gas Enterprises.
         </p>
       </Grid>
       <Grid container justifyContent="center" alignContent="center">
