@@ -1,5 +1,6 @@
 import firebaseConfig from 'config/firebase';
 import firebase from 'firebase/compat/app';
+import axios from 'axios';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { Avatar, Box, Button, CssBaseline, Grid, Paper, TextField, Typography, InputAdornment, IconButton } from '@mui/material';
@@ -12,6 +13,11 @@ import OtpInput from 'react-otp-input';
 import Swal from 'sweetalert2';
 
 import useAxios from 'hooks/useAxios';
+
+const accountClient = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL || '',
+  timeout: 10000
+});
 
 firebase.initializeApp(firebaseConfig);
 
@@ -56,7 +62,16 @@ const Forgot = () => {
         });
       });
   }
-  function onSignUp() {
+  async function onSignUp() {
+    const response = await accountClient.get(`/accounts/find?username=${mobileNumber}`);
+    if (!response?.data.data) {
+      Swal.fire({
+        title: 'Account Verification',
+        text: 'Account does not exists.',
+        icon: 'error'
+      });
+      return;
+    }
     if (!mobileNumber) return;
     setIsWaiting(true);
     onCaptchVerify();
@@ -78,8 +93,8 @@ const Forgot = () => {
   function onCaptchVerify() {
     window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       size: 'invisible',
-      callback: (response) => { },
-      'expired-callback': () => { }
+      callback: (response) => {},
+      'expired-callback': () => {}
     });
   }
   function processChange() {
@@ -230,7 +245,7 @@ const Forgot = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography component="p" variant="caption">
-                    Use mix of uppercase and lowercase letter, numbers, and special characters
+                      Use mix of uppercase and lowercase letter, numbers, and special characters
                     </Typography>
                   </Grid>
                 </Grid>
