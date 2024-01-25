@@ -1,16 +1,16 @@
 import { Router } from 'express';
 import {
-    AccountController,
-    AdminController,
-    B2bController,
-    B2cController,
+  AccountController,
+  AdminController,
+  B2bController,
+  B2cController,
 } from '../controller';
 import JoiMiddleware from '../middleware/joi-middleware';
 import {
-    registerSchema,
-    getB2cListSchema,
-    loginSchema,
-    forgotPasswordSchema,
+  registerSchema,
+  getB2cListSchema,
+  loginSchema,
+  forgotPasswordSchema,
 } from '../lib/joi-schemas/account-schema';
 import AuthMiddleware from '../middleware/auth-middleware';
 import Prisma from '../lib/prisma';
@@ -21,45 +21,47 @@ const joi = new JoiMiddleware();
 const authMiddleware = new AuthMiddleware(db);
 
 router.post(
-    '/',
-    joi.requestSchemaValidate(registerSchema),
-    AccountController.register
+  '/',
+  joi.requestSchemaValidate(registerSchema),
+  AccountController.register
 );
 
+router.get('/find', AccountController.getAccount);
+
 router.post(
-    '/login',
-    joi.requestSchemaValidate(loginSchema),
-    AccountController.login
+  '/login',
+  joi.requestSchemaValidate(loginSchema),
+  AccountController.login
 );
 
 router.patch(
-    '/forgot-password',
-    joi.requestSchemaValidate(forgotPasswordSchema),
-    AccountController.forgotPassword
+  '/forgot-password',
+  joi.requestSchemaValidate(forgotPasswordSchema),
+  AccountController.forgotPassword
 );
 
 // ADMIN ROUTES
 router.get(
-    '/admins',
-    joi.requestSchemaValidate(getB2cListSchema),
-    authMiddleware.adminValidate(['ADMIN']) as any,
-    AdminController.getAdminList
+  '/admins',
+  joi.requestSchemaValidate(getB2cListSchema),
+  authMiddleware.adminValidate(['ADMIN']) as any,
+  AdminController.getAdminList
 );
 
 // CUSTOMERS ROUTES
 router.get(
-    '/b2c',
-    joi.requestSchemaValidate(getB2cListSchema),
-    authMiddleware.adminValidate(['ADMIN']) as any,
-    B2cController.getb2cList
+  '/b2c',
+  joi.requestSchemaValidate(getB2cListSchema),
+  authMiddleware.adminValidate(['ADMIN']) as any,
+  B2cController.getb2cList
 );
 
 // Bussiness ROUTES
 router.get(
-    '/b2b',
-    joi.requestSchemaValidate(getB2cListSchema),
-    authMiddleware.adminValidate(['ADMIN']) as any,
-    B2bController.getb2cList
+  '/b2b',
+  joi.requestSchemaValidate(getB2cListSchema),
+  authMiddleware.adminValidate(['ADMIN']) as any,
+  B2bController.getb2cList
 );
 
 export default router;

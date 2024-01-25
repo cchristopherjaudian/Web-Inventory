@@ -10,36 +10,47 @@ const accountInstance = new AccountService(db);
 const response = new ResponseObject();
 
 const register = catchAsync(async (req, res) => {
-    const account = await accountInstance.createAccount(req.body);
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.DATA_CREATED,
-        account
-    );
+  const account = await accountInstance.createAccount(req.body);
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_CREATED,
+    account
+  );
 });
 
 const login = catchAsync(async (req, res) => {
-    const account = await accountInstance.login(req.body);
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.DATA_RETRIEVED,
-        account
-    );
+  const account = await accountInstance.login(req.body);
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_RETRIEVED,
+    account
+  );
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
-    const account = await accountInstance.forgotPassword(req.body);
-    await db.$disconnect();
-    response.createResponse(
-        res,
-        httpStatus.OK,
-        ResponseCodes.DATA_RETRIEVED,
-        account
-    );
+  const account = await accountInstance.forgotPassword(req.body);
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_RETRIEVED,
+    account
+  );
 });
 
-export default { register, login, forgotPassword };
+const getAccount = catchAsync(async (req, res) => {
+  const account = await accountInstance.findAccount(req.query);
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.DATA_RETRIEVED,
+    account!
+  );
+});
+
+export default { register, login, forgotPassword, getAccount };

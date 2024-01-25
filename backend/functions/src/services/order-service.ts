@@ -129,7 +129,6 @@ class OrderService {
       })
     );
 
-    console.log('payload', payload);
     return this._db.orders.create({
       data: {
         profile: {
@@ -230,14 +229,20 @@ class OrderService {
       where: { profileId },
       ...this._defaultOrderParams,
     };
-    return this._db.orders.findMany(params);
+    return this._db.orders.findMany({
+      ...params,
+      orderBy: [{ createdAt: 'desc' }],
+    });
   }
 
   public async adminOrders() {
     const params = {
       ...this._defaultOrderParams,
     };
-    return this._db.orders.findMany(params);
+    return this._db.orders.findMany({
+      ...params,
+      orderBy: [{ createdAt: 'desc' }],
+    });
   }
 
   public async getOrder(id: string) {
