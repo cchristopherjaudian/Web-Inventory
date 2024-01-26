@@ -31,14 +31,16 @@ const Payment = (props) => {
   };
   return (
     <Grid container>
-      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <img
-          src="https://firebasestorage.googleapis.com/v0/b/cf-boilerplate.appspot.com/o/admin%2Fgcash.png?alt=media&token=5b8ee2b3-55d0-4902-b026-9956a9ddfc9b"
-          alt="oxigcash"
-          width={400}
-          height={400}
-        />
-      </Grid>
+      {props.paymentMethod !== 'PAY_LATER' && (
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cf-boilerplate.appspot.com/o/admin%2Fgcash.png?alt=media&token=5b8ee2b3-55d0-4902-b026-9956a9ddfc9b"
+            alt="oxigcash"
+            width={400}
+            height={400}
+          />
+        </Grid>
+      )}
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
         <Typography variant="body2" mt={3}>
           Add a picture by browsing from your device atleast 2mb or less

@@ -55,7 +55,6 @@ const Legal = () => {
           notice. It is your responsibility to review these terms and conditions periodically for any changes. Your continued use of our
           website after any modifications signifies your acceptance of the updated terms and conditions.
         </p>
-
         <h2>Privacy Policy</h2>
         <p style={{ fontSize: '1.3rem' }}>
           <b>Introduction</b> - We respect your privacy and are committed to protecting your personal information. This privacy policy
@@ -123,7 +122,6 @@ const Legal = () => {
           <b>Contact Information</b> - If you have any questions, concerns, or requests regarding this privacy policy, please contact us at
           oxiairecapstone2023@gmail.com.
         </p>
-
         <p style={{ fontSize: '1.3rem' }}>
           <b>Payment Terms Statement</b> - Thank you for choosing Oxiaire Gas Enterprises. We appreciate your business. To ensure a smooth
           transaction process, please be aware of our payment terms outlined below:
@@ -135,12 +133,11 @@ const Legal = () => {
           <b>Payment Extension</b> - In the event of unforeseen circumstances, an extension of an additional 15 days may be granted upon
           request.
         </p>
-
         <p style={{ fontSize: '1.3rem' }}>
           <b>Consequences of Non-Payment</b> - Failure to make payment within the stipulated terms, including any approved extensions, may
           result in the following actions:
         </p>
-        <p style={{ fontSize: '1.3rem' }}>
+        <p style={{ fontSize: '1.3rem', width: '100%' }}>
           <b>First Reminder:</b> A courtesy reminder will be sent.
         </p>
         <p style={{ fontSize: '1.3rem' }}>
@@ -154,16 +151,9 @@ const Legal = () => {
           We value your business and hope for a prompt settlement of invoices. If you have any questions or concerns regarding the payment
           terms, please contact our finance department at 09126424026.
         </p>
-        <p style={{ fontSize: '1.3rem' }}>Thank you for your understanding and cooperation.</p>
-        <p style={{ fontSize: '1.3rem' }}>
-          Sincerely,
-          <br /> Oxiaire Gas Enterprises.
-        </p>
-      </Grid>
-      <Grid container justifyContent="center" alignContent="center">
-        <Button variant="outlined" size="large" onClick={() => navigate(-1)} sx={{ mr: 2 }} style={{ fontWeight: 700, fontSize: '1.1rem' }}>
-          Back
-        </Button>
+        <p style={{ fontSize: '1.3rem', width: '100%' }}>Thank you for your understanding and cooperation.</p>
+        <p style={{ fontSize: '1.3rem', width: '100%' }}>Sincerely,</p>
+        <p style={{ fontSize: '1.3rem' }}>Oxiaire Gas Enterprises.</p>
       </Grid>
     </Grid>
   );
