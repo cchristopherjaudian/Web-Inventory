@@ -23,7 +23,7 @@ const OrderTable = (props) => {
   const [orderId, setOrderId] = useState('');
   const [paidOrder, setPaidOrder] = useState('');
   const { data, fetchData } = useAxios('orders/' + orderId, 'GET', null, false);
-  const { inventoryData, inventoryFetchData } = useInventoryAxios('orders/' + paidOrder, 'PATCH', { status: 'PAID', refNo: '1' }, true);
+  const { inventoryData, inventoryFetchData } = useInventoryAxios('orders/' + paidOrder, 'PATCH', { status: 'PAID' }, true);
 
   const [firebaseApp] = useState(() => {
     if (!firebase.apps.length) {
