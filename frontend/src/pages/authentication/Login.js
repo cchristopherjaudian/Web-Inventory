@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { Avatar, Button, CssBaseline, Paper, Box, TextField, Grid, Typography, InputAdornment, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import FirebaseSocial from './auth-forms/FirebaseSocial';
 import { styled } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
@@ -108,7 +107,9 @@ export default function Login() {
       const adminTypes = {
         ADMIN: 0,
         SUB_1: 1,
-        SUB_2: 2
+        SUB_2: 2,
+        WH: 3,
+        LOGI: 4
       };
       const customerTypes = {
         CUSTOMER: 0,
