@@ -37,25 +37,40 @@ const Confirmation = (props) => {
       }
     }
   }, [data]);
+
   return (
     <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-        <img
-          src={props.status.length < 3 ? 
-            props.method === 'PAY_LATER' ? '/asset/Gcash-MyQR.png' : '/asset/shopping-basket.png' 
-            : '/asset/delivery-truck.png'}
-          width={400}
-          height={
-            props.status.length < 3 && props.method === 'PAY_LATER' ? 600 : 400
-          }
-          alt="payment"
-        />
+        {
+          props.mainStatus === 'PENDING' ?
+            <>
+              <Typography variant="h2" sx={{color: '#d35400', mt:4}}>Your Order is Pending...</Typography>
+            </>
+            :
+            <img
+              src={props.status.length < 3 ?
+                props.method === 'PAY_LATER' ? '/asset/Gcash-MyQR.png' : '/asset/shopping-basket.png'
+                : '/asset/delivery-truck.png'}
+              width={400}
+              height={
+                props.status.length < 3 && props.method === 'PAY_LATER' ? 600 : 400
+              }
+              alt="payment"
+            />
+        }
+
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Typography variant="h1">{props.status.length >= 3 ? 
-        'Delivery Completed' 
-        : 'Waiting for Delivery'}
-        </Typography>
+        {
+          props.mainStatus === 'PENDING' ?
+            <Button variant="contained" color="error">Cancel Order</Button>
+            :
+            <Typography variant="h1">{props.status.length >= 3 ?
+              'Delivery Completed'
+              : 'Waiting for Delivery'}
+            </Typography>
+        }
+
       </Grid>
       {props.status.length >= 3 && (
         <>

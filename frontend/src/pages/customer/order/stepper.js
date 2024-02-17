@@ -1,11 +1,12 @@
-import { Box, Stepper, Step, StepButton, Stack, Grid, Typography } from '@mui/material';
+import { Box, Stepper, Step, StepButton, StepLabel, Stack, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
 import Cart from './cart';
 import Checkout from './checkout';
 import Confirmation from './confirmation';
 import Invoice from './invoice';
-const steps = ['Cart', 'Checkout', 'Payment', 'Invoice'];
+import Preview from './preview';
+const steps = ['Purchase Order', 'Payment Method', 'Order Status', 'Order Preview', 'Invoice'];
 
 const InvoiceStepper = (props) => {
   const [orderInfo, setOrderInfo] = useState({});
@@ -24,38 +25,61 @@ const InvoiceStepper = (props) => {
       setOrderInfo(data['data']);
     }
   }, [data]);
+  function renderStep(activeStep) {
+    switch (activeStep) {
+      case 0:
+        return <Cart orderItems={orderInfo['orderItems']} />;
+      case 1:
+        return <Checkout order={orderInfo} />;
+      case 2:
+        return <Confirmation
+          paymentUrl={orderInfo['paymentUrl']}
+          incrementStep={incrementStep}
+          id={orderInfo['id']}
+          method={orderInfo['paymentMethod']}
+          status={orderInfo['orderStatus']}
+          mainStatus={orderInfo['status']}
+        />
+      case 3:
+        return <Preview order={orderInfo}/>
+      case 4:
+        return <Invoice orderInfo={orderInfo} />;
+
+    }
+  }
+
+
+
   return (
     <>
       <Box sx={{ mt: 3, width: '100%' }}>
         <Stepper nonLinear activeStep={activeStep}>
-          {steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
-              <StepButton color="inherit" onClick={handleStep(index)}>
-                <Stack direction="column" sx={{ alignItems: 'center' }}>
-                  <Typography>{label}</Typography>
-                </Stack>
-              </StepButton>
-            </Step>
-          ))}
+          {steps.map((label, index) => {
+            const labelProps = {};
+
+            labelProps.optional = (
+              <Typography variant="caption" color="error">
+                Order is still pending
+              </Typography>
+            );
+
+            labelProps.error = true;
+
+            return (
+              <Step key={label} completed={completed[index]}>
+                <StepButton color="inherit" onClick={handleStep(index)} disabled={orderInfo['status'] === 'PENDING' && index === 4}>
+                  <Stack direction="column" sx={{ alignItems: 'center' }}>
+                    {
+                      orderInfo['status'] === 'PENDING' && index === 4 ? <StepLabel {...labelProps}>{label}</StepLabel> : <Typography>{label}</Typography>
+                    }
+                  </Stack>
+                </StepButton>
+              </Step>);
+          })}
         </Stepper>
       </Box>
       <Grid container sx={{ pt: 2 }}>
-        {activeStep === 0 ? (
-          <Cart orderItems={orderInfo['orderItems']} />
-        ) : activeStep === 1 ? (
-          <Checkout order={orderInfo} />
-        ) : activeStep === 2 ? (
-          <Confirmation
-            paymentUrl={orderInfo['paymentUrl']}
-            incrementStep={incrementStep}
-            id={orderInfo['id']}
-            method={orderInfo['paymentMethod']}
-            status={orderInfo['orderStatus']}
-            mainStatus={orderInfo['status']}
-          />
-        ) : (
-          <Invoice orderInfo={orderInfo} />
-        )}
+        {renderStep(activeStep)}
       </Grid>
     </>
   );
