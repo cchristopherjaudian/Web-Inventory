@@ -25,6 +25,6 @@ app.use(new RouteMiddleware().errorResponse);
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
-export const oxiare = new CloudFunctions()
+export const oxiareV2 = new CloudFunctions()
   .withRuntime()
   .handlerV2(<THttpsFunction>(<unknown>app));

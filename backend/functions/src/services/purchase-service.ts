@@ -1,4 +1,5 @@
 import moment from 'moment-timezone';
+import { v4 as uuidV4 } from 'uuid';
 import { TPrismaClient } from '../lib/prisma';
 import { TCart } from '../lib/types/cart-types';
 import {
@@ -69,7 +70,9 @@ class PurchaseService {
       payload.products.map(async (product) => {
         product.profileId = payload.profileId;
         product.createdAt = newDate;
-        return this._cart.addCart(product as TCart);
+        const cartId = uuidV4();
+        await this._db.prCustomPrices.create({ data: { cartId, price: 0.0 } });
+        return this._cart.addCart({ id: cartId, ...product } as TCart);
       })
     );
   }

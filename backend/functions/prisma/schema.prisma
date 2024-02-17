@@ -17,6 +17,8 @@ enum AccountTypes {
   ADMIN
   SUB_1
   SUB_2
+  WH
+  LOGI
 }
 
 enum AccountStatuses {
@@ -144,7 +146,24 @@ model Cart {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  cartId         String?
+  PrCustomPrices PrCustomPrices[]
+
   @@map("cart")
+}
+
+model PrCustomPrices {
+  id String @id @default(uuid())
+
+  cart   Cart?   @relation(fields: [cartId], references: [id])
+  cartId String?
+
+  price Decimal? @db.Decimal(9, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pr_custom_prices")
 }
 
 model Orders {

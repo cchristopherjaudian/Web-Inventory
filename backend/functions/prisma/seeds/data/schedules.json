@@ -1,0 +1,100 @@
+{
+  "data": [
+    {
+      "id": "31b4e12c-3940-4d84-8f14-4bc4f1027f05",
+      "route": "BARAKO",
+      "date": null,
+      "time": null,
+      "description": "Daily",
+      "plateNumber": "BARAKO",
+      "status": "ACTIVE",
+      "assigned": "Marlon",
+      "createdAt": "2024-01-03T13:15:10.612Z",
+      "updatedAt": "2024-01-03T13:15:10.612Z"
+    },
+    {
+      "id": "1d632143-48eb-4d3b-bb57-531843faeb4b",
+      "route": "AS PER SCHEDULE (DISTRICT HOSPITALS)",
+      "date": null,
+      "time": null,
+      "description": "Monday, Wednesday, and Friday",
+      "plateNumber": "CAO 1371",
+      "status": "ACTIVE",
+      "assigned": "Virmon/Kemp/Eric",
+      "createdAt": "2024-01-03T13:15:59.898Z",
+      "updatedAt": "2024-01-03T13:15:59.898Z"
+    },
+    {
+      "id": "0dbf7050-de41-4363-9f1f-ce352d1092da",
+      "route": "MALUPATA/LUCENA",
+      "date": null,
+      "time": null,
+      "description": "Tuesday, Thursday, and Saturday \n(8am-5pm)",
+      "plateNumber": "CAO 1371",
+      "status": "ACTIVE",
+      "assigned": "Virmon/ Kemp/Eric",
+      "createdAt": "2024-01-03T13:10:09.413Z",
+      "updatedAt": "2024-01-03T13:10:09.413Z"
+    },
+    {
+      "id": "1ee04787-d639-4c6e-9758-235fb3f890f8",
+      "route": "SARCANTIAO",
+      "date": null,
+      "time": null,
+      "description": "Monday, Wednesday and Friday \n(7am-4pm)",
+      "plateNumber": "AAO 4525",
+      "status": "ACTIVE",
+      "assigned": "Arbel/ Reynan/ Jonas",
+      "createdAt": "2024-01-03T13:12:04.587Z",
+      "updatedAt": "2024-01-03T13:12:04.587Z"
+    },
+    {
+      "id": "936a0f1b-b6af-4ea3-8757-36510e34ae52",
+      "route": "SILANGAN",
+      "date": null,
+      "time": null,
+      "description": "Wednesday and Saturday \n(3am)",
+      "plateNumber": "NET 3800",
+      "status": "ACTIVE",
+      "assigned": "Diego/ Marvin/ Ariel",
+      "createdAt": "2024-01-03T13:11:25.881Z",
+      "updatedAt": "2024-01-03T13:11:25.881Z"
+    },
+    {
+      "id": "28edf6c8-3c3a-4238-8751-c1fa8fd7c7b3",
+      "route": "INFANTA",
+      "date": null,
+      "time": null,
+      "description": "Thursday (3am)",
+      "plateNumber": "NET 3800",
+      "status": "ACTIVE",
+      "assigned": "Diego/ Marvin/ Ariel",
+      "createdAt": "2024-01-03T13:12:46.934Z",
+      "updatedAt": "2024-01-03T13:31:19.312Z"
+    },
+    {
+      "id": "11a8ff6c-439b-46d0-ba36-7d482c47d09e",
+      "route": "KANLURAN",
+      "date": null,
+      "time": null,
+      "description": "Tuesday",
+      "plateNumber": "NET 3800",
+      "status": "ACTIVE",
+      "assigned": "Diego/ Marvin/ Ariel",
+      "createdAt": "2024-01-03T13:13:17.558Z",
+      "updatedAt": "2024-01-09T07:33:52.705Z"
+    },
+    {
+      "id": "1be822d6-7a66-458a-9647-1de83d2832ce",
+      "route": "MT. CARMEL/TAYCOM/BIG CUSTOMERS",
+      "date": null,
+      "time": null,
+      "description": "Monday to friday",
+      "plateNumber": "NDU 7126",
+      "status": "ACTIVE",
+      "assigned": "Jowei/ Andrei/ Felix",
+      "createdAt": "2024-01-03T13:14:12.121Z",
+      "updatedAt": "2024-01-17T03:39:48.246Z"
+    }
+  ]
+}

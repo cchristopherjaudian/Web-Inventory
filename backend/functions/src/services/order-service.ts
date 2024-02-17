@@ -15,14 +15,6 @@ import { TPrismaClient } from '../lib/prisma';
 
 class OrderService {
   private _db: TPrismaClient;
-  private _defaultOrderStatus = {
-    orderStatus: {
-      create: {
-        status: OrderStatuses.PREPARING,
-        isCurrent: true,
-      },
-    },
-  };
   private _defaultOrderParams = {
     include: {
       orderItems: {
@@ -52,15 +44,6 @@ class OrderService {
   }
 
   public async createOrder(payload: TOrderPayload) {
-    let paymentStatus = PaymentStatuses.PROCESSING as PaymentStatuses;
-    if (
-      [PaymentMethods.BANK_TRANSFER, PaymentMethods.GCASH].includes(
-        payload.paymentMethod as 'GCASH' | 'BANK_TRANSFER'
-      )
-    ) {
-      paymentStatus = PaymentStatuses.PENDING;
-    }
-
     let paymentDeadline = null;
     if (payload.paymentMethod === PaymentMethods.PAY_LATER) {
       paymentDeadline = moment(new Date())
@@ -99,6 +82,7 @@ class OrderService {
           throw new BadRequestError('Insufficient stock.');
         }
         let currentQuantity = cart.quantity;
+
         inventories.every(async (inventory) => {
           const currentStock = Math.max(inventory.stock - currentQuantity, 0);
           currentQuantity = Math.max(currentQuantity - inventory.stock, 0);
@@ -139,7 +123,7 @@ class OrderService {
         paymentMethod: payload.paymentMethod,
         paymentUrl: payload.paymentUrl || null,
         refNo: payload.refNo || null,
-        status: paymentStatus,
+        status: PaymentStatuses.PENDING,
         paymentDeadline,
         quotationUrl: payload.quotationUrl || null,
         orderItems: {
@@ -147,8 +131,6 @@ class OrderService {
             data: mappedItems,
           },
         },
-        ...(paymentStatus !== PaymentStatuses.PENDING &&
-          this._defaultOrderStatus),
       },
     });
   }
