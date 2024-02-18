@@ -53,7 +53,7 @@ const CartItemList = (props) => {
         </Grid>
 
         <Grid item xs={12} md={3}>
-          <ListItemText primary={props.product.price} />
+         
         </Grid>
 
         <Grid item xs={12} md={3}>

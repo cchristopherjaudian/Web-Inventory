@@ -72,6 +72,13 @@ const Header = (props) => {
               >
                 Create Purchase Request
               </Button>
+              <Button
+                color= "error"                
+                variant="contained"
+                sx={{ml:2}}
+              >
+                Cancel Purchase Request
+              </Button>
             </Grid>
           </Grid>
         </Grid>
