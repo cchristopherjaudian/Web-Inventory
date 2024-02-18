@@ -1,6 +1,5 @@
 import { RouteStatuses } from '@prisma/client';
 import { TRoutes } from '../lib/types/schedule-types';
-import { NotFoundError } from '../lib/custom-errors/class-errors';
 import { TQueryArgs } from '../../index';
 import { TPrismaClient } from '../lib/prisma';
 

@@ -1,4 +1,3 @@
-import { Routes } from '@prisma/client';
 import { data } from './data/schedules.json';
 import Prisma from '../../src/lib/prisma';
 

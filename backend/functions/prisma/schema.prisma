@@ -147,7 +147,7 @@ model Cart {
   updatedAt     DateTime  @updatedAt
 
   cartId         String?
-  PrCustomPrices PrCustomPrices[]
+  PrCustomPrices PrCustomPrices?
 
   @@map("cart")
 }
@@ -156,7 +156,7 @@ model PrCustomPrices {
   id String @id @default(uuid())
 
   cart   Cart?   @relation(fields: [cartId], references: [id])
-  cartId String?
+  cartId String? @unique
 
   price Decimal? @db.Decimal(9, 2)
 
@@ -219,6 +219,8 @@ model OrderItems {
   orderId String
 
   quantity Int
+
+  customPrice Decimal? @db.Decimal(9, 2)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

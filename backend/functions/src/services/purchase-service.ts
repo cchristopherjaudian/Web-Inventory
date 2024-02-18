@@ -11,14 +11,23 @@ import CartService from './cart-service';
 import { BadRequestError } from '../lib/custom-errors/class-errors';
 
 class PurchaseService {
-  private _db: TPrismaClient;
-  private _cart: CartService;
+  private readonly _db: TPrismaClient;
 
   constructor(db: TPrismaClient) {
     this._db = db;
   }
 
   public async createPurchaseRequest(payload: TCreatePr) {
+    const totalQty = payload.products.reduce(
+      (acc, curr) => curr.quantity + acc,
+      0
+    );
+    if (totalQty < parseInt(process.env.MIN_PR_ITEMS as string)) {
+      throw new BadRequestError(
+        `Total quantity of PR should be a minimum of ${process.env.MIN_PR_ITEMS}`
+      );
+    }
+
     const prCount = await this._db.cart.groupBy({
       by: ['groupNo'],
       where: {
@@ -39,6 +48,7 @@ class PurchaseService {
         },
       },
     });
+
     if (prCount.length >= Number(process.env.MAX_PR)) {
       throw new BadRequestError('You reached the maximum request for today.');
     }
@@ -64,15 +74,14 @@ class PurchaseService {
       })
     );
 
-    this._cart = new CartService(this._db);
+    const cart = new CartService(this._db);
     const newDate = new Date();
     return Promise.all(
       payload.products.map(async (product) => {
         product.profileId = payload.profileId;
         product.createdAt = newDate;
-        const cartId = uuidV4();
-        await this._db.prCustomPrices.create({ data: { cartId, price: 0.0 } });
-        return this._cart.addCart({ id: cartId, ...product } as TCart);
+
+        return cart.addCart(product as TCart);
       })
     );
   }
@@ -81,11 +90,17 @@ class PurchaseService {
     const rawPurchaseList = await this._db.cart.findMany({
       include: {
         products: true,
+        PrCustomPrices: true,
       },
       where: {
         profile: {
           id: query.profileId,
         },
+        NOT: [
+          {
+            PrCustomPrices: null,
+          },
+        ],
       },
       orderBy: [{ createdAt: 'desc' }],
     });
@@ -99,7 +114,8 @@ class PurchaseService {
           .reduce(
             (acc, curr) => {
               acc.total =
-                acc.total + parseInt(<any>curr.products?.price) * curr.quantity;
+                acc.total +
+                parseInt(<any>curr.PrCustomPrices?.price) * curr.quantity;
 
               acc.qty = acc.qty + curr.quantity;
               return acc;
@@ -141,6 +157,7 @@ class PurchaseService {
               photoUrl: true,
             },
           },
+          PrCustomPrices: true,
         },
         where: {
           groupNo,

@@ -1,4 +1,10 @@
-import { OrderStatuses, PaymentMethods, PaymentStatuses } from '@prisma/client';
+import {
+  AccountTypes,
+  OrderStatuses,
+  PaymentMethods,
+  PaymentStatuses,
+  Prisma,
+} from '@prisma/client';
 import {
   BadRequestError,
   NotFoundError,
@@ -43,7 +49,42 @@ class OrderService {
     this._db = db;
   }
 
+  private async validateTotalOrders(payload: TOrderPayload) {
+    if (payload.accType !== AccountTypes.CUSTOMER) {
+      return;
+    }
+
+    if (
+      ![PaymentMethods.COD, PaymentMethods.GCASH].includes(
+        payload.paymentMethod as 'COD' | 'GCASH'
+      )
+    ) {
+      return;
+    }
+
+    let totalPrice = 0;
+    for (const item of payload.items) {
+      const [cart, product] = await Promise.all([
+        this._db.cart.findUnique({
+          where: { id: item.cartId },
+        }),
+        this._db.products.findUnique({
+          where: { id: item.productId },
+        }),
+      ]);
+      totalPrice += <any>product?.price * <any>cart?.quantity;
+    }
+
+    console.log('totalPrice', totalPrice);
+
+    if (totalPrice > parseInt(process.env.VALIDATION_TOTAL_PRICE as string)) {
+      throw new BadRequestError('Total price for GCASH and COD is 50k');
+    }
+  }
+
   public async createOrder(payload: TOrderPayload) {
+    await this.validateTotalOrders(payload);
+
     let paymentDeadline = null;
     if (payload.paymentMethod === PaymentMethods.PAY_LATER) {
       paymentDeadline = moment(new Date())
@@ -103,12 +144,22 @@ class OrderService {
           return true;
         });
 
+        let customPrice = new Prisma.Decimal(0);
+        if (payload.accType === AccountTypes.BUSINESS) {
+          const customPrPrice = await this._db.prCustomPrices.findFirst({
+            select: { price: true },
+            where: { cartId: cart.id },
+          });
+          customPrice = customPrPrice!.price!;
+        }
+
         // deletes cart if not flagged as save
         !cart.saved && (await this._db.cart.delete({ where: { id: cart.id } }));
 
         return {
           productId: item.productId,
           quantity: cart.quantity,
+          customPrice,
         };
       })
     );

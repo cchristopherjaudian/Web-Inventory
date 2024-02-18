@@ -15,13 +15,14 @@ const createOrder = catchAsync(async (req, res) => {
   const newItem = await order.createOrder({
     ...req.body,
     profileId: request.profile.id,
+    accType: request.profile.account.accountType,
   });
   await db.$disconnect();
   response.createResponse(
     res,
     httpStatus.OK,
     ResponseCodes.DATA_CREATED,
-    newItem
+    newItem!
   );
 });
 
