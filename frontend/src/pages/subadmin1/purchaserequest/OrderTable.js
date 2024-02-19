@@ -5,7 +5,7 @@ const OrderTable = (props) => {
   const [rows, setRows] = useState([]);
   const columns = [
     {
-      field: 'id',
+      field: 'group',
       headerName: 'Order No.',
       editable: false,
       flex: 1
@@ -33,6 +33,8 @@ const OrderTable = (props) => {
         const onClick = (event) => {
           event.stopPropagation();
 
+          // eto gamitin sa get PR
+          console.log('xxx', params.row.group);
         };
         return (
           <Button variant="outlined" color="primary" onClick={onClick}>
@@ -65,6 +67,7 @@ const OrderTable = (props) => {
                 }
               }
             }}
+            getRowId={(row) => row.group}
             pageSizeOptions={[10]}
             disableRowSelectionOnClick
             onCellClick={gridClick}
