@@ -74,6 +74,7 @@ const Purchase = () => {
       title: 'Purchase Request',
       text: 'Are you sure you want to proceed with your purchase request?',
       showCancelButton: true,
+      allowOutsideClick: false,
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -117,10 +118,11 @@ const Purchase = () => {
           text: 'PR created successfully. Click OK to continue',
           icon: 'success',
           showCancelButton: false,
+          allowOutsideClick: false,
           confirmButtonText: 'OK'
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate('/', { replace: true });
+            navigate('/home', { replace: true });
           }
         });
       } else {
