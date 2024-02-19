@@ -107,6 +107,23 @@ const OrderTable = (props) => {
       }
     },
     {
+      field: 'deliveryReceipt',
+      headerName: 'Delivery Receipt',
+      editable: false,
+      flex: 1,
+      renderCell: (params) => {
+        const onClick = (event) => {
+          event.stopPropagation();
+          
+        };
+        return (
+          <Button variant="outlined" color="info" onClick={onClick}>
+            RECEIPT
+          </Button>
+        );
+      }
+    },
+    {
       field: 'action3',
       headerName: 'Reminder',
       sortable: false,

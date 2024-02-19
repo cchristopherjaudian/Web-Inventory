@@ -76,6 +76,7 @@ const Header = (props) => {
                 color= "error"                
                 variant="contained"
                 sx={{ml:2}}
+                onClick={navigate("/",{replace:true})}
               >
                 Cancel Purchase Request
               </Button>

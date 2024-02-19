@@ -1,9 +1,10 @@
 
-import { SnippetsOutlined, NodeIndexOutlined } from '@ant-design/icons';
+import { SnippetsOutlined, NodeIndexOutlined, FileTextOutlined } from '@ant-design/icons';
 
 const icons = {
   SnippetsOutlined,
-  NodeIndexOutlined
+  NodeIndexOutlined,
+  FileTextOutlined
 };
 
 const pages = {
@@ -11,6 +12,14 @@ const pages = {
   title: 'Pages',
   type: 'group',
   children: [
+    {
+      id: 'pr',
+      title: 'Purchase Request List',
+      type: 'item',
+      url: '/pr',
+      icon: icons.FileTextOutlined,
+      breadcrumbs: false
+    },
     {
       id: 'notice',
       title: 'Order Notice',

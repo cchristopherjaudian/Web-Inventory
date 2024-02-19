@@ -112,7 +112,19 @@ const Purchase = () => {
     if (highData) {
       setGroupC('');
       if (highData['status'] === 200) {
-        navigate('/purchase/quotation/' + groupC, { replace: true });
+        Swal.fire({
+          title: "Purchase Request",
+          text: 'PR created successfully. Click OK to continue',
+          icon: 'success',
+          showCancelButton: false,
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/', { replace: true });
+          }
+        });
+      } else {
+        Swal.fire('Purchase Request', 'Failed to create PR. Please try again.', 'error');
       }
     }
   }, [highData]);
