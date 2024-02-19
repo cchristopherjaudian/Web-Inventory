@@ -1,11 +1,11 @@
 import moment from 'moment-timezone';
-import { v4 as uuidV4 } from 'uuid';
 import { TPrismaClient } from '../lib/prisma';
 import { TCart } from '../lib/types/cart-types';
 import {
   TCreatePr,
   TPurchaseList,
   TQuotationList,
+  TRawPurchaseList,
 } from '../lib/types/purchase-types';
 import CartService from './cart-service';
 import { BadRequestError } from '../lib/custom-errors/class-errors';
@@ -91,6 +91,7 @@ class PurchaseService {
       include: {
         products: true,
         PrCustomPrices: true,
+        profile: true,
       },
       where: {
         profile: {
@@ -105,6 +106,37 @@ class PurchaseService {
       orderBy: [{ createdAt: 'desc' }],
     });
 
+    const output = this.removePrDuplicates(rawPurchaseList as TRawPurchaseList);
+    return output;
+  }
+
+  public async getPendingPr() {
+    const rawPurchaseList = await this._db.cart.findMany({
+      include: {
+        products: true,
+        PrCustomPrices: true,
+        profile: true,
+      },
+      where: {
+        AND: [
+          {
+            PrCustomPrices: null,
+          },
+        ],
+
+        NOT: [
+          {
+            groupNo: null,
+          },
+        ],
+      },
+      orderBy: [{ createdAt: 'desc' }],
+    });
+    const output = this.removePrDuplicates(rawPurchaseList as TRawPurchaseList);
+    return output;
+  }
+
+  public removePrDuplicates(rawPurchaseList: TRawPurchaseList) {
     const groupHistory = [] as string[];
     const output = [] as TQuotationList[];
     rawPurchaseList.forEach((purchase, index, purchases) => {
@@ -128,6 +160,7 @@ class PurchaseService {
           group: purchase.groupNo as string,
           dateRequested: purchase.dateRequested as Date,
           dateRequired: purchase.dateRequired as Date,
+          customerName: `${purchase.profile.firstname} ${purchase.profile.lastname}`,
         });
       }
 

@@ -12,23 +12,28 @@ const joi = new JoiMiddleware();
 const authMiddleware = new AuthMiddleware(db);
 
 router.post(
-    '/',
-    authMiddleware.endUserValidate as any,
-    joi.requestSchemaValidate(createPurchaseSchema),
-    PurchaseController.createPurchase
+  '/',
+  authMiddleware.endUserValidate as any,
+  joi.requestSchemaValidate(createPurchaseSchema),
+  PurchaseController.createPurchase
 );
 
 router.get(
-    '/',
-    authMiddleware.endUserValidate as any,
-    joi.requestSchemaValidate(createPurchaseSchema),
-    PurchaseController.getPurchaseList
+  '/',
+  authMiddleware.endUserValidate as any,
+  PurchaseController.getPurchaseList
 );
 
 router.get(
-    '/:groupNo',
-    authMiddleware.endUserValidate as any,
-    PurchaseController.getPurchaseRequest
+  '/pending',
+  authMiddleware.endUserValidate as any,
+  PurchaseController.getPendingPrs
+);
+
+router.get(
+  '/:groupNo',
+  authMiddleware.endUserValidate as any,
+  PurchaseController.getPurchaseRequest
 );
 
 export default router;

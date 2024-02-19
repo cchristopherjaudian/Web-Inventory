@@ -1,3 +1,4 @@
+import { Cart, PrCustomPrices, Profile } from '@prisma/client';
 import { TCart } from './cart-types';
 
 export type TPurchaseList = {
@@ -21,4 +22,9 @@ export type TQuotationList = {
   group: string;
   dateRequired: Date;
   dateRequested: Date;
+  customerName: string;
 };
+
+export type TRawPurchaseList = Array<
+  Cart & { PrCustomPrices: PrCustomPrices; profile: Profile }
+>;
