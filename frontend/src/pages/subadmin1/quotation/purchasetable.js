@@ -5,20 +5,27 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const PurchaseTable = (props) => {
-  const cartList = []; //props.quoteInfo.list;
-  const [filledCart, setFilledCart] = useState(props?.cartList);
+  console.log(props);
+  const cartList = props.orderList;
+  const [filledCart, setFilledCart] = useState([]);
   function updateProductProperty(code, update) {
-    const updatedProducts = productList.map((p) => {
-      if (p.code === code) {
-        return { ...p, ...update };
+    const updatedProducts = filledCart.map((p) => {
+      if (p.products.code === code) {
+        return { ...p, 'PrCustomPrices':update };
       }
       return p;
     });
     setFilledCart(updatedProducts);
+    props.updateProductProperty(code,update);
   }
+  useEffect(()=>{
+    if(cartList.length > 0){
+      setFilledCart(cartList);
+    }
+  },[cartList])
   return (
     <Grid container>
       <Grid item xs={12} sx={{ pr: 1.5 }}>
@@ -34,10 +41,10 @@ const PurchaseTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {cartList?.length > 0 &&
-                cartList?.map((cart, index) => {
+              {filledCart?.length > 0 &&
+                filledCart?.map((cart, index) => {
                   return (
-                    <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell component="th" scope="row">
                         {cart.products.code}
                       </TableCell>
@@ -51,11 +58,12 @@ const PurchaseTable = (props) => {
                             fullWidth
                             id={cart.products.code}
                             label="Unit Price"
-                            onChange={(e) => updateProduct('quantity', Number(e.target.value))}
+                            value={cart.PrCustomPrices ? cart.PrCustomPrices : 0}
+                            onChange={(e) => updateProductProperty(cart.products.code, Number(e.target.value))}
                           />
                         }
                       /></TableCell>
-                      <TableCell>₱{cart.quantity * cart.products.price}</TableCell>
+                      <TableCell>₱{cart.quantity * cart.PrCustomPrices}</TableCell>
                     </TableRow>
                   );
                 })}

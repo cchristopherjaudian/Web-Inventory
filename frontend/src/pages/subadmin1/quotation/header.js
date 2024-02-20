@@ -48,9 +48,9 @@ const Header = (props) => {
                 <TableBody>
                   <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th" scope="row">
-                      {props.quoteInfo.groupNo}
+                      {props?.quoteInfo?.groupNo}
                     </TableCell>
-                    <TableCell>{props.quoteInfo.dateRequested?.substring(0, 10)}</TableCell>
+                    <TableCell>{props?.quoteInfo?.dateRequested?.substring(0, 10)}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
