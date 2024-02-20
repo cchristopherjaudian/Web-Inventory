@@ -32,7 +32,7 @@ const Header = (props) => {
                 fullWidth
                 inputProps={{
                   'aria-label': 'weight',
-                   min: new Date().toISOString().split('T')[0]
+                  min: new Date().toISOString().split('T')[0]
                 }}
                 id="dateRequested"
                 label="Date Requested"
@@ -51,7 +51,7 @@ const Header = (props) => {
                 fullWidth
                 inputProps={{
                   'aria-label': 'weight',
-                   min: new Date().toISOString().split('T')[0]
+                  min: new Date().toISOString().split('T')[0]
                 }}
                 id="dateRequired"
                 label="Date Required"
@@ -73,10 +73,10 @@ const Header = (props) => {
                 Create Purchase Request
               </Button>
               <Button
-                color= "error"                
+                color="error"
                 variant="contained"
-                sx={{ml:2}}
-                onClick={navigate("/",{replace:true})}
+                sx={{ ml: 2 }}
+                onClick={() => navigate("/home", { replace: true })}
               >
                 Cancel Purchase Request
               </Button>
