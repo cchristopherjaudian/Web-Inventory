@@ -2,7 +2,7 @@ import { Grid, TextField, Box, Typography } from '@mui/material';
 import CartItemList from './CartItemList';
 import { useState } from 'react';
 const Cart = (props) => {
-  const newCart = props.productList;
+  const newCart = props.orderList;
 
   return (
     <Grid container sx={{ mt: 2 }}>

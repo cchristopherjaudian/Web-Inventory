@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAxios from 'hooks/useAxios';
 
-const OrderConfirmation = () => {
+const OrderConfirmation = (props) => {
   const navigate = useNavigate();
   const confirmOrder = () => {
     Swal.fire({
@@ -43,7 +43,7 @@ const OrderConfirmation = () => {
             <Stack direction="column">
               <Grid item xs={12} container justifyContent="space-between">
                 <Typography variant="h4">Order ID: 12345678</Typography>
-                <Button variant="contained" onClick={()=>navigate("/quotation/id",{replace:true})}>CREATE QUOTATION</Button>
+                <Button variant="contained" onClick={()=>navigate("/quotation/" + props.orderId,{replace:true})}>CREATE QUOTATION</Button>
               </Grid>
 
               <Stack direction="row" gap={1}>

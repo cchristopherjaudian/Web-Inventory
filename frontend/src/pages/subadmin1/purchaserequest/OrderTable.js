@@ -1,8 +1,10 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Box, Grid, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 const OrderTable = (props) => {
   const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
   const columns = [
     {
       field: 'group',
@@ -32,9 +34,7 @@ const OrderTable = (props) => {
       renderCell: (params) => {
         const onClick = (event) => {
           event.stopPropagation();
-
-          // eto gamitin sa get PR
-          console.log('xxx', params.row.group);
+          navigate("/pr/" + params.row.group);
         };
         return (
           <Button variant="outlined" color="primary" onClick={onClick}>
