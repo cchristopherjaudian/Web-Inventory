@@ -128,7 +128,6 @@ const OrderConfirmation = (props) => {
             </Stack>
           </Grid>
           <Grid item sx={{ flexGrow: 1 }} xs={12}>
-            {orderInfo.id}
             {orderInfo.id && (
               <OrderSteps
                 isPending={pending}
