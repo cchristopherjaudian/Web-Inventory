@@ -9,10 +9,13 @@ import { EditOutlined } from '@ant-design/icons';
 import Typography from '@mui/material/Typography';
 import { useState, useEffect } from 'react';
 import useAxios from 'hooks/useAxios';
-const steps = ['Preparing', 'Dispatched', 'Delivered'];
+const steps = ['Confirmed', 'Preparing', 'Dispatched', 'Delivered'];
 
 const OrderSteps = (props) => {
   const initialState = [
+    {
+      CONFIRMED: ''
+    },
     {
       PREPARING: ''
     },
@@ -96,52 +99,57 @@ const OrderSteps = (props) => {
             <StepButton color="inherit" onClick={handleStep(index)}>
               <Stack direction="column" sx={{ alignItems: 'center' }}>
                 <Typography>{label}</Typography>
-                <FormControl sx={{ width: '90%', mt: 1 }}>
-                  <OutlinedInput
-                    size="small"
-                    type="date"
-                    id={index}
-                    name={index}
-                    tag={index}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <EditOutlined />
-                      </InputAdornment>
-                    }
-                    onChange={(event) => {
-                      let d = new Date(event.target.value);
-                      if (Number(d.getTime()) < 0) return;
-                      let newStepDate = [...stepDate];
-                      const currIndex = index < 1 ? index : index - 1;
-                      if (!orderStatus[currIndex]) {
-                        return;
+                {index > 0 ?
+                  <FormControl sx={{ width: '90%', mt: 1 }}>
+                    <OutlinedInput
+                      size="small"
+                      type="date"
+                      id={index}
+                      name={index}
+                      tag={index}
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <EditOutlined />
+                        </InputAdornment>
                       }
+                      onChange={(event) => {
+                        let d = new Date(event.target.value);
+                        if (Number(d.getTime()) < 0) return;
+                        let newStepDate = [...stepDate];
+                        const currIndex = index < 1 ? index : index - 1;
+                        if (!orderStatus[currIndex]) {
+                          return;
+                        }
 
-                      let previousStatusId = orderStatus.length > 0 ? orderStatus[currIndex]?.id : '';
-                      if (Object.keys(newStepDate[currIndex]).length > 0) {
-                        newStepDate[currIndex][Object.keys(newStepDate[currIndex])[0]] = event.target.value;
-                        setStepDate(newStepDate);
+                        let previousStatusId = orderStatus.length > 0 ? orderStatus[currIndex]?.id : '';
+                        if (Object.keys(newStepDate[currIndex]).length > 0) {
+                          newStepDate[currIndex][Object.keys(newStepDate[currIndex])[0]] = event.target.value;
+                          setStepDate(newStepDate);
+                        }
+                        let objIndex = event.target.name;
+                        let objKey = Object.keys(stepDate[objIndex])[0];
+
+                        setPayload({ orderId: props?.id, createdAt: event.target.value, status: objKey, orderStatusId: previousStatusId });
+                      }}
+                      onKeyPress={(event) => {
+                        event.preventDefault();
+                      }}
+                      inputProps={{
+                        'aria-label': 'weight',
+                        min: new Date().toISOString().split('T')[0]
+                      }}
+                      disabled={props.steps.length === 0}
+                      value={
+                        status && Array.isArray(status) && status[index] && status[index]['createdAt']
+                          ? status[index]['createdAt'].substring(0, 10)
+                          : stepDate[index][Object.keys(stepDate[index])[0]].substring(0, 10)
                       }
-                      let objIndex = event.target.name;
-                      let objKey = Object.keys(stepDate[objIndex])[0];
+                    />
+                  </FormControl>
+                  :
+                  <Typography>Date d2</Typography>
+                }
 
-                      setPayload({ orderId: props?.id, createdAt: event.target.value, status: objKey, orderStatusId: previousStatusId });
-                    }}
-                    onKeyPress={(event) => {
-                      event.preventDefault();
-                    }}
-                    inputProps={{
-                      'aria-label': 'weight',
-                      min: new Date().toISOString().split('T')[0]
-                    }}
-                    disabled={props.steps.length === 0}
-                    value={
-                      status && Array.isArray(status) && status[index] && status[index]['createdAt']
-                        ? status[index]['createdAt'].substring(0, 10)
-                        : stepDate[index][Object.keys(stepDate[index])[0]].substring(0, 10)
-                    }
-                  />
-                </FormControl>
               </Stack>
             </StepButton>
           </Step>
