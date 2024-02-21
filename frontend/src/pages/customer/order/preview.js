@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import CartItemList from "./CartItemList";
 import Customer from './customer';
 const Preview = ({ order = {} }) => {
+    
     return (<Grid container>
         <Grid item xs={12} md={5}>
             <Customer order={order}/>
