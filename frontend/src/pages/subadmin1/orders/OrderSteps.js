@@ -5,13 +5,15 @@ import StepButton from '@mui/material/StepButton';
 import Stack from '@mui/material/Stack';
 import { FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import { EditOutlined } from '@ant-design/icons';
-
+import { useSelector } from 'react-redux';
 import Typography from '@mui/material/Typography';
 import { useState, useEffect } from 'react';
 import useAxios from 'hooks/useAxios';
 const steps = ['Confirmed', 'Preparing', 'Dispatched', 'Delivered'];
 
 const OrderSteps = (props) => {
+  const adminType = useSelector((state) => state.token.admintype.adminType);
+
   const initialState = [
     {
       CONFIRMED: ''
@@ -90,7 +92,16 @@ const OrderSteps = (props) => {
   const handleStep = (step) => () => {
     setActiveStep(step);
   };
-
+  function stepDisabled(index) {
+    let isAllowed = false;
+    if (adminType === 1) {
+      isAllowed = index !== 2;
+    } else if (adminType === 3) {
+      isAllowed = index === 2;
+    }
+    return !(isAllowed);
+  }
+  
   return (
     <Box>
       <Stepper nonLinear activeStep={activeStep}>
@@ -138,7 +149,7 @@ const OrderSteps = (props) => {
                         'aria-label': 'weight',
                         min: new Date().toISOString().split('T')[0]
                       }}
-                      disabled={props.steps.length === 0}
+                      disabled={stepDisabled(index)}
                       value={
                         status && Array.isArray(status) && status[index] && status[index]['createdAt']
                           ? status[index]['createdAt'].substring(0, 10)
