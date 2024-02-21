@@ -12,25 +12,11 @@ const HeadInfo = (props) => {
 
   const methods = [
     {
-      id: 2,
-      img: '/asset/gcash.png',
-      code: 'GCASH',
-      name: 'GCash',
-      description: 'GCash facilitates digital payments, allowing customers to make transactions using their mobile phones.'
-    },
-    {
       id: 3,
       img: '/asset/bank.png',
       code: 'BANK_TRANSFER',
       name: 'Bank Transfer',
       description: 'Bank transfer facilitates digital payments, allowing customers to make transactions using their mobile phones.'
-    },
-    {
-      id: 3,
-      img: '/asset/cod.png',
-      code: 'COD',
-      name: 'Cash on Delivery',
-      description: 'COD offers customers the convenience of paying in cash upon product delivery'
     },
     {
       id: 3,
@@ -51,14 +37,14 @@ const HeadInfo = (props) => {
     <MainCard>
       <Grid container spacing={1}>
         <Grid item xs={6} sx={{ ml: -1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <img src="https://www.placehold.co/200x100" alt="x" />
+          <img src={profile.photoUrl.photoUrl} alt="CustomerDP" width={150} height={150} />
         </Grid>
         <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <Typography variant="h5">{props.prInfo.dateRequested?.substring(0, 10)}</Typography>
         </Grid>
         <Grid item xs={12} sx={{ p: 1, display: 'flex', direction: 'row', justifyContent: 'space-between', backgroundColor: '#3498db' }}>
           <Typography variant="h5" sx={{ color: 'white' }}>
-            Quote IDxxxx
+            Purchase ID
           </Typography>
           <Typography variant="h5" sx={{ color: 'white' }}>
             {props.prInfo.groupNo}
@@ -101,9 +87,7 @@ const HeadInfo = (props) => {
           <FormControl fullWidth sx={{ mt: 2 }}>
             <InputLabel id="payment-method">Payment Method</InputLabel>
             <Select labelId="payment-method" id="payment-method-select" value={paymethod} label="Payment Method" onChange={handleChange}>
-              <MenuItem value={'GCASH'}>GCash</MenuItem>
               <MenuItem value={'BANK_TRANSFER'}>Bank Transfer</MenuItem>
-              <MenuItem value={'COD'}>Cash on Delivery</MenuItem>
               <MenuItem value={'PAY_LATER'}>30 Days Term</MenuItem>
             </Select>
           </FormControl>
