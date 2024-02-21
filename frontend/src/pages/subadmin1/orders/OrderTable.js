@@ -37,7 +37,6 @@ const OrderTable = (props) => {
   useEffect(() => {
     if (props.orders) {
       setGridRows(props.orders);
-      console.log(props.orders);
     }
   }, [props.orders]);
   useEffect(() => {
@@ -114,7 +113,6 @@ const OrderTable = (props) => {
       renderCell: (params) => {
         const onClick = (event) => {
           event.stopPropagation();
-          
         };
         return (
           <Button variant="outlined" color="info" onClick={onClick}>

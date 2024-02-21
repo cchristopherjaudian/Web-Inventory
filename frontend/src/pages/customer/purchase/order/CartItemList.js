@@ -1,19 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Divider,
-  FormGroup,
-  FormControlLabel,
-  ListItemButton,
-  ListItemAvatar,
-  ListItemText,
-  OutlinedInput,
-  FormControl,
-  FormHelperText,
-  InputAdornment,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Divider, ListItemButton, ListItemAvatar, ListItemText, TextField, Typography } from '@mui/material';
 
 import { DeleteOutlined } from '@ant-design/icons';
 import { removeItem } from 'store/reducers/cart';

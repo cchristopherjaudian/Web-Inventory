@@ -32,8 +32,6 @@ const Orders = () => {
       const result = data['data']
         .filter((item) => !excludedStatuses.includes(item.status))
         .map((item) => {
-          console.log('item', item);
-
           return {
             createdAt: item.createdAt,
             paymentDeadline: item.paymentDeadline,

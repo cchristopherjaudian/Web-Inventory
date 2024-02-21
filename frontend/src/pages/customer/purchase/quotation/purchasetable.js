@@ -32,8 +32,8 @@ const PurchaseTable = (props) => {
                       </TableCell>
                       <TableCell>{cart.products.name}</TableCell>
                       <TableCell>{cart.quantity}</TableCell>
-                      <TableCell>₱{cart.products.price}</TableCell>
-                      <TableCell>₱{cart.quantity * cart.products.price}</TableCell>
+                      <TableCell>₱{cart?.PrCustomPrices.price}</TableCell>
+                      <TableCell>₱{cart.quantity * cart?.PrCustomPrices.price}</TableCell>
                     </TableRow>
                   );
                 })}

@@ -8,24 +8,23 @@ import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 
 const PurchaseTable = (props) => {
-  console.log(props);
   const cartList = props.orderList;
   const [filledCart, setFilledCart] = useState([]);
   function updateProductProperty(code, update) {
     const updatedProducts = filledCart.map((p) => {
       if (p.products.code === code) {
-        return { ...p, 'PrCustomPrices':update };
+        return { ...p, PrCustomPrices: update };
       }
       return p;
     });
     setFilledCart(updatedProducts);
-    props.updateProductProperty(code,update);
+    props.updateProductProperty(code, update);
   }
-  useEffect(()=>{
-    if(cartList.length > 0){
+  useEffect(() => {
+    if (cartList.length > 0) {
       setFilledCart(cartList);
     }
-  },[cartList])
+  }, [cartList]);
   return (
     <Grid container>
       <Grid item xs={12} sx={{ pr: 1.5 }}>
@@ -50,19 +49,22 @@ const PurchaseTable = (props) => {
                       </TableCell>
                       <TableCell>{cart.products.name}</TableCell>
                       <TableCell>{cart.quantity}</TableCell>
-                      <TableCell>₱<ListItemText
-                        sx={{ display: 'flex', justifyContent: 'flex-start' }}
-                        primary={
-                          <TextField
-                            name={cart.products.code}
-                            fullWidth
-                            id={cart.products.code}
-                            label="Unit Price"
-                            value={cart.PrCustomPrices ? cart.PrCustomPrices : 0}
-                            onChange={(e) => updateProductProperty(cart.products.code, Number(e.target.value))}
-                          />
-                        }
-                      /></TableCell>
+                      <TableCell>
+                        ₱
+                        <ListItemText
+                          sx={{ display: 'flex', justifyContent: 'flex-start' }}
+                          primary={
+                            <TextField
+                              name={cart.products.code}
+                              fullWidth
+                              id={cart.products.code}
+                              label="Unit Price"
+                              value={cart.PrCustomPrices ? cart.PrCustomPrices : 0}
+                              onChange={(e) => updateProductProperty(cart.products.code, Number(e.target.value))}
+                            />
+                          }
+                        />
+                      </TableCell>
                       <TableCell>₱{cart.quantity * cart.PrCustomPrices}</TableCell>
                     </TableRow>
                   );

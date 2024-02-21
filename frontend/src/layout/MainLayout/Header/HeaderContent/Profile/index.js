@@ -26,7 +26,7 @@ import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setToken,setAuth } from 'store/reducers/token';
+import { setToken, setAuth } from 'store/reducers/token';
 function TabPanel({ children, value, index, ...other }) {
   return (
     <div role="tabpanel" hidden={value !== index} id={`profile-tabpanel-${index}`} aria-labelledby={`profile-tab-${index}`} {...other}>
@@ -70,14 +70,12 @@ const Profile = () => {
   };
 
   const iconBackColorOpen = 'grey.300';
-  useSelector((state) => console.log(state.token));
   const firstName = useSelector((state) => state.profile.firstName.firstName);
   const middleName = useSelector((state) => state.profile.middleName.middleName);
   const lastName = useSelector((state) => state.profile.lastName.lastName);
   const adminType = useSelector((state) => state.token.admintype.adminType);
-  
+
   return (
-    
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
         sx={{
@@ -94,7 +92,9 @@ const Profile = () => {
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={avatar} sx={{ width: 32, height: 32 }} />
-          <Typography variant="subtitle1">{firstName}{' '}{middleName}{' '}{lastName}</Typography>
+          <Typography variant="subtitle1">
+            {firstName} {middleName} {lastName}
+          </Typography>
         </Stack>
       </ButtonBase>
       <Popper
@@ -137,9 +137,11 @@ const Profile = () => {
                           <Stack direction="row" spacing={1.25} alignItems="center">
                             <Avatar alt="profile user" src={avatar} sx={{ width: 32, height: 32 }} />
                             <Stack>
-                              <Typography variant="h6">{firstName}{' '}{middleName}{' '}{lastName}</Typography>
+                              <Typography variant="h6">
+                                {firstName} {middleName} {lastName}
+                              </Typography>
                               <Typography variant="body2" color="textSecondary">
-                                {adminType === 0 ? 'ADMIN': (adminType === 1) ? 'SUB ADMIN 1' : 'SUB ADMIN 2'}
+                                {adminType === 0 ? 'ADMIN' : adminType === 1 ? 'SUB ADMIN 1' : 'SUB ADMIN 2'}
                               </Typography>
                             </Stack>
                           </Stack>
@@ -162,13 +164,11 @@ const Profile = () => {
                               label="Profile"
                               {...a11yProps(0)}
                             />
-                           
                           </Tabs>
                         </Box>
                         <TabPanel value={value} index={0} dir={theme.direction}>
                           <ProfileTab />
                         </TabPanel>
-                       
                       </>
                     )}
                   </MainCard>

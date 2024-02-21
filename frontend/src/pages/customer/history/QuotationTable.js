@@ -46,7 +46,7 @@ const QuotationTable = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (props.transactions) {
-      setGridRows(props.transactions);
+      setGridRows(() => [...props.transactions]);
     }
   }, [props.transactions]);
   useEffect(() => {

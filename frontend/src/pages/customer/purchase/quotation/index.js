@@ -71,7 +71,7 @@ const Quotation = () => {
   useEffect(() => {
     if (data) {
       const totalValue = data['data']['list']?.reduce((total, item) => {
-        return total + item.quantity * item.products.price;
+        return total + item.quantity * item?.PrCustomPrices.price;
       }, 0);
       setQuoteInfo({ ...data['data'], totalAmount: totalValue });
     }

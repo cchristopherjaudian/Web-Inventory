@@ -6,9 +6,11 @@ import Checkout from './checkout';
 import Confirmation from './confirmation';
 import Invoice from './invoice';
 import Preview from './preview';
+import { useSelector } from 'react-redux';
 const steps = ['Purchase Order', 'Payment Method', 'Order Status', 'Order Preview', 'Invoice'];
 
 const InvoiceStepper = (props) => {
+  const { accType } = useSelector((state) => state.profile.accType);
   const [orderInfo, setOrderInfo] = useState({});
   const { data } = useAxios('orders/' + props.orderId, 'GET', null, false);
   const [activeStep, setActiveStep] = useState(0);
@@ -22,7 +24,15 @@ const InvoiceStepper = (props) => {
   };
   useEffect(() => {
     if (data) {
-      setOrderInfo(data['data']);
+      const mappedOrders = data?.data.orderItems.map((k) => ({
+        ...k,
+        products: {
+          ...k.products,
+          price: accType === 'BUSINESS' ? k.customPrice : k.products.price
+        }
+      }));
+      data.data.orderItems = mappedOrders;
+      setOrderInfo(data.data);
     }
   }, [data]);
   function renderStep(activeStep) {
@@ -32,23 +42,22 @@ const InvoiceStepper = (props) => {
       case 1:
         return <Checkout order={orderInfo} />;
       case 2:
-        return <Confirmation
-          paymentUrl={orderInfo['paymentUrl']}
-          incrementStep={incrementStep}
-          id={orderInfo['id']}
-          method={orderInfo['paymentMethod']}
-          status={orderInfo['orderStatus']}
-          mainStatus={orderInfo['status']}
-        />
+        return (
+          <Confirmation
+            paymentUrl={orderInfo['paymentUrl']}
+            incrementStep={incrementStep}
+            id={orderInfo['id']}
+            method={orderInfo['paymentMethod']}
+            status={orderInfo['orderStatus']}
+            mainStatus={orderInfo['status']}
+          />
+        );
       case 3:
-        return <Preview order={orderInfo}/>
+        return <Preview order={orderInfo} />;
       case 4:
         return <Invoice orderInfo={orderInfo} />;
-
     }
   }
-
-
 
   return (
     <>
@@ -69,12 +78,15 @@ const InvoiceStepper = (props) => {
               <Step key={label} completed={completed[index]}>
                 <StepButton color="inherit" onClick={handleStep(index)} disabled={orderInfo['status'] === 'PENDING' && index === 4}>
                   <Stack direction="column" sx={{ alignItems: 'center' }}>
-                    {
-                      orderInfo['status'] === 'PENDING' && index === 4 ? <StepLabel {...labelProps}>{label}</StepLabel> : <Typography>{label}</Typography>
-                    }
+                    {orderInfo['status'] === 'PENDING' && index === 4 ? (
+                      <StepLabel {...labelProps}>{label}</StepLabel>
+                    ) : (
+                      <Typography>{label}</Typography>
+                    )}
                   </Stack>
                 </StepButton>
-              </Step>);
+              </Step>
+            );
           })}
         </Stepper>
       </Box>

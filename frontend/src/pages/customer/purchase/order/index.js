@@ -11,7 +11,7 @@ import Payment from './payment';
 import Acknowledge from './acknowledge';
 const Order = () => {
   let { id } = useParams();
-  const [orderId,setOrderId] = useState('');
+  const [orderId, setOrderId] = useState('');
   const [showAck, setShowAck] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState('');
@@ -105,7 +105,6 @@ const Order = () => {
           confirmButtonText: 'Ok'
         }).then((result) => {
           if (result.isConfirmed) {
-            console.log(highData);
             const orderId = highData?.data?.id;
             setShowAck(true);
             setOrderId(orderId);
@@ -126,34 +125,32 @@ const Order = () => {
 
   return (
     <Grid container spacing={1} sx={{ mt: 2 }}>
-      {
-        !showAck ?
-          <>
-            <Grid item xs={12} lg={3}>
-              <HeadInfo
-                setShowQR={setShowQR}
-                setPaymentUrl={setPaymentUrl}
-                highLoading={highLoading}
-                prInfo={prInfo}
-                payMethod={payMethod}
-                setPaymethod={setPaymethod}
-                proceedCheckout={proceedCheckout}
-                setTermsApproved={setTermsApproved}
-                termsApproved={termsApproved}
-              />
-            </Grid>
-            <Grid item xs={12} lg={9}>
-              {showQR && payMethod !== 'COD' ? (
-                <Payment setPaymentUrl={setPaymentUrl} setReferenceNumber={setReferenceNo} paymentMethod={payMethod} setShowQR={setShowQR} />
-              ) : (
-                <Cart prInfo={prInfo} />
-              )}
-            </Grid>
-          </>
-          :
-          <Acknowledge orderId={orderId}/>
-      }
-
+      {!showAck ? (
+        <>
+          <Grid item xs={12} lg={3}>
+            <HeadInfo
+              setShowQR={setShowQR}
+              setPaymentUrl={setPaymentUrl}
+              highLoading={highLoading}
+              prInfo={prInfo}
+              payMethod={payMethod}
+              setPaymethod={setPaymethod}
+              proceedCheckout={proceedCheckout}
+              setTermsApproved={setTermsApproved}
+              termsApproved={termsApproved}
+            />
+          </Grid>
+          <Grid item xs={12} lg={9}>
+            {showQR && payMethod !== 'COD' ? (
+              <Payment setPaymentUrl={setPaymentUrl} setReferenceNumber={setReferenceNo} paymentMethod={payMethod} setShowQR={setShowQR} />
+            ) : (
+              <Cart prInfo={prInfo} />
+            )}
+          </Grid>
+        </>
+      ) : (
+        <Acknowledge orderId={orderId} />
+      )}
     </Grid>
   );
 };
