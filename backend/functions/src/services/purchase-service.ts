@@ -8,7 +8,10 @@ import {
   TRawPurchaseList,
 } from '../lib/types/purchase-types';
 import CartService from './cart-service';
-import { BadRequestError } from '../lib/custom-errors/class-errors';
+import {
+  BadRequestError,
+  NotFoundError,
+} from '../lib/custom-errors/class-errors';
 
 class PurchaseService {
   private readonly _db: TPrismaClient;
@@ -173,6 +176,9 @@ class PurchaseService {
   public async getPurchaseRequest(groupNo: string) {
     const [groupDetails, list] = await Promise.all([
       this._db.cart.findFirst({
+        include: {
+          profile: true,
+        },
         where: {
           groupNo,
         },
@@ -198,10 +204,15 @@ class PurchaseService {
       }),
     ]);
 
+    if (!groupDetails) throw new NotFoundError('PR does not exists');
+
     return {
       groupNo,
       dateRequested: groupDetails?.dateRequested,
       dateRequired: groupDetails?.dateRequired,
+      customerInfo: {
+        ...groupDetails?.profile,
+      },
       list,
     };
   }
