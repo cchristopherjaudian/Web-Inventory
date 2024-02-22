@@ -1,7 +1,7 @@
 import { Button, Grid, TextField, Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-const Info = () => {
-  const profile = useSelector((state) => state.profile);
+const Info = (props) => {
+  const customerInfo = props.customerInfo;
   return (
     <Box sx={{ mt: 2 }}>
       <Grid container sx={{ px: 1.5, pb: 3 }}>
@@ -75,7 +75,7 @@ const Info = () => {
             <Grid item xs={12}>
               <TextField
                 name="customerName"
-                value={profile.firstName.firstName}
+                value={customerInfo.fullName}
                 fullWidth
                 id="customerName"
                 label="Customer Name"
@@ -85,7 +85,7 @@ const Info = () => {
             <Grid item xs={12}>
               <TextField
                 name="customerBusiness"
-                value={profile.businessName.businessName}
+                value={customerInfo.businessName}
                 fullWidth
                 id="customerBusiness"
                 label="Company Name"
@@ -95,7 +95,7 @@ const Info = () => {
             <Grid item xs={12}>
               <TextField
                 name="customerAddress"
-                value={profile.address.address}
+                value={customerInfo.address}
                 fullWidth
                 id="customerAddress"
                 label="Address"
@@ -105,7 +105,7 @@ const Info = () => {
             <Grid item xs={12}>
               <TextField
                 name="customerPhone"
-                value={profile.contact.contact}
+                value=""
                 fullWidth
                 id="customerPhone"
                 label="Phone Number"
@@ -115,7 +115,7 @@ const Info = () => {
             <Grid item xs={12}>
               <TextField
                 name="customerEmail"
-                value={profile.emailAddress.emailAddress}
+                value={customerInfo.emailAddress}
                 fullWidth
                 id="customerEmail"
                 label="Email Address"

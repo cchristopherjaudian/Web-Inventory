@@ -6,10 +6,12 @@ import Option from 'pages/customer/checkout/option';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 const HeadInfo = (props) => {
-  const profile = useSelector((state) => state.profile);
-
+  console.log(props);
+  const customerInfo = props.customerInfo;
   const [paymethod, setPaymethod] = useState('');
-
+  const totalAmount = props.prInfo.list.reduce((sum,item)=>{
+    return sum += (item.quantity * item.PrCustomPrices.price);
+  },0);
   const methods = [
     {
       id: 3,
@@ -37,7 +39,7 @@ const HeadInfo = (props) => {
     <MainCard>
       <Grid container spacing={1}>
         <Grid item xs={6} sx={{ ml: -1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <img src={profile.photoUrl.photoUrl} alt="CustomerDP" width={150} height={150} />
+          <img src={customerInfo.photoUrl} alt="CustomerDP" width={150} height={150} />
         </Grid>
         <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <Typography variant="h5">{props.prInfo.dateRequested?.substring(0, 10)}</Typography>
@@ -52,15 +54,15 @@ const HeadInfo = (props) => {
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
           <Typography variant="body1">Requester Name</Typography>
-          <Typography variant="body1">{profile.firstName.firstName}</Typography>
+          <Typography variant="body1">{customerInfo.fullName}</Typography>
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
           <Typography variant="body1">Email Address</Typography>
-          <Typography variant="body1">{profile.emailAddress.emailAddress}</Typography>
+          <Typography variant="body1">{customerInfo.emailAddress}</Typography>
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
           <Typography variant="body1">Contact Number</Typography>
-          <Typography variant="body1">{profile.contact.contact}</Typography>
+          <Typography variant="body1"></Typography>
         </Grid>
         <Grid
           item
@@ -79,7 +81,7 @@ const HeadInfo = (props) => {
             TOTAL:
           </Typography>
           <Typography variant="h3" sx={{ color: 'white', mt: 2 }}>
-            PHP {props.prInfo.totalAmount}
+            PHP {totalAmount}
           </Typography>
         </Grid>
         <Grid item xs={12} sx={{ mt: 2 }}>

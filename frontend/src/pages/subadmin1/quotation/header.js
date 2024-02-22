@@ -8,8 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import { useSelector } from 'react-redux';
 
 const Header = (props) => {
-  const profile = useSelector((state) => state.profile);
-
+  const customerInfo = props?.customerInfo;
   return (
     <Box>
       <Grid container spacing={1.5} style={{ padding: '20px' }}>
@@ -23,13 +22,13 @@ const Header = (props) => {
             <Box sx={{ display: 'inline-flex', flexDirection: 'row' }}>
               <img
                 style={{ maxWidth: '120px', maxHeight: 'auto' }}
-                src={profile.photoUrl?.photoUrl || '/images/example.jpg'}
+                src={props.customerInfo.photoUrl || '/images/example.jpg'}
                 alt="test x"
               />
               <div style={{ marginLeft: '20px' }}>
-                <Typography variant="h6">Requester Name: {profile.firstName.firstName}</Typography>
-                <Typography variant="h6">Email Address: {profile.emailAddress.emailAddress}</Typography>
-                <Typography variant="h6">Contact No: {profile.contact.contact}</Typography>
+                <Typography variant="h6">Requester Name: {customerInfo.fullName}</Typography>
+                <Typography variant="h6">Email Address: {customerInfo.emailAddress}</Typography>
+                <Typography variant="h6">Contact No: </Typography>
               </div>
             </Box>
           </Grid>
@@ -48,9 +47,9 @@ const Header = (props) => {
                 <TableBody>
                   <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th" scope="row">
-                      {props?.quoteInfo?.groupNo}
+                      {props?.orderInfo?.groupNo}
                     </TableCell>
-                    <TableCell>{props?.quoteInfo?.dateRequested?.substring(0, 10)}</TableCell>
+                    <TableCell>{props?.orderInfo?.dateRequested?.substring(0, 10)}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

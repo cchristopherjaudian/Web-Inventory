@@ -6,7 +6,8 @@ import Swal from 'sweetalert2';
 import useAxios from 'hooks/useAxios';
 
 const OrderConfirmation = (props) => {
-  const navigate = useNavigate();
+  const customerInfo = props.customerInfo;
+  const orderInfo = props.orderInfo;
   const confirmOrder = () => {
     Swal.fire({
       allowOutsideClick: false,
@@ -37,12 +38,12 @@ const OrderConfirmation = (props) => {
 
   return (
     <Grid item xs={12}>
-      <MainCard title='Customer Name here'>
+      <MainCard title={props.customerInfo.fullName}>
         <Grid container spacing={3} sx={{ display: 'flex', alignItems: 'center' }}>
           <Grid item xs={12}>
             <Stack direction="column">
               <Grid item xs={12} container justifyContent="space-between">
-                <Typography variant="h4">Order ID: 12345678</Typography>
+                <Typography variant="h4">Order ID: {props.orderInfo.groupNo}</Typography>
                 <Stack direction="row">
                   <Typography variant="h4">Total Price:</Typography>
                   <Typography variant="h4">{props?.totalPrice}</Typography>
@@ -51,8 +52,8 @@ const OrderConfirmation = (props) => {
               </Grid>
               <Grid item xs={12} container justifyContent="space-between">
                 <Grid item xs={6} container justifyContent="flex-start">
-                  <Typography variant="caption">Date Requested:</Typography>
-                  {/* {orderInfo.createdAt && <Typography variant="caption">{orderInfo.createdAt?.substring(0, 10)}</Typography>} */}
+                  <Typography variant="caption">Date Requested: </Typography>
+                  {props.orderInfo.dateRequested && <Typography variant="caption">{props.orderInfo.dateRequested?.substring(0, 10)}</Typography>}
 
                 </Grid>
                 <Grid item xs={6} container justifyContent="flex-end">

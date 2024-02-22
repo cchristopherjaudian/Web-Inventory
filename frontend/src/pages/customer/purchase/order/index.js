@@ -21,6 +21,7 @@ const Order = () => {
   const [refNo, setReferenceNo] = useState('');
   const [termsApproved, setTermsApproved] = useState(false);
   const [prInfo, setPrInfo] = useState({});
+  const [customerInfo,setCustomerInfo] = useState({});
   const { data } = useAxios('purchase/' + id, 'GET', null, false);
   const { highData, highLoading, highFetchData } = useHighAxios('orders', 'POST', mapPayload, true);
   useEffect(() => {
@@ -28,6 +29,7 @@ const Order = () => {
       let totalValue = data['data']['list']?.reduce((total, item) => {
         return total + item.quantity * item.products.price;
       }, 0);
+      setCustomerInfo(data?.data?.customerInfo);
       setPrInfo({ ...data['data'], totalAmount: totalValue });
     }
   }, [data]);
@@ -129,6 +131,7 @@ const Order = () => {
         <>
           <Grid item xs={12} lg={3}>
             <HeadInfo
+              customerInfo={customerInfo}
               setShowQR={setShowQR}
               setPaymentUrl={setPaymentUrl}
               highLoading={highLoading}

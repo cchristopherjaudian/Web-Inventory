@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 const Quotation = () => {
   let { id } = useParams();
   const [quoteInfo, setQuoteInfo] = useState({});
+  const [customerInfo,setCustomerInfo] = useState({});
   const { data } = useAxios('purchase/' + id, 'GET', null, false);
   const quotationBody = useRef(null);
   const [showHeader, setShowHeader] = useState(false);
@@ -73,6 +74,7 @@ const Quotation = () => {
       const totalValue = data['data']['list']?.reduce((total, item) => {
         return total + item.quantity * item?.PrCustomPrices.price;
       }, 0);
+      setCustomerInfo(data?.data?.customerInfo);
       setQuoteInfo({ ...data['data'], totalAmount: totalValue });
     }
   }, [data]);
@@ -90,7 +92,7 @@ const Quotation = () => {
         ) : (
           ''
         )}
-        <Info quoteInfo={quoteInfo} />
+        <Info quoteInfo={quoteInfo} customerInfo={customerInfo}/>
         <PurchaseTable quoteInfo={quoteInfo} />
       </div>
       <Options initPdf={generatePdf} initPng={generatePng} quoteInfo={quoteInfo} />
