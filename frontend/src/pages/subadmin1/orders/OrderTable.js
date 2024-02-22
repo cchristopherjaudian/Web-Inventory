@@ -150,6 +150,7 @@ const OrderTable = (props) => {
                 content: '',
                 orderId: params.row.id,
                 img: '',
+                type: 'reminder',
                 html: {
                   orderId: params.row.id,
                   price: totalPrice,
