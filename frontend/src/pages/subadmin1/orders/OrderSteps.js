@@ -54,6 +54,7 @@ const OrderSteps = (props) => {
         const index = newStepDate.findIndex((obj) => Object.prototype.hasOwnProperty.call(obj, label.status));
         if (index !== -1) {
           newStepDate[index][label.status] = label.createdAt;
+          setActiveStep(index);
         } else {
           newStepDate.push({ [label.status]: label.createdAt });
         }
@@ -96,9 +97,13 @@ const OrderSteps = (props) => {
     let isAllowed = false;
     if (adminType === 1) {
       isAllowed = index !== 2;
+      console.log(index + " " + isAllowed);
     } else if (adminType === 3) {
       isAllowed = index === 2;
     }
+    if(index === 1) isAllowed = false;
+  
+
     return !(isAllowed);
   }
   
@@ -106,7 +111,7 @@ const OrderSteps = (props) => {
     <Box>
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
-          <Step key={label} completed={completed[index]}>
+          <Step key={label}>
             <StepButton color="inherit" onClick={handleStep(index)}>
               <Stack direction="column" sx={{ alignItems: 'center' }}>
                 <Typography>{label}</Typography>
@@ -158,7 +163,7 @@ const OrderSteps = (props) => {
                     />
                   </FormControl>
                   :
-                  <Typography>Date d2</Typography>
+                  <Typography></Typography>
                 }
 
               </Stack>

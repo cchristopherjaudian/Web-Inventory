@@ -48,7 +48,7 @@ const Options = (props) => {
         >
           Continue to Purchase Order
         </Button>
-        <Button
+        {/* <Button
           variant="outlined"
           color="primary"
           sx={{ mt: 2 }}
@@ -56,7 +56,7 @@ const Options = (props) => {
           onClick={() => navigate('/purchase/request', { replace: true })}
         >
           Make another request
-        </Button>
+        </Button> */}
       </Grid>
     </Grid>
   );
