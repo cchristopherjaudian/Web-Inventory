@@ -36,14 +36,25 @@ const Confirmation = (props) => {
       }
     }
   }, [data]);
-
+  function renderStatus(statusLength) {
+    switch (statusLength) {
+      case 0:
+        return "Your order is pending....";
+      case 1:
+        return "Oxiaire is preparing your oder";
+      case 2:
+        return "Your order has been dispatched...\nWaiting for delivery...";
+      case 3:
+        return "Your order has been delivered";
+    }
+  }
   return (
     <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
         {props.mainStatus === 'PENDING' ? (
           <>
             <Typography variant="h2" sx={{ color: '#d35400', mt: 4 }}>
-              Your Order is Pending...
+              {renderStatus(props.status.length)}
             </Typography>
           </>
         ) : (
@@ -62,12 +73,10 @@ const Confirmation = (props) => {
         )}
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        {props.mainStatus === 'PENDING' ? (
+        {props.status.length === 0 && (
           <Button variant="contained" color="error">
             Cancel Order
           </Button>
-        ) : (
-          <Typography variant="h1">{props.status.length >= 3 ? 'Delivery Completed' : 'Waiting for Delivery'}</Typography>
         )}
       </Grid>
       {props.status.length >= 3 && (
