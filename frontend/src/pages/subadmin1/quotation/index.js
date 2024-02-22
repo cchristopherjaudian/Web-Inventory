@@ -110,13 +110,14 @@ const Quotation = () => {
   useEffect(() => {
     if (highData) {
       const responseCode = highData.status;
+      console.log(highData);
       if (responseCode === 200) {
         let customerType = 'B2B';
-        let customerMobile = customerInfo.id;
-        let quoteId = highData.data.id;
+        let customerMobile = '09272636223'; // customerInfo.id;
+       
         let newMessage = {
           content: '',
-          orderId: quoteId,
+          orderId: id,
           img: '',
           type: 'quote',
           time: new Date().toISOString(),
@@ -125,9 +126,9 @@ const Quotation = () => {
           name: myName,
           photoUrl: myPhoto
         };
-        //uncomment pag may mobile number na
-        // messageRef = database.ref(customerType + '/recipients/' + customerMobile + '/chat/messages/');
-        // messageRef.push(newMessage);
+        
+        messageRef = database.ref(customerType + '/recipients/' + customerMobile + '/chat/messages/');
+        messageRef.push(newMessage);
         Swal.fire({
           title: msgTitle,
           text: 'Quotation created successfully. Click OK to continue',
