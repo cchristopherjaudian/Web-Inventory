@@ -78,7 +78,6 @@ const Info = (props) => {
                 value={customerInfo.fullName}
                 fullWidth
                 id="customerName"
-                label="Customer Name"
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
@@ -88,7 +87,6 @@ const Info = (props) => {
                 value={customerInfo.businessName}
                 fullWidth
                 id="customerBusiness"
-                label="Company Name"
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
@@ -98,7 +96,6 @@ const Info = (props) => {
                 value={customerInfo.address}
                 fullWidth
                 id="customerAddress"
-                label="Address"
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
@@ -108,7 +105,6 @@ const Info = (props) => {
                 value=""
                 fullWidth
                 id="customerPhone"
-                label="Phone Number"
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
@@ -118,7 +114,6 @@ const Info = (props) => {
                 value={customerInfo.emailAddress}
                 fullWidth
                 id="customerEmail"
-                label="Email Address"
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
