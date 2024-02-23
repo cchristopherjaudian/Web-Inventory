@@ -9,7 +9,7 @@ const HeadInfo = (props) => {
   console.log(props);
   const customerInfo = props.customerInfo;
   const [paymethod, setPaymethod] = useState('');
-  const totalAmount = props.prInfo.list.reduce((sum,item)=>{
+  const totalAmount = props.prInfo?.list?.reduce((sum,item)=>{
     return sum += (item.quantity * item.PrCustomPrices.price);
   },0);
   const methods = [

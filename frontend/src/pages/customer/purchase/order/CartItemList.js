@@ -29,7 +29,7 @@ const CartItemList = (props) => {
           }
           secondary={props.product.products.code}
         />
-        <ListItemText sx={{ display: 'flex', justifyContent: 'flex-end' }} primary={'₱' + props.product.products.price} />
+        <ListItemText sx={{ display: 'flex', justifyContent: 'flex-end' }} primary={'₱' + props.product.PrCustomPrices.price} />
         <ListItemText
           sx={{ display: 'flex', justifyContent: 'flex-end' }}
           primary={<TextField name="quantity" fullWidth id="quantity" label="Quantity" type="number" value={props.product.quantity} />}
