@@ -42,13 +42,13 @@ const createOrderStatus = catchAsync(async (req, res) => {
 });
 
 const updateOrder = catchAsync(async (req, res) => {
-  const newStatus = await order.updateOrder(req.params.orderId, req.body);
+  const updatedOrder = await order.updateOrder(req.params.orderId, req.body);
   await db.$disconnect();
   response.createResponse(
     res,
     httpStatus.OK,
     ResponseCodes.DATA_MODIFIED,
-    newStatus
+    updatedOrder
   );
 });
 
@@ -76,35 +76,46 @@ const getOrder = catchAsync(async (req, res) => {
 
 const endUserOrders = catchAsync(async (req, res) => {
   const request = req as IAuthRequest;
-  const newStatus = await order.endUserOrders(request.profile.id);
+  const customersOrders = await order.endUserOrders(request.profile.id);
   await db.$disconnect();
   response.createResponse(
     res,
     httpStatus.OK,
     ResponseCodes.LIST_RETRIEVED,
-    newStatus
+    customersOrders
   );
 });
 
 const adminOrders = catchAsync(async (req, res) => {
-  const newStatus = await order.adminOrders();
+  const adminOrderList = await order.adminOrders();
   await db.$disconnect();
   response.createResponse(
     res,
     httpStatus.OK,
     ResponseCodes.LIST_RETRIEVED,
-    newStatus
+    adminOrderList
   );
 });
 
 const getOrdersTxn = catchAsync(async (req, res) => {
-  const newStatus = await order.ordersTxn();
+  const transactionOrders = await order.ordersTxn();
   await db.$disconnect();
   response.createResponse(
     res,
     httpStatus.OK,
     ResponseCodes.LIST_RETRIEVED,
-    newStatus
+    transactionOrders
+  );
+});
+
+const getDispatchOrders = catchAsync(async (req, res) => {
+  const dispatchedOrders = await order.getDispatchOrders();
+  await db.$disconnect();
+  response.createResponse(
+    res,
+    httpStatus.OK,
+    ResponseCodes.LIST_RETRIEVED,
+    dispatchedOrders
   );
 });
 
@@ -117,4 +128,5 @@ export default {
   adminOrders,
   getOrder,
   cancelOrder,
+  getDispatchOrders,
 };

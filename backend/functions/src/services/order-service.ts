@@ -332,6 +332,23 @@ class OrderService {
 
     return mappedTransactions;
   }
+
+  public async getDispatchOrders() {
+    return this._db.orderStatus.findMany({
+      include: {
+        orders: {
+          include: {
+            profile: true,
+          },
+        },
+      },
+
+      where: {
+        status: OrderStatuses.DISPATCHED,
+        isCurrent: true,
+      },
+    });
+  }
 }
 
 export default OrderService;

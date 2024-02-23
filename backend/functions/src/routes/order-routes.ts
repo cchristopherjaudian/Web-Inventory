@@ -24,7 +24,7 @@ router
   .post(
     '/status',
     joi.requestSchemaValidate(createOrderStatusSchema),
-    authMiddleware.adminValidate(['ADMIN', 'SUB_1']) as any,
+    authMiddleware.adminValidate(['ADMIN', 'SUB_1', 'WH', 'LOGI']) as any,
     OrderController.createOrderStatus
   )
   .patch(
@@ -45,18 +45,23 @@ router
   )
   .get(
     '/admins',
-    authMiddleware.adminValidate(['ADMIN', 'SUB_1']) as any,
+    authMiddleware.adminValidate(['ADMIN', 'SUB_1', 'WH', 'LOGI']) as any,
     OrderController.adminOrders
   )
   .get(
     '/transactions',
-    authMiddleware.adminValidate(['ADMIN', 'SUB_1']) as any,
+    authMiddleware.adminValidate(['ADMIN', 'SUB_1', 'WH', 'LOGI']) as any,
     OrderController.getOrdersTxn
   )
   .get(
     '/:orderId',
     authMiddleware.endUserValidate as any,
     OrderController.getOrder
+  )
+  .get(
+    '/status/dispatched',
+    authMiddleware.endUserValidate as any,
+    OrderController.getDispatchOrders
   );
 
 export default router;

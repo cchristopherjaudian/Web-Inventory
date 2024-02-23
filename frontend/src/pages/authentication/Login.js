@@ -116,7 +116,6 @@ export default function Login() {
         BUSINESS: 1
       };
 
-      const newData = data['data']['newData'];
       const accountType = profile['data']['account']['accountType'];
 
       dispatch(setAuth({ authenticated: true }));

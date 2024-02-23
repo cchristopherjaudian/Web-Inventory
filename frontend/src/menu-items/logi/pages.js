@@ -10,8 +10,8 @@ const pages = {
   type: 'group',
   children: [
     {
-      id: 'pr',
-      title: 'Order Notice',
+      id: 'dispatched-orders',
+      title: 'Dispatched Orders',
       type: 'item',
       url: '/',
       icon: icons.FileTextOutlined,

@@ -47,7 +47,7 @@ const OrderSteps = (props) => {
       setIsPending(props.isPending);
       setOrderStatus(props.steps);
       setActiveStep(steps.length - 1);
-      setStatus(steps);
+      setStatus(() => [...new Map(steps?.map((step) => [step.status, step]))]);
 
       let newStepDate = [...stepDate];
       steps.forEach((label) => {
@@ -97,16 +97,15 @@ const OrderSteps = (props) => {
     let isAllowed = false;
     if (adminType === 1) {
       isAllowed = index !== 2;
-      console.log(index + " " + isAllowed);
+      console.log(index + ' ' + isAllowed);
     } else if (adminType === 3) {
       isAllowed = index === 2;
     }
-    if(index === 1) isAllowed = false;
-  
+    if (index === 1) isAllowed = false;
 
-    return !(isAllowed);
+    return !isAllowed;
   }
-  
+
   return (
     <Box>
       <Stepper nonLinear activeStep={activeStep}>
@@ -115,35 +114,41 @@ const OrderSteps = (props) => {
             <StepButton color="inherit" onClick={handleStep(index)}>
               <Stack direction="column" sx={{ alignItems: 'center' }}>
                 <Typography>{label}</Typography>
-                {index > 0 ?
+                {index > 0 ? (
                   <FormControl sx={{ width: '90%', mt: 1 }}>
                     <OutlinedInput
                       size="small"
                       type="date"
-                      id={index}
-                      name={index}
-                      tag={index}
+                      id={String(index)}
+                      name={String(index)}
+                      tag={String(index)}
                       startAdornment={
                         <InputAdornment position="start">
                           <EditOutlined />
                         </InputAdornment>
                       }
                       onChange={(event) => {
-                        let d = new Date(event.target.value);
+                        const d = new Date(event.target.value);
                         if (Number(d.getTime()) < 0) return;
-                        let newStepDate = [...stepDate];
+                        const newStepDate = [...stepDate];
+                        console.log('newStepDate', newStepDate);
                         const currIndex = index < 1 ? index : index - 1;
-                        if (!orderStatus[currIndex]) {
-                          return;
-                        }
-
-                        let previousStatusId = orderStatus.length > 0 ? orderStatus[currIndex]?.id : '';
-                        if (Object.keys(newStepDate[currIndex]).length > 0) {
-                          newStepDate[currIndex][Object.keys(newStepDate[currIndex])[0]] = event.target.value;
+                        console.log('index', index);
+                        console.log('orderStatus', orderStatus);
+                        // if (!orderStatus[currIndex]) {
+                        //   console.log('no order status');
+                        //   return;
+                        // }
+                        console.log('status', status);
+                        const previousStatusId = orderStatus.length > 0 ? orderStatus[orderStatus.length - 1]?.id : '';
+                        if (Object.keys(newStepDate[0]).length > 0) {
+                          console.log('event.target.value', event.target.value);
+                          newStepDate[0][Object.keys(newStepDate[0])[0]] = event.target.value;
                           setStepDate(newStepDate);
                         }
-                        let objIndex = event.target.name;
-                        let objKey = Object.keys(stepDate[objIndex])[0];
+                        const objIndex = event.target.name;
+                        const objKey = Object.keys(stepDate[objIndex])[0];
+                        console.log('previousStatusId', previousStatusId);
 
                         setPayload({ orderId: props?.id, createdAt: event.target.value, status: objKey, orderStatusId: previousStatusId });
                       }}
@@ -156,16 +161,15 @@ const OrderSteps = (props) => {
                       }}
                       disabled={stepDisabled(index)}
                       value={
-                        status && Array.isArray(status) && status[index] && status[index]['createdAt']
+                        status?.length && status[index] && status[index]['createdAt']
                           ? status[index]['createdAt'].substring(0, 10)
                           : stepDate[index][Object.keys(stepDate[index])[0]].substring(0, 10)
                       }
                     />
                   </FormControl>
-                  :
+                ) : (
                   <Typography></Typography>
-                }
-
+                )}
               </Stack>
             </StepButton>
           </Step>
