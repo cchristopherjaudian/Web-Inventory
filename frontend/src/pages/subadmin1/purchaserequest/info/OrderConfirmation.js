@@ -7,6 +7,8 @@ import useAxios from 'hooks/useAxios';
 
 const OrderConfirmation = (props) => {
   const navigate = useNavigate();
+  const orderInfo = props.orderInfo;
+  const customerInfo = props.customerInfo;
   const confirmOrder = () => {
     Swal.fire({
       allowOutsideClick: false,
@@ -37,18 +39,18 @@ const OrderConfirmation = (props) => {
 
   return (
     <Grid item xs={12}>
-      <MainCard title='Customer Name here'>
+      <MainCard title={customerInfo.fullName}>
         <Grid container spacing={3} sx={{ display: 'flex', alignItems: 'center' }}>
           <Grid item xs={12}>
             <Stack direction="column">
               <Grid item xs={12} container justifyContent="space-between">
-                <Typography variant="h4">Order ID: 12345678</Typography>
+                <Typography variant="h4">Order ID: {props.orderId}</Typography>
                 <Button variant="contained" onClick={()=>navigate("/quotation/" + props.orderId,{replace:true})}>CREATE QUOTATION</Button>
               </Grid>
 
               <Stack direction="row" gap={1}>
                 <Typography variant="caption">Date Requested:</Typography>
-                {/* {orderInfo.createdAt && <Typography variant="caption">{orderInfo.createdAt?.substring(0, 10)}</Typography>} */}
+                {orderInfo.createdAt && <Typography variant="caption">{orderInfo.dateRequsted?.substring(0, 10)}</Typography>}
               </Stack>
 
             </Stack>

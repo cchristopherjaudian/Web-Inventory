@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 const Header = (props) => {
   const navigate = useNavigate();
-  const profile = useSelector((state) => state.profile);
-
+  const customerInfo = props.customerInfo;
+  const orderInfo = props.orderInfo;
+ 
   return (
     <Box>
       <Grid container spacing={1.5}>
@@ -20,36 +21,36 @@ const Header = (props) => {
         <Grid item xs={12} sx={{ mt: 3 }}>
           <Grid container spacing={1.5}>
             <Grid item xs={12} md={6}>
-              <TextField name="name" fullWidth id="name" label="Name" value="placeholder d2" disabled />
+              <TextField name="name" fullWidth id="name" value={customerInfo.fullName} disabled />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
                 name="dateRequested"
-                value="placeholder d2"
+                value={orderInfo.dateRequested?.substring(0,10)}
                 disabled
                 fullWidth
                 id="dateRequested"
-                label="Date Requested"
+             
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField name="phoneNumber" fullWidth id="phoneNumber" label="Phone Number" value="placeholder d2" disabled />
+              <TextField name="phoneNumber" fullWidth id="phoneNumber" value="placeholder d2" disabled />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
                 name="dateRequired"
-                value="placeholder d2"
+                value={orderInfo.dateRequired.substring(0,10)}
                 disabled
                 fullWidth
                 id="dateRequired"
-                label="Date Required"
+              
               />
             </Grid>
             <Grid item xs={12} sx={{ mt: 3 }}>
-              <TextField name="email" fullWidth id="email" value="placeholder d2" label="Email Address" disabled />
+              <TextField name="email" fullWidth id="email" value={customerInfo.emailAddress} disabled />
             </Grid>
             <Grid item xs={12}>
-              <TextField name="address" value="placeholder d2" fullWidth id="address" label="Address" disabled />
+              <TextField name="address" value={customerInfo.address} fullWidth id="address" disabled />
             </Grid>
           </Grid>
         </Grid>

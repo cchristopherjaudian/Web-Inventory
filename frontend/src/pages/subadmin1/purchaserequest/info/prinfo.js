@@ -8,17 +8,25 @@ import { useEffect, useState } from "react";
 const PRInfo = () => {
     const { id } = useParams();
     const { data } = useAxios('purchase/' + id, 'GET', null, false);
-    const [orderList,setOrderList] = useState([]);
-    useEffect(()=>{
-        if(data){
+    const [orderList, setOrderList] = useState([]);
+    const [customerInfo, setCustomerInfo] = useState({});
+    const [orderInfo, setOrderInfo] = useState({});
+    useEffect(() => {
+        if (data) {
+            setOrderInfo({
+                groupNo: data?.data?.groupNo,
+                dateRequested: data?.data?.dateRequested,
+                dateRequired: data?.data?.dateRequired
+            });
+            setCustomerInfo(data?.data?.customerInfo);
             setOrderList(data?.data?.list);
         }
-    },[data]);
+    }, [data]);
     return (
         <MainCard sx={{ pt: 3 }}>
-            <Header />
-            <Cart orderList = {orderList}/>
-            <OrderConfirmation orderId={id} />
+            <Header orderInfo={orderInfo} customerInfo={customerInfo} />
+            <Cart orderList={orderList} />
+            <OrderConfirmation orderId={id} orderInfo={orderInfo} customerInfo= {customerInfo}/>
         </MainCard>);
 }
 

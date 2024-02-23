@@ -78,7 +78,7 @@ const Info = (props) => {
                 value={customerInfo.fullName}
                 fullWidth
                 id="customerName"
-                label="Customer Name"
+                disabled
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
@@ -88,7 +88,7 @@ const Info = (props) => {
                 value={customerInfo.businessName}
                 fullWidth
                 id="customerBusiness"
-                label="Company Name"
+                disabled
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
@@ -98,7 +98,7 @@ const Info = (props) => {
                 value={customerInfo.address}
                 fullWidth
                 id="customerAddress"
-                label="Address"
+                disabled
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
@@ -106,6 +106,7 @@ const Info = (props) => {
               <TextField
                 name="customerPhone"
                 value=""
+                disabled
                 fullWidth
                 id="customerPhone"
                 label="Phone Number"
@@ -118,7 +119,7 @@ const Info = (props) => {
                 value={customerInfo.emailAddress}
                 fullWidth
                 id="customerEmail"
-                label="Email Address"
+                disabled
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
