@@ -3,7 +3,8 @@ import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
 
-const OrderNotice = Loadable(lazy(() => import('pages/subadmin1/ordernotice/')));
+const Orders = Loadable(lazy(() => import('pages/wh/')));
+const OrderInfo = Loadable(lazy(() => import('pages/wh/orderInfo')));
 const Profile = Loadable(lazy(()=> import('pages/common/profile')));
 const WHRoutes = {
   path: '/',
@@ -11,7 +12,11 @@ const WHRoutes = {
   children: [
     {
       path: '/',
-      element: <OrderNotice />
+      element: <Orders />
+    },
+    {
+      path: '/order/:id',
+      element: <OrderInfo />
     },
     {
       path: 'profile',
