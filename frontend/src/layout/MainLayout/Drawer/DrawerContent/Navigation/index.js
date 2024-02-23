@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux';
 import adminnavigation from 'menu-items/admin';
 import sub1navigation from 'menu-items/subadmin1';
 import sub2navigation from 'menu-items/subadmin2';
+import whnavigation from 'menu-items/wh'
 const Navigation = () => {
   const admintype = useSelector((state)=>state.token.admintype.adminType);
-  let menuItem = [adminnavigation,sub1navigation,sub2navigation][admintype];
+  let menuItem = [adminnavigation,sub1navigation,sub2navigation,whnavigation][admintype];
   const navGroups = menuItem.items.map((item) => {
     switch (item.type) {
       case 'group':

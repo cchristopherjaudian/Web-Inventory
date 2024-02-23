@@ -74,7 +74,15 @@ const Profile = () => {
   const middleName = useSelector((state) => state.profile.middleName.middleName);
   const lastName = useSelector((state) => state.profile.lastName.lastName);
   const adminType = useSelector((state) => state.token.admintype.adminType);
-
+  function renderAdminName(accType){
+    switch(accType){
+      case 0: return 'ADMIN';
+      case 1: return 'SUB ADMIN 1';
+      case 2: return 'SUB ADMIN 2';
+      case 3: return 'WH';
+      case 4: return 'LOGISTICS';
+    }
+  }
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
@@ -141,7 +149,7 @@ const Profile = () => {
                                 {firstName} {middleName} {lastName}
                               </Typography>
                               <Typography variant="body2" color="textSecondary">
-                                {adminType === 0 ? 'ADMIN' : adminType === 1 ? 'SUB ADMIN 1' : 'SUB ADMIN 2'}
+                                {renderAdminName(adminType)}
                               </Typography>
                             </Stack>
                           </Stack>
