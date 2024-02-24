@@ -3,14 +3,17 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useNavigate } from 'react-router-dom';
 import { Grid, Button, Typography } from '@mui/material';
 import useAxios from 'hooks/useAxios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 const Confirmation = (props) => {
+  const navigate = useNavigate();
   const [payload, setPayload] = useState({});
   const { data, fetchData } = useAxios('orders/' + props.id, 'PATCH', payload, true);
-
+  const [cancelId,setCancelId] = useState('');
+  const { highData, highFetchData } = useHighAxios('orders/cancellation/' + cancelId, 'PATCH');
   useEffect(() => {
     if (Object.keys(payload).length !== 0) {
       fetchData();
@@ -25,7 +28,7 @@ const Confirmation = (props) => {
           icon: 'success',
           allowOutsideClick: false
         });
-        props.incrementStep();
+        navigate('/history',{replace:true});
       } else {
         Swal.fire({
           title: 'Payment Confirmation',
@@ -41,13 +44,36 @@ const Confirmation = (props) => {
       case 0:
         return "Your order is pending....";
       case 1:
-        return "Oxiaire is preparing your oder";
+        return "Oxiaire is preparing your order";
       case 2:
         return "Your order has been dispatched...\nWaiting for delivery...";
       case 3:
         return "Your order has been delivered";
     }
   }
+
+  const cancelOrder = () => {
+    Swal.fire({
+      allowOutsideClick: false,
+      title: 'Order Cancellation',
+      text: 'Are you sure you want to CANCEL this order?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Cancel',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setCancelId(orderId);
+      }
+    });
+  };
+  useEffect(() => {
+    if (cancelId) {
+      highFetchData();
+      setCancelId('');
+    }
+  }, [cancelId]);
+
   return (
     <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
@@ -74,7 +100,7 @@ const Confirmation = (props) => {
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
         {props.status.length === 0 && (
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" onClick={()=> cancelOrder()}>
             Cancel Order
           </Button>
         )}
