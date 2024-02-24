@@ -50,7 +50,7 @@ const OrderConfirmation = (props) => {
 
               <Stack direction="row" gap={1}>
                 <Typography variant="caption">Date Requested:</Typography>
-                {orderInfo.createdAt && <Typography variant="caption">{orderInfo.dateRequsted?.substring(0, 10)}</Typography>}
+                {orderInfo.dateRequested && <Typography variant="caption">{orderInfo.dateRequested?.substring(0, 10)}</Typography>}
               </Stack>
 
             </Stack>

@@ -6,7 +6,7 @@ const Header = (props) => {
   const navigate = useNavigate();
   const customerInfo = props.customerInfo;
   const orderInfo = props.orderInfo;
- 
+  console.log(customerInfo);
   return (
     <Box>
       <Grid container spacing={1.5}>
@@ -26,24 +26,24 @@ const Header = (props) => {
             <Grid item xs={12} md={6}>
               <TextField
                 name="dateRequested"
-                value={orderInfo.dateRequested?.substring(0,10)}
+                value={orderInfo?.dateRequested?.substring(0, 10)}
                 disabled
                 fullWidth
                 id="dateRequested"
-             
+
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField name="phoneNumber" fullWidth id="phoneNumber" value="placeholder d2" disabled />
+              <TextField name="phoneNumber" fullWidth id="phoneNumber" value={customerInfo.businessName} disabled />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
                 name="dateRequired"
-                value={orderInfo.dateRequired.substring(0,10)}
+                value={orderInfo?.dateRequired?.substring(0, 10)}
                 disabled
                 fullWidth
                 id="dateRequired"
-              
+
               />
             </Grid>
             <Grid item xs={12} sx={{ mt: 3 }}>
