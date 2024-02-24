@@ -37,7 +37,7 @@ const OrderTable = ({ orders }) => {
       disableClickEventBubbling: true,
       renderCell: (params) => {
         return (
-          <Button endIcon={<RightOutlined />} variant="contained" color="primary" onClick={() => navigate(`/order/${params.id}`)}>
+          <Button endIcon={<RightOutlined />} variant="contained" color="primary" onClick={() => navigate(`/order/${ params.row.orders.id}`)}>
             View
           </Button>
         );

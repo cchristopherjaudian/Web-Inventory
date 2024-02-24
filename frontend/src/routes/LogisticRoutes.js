@@ -5,7 +5,7 @@ import MainLayout from 'layout/MainLayout';
 
 
 const Dispatched = Loadable(lazy(()=> import('pages/logistics/')));
-const Preview = Loadable(lazy(()=> import('pages/logistics/preview')));
+const OrderInfo = Loadable(lazy(()=> import('pages/logistics/orderInfo/')));
 const Profile = Loadable(lazy(()=> import('pages/common/profile')));
 const LogisticRoutes = {
     path: '/',
@@ -17,7 +17,7 @@ const LogisticRoutes = {
       },
       {
         path: 'order/:id',
-        element: <Preview />
+        element: <OrderInfo />
       },
       {
         path: 'profile',
