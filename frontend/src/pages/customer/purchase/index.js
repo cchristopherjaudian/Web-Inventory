@@ -31,6 +31,8 @@ const Purchase = () => {
           isSelected: false
         });
       });
+
+
       setProductList(newProducts);
     }
   }, [data]);
@@ -66,6 +68,16 @@ const Purchase = () => {
         showCancelButton: false,
         allowOutsideClick: false,
         confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    const totalQty = selectedProducts.reduce((sum, item) => sum += item.quantity, 0);
+    if (totalQty < 30) {
+      Swal.fire({
+        title: 'Purchase Request',
+        text: 'Order quantity should be greater than 30',
+        icon: 'info'
       });
       return;
     }
