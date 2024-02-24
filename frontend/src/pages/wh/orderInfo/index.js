@@ -11,7 +11,6 @@ const OrderInfo = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('xxx', data);
       const mappedOrders = data?.data.orderItems.map((k) => ({
         ...k,
         products: {

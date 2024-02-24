@@ -75,46 +75,51 @@ const Info = (props) => {
             <Grid item xs={12}>
               <TextField
                 name="customerName"
-                value={customerInfo.fullName}
+                value={customerInfo.fullName || ''}
                 fullWidth
                 id="customerName"
                 sx={{ backgroundColor: 'white' }}
+                disabled
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 name="customerBusiness"
-                value={customerInfo.businessName}
+                value={customerInfo.businessName || ''}
                 fullWidth
                 id="customerBusiness"
                 sx={{ backgroundColor: 'white' }}
+                disabled
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 name="customerAddress"
-                value={customerInfo.address}
+                value={customerInfo.address || ''}
                 fullWidth
                 id="customerAddress"
                 sx={{ backgroundColor: 'white' }}
+                disabled
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 name="customerPhone"
-                value=""
                 fullWidth
                 id="customerPhone"
                 sx={{ backgroundColor: 'white' }}
+                value={customerInfo?.account?.username || ''}
+                disabled
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 name="customerEmail"
-                value={customerInfo.emailAddress}
+                value={customerInfo.emailAddress || ''}
                 fullWidth
                 id="customerEmail"
                 sx={{ backgroundColor: 'white' }}
+                disabled
               />
             </Grid>
           </Grid>

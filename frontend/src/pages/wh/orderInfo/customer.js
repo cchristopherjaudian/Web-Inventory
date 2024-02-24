@@ -3,7 +3,6 @@ import { Grid, Typography } from '@mui/material';
 
 const Customer = (props) => {
   if (!props.order) return;
-  console.log('props.order', props.order);
   const cartItems = props.order['orderItems'];
   const subtotal =
     cartItems && Object.keys(cartItems).length

@@ -72,12 +72,7 @@ const Header = (props) => {
               >
                 Create Purchase Request
               </Button>
-              <Button
-                color="error"
-                variant="contained"
-                sx={{ ml: 2 }}
-                onClick={() => navigate("/home", { replace: true })}
-              >
+              <Button color="error" variant="contained" sx={{ ml: 2 }} onClick={() => navigate('/home', { replace: true })}>
                 Cancel Purchase Request
               </Button>
             </Grid>

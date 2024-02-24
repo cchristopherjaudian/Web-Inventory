@@ -8,7 +8,6 @@ import useAxios from 'hooks/useAxios';
 
 const CartItemList = (props) => {
   const product = props.product;
-  console.log(product);
   return (
     <>
       <ListItemButton>

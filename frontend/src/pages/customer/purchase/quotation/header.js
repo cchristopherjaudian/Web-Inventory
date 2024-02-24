@@ -19,7 +19,7 @@ const Header = (props) => {
           </Typography>
         </Grid>
         <Grid container spacing={1.5}>
-          <Grid item xs={12} md={6} spacing={1} direction="row" justify="center" alignItems="center">
+          <Grid item xs={12} md={6} justify="center" alignItems="center">
             <Box sx={{ display: 'inline-flex', flexDirection: 'row' }}>
               <img
                 style={{ maxWidth: '120px', maxHeight: 'auto' }}

@@ -56,8 +56,7 @@ const Quotation = () => {
     }
   }, [data]);
   function createQuotation() {
-
-    const invalidPrice = orderList.some(obj => obj['PrCustomPrices'] === null || obj['PrCustomPrices'] === 0);
+    const invalidPrice = orderList.some((obj) => obj['PrCustomPrices'] === null || obj['PrCustomPrices'] === 0);
     if (invalidPrice) {
       Swal.fire({
         icon: 'warning',
@@ -86,12 +85,10 @@ const Quotation = () => {
     });
   }
 
-
   function updateProductProperty(code, update) {
-
     const updatedProducts = orderList.map((p) => {
       if (p.products.code === code) {
-        return { ...p, 'PrCustomPrices': update };
+        return { ...p, PrCustomPrices: update };
       }
       return p;
     });
@@ -106,15 +103,14 @@ const Quotation = () => {
 
   useEffect(() => {
     if (finalList.length > 0) highFetchData();
-  }, [finalList])
+  }, [finalList]);
   useEffect(() => {
     if (highData) {
       const responseCode = highData.status;
-      console.log(highData);
       if (responseCode === 200) {
         let customerType = 'B2B';
         let customerMobile = '09272636223'; // customerInfo.id;
-       
+
         let newMessage = {
           content: '',
           orderId: id,
@@ -126,7 +122,7 @@ const Quotation = () => {
           name: myName,
           photoUrl: myPhoto
         };
-        
+
         messageRef = database.ref(customerType + '/recipients/' + customerMobile + '/chat/messages/');
         messageRef.push(newMessage);
         Swal.fire({

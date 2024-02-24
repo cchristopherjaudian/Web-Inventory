@@ -39,7 +39,6 @@ const Otp = () => {
       });
       const phoneNumber = signUpData.contact.replace('0', '+63');
       const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-      console.log('confirmationResult', confirmationResult);
       window.confirmationResult = confirmationResult;
     } catch (error) {
       console.log('onSignUp error', error);

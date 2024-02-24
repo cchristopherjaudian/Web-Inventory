@@ -177,7 +177,11 @@ class PurchaseService {
     const [groupDetails, list] = await Promise.all([
       this._db.cart.findFirst({
         include: {
-          profile: true,
+          profile: {
+            include: {
+              account: true,
+            },
+          },
         },
         where: {
           groupNo,

@@ -42,6 +42,7 @@ const QuotationTable = (props) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setGridRows(() => []);
   };
   const navigate = useNavigate();
   useEffect(() => {

@@ -24,10 +24,6 @@ const Dispatched = () => {
     setDispatchedOrders(() => response?.data);
   };
 
-  useEffect(() => {
-    console.log('dispatchedOrders', dispatchedOrders);
-  }, [dispatchedOrders]);
-
   // onmount
   useEffect(() => {
     // const { data } = await logiClient.get('/orders/dispatched');

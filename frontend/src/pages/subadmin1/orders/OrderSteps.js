@@ -97,16 +97,14 @@ const OrderSteps = (props) => {
     let isAllowed = false;
     if (adminType === 1) {
       isAllowed = index !== 2;
-      console.log(index + " " + isAllowed);
     } else if (adminType === 3) {
       isAllowed = index === 2;
     }
-    if(index === 1) isAllowed = false;
-  
+    if (index === 1) isAllowed = false;
 
-    return !(isAllowed);
+    return !isAllowed;
   }
-  
+
   return (
     <Box>
       <Stepper nonLinear activeStep={activeStep}>
@@ -115,7 +113,7 @@ const OrderSteps = (props) => {
             <StepButton color="inherit" onClick={handleStep(index)}>
               <Stack direction="column" sx={{ alignItems: 'center' }}>
                 <Typography>{label}</Typography>
-                {index > 0 ?
+                {index > 0 ? (
                   <FormControl sx={{ width: '90%', mt: 1 }}>
                     <OutlinedInput
                       size="small"
@@ -162,10 +160,9 @@ const OrderSteps = (props) => {
                       }
                     />
                   </FormControl>
-                  :
+                ) : (
                   <Typography></Typography>
-                }
-
+                )}
               </Stack>
             </StepButton>
           </Step>

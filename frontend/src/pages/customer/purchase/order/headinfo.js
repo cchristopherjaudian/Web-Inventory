@@ -1,17 +1,15 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import { Button, Grid, InputLabel, MenuItem, Select, FormControl, Typography, FormControlLabel, Checkbox } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Option from 'pages/customer/checkout/option';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 const HeadInfo = (props) => {
-  console.log(props);
   const customerInfo = props.customerInfo;
   const [paymethod, setPaymethod] = useState('');
-  const totalAmount = props.prInfo?.list?.reduce((sum,item)=>{
-    return sum += (item.quantity * item.PrCustomPrices.price);
-  },0);
+  const totalAmount = props.prInfo?.list?.reduce((sum, item) => {
+    return (sum += item.quantity * item.PrCustomPrices.price);
+  }, 0);
   const methods = [
     {
       id: 3,

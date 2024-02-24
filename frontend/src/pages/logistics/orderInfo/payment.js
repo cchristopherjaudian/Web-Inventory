@@ -34,9 +34,8 @@ const Payment = (props) => {
   };
   return (
     <Grid container>
-
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <img src={basket} alt='oxiDelivery' width={300} height={300} />
+        <img src={basket} alt="oxiDelivery" width={300} height={300} />
       </Grid>
 
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -61,27 +60,28 @@ const Payment = (props) => {
         </Typography>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button fullWidth variant="contained" onClick={() => props.setConfirmPayload({
-          id: props.id,
-          paymentUrl: paymentUrl
-        })}>
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={() =>
+            props.setConfirmPayload({
+              deliveryUrl: paymentUrl
+            })
+          }
+        >
           Confirm Delivery
         </Button>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <img src={logo} width={200} height={150} alt='oxiLogo' />
+        <img src={logo} width={200} height={150} alt="oxiLogo" />
       </Grid>
-      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-
-      </Grid>
+      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}></Grid>
       <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button fullWidth variant="contained" color="success" onClick={() => props.setShowQR(false)}>
           Cancel
         </Button>
       </Grid>
-      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-
-      </Grid>
+      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}></Grid>
     </Grid>
   );
 };

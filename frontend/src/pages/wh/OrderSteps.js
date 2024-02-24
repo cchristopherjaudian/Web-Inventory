@@ -97,7 +97,6 @@ const OrderSteps = (props) => {
     let isAllowed = false;
     if (adminType === 1) {
       isAllowed = index !== 2;
-      console.log(index + ' ' + isAllowed);
     } else if (adminType === 3) {
       isAllowed = index === 2;
     }
@@ -131,24 +130,18 @@ const OrderSteps = (props) => {
                         const d = new Date(event.target.value);
                         if (Number(d.getTime()) < 0) return;
                         const newStepDate = [...stepDate];
-                        console.log('newStepDate', newStepDate);
-                        const currIndex = index < 1 ? index : index - 1;
-                        console.log('index', index);
-                        console.log('orderStatus', orderStatus);
+                        // const currIndex = index < 1 ? index : index - 1;
                         // if (!orderStatus[currIndex]) {
                         //   console.log('no order status');
                         //   return;
                         // }
-                        console.log('status', status);
                         const previousStatusId = orderStatus.length > 0 ? orderStatus[orderStatus.length - 1]?.id : '';
                         if (Object.keys(newStepDate[0]).length > 0) {
-                          console.log('event.target.value', event.target.value);
                           newStepDate[0][Object.keys(newStepDate[0])[0]] = event.target.value;
                           setStepDate(newStepDate);
                         }
                         const objIndex = event.target.name;
                         const objKey = Object.keys(stepDate[objIndex])[0];
-                        console.log('previousStatusId', previousStatusId);
 
                         setPayload({ orderId: props?.id, createdAt: event.target.value, status: objKey, orderStatusId: previousStatusId });
                       }}

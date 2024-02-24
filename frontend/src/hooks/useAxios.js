@@ -12,7 +12,7 @@ function useAxios(url, method, requestData = null, lazy = true) {
     baseURL: serviceId,
     timeout: 10000,
     headers: {
-      'Authorization': (token) ? token.token : ''
+      Authorization: token ? token.token : ''
     }
   });
 
@@ -45,10 +45,9 @@ function useAxios(url, method, requestData = null, lazy = true) {
     }
   };
 
-
   useEffect(() => {
     if (!lazy) fetchData();
-  }, [url, method]);
+  }, []);
 
   return { data, loading, error, fetchData };
 }

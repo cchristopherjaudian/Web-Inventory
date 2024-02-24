@@ -26,7 +26,7 @@ const PurchaseTable = (props) => {
               {cartList?.length > 0 &&
                 cartList?.map((cart, index) => {
                   return (
-                    <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell component="th" scope="row">
                         {cart.products.code}
                       </TableCell>
