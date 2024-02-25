@@ -7,8 +7,8 @@ const Customer = (props) => {
   const subtotal =
     cartItems && Object.keys(cartItems).length
       ? cartItems.reduce((sum, item) => {
-          return sum + item.quantity * parseFloat(item.products.price);
-        }, 0)
+        return sum + item.quantity * parseFloat(item.products.price);
+      }, 0)
       : 0;
 
   function renderPaymentMethod(payMethod) {
@@ -34,7 +34,7 @@ const Customer = (props) => {
           <Grid item xs={3} sx={{ ml: -1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <img src={props.order?.profile.photoUrl} alt="CustomerDP" width={120} height={120} />
           </Grid>
-          <Grid item xs={9} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+          <Grid item xs={9} sx={{ ml: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
             <Grid container spacing={1}>
               <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
                 <Typography variant="body1">Requester Name</Typography>
