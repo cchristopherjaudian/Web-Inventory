@@ -13,30 +13,13 @@ const OrderInfo = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [confirmPayload, setConfirmPayload] = useState({});
-  const [orderStatusPayload, setOrderStatusPayload] = useState({});
   const [orderItems, setOrderItems] = useState({});
   const [orderInfo, setOrderInfo] = useState({});
   const [customerInfo, setCustomerInfo] = useState({});
   const { data, fetchData } = useAxios('orders/' + id, 'GET', null, true);
   const { highData, highFetchData } = useHighAxios(`orders/${id}`, 'PATCH', confirmPayload, true);
-  const { highData: orderStatusRespose, highFetchData: createOrderStatus } = useHighAxios(
-    `orders/status`,
-    'POST',
-    orderStatusPayload,
-    true
-  );
+
   const [showUpload, setShowUpload] = useState(false);
-  const getCurrentDate = () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-
-    if (month < 10) month = '0' + month;
-    if (day < 10) day = '0' + day;
-
-    return `${year}-${month}-${day}`;
-  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -45,12 +28,7 @@ const OrderInfo = () => {
     if (data) {
       setCustomerInfo(data.data.profile);
       setOrderItems(data.data.orderItems);
-      setOrderStatusPayload({
-        orderId: data?.data.id,
-        orderStatusId: data?.data.orderStatus?.find((status) => status?.isCurrent)?.id,
-        status: 'DELIVERED',
-        createdAt: getCurrentDate()
-      });
+
       setOrderInfo({
         dateRequested: '',
         dateRequired: '',
@@ -69,7 +47,6 @@ const OrderInfo = () => {
   useEffect(() => {
     if (highData) {
       if (highData?.status === 200) {
-        createOrderStatus();
         //swal success
         Swal.fire({
           icon: 'success',

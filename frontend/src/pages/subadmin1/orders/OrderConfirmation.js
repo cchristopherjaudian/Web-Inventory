@@ -130,10 +130,13 @@ const OrderConfirmation = (props) => {
           <Grid item sx={{ flexGrow: 1 }} xs={12}>
             {orderInfo.id && (
               <OrderSteps
+                refreshTable={props.refreshTable}
                 isPending={pending}
                 handleClick={props.handleClick}
                 setMessage={props.setMessage}
                 id={orderInfo.id}
+                setSelectedOrder={props.setSelectedOrder}
+                deliveryUrl={orderInfo?.deliveryUrl}
                 steps={steps}
               />
             )}

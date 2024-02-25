@@ -10,7 +10,7 @@ import Price from './price';
 import Payment from './payment';
 import Confirmation from './confirmation';
 import useAxios from 'hooks/useAxios';
-const steps = ['Cart', 'Payment', 'Invoice'];
+const steps = ['Cart', 'Payment', 'Order Summary'];
 import MuiAlert from '@mui/material/Alert';
 import Swal from 'sweetalert2';
 import MainCard from 'components/MainCard';
@@ -139,7 +139,7 @@ const Checkout = () => {
       let postError = error['response'];
       setSeverity('error');
       if (postError['status'] === 400) {
-        setMessage('Please select a payment method');
+        setMessage(postError.data?.data.message);
       } else {
         setMessage('Failed to process request. Please try again');
       }

@@ -23,7 +23,6 @@ const OrderConfirmation = (props) => {
     });
   };
 
-
   function getCurrentDate() {
     const date = new Date();
     const year = date.getFullYear();
@@ -48,20 +47,20 @@ const OrderConfirmation = (props) => {
                   <Typography variant="h4">Total Price:</Typography>
                   <Typography variant="h4">{props?.totalPrice}</Typography>
                 </Stack>
-
               </Grid>
               <Grid item xs={12} container justifyContent="space-between">
                 <Grid item xs={6} container justifyContent="flex-start">
                   <Typography variant="caption">Date Requested: </Typography>
-                  {props.orderInfo.dateRequested && <Typography variant="caption">{props.orderInfo.dateRequested?.substring(0, 10)}</Typography>}
-
+                  {props.orderInfo.dateRequested && (
+                    <Typography variant="caption">{props.orderInfo.dateRequested?.substring(0, 10)}</Typography>
+                  )}
                 </Grid>
                 <Grid item xs={6} container justifyContent="flex-end">
-                  <Button variant="contained" onClick={() => props.createQuotation()}>CREATE QUOTATION</Button>
+                  <Button variant="contained" onClick={() => props.createQuotation()}>
+                    SEND QUOTATION
+                  </Button>
                 </Grid>
               </Grid>
-
-
             </Stack>
           </Grid>
         </Grid>

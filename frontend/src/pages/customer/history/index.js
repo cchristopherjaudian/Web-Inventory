@@ -21,14 +21,16 @@ const History = () => {
               orderItems: d['orderItems'].length,
               status: d['status'],
               dateDispatched: d['orderStatus'][1] ? d['orderStatus'][1]['createdAt'] : null,
-              dateDelivered: d['orderStatus'][2] ? d['orderStatus'][2]['createdAt'] : null
+              dateDelivered: d['orderStatus'][2] ? d['orderStatus'][2]['createdAt'] : null,
+              orderStatus: d?.orderStatus
             }
           : {
               id: d['id'],
               groupNo: d['group'],
               dateRequested: d['dateRequested'],
               dateRequired: d['dateRequired'],
-              quantity: d['qty']
+              quantity: d['qty'],
+              orderStatus: d?.orderStatus
             };
       });
       setTransactions(newData);

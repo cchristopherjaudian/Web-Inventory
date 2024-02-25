@@ -119,17 +119,17 @@ const Chatbox = () => {
 
   function renderMessage(messageObject, index) {
     if (Object.prototype.hasOwnProperty.call(messageObject, 'html')) {
-      return <PaymentReminder key={index} html={messageObject.html} src={messageObject.src} img={messageObject.img} />
+      return <PaymentReminder key={index} html={messageObject.html} src={messageObject.src} img={messageObject.img} />;
     }
     if (Object.prototype.hasOwnProperty.call(messageObject, 'type')) {
       if (messageObject.type === 'quote') {
-        return <Quote key={index} src={messageObject.src} img = {messageObject.img} orderId = {messageObject.orderId}/>
+        return <Quote key={index} src={messageObject.src} img={messageObject.img} orderId={messageObject.orderId} />;
       } else if (messageObject.type === 'reminder') {
-        return <PaymentReminder key={index} html={messageObject.html} src={messageObject.src} img={messageObject.img} />
+        return <PaymentReminder key={index} html={messageObject.html} src={messageObject.src} img={messageObject.img} />;
       }
-    } else {
-      <Message key={index} message={messageObject.content} src={messageObject.src} img={messageObject.img} />
     }
+
+    return <Message key={index} message={messageObject.content} src={messageObject.src} img={messageObject.img} />;
   }
   return (
     <Box
@@ -143,7 +143,7 @@ const Chatbox = () => {
     >
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 2 }}>
         {Object.values(chatMessages).map((s, i) => {
-          return renderMessage(s,i);
+          return renderMessage(s, i);
         })}
         <div ref={messagesEndRef} />
       </Box>

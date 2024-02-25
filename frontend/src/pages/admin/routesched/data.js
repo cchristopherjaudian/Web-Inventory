@@ -16,29 +16,31 @@ const Data = (props) => {
     <Grid item xs={6} sx={{ mt: 0.5 }}>
       <CardActionArea>
         <Card sx={{ backgroundColor: props.background ? props.background : 'white' }} style={{ height: '100px', textAlign: 'justify' }}>
-          <IconButton
-            aria-label="edit"
-            sx={{ position: 'absolute', top: 0, right: 0 }}
-            onClick={() => {
-              if (edit) {
-                if (!title) {
-                  Swal.fire({
-                    icon: 'info',
-                    title: 'Route Schedule',
-                    text: 'Please input a valid description',
-                    allowOutsideClick: false,
-                    confirmButtonText: 'Ok'
-                  });
-                  return;
-                } else {
-                  fetchData();
+          {isAdmin && (
+            <IconButton
+              aria-label="edit"
+              sx={{ position: 'absolute', top: 0, right: 0 }}
+              onClick={() => {
+                if (edit) {
+                  if (!title) {
+                    Swal.fire({
+                      icon: 'info',
+                      title: 'Route Schedule',
+                      text: 'Please input a valid description',
+                      allowOutsideClick: false,
+                      confirmButtonText: 'Ok'
+                    });
+                    return;
+                  } else {
+                    fetchData();
+                  }
                 }
-              }
-              setEdit(!edit);
-            }}
-          >
-            {edit ? <SaveOutlined /> : isAdmin && <EditOutlined />}
-          </IconButton>
+                setEdit(!edit);
+              }}
+            >
+              <EditOutlined />
+            </IconButton>
+          )}
           <CardContent sx={{ flex: 1, ml: -1, mt: -1 }}>
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={5} sx={{ px: 2 }}>
               {edit ? (

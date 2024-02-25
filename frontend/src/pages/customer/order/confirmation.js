@@ -1,8 +1,3 @@
-import firebaseConfig from 'config/firebase';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Button, Typography } from '@mui/material';
 import useAxios from 'hooks/useAxios';
@@ -13,7 +8,7 @@ const Confirmation = (props) => {
   const navigate = useNavigate();
   const [payload, setPayload] = useState({});
   const { data, fetchData } = useAxios('orders/' + props.id, 'PATCH', payload, true);
-  const [cancelId,setCancelId] = useState('');
+  const [cancelId, setCancelId] = useState('');
   const { highData, highFetchData } = useHighAxios('orders/cancellation/' + cancelId, 'PATCH');
   useEffect(() => {
     if (Object.keys(payload).length !== 0) {
@@ -29,7 +24,7 @@ const Confirmation = (props) => {
           icon: 'success',
           allowOutsideClick: false
         });
-        navigate('/history',{replace:true});
+        navigate('/history', { replace: true });
       } else {
         Swal.fire({
           title: 'Payment Confirmation',
@@ -43,17 +38,19 @@ const Confirmation = (props) => {
   function renderStatus(statusLength) {
     switch (statusLength) {
       case 0:
-        return "Your order is pending....";
+        return 'Your order is pending....';
       case 1:
-        return "Oxiaire is preparing your order";
+        return 'Oxiaire is preparing your order';
       case 2:
-        return "Your order has been dispatched...\nWaiting for delivery...";
+        return 'Your order has been dispatched...\nWaiting for delivery...';
       case 3:
-        return "Your order has been delivered";
+        return 'Your order has been delivered';
     }
   }
 
   const cancelOrder = () => {
+    if (props.mainStatus !== 'PENDING') return;
+
     Swal.fire({
       allowOutsideClick: false,
       title: 'Order Cancellation',
@@ -64,7 +61,7 @@ const Confirmation = (props) => {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.isConfirmed) {
-        setCancelId(orderId);
+        setCancelId(props?.id);
       }
     });
   };
@@ -78,10 +75,10 @@ const Confirmation = (props) => {
   return (
     <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-        {props.mainStatus === 'PENDING' ? (
+        {props.mainStatus === 'PENDING' || props.mainStatus === 'CANCELLED' ? (
           <>
             <Typography variant="h2" sx={{ color: '#d35400', mt: 4 }}>
-              {renderStatus(props.status.length)}
+              {props.mainStatus !== 'CANCELLED' ? renderStatus(props.status.length) : 'Your order has been cancelled...'}
             </Typography>
           </>
         ) : (
@@ -101,7 +98,7 @@ const Confirmation = (props) => {
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
         {props.status.length === 0 && (
-          <Button variant="contained" color="error" onClick={()=> cancelOrder()}>
+          <Button variant="contained" color="error" onClick={() => cancelOrder()} disabled={props.mainStatus !== 'PENDING'}>
             Cancel Order
           </Button>
         )}

@@ -27,7 +27,15 @@ const QuotationTable = (props) => {
       case 'PAID':
         textColor = '#006503';
         break;
-
+      case 'PREPARING':
+        textColor = '#FF6363';
+        break;
+      case 'DISPATCHED':
+        textColor = '#146AB1';
+        break;
+      case 'DELIVERED':
+        textColor = '#006503';
+        break;
       default:
         textColor = '#0000FF';
         break;
@@ -127,9 +135,11 @@ const QuotationTable = (props) => {
               editable: false,
               flex: 1,
               renderCell: (params) => {
+                const status =
+                  params.row?.orderStatus?.length > 0 ? params.row.orderStatus.find((order) => order.isCurrent).status : params.value;
                 return (
-                  <Typography variant="p" sx={{ color: getTextColor(params?.value) }}>
-                    {params?.value}
+                  <Typography variant="p" sx={{ color: getTextColor(status) }}>
+                    {status}
                   </Typography>
                 );
               }

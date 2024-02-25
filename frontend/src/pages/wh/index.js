@@ -45,7 +45,8 @@ const WHOrders = () => {
             lastname: item.profile.lastname,
             customerId: item.profile.account.username,
             customerType: item.profile.account.accountType,
-            quotationUrl: item.quotationUrl
+            quotationUrl: item.quotationUrl,
+            orderStatus: item.orderStatus
           };
         });
       setOrders(result);

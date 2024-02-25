@@ -1,8 +1,6 @@
-import { Button, Grid, TextField, Box, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { Grid, TextField, Box, Typography } from '@mui/material';
 const Info = (props) => {
   const customerInfo = props.customerInfo;
-  console.log(customerInfo);
   return (
     <Box sx={{ mt: 2 }}>
       <Grid container sx={{ px: 1.5, pb: 3 }}>

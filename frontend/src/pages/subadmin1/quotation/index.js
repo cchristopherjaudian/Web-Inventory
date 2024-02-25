@@ -11,12 +11,11 @@ import PurchaseTable from './purchasetable';
 import Swal from 'sweetalert2';
 import useAxios from 'hooks/useAxios';
 import useHighAxios from 'hooks/useHighAxios';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import OrderConfirmation from './OrderConfirmation';
-import { reduceEachTrailingCommentRange } from '../../../../node_modules/typescript/lib/typescript';
 
 let messageRef = null;
 const Quotation = () => {
@@ -104,14 +103,15 @@ const Quotation = () => {
   useEffect(() => {
     if (finalList.length > 0) highFetchData();
   }, [finalList]);
+
   useEffect(() => {
     if (highData) {
       const responseCode = highData.status;
       if (responseCode === 200) {
-        let customerType = 'B2B';
-        let customerMobile = '09272636223'; // customerInfo.id;
+        const customerType = 'B2B';
+        const customerMobile = data?.data.customerInfo.account.username; // customerInfo.id;
 
-        let newMessage = {
+        const newMessage = {
           content: '',
           orderId: id,
           img: '',

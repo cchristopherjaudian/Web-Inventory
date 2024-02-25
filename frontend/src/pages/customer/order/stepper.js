@@ -15,6 +15,7 @@ const InvoiceStepper = (props) => {
   const { data } = useAxios('orders/' + props.orderId, 'GET', null, false);
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState({});
+
   const handleStep = (step) => () => {
     setActiveStep(step);
   };
@@ -58,7 +59,10 @@ const InvoiceStepper = (props) => {
         return <Invoice orderInfo={orderInfo} />;
     }
   }
-
+  if (accType === 'CUSTOMER') {
+    steps[0] = 'Checkout';
+  }
+  if (!data) return;
   return (
     <>
       <Box sx={{ mt: 3, width: '100%' }}>
@@ -76,9 +80,9 @@ const InvoiceStepper = (props) => {
 
             return (
               <Step key={label} completed={completed[index]}>
-                <StepButton color="inherit" onClick={handleStep(index)} disabled={orderInfo['status'] === 'PENDING' && index === 4}>
+                <StepButton color="inherit" onClick={handleStep(index)} disabled={orderInfo?.orderStatus?.length !== 3 && index === 4}>
                   <Stack direction="column" sx={{ alignItems: 'center' }}>
-                    {orderInfo['status'] === 'PENDING' && index === 4 ? (
+                    {orderInfo?.orderStatus?.length !== 3 && index === 4 ? (
                       <StepLabel {...labelProps}>{label}</StepLabel>
                     ) : (
                       <Typography>{label}</Typography>

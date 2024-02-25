@@ -4,7 +4,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import { DataGrid } from '@mui/x-data-grid';
 import { RightOutlined } from '@ant-design/icons';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import useAxios from 'hooks/useAxios';
 import useInventoryAxios from 'hooks/useInventoryAxios';
 import { useState, useEffect } from 'react';
@@ -16,7 +16,7 @@ const OrderTable = (props) => {
   const [gridRows, setGridRows] = useState([]);
   const [orderId, setOrderId] = useState('');
   const [paidOrder, setPaidOrder] = useState('');
-  const { data, fetchData } = useAxios('orders/' + orderId, 'GET', null, false);
+  const { data, fetchData } = useAxios('orders/' + orderId, 'GET', null, true);
   const { inventoryData, inventoryFetchData } = useInventoryAxios('orders/' + paidOrder, 'PATCH', { status: 'PAID' }, true);
 
   const [firebaseApp] = useState(() => {
@@ -54,6 +54,37 @@ const OrderTable = (props) => {
       }
     }
   }, [inventoryData]);
+
+  const getTextColor = (text) => {
+    let textColor = '';
+
+    switch (text) {
+      case 'PENDING':
+        textColor = '#F4933C';
+        break;
+      case 'CANCELLED':
+        textColor = '#FF6363';
+        break;
+      case 'PAID':
+        textColor = '#006503';
+        break;
+      case 'PREPARING':
+        textColor = '#FF6363';
+        break;
+      case 'DISPATCHED':
+        textColor = '#146AB1';
+        break;
+      case 'DELIVERED':
+        textColor = '#006503';
+        break;
+      default:
+        textColor = '#0000FF';
+        break;
+    }
+
+    return textColor;
+  };
+
   const columns = [
     {
       field: 'id',
@@ -72,7 +103,15 @@ const OrderTable = (props) => {
       field: 'status',
       headerName: 'Order Status',
       editable: false,
-      flex: 1
+      flex: 1,
+      renderCell: (params) => {
+        const status = params.row?.orderStatus?.length > 0 ? params.row.orderStatus.find((order) => order.isCurrent).status : params.value;
+        return (
+          <Typography variant="p" sx={{ color: getTextColor(status) }}>
+            {status}
+          </Typography>
+        );
+      }
     },
     {
       field: 'createdAt',
@@ -117,6 +156,7 @@ const OrderTable = (props) => {
   ];
 
   const gridClick = (params, event, details) => {
+    props.setSelectedOrder(null);
     let selectedData = params['row'];
     props.setStatusCount(params.row.orderItems.length);
     setOrderId(selectedData.id);

@@ -47,7 +47,7 @@ function useAxios(url, method, requestData = null, lazy = true) {
 
   useEffect(() => {
     if (!lazy) fetchData();
-  }, []);
+  }, [url, method]);
 
   return { data, loading, error, fetchData };
 }

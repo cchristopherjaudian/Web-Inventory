@@ -46,7 +46,8 @@ const Orders = () => {
             customerId: item.profile.account.username,
             customerType: item.profile.account.accountType,
             quotationUrl: item.quotationUrl,
-            deliveryUrl: item.deliveryUrl
+            deliveryUrl: item.deliveryUrl,
+            orderStatus: item.orderStatus
           };
         });
       setOrders(result);
@@ -75,6 +76,7 @@ const Orders = () => {
             statusCount={statusCount}
             setMessage={setMessage}
             handleClick={handleClick}
+            setSelectedOrder={setSelectedOrder}
             selectedOrder={selectedOrder}
             orderSteps={orderSteps}
           />
