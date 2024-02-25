@@ -60,7 +60,7 @@ const HeadInfo = (props) => {
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
           <Typography variant="body1">Contact Number</Typography>
-          <Typography variant="body1"></Typography>
+          <Typography variant="body1">{customerInfo.account?.username}</Typography>
         </Grid>
         <Grid
           item

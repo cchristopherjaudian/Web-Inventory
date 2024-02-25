@@ -28,7 +28,7 @@ const Header = (props) => {
               <div style={{ marginLeft: '20px' }}>
                 <Typography variant="h6">Requester Name: {customerInfo.fullName}</Typography>
                 <Typography variant="h6">Email Address: {customerInfo.emailAddress}</Typography>
-                <Typography variant="h6">Contact No: </Typography>
+                <Typography variant="h6">Contact No: {customerInfo.account?.username}</Typography>
               </div>
             </Box>
           </Grid>

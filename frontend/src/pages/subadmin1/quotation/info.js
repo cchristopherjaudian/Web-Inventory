@@ -2,6 +2,7 @@ import { Button, Grid, TextField, Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 const Info = (props) => {
   const customerInfo = props.customerInfo;
+  console.log(customerInfo);
   return (
     <Box sx={{ mt: 2 }}>
       <Grid container sx={{ px: 1.5, pb: 3 }}>
@@ -105,11 +106,10 @@ const Info = (props) => {
             <Grid item xs={12}>
               <TextField
                 name="customerPhone"
-                value=""
+                value={customerInfo.account?.username}
                 disabled
                 fullWidth
                 id="customerPhone"
-                label="Phone Number"
                 sx={{ backgroundColor: 'white' }}
               />
             </Grid>
