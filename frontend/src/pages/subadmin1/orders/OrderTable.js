@@ -106,13 +106,14 @@ const OrderTable = (props) => {
       }
     },
     {
-      field: 'deliveryReceipt',
+      field: 'deliveryUrl',
       headerName: 'Delivery Receipt',
       editable: false,
       flex: 1,
       renderCell: (params) => {
         const onClick = (event) => {
           event.stopPropagation();
+          window.open(params.row.deliveryUrl, '_blank');
         };
         return (
           <Button variant="outlined" color="info" onClick={onClick}>
