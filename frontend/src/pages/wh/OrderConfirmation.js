@@ -113,18 +113,6 @@ const OrderConfirmation = (props) => {
                 <Typography variant="caption">Order Date:</Typography>
                 {orderInfo.createdAt && <Typography variant="caption">{orderInfo.createdAt?.substring(0, 10)}</Typography>}
               </Stack>
-              {steps.length === 0 && Object.keys(orderInfo).length > 0 && (
-                <Stack direction="row" gap={1} mt={2}>
-                  <>
-                    <Button variant="contained" onClick={() => confirmOrder()}>
-                      Confirm Order
-                    </Button>
-                    <Button variant="outlined" color="error" onClick={() => cancelOrder()}>
-                      Cancel Order
-                    </Button>
-                  </>
-                </Stack>
-              )}
             </Stack>
           </Grid>
           <Grid item sx={{ flexGrow: 1 }} xs={12}>
