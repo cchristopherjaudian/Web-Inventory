@@ -6,6 +6,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Button, Typography } from '@mui/material';
 import useAxios from 'hooks/useAxios';
+import useHighAxios from 'hooks/useHighAxios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 const Confirmation = (props) => {
