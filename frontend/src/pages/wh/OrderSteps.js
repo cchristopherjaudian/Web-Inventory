@@ -109,6 +109,7 @@ const OrderSteps = (props) => {
     <Box>
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
+
           <Step key={label}>
             <StepButton color="inherit" onClick={handleStep(index)}>
               <Stack direction="column" sx={{ alignItems: 'center' }}>
@@ -130,19 +131,17 @@ const OrderSteps = (props) => {
                         const d = new Date(event.target.value);
                         if (Number(d.getTime()) < 0) return;
                         const newStepDate = [...stepDate];
-                        // const currIndex = index < 1 ? index : index - 1;
-                        // if (!orderStatus[currIndex]) {
-                        //   console.log('no order status');
-                        //   return;
-                        // }
+
                         const previousStatusId = orderStatus.length > 0 ? orderStatus[orderStatus.length - 1]?.id : '';
-                        if (Object.keys(newStepDate[0]).length > 0) {
-                          newStepDate[0][Object.keys(newStepDate[0])[0]] = event.target.value;
-                          setStepDate(newStepDate);
+                        if (newStepDate.length > 1) {
+                          const dispatchObject = newStepDate[2]; 
+                          dispatchObject.DISPATCHED = event.target.value
+                          setStepDate([...newStepDate]);
                         }
+                        
                         const objIndex = event.target.name;
                         const objKey = Object.keys(stepDate[objIndex])[0];
-
+                       
                         setPayload({ orderId: props?.id, createdAt: event.target.value, status: objKey, orderStatusId: previousStatusId });
                       }}
                       onKeyPress={(event) => {
@@ -154,9 +153,14 @@ const OrderSteps = (props) => {
                       }}
                       disabled={stepDisabled(index)}
                       value={
-                        status?.length && status[index] && status[index]['createdAt']
-                          ? status[index]['createdAt'].substring(0, 10)
-                          : stepDate[index][Object.keys(stepDate[index])[0]].substring(0, 10)
+                        stepDate?.length && stepDate[index]
+                        &&
+                        (
+                          Object.values(stepDate[index]).toString().length > 10 ?
+                            Object.values(stepDate[index]).toString().substring(0, 10)
+                            :
+                            Object.values(stepDate[index]).toString()
+                        )
                       }
                     />
                   </FormControl>
