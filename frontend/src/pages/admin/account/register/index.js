@@ -325,6 +325,8 @@ const AccountRegister = () => {
                     </MenuItem>
                     <MenuItem value="SUB_1">Sales Assistant Officer</MenuItem>
                     <MenuItem value="SUB_2">Cylinder Management Officer</MenuItem>
+                    <MenuItem value="LOGI">Logistics</MenuItem>
+                    <MenuItem value="WH">Warehouse</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
