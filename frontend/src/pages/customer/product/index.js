@@ -11,8 +11,9 @@ import useAxiosBackup from 'hooks/useAxiosBackup';
 import useInventoryAxios from 'hooks/useInventoryAxios';
 import InfoV2 from './infov2';
 
-const OtherProduct = ({ product, setCartItem }) => {
+const OtherProduct = ({ product, setCartItem, isBusiness }) => {
   const navigate = useNavigate();
+
   return (
     <Card style={{ paddingBottom: '10px' }}>
       <CardActionArea>
@@ -47,9 +48,12 @@ const OtherProduct = ({ product, setCartItem }) => {
           <Typography gutterBottom variant="h3" component="div">
             {product?.name}
           </Typography>
-          <Typography variant="h4" color="text.secondary" style={{ marginBottom: '10px' }}>
-            &#x20B1; {product?.price}.00
-          </Typography>
+          {
+            isBusiness === 0 && <Typography variant="h4" color="text.secondary" style={{ marginBottom: '10px' }}>
+              &#x20B1; {product?.price}.00
+            </Typography>
+          }
+
           <Box display="flex" justifyContent="space-between" width="100%">
             <Button size="small" color="secondary" variant="outlined" onClick={() => navigate('/product/' + product.id)}>
               Learn More
@@ -62,6 +66,7 @@ const OtherProduct = ({ product, setCartItem }) => {
 };
 
 const Product = () => {
+  const isBusiness = useSelector((state) => state.token.customertype.customertype);
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -120,7 +125,7 @@ const Product = () => {
     <MainCard>
       <Grid container spacing={1}>
         <Grid item md={8} xs={12}>
-          <InfoV2 itemInfo={itemInfo} inventoryData={inventoryData} setCartItem={setCartItem} cartItems={cartItems} productId={id} />
+          <InfoV2 isBusiness={isBusiness} itemInfo={itemInfo} inventoryData={inventoryData} setCartItem={setCartItem} cartItems={cartItems} productId={id} />
           <Card mt={2} sx={{ width: '100%', display: 'flex', padding: 2 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant="h3" color="#2980b9">
@@ -140,7 +145,7 @@ const Product = () => {
 
           {inventoryData?.data.list.length > 0 &&
             inventoryData?.data.list.map((product) => {
-              return <OtherProduct key={product?.id} product={product} setCartItem={setCartItem} />;
+              return <OtherProduct isBusiness={isBusiness} key={product?.id} product={product} setCartItem={setCartItem} />;
             })}
         </Grid>
       </Grid>

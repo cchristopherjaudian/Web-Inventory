@@ -1,7 +1,7 @@
 import {  Button, Card, CardContent, CardMedia, CardActionArea, CardActions, Typography } from "@mui/material";
 
 
-const RelatedProducts = () => {
+const RelatedProducts = (props) => {
   
     return (<Card >
         <CardActionArea>

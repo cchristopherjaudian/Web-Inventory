@@ -5,8 +5,6 @@ import { useSelector } from 'react-redux';
 const InfoV2 = (props) => {
   const [stock, setStock] = useState(0);
   const [productInfo, setProductInfo] = useState({});
-  const isBusiness = useSelector((state) => state.token.customertype.customertype);
-
   useEffect(() => {
     if (props.inventoryData) {
       let data = props.inventoryData?.data;
@@ -39,9 +37,12 @@ const InfoV2 = (props) => {
           <Typography variant="body2" color="text.secondary">
             {stock} stocks available
           </Typography>
-          <Typography mt={3} variant="body1" color="#2980b9">
-            Price: {props.itemInfo.price}
-          </Typography>
+          {
+            props.isBusiness === 0 && <Typography mt={3} variant="body1" color="#2980b9">
+              Price: {props.itemInfo.price}
+            </Typography>
+          }
+         
           <Grid container spacing={0.2} mt={2}>
             <Grid item xs={6}>
               <Typography variant="body2">Availability</Typography>
@@ -68,7 +69,7 @@ const InfoV2 = (props) => {
                   Added
                 </Button>
               ) : stock > 0 ? (
-                isBusiness === 0 && (
+                props.isBusiness === 0 && (
                   <Button variant="contained" startIcon={<ShoppingCartOutlined />} onClick={() => props.setCartItem(props.itemInfo)}>
                     Add to Cart
                   </Button>
