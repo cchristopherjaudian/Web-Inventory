@@ -28,10 +28,13 @@ const SalesReport = () => {
   const [chart, setChart] = useState([]);
   const [salesData, setSalesData] = useState([]);
   const [status, setStatus] = useState('DELIVERED');
+  const [accountStatus, setAcocuntStatus] = useState('B2C List');
   const [value, setValue] = useState(2);
+  const [accountValue, setAccountValue] = useState(0);
   const { data, fetchData } = useAxios(query, 'GET');
   const { metricsData, metricsFetchData } = useMetricsAxios(salesQuery, 'GET');
   const tabStatus = ['PREPARING', 'DISPATCHED', 'DELIVERED'];
+  const tabAccount = ['B2C List', 'B2B List'];
   const handleFilterClick = () => {
     setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status);
     setSalesQuery('metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
@@ -43,6 +46,10 @@ const SalesReport = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setStatus(tabStatus[newValue]);
+  };
+  const handleAccountChange = (event, newValue) => {
+    setAccountValue(newValue);
+    setAcocuntStatus(tabAccount[newValue]);
   };
   useEffect(() => {
     if (dateFilter && status) {
@@ -166,6 +173,10 @@ const SalesReport = () => {
         </Box>
       </Grid>
       <Grid item xs={12}>
+        <Tabs value={accountValue} onChange={handleAccountChange} aria-label="order-tabs">
+          <Tab label="B2C List" {...a11yProps(0)} />
+          <Tab label="B2B List" {...a11yProps(1)} />
+        </Tabs>
         <OrderTable orders={orders} />
       </Grid>
     </Grid>
