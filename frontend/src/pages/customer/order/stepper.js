@@ -66,7 +66,7 @@ const InvoiceStepper = (props) => {
   return (
     <>
       <Box sx={{ mt: 3, width: '100%' }}>
-        <Stepper nonLinear activeStep={activeStep}>
+        <Stepper nonLinear activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => {
             const labelProps = {};
 
