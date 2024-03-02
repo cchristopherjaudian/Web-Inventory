@@ -9,6 +9,7 @@ import scheduleRoutes from './schedule-routes';
 import metricsRoutes from './metrics-routes';
 import purchaseRoutes from './purchase-routes';
 import customPricesRoutes from './custom-price-routes';
+import productThresholdRoutes from './product-threshold-routes';
 
 const router = Router();
 
@@ -58,6 +59,10 @@ const defaultRoutes: TRoutelist = [
   {
     path: '/prices',
     controller: customPricesRoutes,
+  },
+  {
+    path: '/threshold',
+    controller: productThresholdRoutes,
   },
 ];
 

@@ -14,3 +14,5 @@ export { default as PurchaseController } from './purchase-controller';
 export { default as ScheduleController } from './schedule-controller';
 
 export { default as CustomPriceController } from './custom-prices-controller';
+
+export { default as ProductThresholdController } from './product-threshold-controller';

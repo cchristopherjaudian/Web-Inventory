@@ -35,6 +35,7 @@ enum StockIndicator {
   LOW
   NORMAL
   HIGH
+  NONE
 }
 
 enum OrderStatuses {
@@ -106,22 +107,22 @@ model Products {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  inventory         Inventory[]
-  orderItems        OrderItems[]
-  Cart              Cart[]
-  QuantityIndicator QuantityIndicator?
+  inventory        Inventory[]
+  orderItems       OrderItems[]
+  Cart             Cart[]
+  ProductThreshold ProductThreshold?
 
   @@map("products")
 }
 
-model QuantityIndicator {
+model ProductThreshold {
   id String @id @default(uuid())
 
   threshold Int
   product   Products @relation(fields: [productId], references: [id])
   productId String   @unique
 
-  @@map("quantity_indicator")
+  @@map("product_threshold")
 }
 
 model Inventory {

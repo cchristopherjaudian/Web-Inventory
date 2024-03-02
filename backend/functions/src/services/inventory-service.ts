@@ -7,6 +7,7 @@ import {
 import { TQueryArgs } from '../../index';
 import { getStockIndicator } from '../helpers/stock-indicator';
 import { TPrismaClient } from '../lib/prisma';
+import { StockIndicator } from '@prisma/client';
 
 class InventoryService {
   private _db: TPrismaClient;
@@ -17,6 +18,13 @@ class InventoryService {
 
   public async createInventory(payload: TInventory) {
     const isExists = await this._db.inventory.findFirst({
+      include: {
+        products: {
+          include: {
+            ProductThreshold: true,
+          },
+        },
+      },
       where: {
         expiration: payload.expiration,
         productId: payload.productId,
@@ -25,20 +33,26 @@ class InventoryService {
     if (isExists) {
       isExists.stock = isExists.stock + payload.stock;
 
-      payload.stockIndicator = getStockIndicator(isExists.stock);
+      payload.stockIndicator = isExists.products?.ProductThreshold
+        ? getStockIndicator(
+            isExists.stock,
+            isExists.products.ProductThreshold.threshold
+          )
+        : StockIndicator.NONE;
 
+      const { products, ...inventory } = isExists;
       return this._db.inventory.update({
         where: {
           id: isExists.id,
         },
 
         data: {
-          ...isExists,
+          ...inventory,
         },
       });
     }
 
-    payload.stockIndicator = getStockIndicator(payload.stock);
+    payload.stockIndicator = StockIndicator.NONE;
     payload.expiration = payload.expiration
       ? moment(payload.expiration).tz('Asia/Manila').toDate()
       : null;
@@ -51,7 +65,13 @@ class InventoryService {
 
     const inventory = await this._db.inventory.findFirst({
       where: { id },
-      include: { products: true },
+      include: {
+        products: {
+          include: {
+            ProductThreshold: true,
+          },
+        },
+      },
     });
     if (!inventory) throw new NotFoundError('Inventory does not exist');
     return inventory;
@@ -90,10 +110,13 @@ class InventoryService {
   }
 
   public async updateInventory(id: string, payload: Partial<TInventory>) {
-    await this.getInventory(id);
+    const inventory = await this.getInventory(id);
 
     if (payload?.stock) {
-      payload.stockIndicator = getStockIndicator(payload.stock);
+      payload.stockIndicator = getStockIndicator(
+        payload.stock,
+        inventory.products?.ProductThreshold?.threshold as number
+      );
     }
     return this._db.inventory.update({
       where: { id },

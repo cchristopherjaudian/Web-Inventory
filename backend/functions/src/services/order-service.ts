@@ -4,6 +4,7 @@ import {
   PaymentMethods,
   PaymentStatuses,
   Prisma,
+  StockIndicator,
 } from '@prisma/client';
 import {
   BadRequestError,
@@ -109,6 +110,13 @@ class OrderService {
               expiration: 'asc',
             },
           ],
+          include: {
+            products: {
+              include: {
+                ProductThreshold: true,
+              },
+            },
+          },
         });
 
         if (inventories.length === 0) {
@@ -129,12 +137,19 @@ class OrderService {
           currentQuantity = Math.max(currentQuantity - inventory.stock, 0);
 
           inventory.stock = currentStock;
-          inventory.stockIndicator = getStockIndicator(currentStock);
+          inventory.stockIndicator = inventory.products?.ProductThreshold
+            ? getStockIndicator(
+                currentStock,
+                inventory.products?.ProductThreshold?.threshold
+              )
+            : StockIndicator.NONE;
+
+          const { products, ...inventoryData } = inventory;
           await this._db.inventory.update({
             where: {
               id: inventory.id,
             },
-            data: { ...inventory },
+            data: { ...inventoryData },
           });
 
           if (currentQuantity === 0) {
