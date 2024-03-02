@@ -15,6 +15,7 @@ import {
   TOrderPayload,
   TOrderStatus,
   TOrderWithoutItems,
+  TTxnQuery,
 } from '../lib/types/order-types';
 import moment from 'moment-timezone';
 import { getStockIndicator } from '../helpers/stock-indicator';
@@ -300,10 +301,21 @@ class OrderService {
     });
   }
 
-  public async ordersTxn() {
+  public async ordersTxn(query: TTxnQuery) {
+    const txnQuery = {} as { profile: Record<string, unknown> };
+
+    if (query.account) {
+      txnQuery.profile = {
+        account: {
+          accountType: query.account as AccountTypes,
+        },
+      };
+    }
+
     const transactions = await this._db.orders.findMany({
       where: {
         status: PaymentStatuses.PAID,
+        ...txnQuery,
       },
       include: {
         orderItems: {

@@ -7,18 +7,21 @@ import {
   createOrderStatusSchema,
   updateOrderSchema,
 } from '../lib/joi-schemas/order-schema';
-import Prisma from '../lib/prisma';
+import Prisma, { TPrismaClient } from '../lib/prisma';
+import OrderRestrictionMiddleware from '../middleware/order-restriction-middleware';
 
 const db = Prisma.Instance.db;
 const router = Router();
 const joi = new JoiMiddleware();
-const authMiddleware = new AuthMiddleware(db as any);
+const authMiddleware = new AuthMiddleware(db as TPrismaClient);
+const orderRestriction = new OrderRestrictionMiddleware(db as TPrismaClient);
 
 router
   .post(
     '/',
     joi.requestSchemaValidate(createOrderSchema),
     authMiddleware.endUserValidate as any,
+    orderRestriction.checkForPendingTxn as any,
     OrderController.createOrder
   )
   .post(

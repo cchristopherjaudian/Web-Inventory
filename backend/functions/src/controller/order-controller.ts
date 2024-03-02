@@ -5,6 +5,7 @@ import ResponseCodes from '../../commons/response-codes';
 import { IAuthRequest } from '../..';
 import OrderService from '../services/order-service';
 import Prisma from '../lib/prisma';
+import { TTxnQuery } from '../lib/types/order-types';
 
 const db = Prisma.Instance.db;
 const order = new OrderService(db);
@@ -98,7 +99,7 @@ const adminOrders = catchAsync(async (req, res) => {
 });
 
 const getOrdersTxn = catchAsync(async (req, res) => {
-  const transactionOrders = await order.ordersTxn();
+  const transactionOrders = await order.ordersTxn(req.query as TTxnQuery);
   await db.$disconnect();
   response.createResponse(
     res,

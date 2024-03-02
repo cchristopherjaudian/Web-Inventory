@@ -118,6 +118,13 @@ class MetricsService {
       },
     });
 
+    let orderAccountQuery = {};
+    if (query?.account) {
+      orderAccountQuery = {
+        profile: { account: { accountType: query.account } },
+      };
+    }
+
     const statusesIds = orderStatusList.map((k) => k.orderId);
     const list = await this._db.orders.findMany({
       select: {
@@ -144,6 +151,8 @@ class MetricsService {
         id: {
           in: statusesIds as string[],
         },
+
+        ...orderAccountQuery,
       },
     });
 

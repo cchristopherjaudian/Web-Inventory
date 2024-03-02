@@ -12,6 +12,8 @@ export type TOrderPayload = TOrder & { accType: AccountTypes } & {
   >[];
 };
 
+export type TTxnQuery = { account: AccountTypes };
+
 export type TOrderWithoutItems = Omit<TOrderPayload, 'items'>;
 
 export type TOrderSales = {
