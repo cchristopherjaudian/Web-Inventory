@@ -103,13 +103,25 @@ model Products {
   description String?
   photoUrl    String?
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  inventory  Inventory[]
-  orderItems OrderItems[]
-  Cart       Cart[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inventory         Inventory[]
+  orderItems        OrderItems[]
+  Cart              Cart[]
+  QuantityIndicator QuantityIndicator?
 
   @@map("products")
+}
+
+model QuantityIndicator {
+  id String @id @default(uuid())
+
+  threshold Int
+  product   Products @relation(fields: [productId], references: [id])
+  productId String   @unique
+
+  @@map("quantity_indicator")
 }
 
 model Inventory {
