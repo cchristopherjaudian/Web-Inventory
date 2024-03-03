@@ -77,8 +77,6 @@ class OrderService {
       totalPrice += <any>product?.price * <any>cart?.quantity;
     }
 
-    console.log('totalPrice', totalPrice);
-
     if (totalPrice > parseInt(process.env.VALIDATION_TOTAL_PRICE as string)) {
       throw new BadRequestError('Total price for GCASH and COD is 50k');
     }

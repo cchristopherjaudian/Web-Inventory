@@ -22,25 +22,21 @@ class OrderRestrictionMiddleware {
     try {
       const request = req as IAuthRequest;
 
-      if (!request?.profile) throw new AuthenticationError('');
+      if (request.profile.account.accountType === AccountTypes.BUSINESS) {
+        const hasPendingOrders = await this._db.orders.aggregate({
+          _count: true,
+          where: {
+            paymentMethod: PaymentMethods.PAY_LATER,
+            status: PaymentStatuses.PENDING,
+            profileId: request.profile.id,
+          },
+        });
 
-      if (request.profile.account.accountType !== AccountTypes.BUSINESS) {
-        next();
-      }
-
-      const hasPendingOrders = await this._db.orders.aggregate({
-        _count: true,
-        where: {
-          paymentMethod: PaymentMethods.PAY_LATER,
-          status: PaymentStatuses.PENDING,
-          profileId: request.profile.id,
-        },
-      });
-
-      if (hasPendingOrders._count > 0) {
-        throw new BadRequestError(
-          'Please pay for your pending payment, before making another purchase.'
-        );
+        if (hasPendingOrders._count > 0) {
+          throw new BadRequestError(
+            'Please pay for your pending payment, before making another purchase.'
+          );
+        }
       }
 
       next();
