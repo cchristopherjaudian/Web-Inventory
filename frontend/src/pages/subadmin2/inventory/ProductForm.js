@@ -124,7 +124,7 @@ const ProductForm = (props) => {
     useEffect(() => {
         setPayload(formik.values);
     }, [formik.values]);
-    return (<Grid item xs={12} lg={4}>
+    return (<Grid item xs={12}>
         <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
             <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
                 {message}

@@ -1,5 +1,5 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, Grid, IconButton, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import useAxios from 'hooks/useAxios';
+import { SaveOutlined } from '@ant-design/icons';
+import CustomTextField from './CustomTextField';
 const InventoryTable = (props) => {
   const [productRows, setProductRows] = useState([]);
   const navigate = useNavigate();
@@ -35,59 +37,33 @@ const InventoryTable = (props) => {
       flex: 1
     },
     {
-      field: 'category',
-      headerName: 'Category',
-      editable: false,
-      flex: 1
+      field: "threshold",
+      headerName: "Threshold",
+      width: 200,
+      renderCell: (params) => {
+        const tempHolder = params.row.ProductThreshold?.threshold;
+        return <>
+          <CustomTextField id={params.row.id} initialValue={tempHolder} onChange={(value) => {
+            props.setProductPayload({
+              productId: params.row.id,
+              threshold: value
+            })
+          }} />
+          <IconButton variant="contained" color="success" size="medium" onClick={(e) => {
+            e.stopPropagation();
+            props.updateThreshold();
+          }}>
+            <SaveOutlined />
+          </IconButton>
+        </>
+      },
     },
     {
       field: 'price',
       headerName: 'Price',
       editable: false,
       flex: 1
-    },
-    {
-      field: 'size',
-      headerName: 'Size',
-      editable: false,
-      flex: 1
-    },
-    {
-      field: 'content',
-      headerName: 'Content',
-      editable: false,
-      flex: 1
     }
-    // {
-    //   field: 'action',
-    //   headerName: '',
-    //   sortable: false,
-    //   width: 150,
-    //   disableClickEventBubbling: true,
-    //   renderCell: (params) => {
-    //     const onClick = (event) => {
-    //       event.stopPropagation();
-    //       Swal.fire({
-    //         icon: 'question',
-    //         title: 'Product Management',
-    //         text: 'Are you sure you want to delete this product?',
-    //         allowOutsideClick: false,
-    //         showCancelButton: true,
-    //         confirmButtonText: 'Yes'
-    //       }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             setProductId(params.id);
-    //         }
-    //       });
-    //     };
-
-    //     return (
-    //       <Button endIcon={<DeleteOutlined />} variant="outlined" color="error" onClick={onClick}>
-    //         Delete
-    //       </Button>
-    //     );
-    //   }
-    // }
   ];
   const gridClick = (params, event, details) => {
     let selectedData = params['row'];
