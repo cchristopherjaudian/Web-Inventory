@@ -42,8 +42,6 @@ class CartService {
         });
       }
 
-      if (!cart) throw new BadRequestError('Cart does not exists.');
-
       const inventories = await this._db.inventory.findMany({
         where: {
           productId: product.id,
@@ -60,7 +58,7 @@ class CartService {
         throw new BadRequestError('Insufficient stock.');
       }
 
-      if (!payload.groupNo || payload.groupNo === cart.groupNo) {
+      if (cart && (!payload.groupNo || payload.groupNo === cart.groupNo)) {
         cart.quantity = cart.quantity + payload.quantity;
 
         return this._db.cart.update({
