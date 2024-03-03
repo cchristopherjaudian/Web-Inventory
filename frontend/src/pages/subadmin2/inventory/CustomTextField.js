@@ -15,6 +15,7 @@ const CustomTextField = (props) => {
         id={props.id}
         fullWidth
         variant="outlined"
+        type="number"
         value={value}
         onChange={handleValueChange}
         onClick={(e)=> e.stopPropagation()}
