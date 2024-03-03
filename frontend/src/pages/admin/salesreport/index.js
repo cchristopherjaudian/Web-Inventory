@@ -28,15 +28,15 @@ const SalesReport = () => {
   const [chart, setChart] = useState([]);
   const [salesData, setSalesData] = useState([]);
   const [status, setStatus] = useState('DELIVERED');
-  const [accountStatus, setAcocuntStatus] = useState('B2C List');
+  const [accountStatus, setAccountStatus] = useState('CUSTOMER');
   const [value, setValue] = useState(2);
   const [accountValue, setAccountValue] = useState(0);
   const { data, fetchData } = useAxios(query, 'GET');
   const { metricsData, metricsFetchData } = useMetricsAxios(salesQuery, 'GET');
   const tabStatus = ['PREPARING', 'DISPATCHED', 'DELIVERED'];
-  const tabAccount = ['B2C List', 'B2B List'];
+  const tabAccount = ['CUSTOMER', 'BUSINESS'];
   const handleFilterClick = () => {
-    setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status);
+    setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status + '&account=' + accountStatus);
     setSalesQuery('metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
   };
   const handleFilter = (e) => {
@@ -49,14 +49,14 @@ const SalesReport = () => {
   };
   const handleAccountChange = (event, newValue) => {
     setAccountValue(newValue);
-    setAcocuntStatus(tabAccount[newValue]);
+    setAccountStatus(tabAccount[newValue]);
   };
   useEffect(() => {
-    if (dateFilter && status) {
-      setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status);
+    if (dateFilter && status && accountStatus) {
+      setQuery('metrics/reports?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo'] + '&status=' + status + '&account=' + accountStatus);
       setSalesQuery('metrics/sales?startsAt=' + dateFilter['txFrom'] + '&endsAt=' + dateFilter['txTo']);
     }
-  }, [dateFilter, status]);
+  }, [dateFilter, status, accountStatus]);
   useEffect(() => {
     if (query) {
       fetchData();
