@@ -21,9 +21,9 @@ const Order = () => {
   const [refNo, setReferenceNo] = useState('');
   const [termsApproved, setTermsApproved] = useState(false);
   const [prInfo, setPrInfo] = useState({});
-  const [customerInfo,setCustomerInfo] = useState({});
+  const [customerInfo, setCustomerInfo] = useState({});
   const { data } = useAxios('purchase/' + id, 'GET', null, false);
-  const { highData, highLoading, highFetchData } = useHighAxios('orders', 'POST', mapPayload, true);
+  const { highData, highError, highLoading, highFetchData } = useHighAxios('orders', 'POST', mapPayload, true);
   useEffect(() => {
     if (data) {
       let totalValue = data['data']['list']?.reduce((total, item) => {
@@ -95,6 +95,19 @@ const Order = () => {
       highFetchData();
     }
   }, [mapPayload]);
+  useEffect(() => {
+    if (highError) {
+      const errMessage = highError.response.data.data.message;
+      if (errMessage.includes('Please pay')) {
+        Swal.fire({
+          title: 'Purchase Order',
+          text: highError.response?.data?.data?.message,
+          icon: 'error'
+        });
+      }
+
+    }
+  }, [highError])
   useEffect(() => {
     if (highData) {
       if (highData['status'] === 200) {
