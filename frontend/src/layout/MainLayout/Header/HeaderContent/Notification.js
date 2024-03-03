@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-
+import Swal from 'sweetalert2';
 import { useTheme } from '@mui/material/styles';
 import {
   Badge,
@@ -58,13 +58,24 @@ const Notification = () => {
     }
     setOpen(false);
   };
-  const proceedCheckout = () => {
-    setOpen(false);
-    navigate('/checkout')
-  }
+
   const iconBackColorOpen = 'grey.300';
   const iconBackColor = 'grey.100';
   let cartItems = useSelector((state) => state.cart.cart);
+  const proceedCheckout = () => {
+    const zeroQuantity = cartItems.filter((c) => (Number(c.quantity) < 1));
+    if (zeroQuantity.length > 0) {
+      Swal.fire({
+        title: 'Cart Checkout',
+        text: 'Please input a valid quantity for each item',
+        icon: 'info'
+      });
+    } else {
+      setOpen(false);
+      navigate('/checkout')
+    }
+
+  }
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <IconButton
@@ -137,7 +148,7 @@ const Notification = () => {
                     }}
                   >
                     {cartItems.map((item, index) => {
-                      return <CartItemList key={index} item={item} />
+                      return <CartItemList key={index} item={item} cartReduxId={item.id} />
                     })}
                     {
                       cartItems.length > 0 &&
