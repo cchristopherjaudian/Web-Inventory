@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Grid, Button, Typography } from '@mui/material';
 import useAxios from 'hooks/useAxios';
 import useHighAxios from 'hooks/useHighAxios';
+import useInventoryAxios from 'hooks/useInventoryAxios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 const Confirmation = (props) => {
@@ -9,7 +10,7 @@ const Confirmation = (props) => {
   const [payload, setPayload] = useState({});
   const { data, fetchData } = useAxios('orders/' + props.id, 'PATCH', payload, true);
   const [cancelId, setCancelId] = useState('');
-  const { highData, highFetchData } = useHighAxios('orders/cancellation/' + cancelId, 'PATCH');
+  const { inventoryData, inventoryFetchData } = useInventoryAxios('orders/cancellation/' + cancelId, 'PATCH');
   useEffect(() => {
     if (Object.keys(payload).length !== 0) {
       fetchData();
@@ -67,11 +68,15 @@ const Confirmation = (props) => {
   };
   useEffect(() => {
     if (cancelId) {
-      highFetchData();
+      inventoryFetchData();
       setCancelId('');
     }
   }, [cancelId]);
-
+  useEffect(()=>{
+    if(inventoryData?.status === 200){
+      navigate('/history',{replace:true});
+    }
+  },[inventoryData])
   return (
     <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
