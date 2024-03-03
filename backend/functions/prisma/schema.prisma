@@ -159,7 +159,6 @@ model Cart {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  cartId         String?
   PrCustomPrices PrCustomPrices?
 
   @@map("cart")
