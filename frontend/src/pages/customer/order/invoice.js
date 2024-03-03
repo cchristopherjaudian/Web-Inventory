@@ -227,12 +227,6 @@ const Invoice = (props) => {
               </TableBody>
             </Table>
           </TableContainer>
-
-          {props?.orderInfo.status === 'PENDING' && (
-            <Button type="submit" fullWidth variant="contained" sx={{ backgroundColor: '#FF6363' }} onClick={cancelOrder}>
-              Cancel Order
-            </Button>
-          )}
         </Grid>
       </Grid>
     </Grid>
