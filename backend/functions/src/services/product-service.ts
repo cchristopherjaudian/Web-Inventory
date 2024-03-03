@@ -46,6 +46,9 @@ class ProductsService {
         },
       }),
       this._db.products.findMany({
+        include: {
+          ProductThreshold: true,
+        },
         where: { name: { search: params.search as string } },
       }),
     ]);
