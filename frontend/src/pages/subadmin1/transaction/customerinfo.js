@@ -19,7 +19,7 @@ const CustomerInfo = (props) => {
 
           <Grid item xs={12} md={3}>
             <Stack direction="row" justifyContent="end" spacing={1}>
-              <Button variant="contained" onClick={() => props.fetchData()} startIcon={<SearchOutlined />}>
+              <Button variant="contained" onClick={() => props.retrieveTransactions()} startIcon={<SearchOutlined />}>
                 Load Records
               </Button>
             </Stack>
