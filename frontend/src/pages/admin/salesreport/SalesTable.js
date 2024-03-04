@@ -30,7 +30,8 @@ const SalesTable = (props) => {
       field: 'price',
       headerName: 'Price',
       sortable: false,
-      flex: 1
+      flex: 1,
+      valueGetter: (params) => `₱${Number(params.row.price).toLocaleString()}`
     },
     {
       field: 'dateOrdered',

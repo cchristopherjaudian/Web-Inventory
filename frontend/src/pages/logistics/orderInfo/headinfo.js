@@ -69,12 +69,12 @@ const HeadInfo = (props) => {
             <Grid container>
               <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
                 <Typography variant="body1">Subtotal:</Typography>
-                <Typography variant="body1">₱{totalAmount}</Typography>
+                <Typography variant="body1">₱{Number(totalAmount).toLocaleString()}</Typography>
               </Grid>
               <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
                 <Typography variant="h4">Total</Typography>
                 <Typography variant="h4" sx={{ color: '#c0392b' }}>
-                  ₱{totalAmount}
+                  ₱{Number(totalAmount).toLocaleString()}
                 </Typography>
               </Grid>
             </Grid>

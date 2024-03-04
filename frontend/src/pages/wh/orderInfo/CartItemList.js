@@ -31,7 +31,7 @@ const CartItemList = ({product}) => {
 
             <ListItemText
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
-                secondary={'₱ ' + total}
+                secondary={'₱ ' + Number(total).toLocaleString()}
             />
          
         </ListItemButton>

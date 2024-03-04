@@ -8,6 +8,7 @@ import useAxios from 'hooks/useAxios';
 
 const CartItemList = (props) => {
   const product = props.product;
+  const price = props.product.customPrice === '0' ? props.product.products.price : props.product.customPrice;
   return (
     <>
       <ListItemButton>
@@ -30,15 +31,11 @@ const CartItemList = (props) => {
           }
           secondary={product?.products.code}
         />
-        <ListItemText sx={{ display: 'flex', justifyContent: 'flex-end' }} primary={'₱' + product?.customPrice} />
+        <ListItemText sx={{ display: 'flex', justifyContent: 'flex-end' }} primary={'₱' + Number(price).toLocaleString()} />
         <ListItemText
           sx={{ display: 'flex', justifyContent: 'flex-end' }}
           primary={<TextField name="quantity" fullWidth id="quantity" label="Quantity" type="number" value={product?.quantity} />}
         />
-
-        {/* <Button variant="contained" color="error" size="medium" sx={{ ml: 2 }} startIcon={<DeleteOutlined />} >
-                Remove
-            </Button> */}
       </ListItemButton>
 
       <Divider />

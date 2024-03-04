@@ -85,7 +85,7 @@ const CartItemList = (props) => {
           }} />
         </ListItemText>
 
-        <ListItemText sx={{ display: 'flex', justifyContent: 'flex-end' }} secondary={'₱' + price} />
+        <ListItemText sx={{ display: 'flex', justifyContent: 'flex-end' }} secondary={'₱' + Number(price).toLocaleString()} />
         <Button variant="contained" color="error" size="small" sx={{ ml: 2 }} onClick={() => setCartID(props.item.id)}>
           Remove
         </Button>

@@ -30,7 +30,7 @@ const Payment = ({ order = {} }) => {
         <Grid item xs={6}>
           <Typography variant="body1">
             {'₱'}
-            {totalAmount}
+            {Number(totalAmount).toLocaleString()}
           </Typography>
         </Grid>
 
@@ -50,7 +50,7 @@ const Payment = ({ order = {} }) => {
         <Grid item xs={6} sx={{ mt: 3 }}>
           <Typography variant="h4">
             {'₱'}
-            {totalAmount}
+            {Number(totalAmount).toLocaleString()}
           </Typography>
         </Grid>
       </Grid>

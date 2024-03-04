@@ -50,7 +50,7 @@ const Price = (props) => {
         <Grid item xs={6}>
           <Typography variant="body1">
             {'₱'}
-            {subtotal}
+            {Number(subtotal).toLocaleString()}
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -77,7 +77,7 @@ const Price = (props) => {
         <Grid item xs={6} sx={{ mt: 3 }}>
           <Typography variant="h4">
             {'₱'}
-            {price}
+            {Number(price).toLocaleString()}
           </Typography>
         </Grid>
         <Grid item xs={12} sx={{ mt: 2 }}>

@@ -50,7 +50,7 @@ const OtherProduct = ({ product, setCartItem, isBusiness }) => {
           </Typography>
           {
             isBusiness === 0 && <Typography variant="h4" color="text.secondary" style={{ marginBottom: '10px' }}>
-              &#x20B1; {product?.price}.00
+              &#x20B1; {Number(product?.price).toLocaleString()}
             </Typography>
           }
 

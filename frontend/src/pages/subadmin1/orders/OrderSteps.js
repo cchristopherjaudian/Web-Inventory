@@ -109,8 +109,7 @@ const OrderSteps = (props) => {
       isAllowed = index === 2;
     }
     if (index === 1) isAllowed = false;
-
-    console.log("Step " + index + " isAllowed: " + isAllowed);
+    if ((index - 2) > orderStatus.length) isAllowed = false;
     return !isAllowed;
   }
 

@@ -39,7 +39,7 @@ const InfoV2 = (props) => {
           </Typography>
           {
             props.isBusiness === 0 && <Typography mt={3} variant="body1" color="#2980b9">
-              Price: {props.itemInfo.price}
+              Price: ₱{Number(props.itemInfo.price).toLocaleString()}
             </Typography>
           }
          

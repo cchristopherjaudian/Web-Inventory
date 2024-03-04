@@ -33,7 +33,8 @@ const TransactionTable = (props) => {
       field: 'totalPrice',
       headerName: 'Total',
       editable: false,
-      flex: 1
+      flex: 1,
+      valueGetter: (params) => `₱${Number(params.row.totalPrice).toLocaleString()}`
     },
     {
       field: 'dateOrdered',

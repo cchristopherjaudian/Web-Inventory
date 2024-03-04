@@ -56,7 +56,7 @@ const Invoice = (props) => {
             Number {props.orderInfo['id']}
           </Typography>
           <Typography variant="h4">Dated: {props.orderInfo['createdAt']?.substring(0, 10)}</Typography>
-          <Typography variant="h4">Total: ₱{totalAmount}</Typography>
+          <Typography variant="h4">Total: ₱{Number(totalAmount).toLocaleString()}</Typography>
         </Grid>
       </Grid>
       <Grid container sx={{ mt: 2 }}>
@@ -114,9 +114,9 @@ const Invoice = (props) => {
                         <TableCell component="th" scope="row">
                           {cart.products.name}
                         </TableCell>
-                        <TableCell>₱{cart.products.price}</TableCell>
+                        <TableCell>₱{Number(cart.products.price).toLocaleString()}</TableCell>
                         <TableCell>{cart.quantity}</TableCell>
-                        <TableCell>₱{cart.quantity * cart.products.price}</TableCell>
+                        <TableCell>₱{Number(cart.quantity * cart.products.price).toLocaleString()}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -131,7 +131,7 @@ const Invoice = (props) => {
                   <TableCell>
                     <Typography variant="h5">Subtotal</Typography>
                   </TableCell>
-                  <TableCell>₱{totalAmount}</TableCell>
+                  <TableCell>₱{Number(totalAmount).toLocaleString()}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell rowSpan={4} colSpan={2}>
@@ -167,7 +167,7 @@ const Invoice = (props) => {
                     <Typography variant="h4">Total</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="h4"> ₱{totalAmount}</Typography>
+                    <Typography variant="h4"> ₱{Number(totalAmount).toLocaleString()}</Typography>
                   </TableCell>
                 </TableRow>
                 <TableRow>

@@ -72,7 +72,7 @@ const Customer = (props) => {
             <Grid container spacing={1}>
                 <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
                     <Typography variant="body1">Subtotal</Typography>
-                    <Typography variant="body1">₱{subtotal}</Typography>
+                    <Typography variant="body1">₱{Number(subtotal).toLocaleString()}</Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
                     <Typography variant="body1">Payment Method</Typography>
@@ -80,7 +80,7 @@ const Customer = (props) => {
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', direction: 'row', justifyContent: 'space-between', mt: 2 }}>
                     <Typography variant="h4">Total</Typography>
-                    <Typography variant="h4">₱{subtotal}</Typography>
+                    <Typography variant="h4">₱{Number(subtotal).toLocaleString()}</Typography>
                 </Grid>
             </Grid>
         </MainCard>
