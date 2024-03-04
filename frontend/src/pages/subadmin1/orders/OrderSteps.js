@@ -101,15 +101,16 @@ const OrderSteps = (props) => {
 
     if (adminType === 1 && index !== 2) {
       isAllowed = false;
-    } else if (adminType === 3) {
+    }
+    if (adminType === 1 && index === 3) {
+      isAllowed = true;
+    }
+    if (adminType === 3) {
       isAllowed = index === 2;
     }
     if (index === 1) isAllowed = false;
 
-    if (adminType === 1 && index === 3 && props.steps.length === 2 && props?.deliveryUrl) {
-      return false;
-    }
-
+    console.log("Step " + index + " isAllowed: " + isAllowed);
     return !isAllowed;
   }
 
@@ -165,7 +166,7 @@ const OrderSteps = (props) => {
                         value={
                           status?.length && status[index - 1] && status[index - 1]['createdAt'] && stepDate[index - 1]
                             ? status[index - 1]['createdAt'].substring(0, 10)
-                            : stepDate[index - 1][Object.keys(stepDate[index - 1])[0]].substring(0, 10)
+                            : ''
                         }
                       />
                     </FormControl>
