@@ -355,7 +355,9 @@ class OrderService {
       };
     });
 
-    return mappedTransactions;
+    return mappedTransactions.sort(
+      (a, b) => <any>new Date(b.dateOrdered) - <any>new Date(a.dateOrdered)
+    );
   }
 
   public async getDispatchOrders() {

@@ -16,6 +16,14 @@ const pages = {
       url: '/',
       icon: icons.FileTextOutlined,
       breadcrumbs: false
+    },
+    {
+      id: 'inventory_page',
+      title: 'Inventory',
+      type: 'item',
+      url: '/inventory',
+      icon: icons.FileTextOutlined,
+      breadcrumbs: false
     }
   ]
 };

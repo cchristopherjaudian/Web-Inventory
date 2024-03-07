@@ -36,39 +36,7 @@ const InventoryTable = (props) => {
       editable: false,
       flex: 1
     },
-    {
-      field: 'threshold',
-      headerName: 'Threshold',
-      width: 200,
-      renderCell: (params) => {
-        const tempHolder = params.row.ProductThreshold?.threshold;
-        return (
-          <>
-            <CustomTextField
-              id={params.row.id}
-              initialValue={tempHolder}
-              onChange={(value) => {
-                props.setProductPayload({
-                  productId: params.row.id,
-                  threshold: value
-                });
-              }}
-            />
-            <IconButton
-              variant="contained"
-              color="success"
-              size="medium"
-              onClick={(e) => {
-                e.stopPropagation();
-                props.updateThreshold();
-              }}
-            >
-              <SaveOutlined />
-            </IconButton>
-          </>
-        );
-      }
-    },
+
     {
       field: 'price',
       headerName: 'Price',
@@ -76,11 +44,6 @@ const InventoryTable = (props) => {
       flex: 1
     }
   ];
-  const gridClick = (params, event, details) => {
-    let selectedData = params['row'];
-    let uri = '/inventories/' + selectedData.id;
-    navigate(uri);
-  };
   useEffect(() => {
     setProductRows(props.products);
   }, [props.products]);
@@ -126,7 +89,6 @@ const InventoryTable = (props) => {
             }}
             pageSizeOptions={[10]}
             disableRowSelectionOnClick
-            onCellClick={gridClick}
             sx={{
               '.MuiDataGrid-cell:focus': {
                 outline: 'none'

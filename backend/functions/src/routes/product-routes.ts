@@ -59,6 +59,7 @@ router
       'SUB_2',
       'BUSINESS',
       'CUSTOMER',
+      'WH',
     ]) as any,
     ProductController.getProductList
   )

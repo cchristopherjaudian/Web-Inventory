@@ -4,8 +4,9 @@ import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
 
 const Orders = Loadable(lazy(() => import('pages/wh/')));
+const Inventory = Loadable(lazy(() => import('pages/wh/inventory/')));
 const OrderInfo = Loadable(lazy(() => import('pages/wh/orderInfo')));
-const Profile = Loadable(lazy(()=> import('pages/common/profile')));
+const Profile = Loadable(lazy(() => import('pages/common/profile')));
 const WHRoutes = {
   path: '/',
   element: <MainLayout />,
@@ -21,6 +22,10 @@ const WHRoutes = {
     {
       path: 'profile',
       element: <Profile />
+    },
+    {
+      path: 'inventory',
+      element: <Inventory />
     }
   ]
 };

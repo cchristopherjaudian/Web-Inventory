@@ -43,8 +43,14 @@ const About = () => {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} lg={5}>
-          <Box component="img" src="https://i.ibb.co/9hB9JCG/about-us.jpg" alt="About Us" width={600} height={400} sx={{ mr: 3, ml: 3 }} />
+        <Grid item xs={12} lg={5} sx={{ padding: '30px' }}>
+          <Box
+            component="img"
+            src="https://i.ibb.co/9hB9JCG/about-us.jpg"
+            alt="About Us"
+            display="flex"
+            sx={{ mr: 5, ml: 3, width: '100%', height: '100%' }}
+          />
         </Grid>
       </Grid>
     </MainCard>

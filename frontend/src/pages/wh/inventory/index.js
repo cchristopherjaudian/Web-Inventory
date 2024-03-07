@@ -129,13 +129,7 @@ const Inventory = () => {
         </Grid>
       </Grid>
       <Grid item xs={12} lg={4}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="order-tabs">
-            <Tab label="STATUS" {...a11yProps(0)} />
-            <Tab label="ADD NEW PRODUCT" {...a11yProps(1)} />
-          </Tabs>
-        </Box>
-        {value === 0 ? <InventoryStatus lowStocks={lowStocks} highStocks={highStocks} /> : <ProductForm updateTable={updateTable} />}
+        <InventoryStatus lowStocks={lowStocks} highStocks={highStocks} />
       </Grid>
     </Grid>
   );
