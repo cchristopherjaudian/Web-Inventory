@@ -24,6 +24,7 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'import'],
   rules: {
+    'keyword-spacing': 'off',
     'max-len': 'off',
     'space-before-function-paren': 'off',
     'quote-props': ['error', 'as-needed'],

@@ -1,4 +1,5 @@
-import { Grid, Button, Typography, Paper } from '@mui/material';
+import { Grid, Button, Typography, Paper, Box } from '@mui/material';
+import html2pdf from 'html2pdf.js/dist/html2pdf.min';
 import customaxios from 'axios';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,12 +10,20 @@ import TableRow from '@mui/material/TableRow';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { FilePdfOutlined } from '@ant-design/icons';
+import { useRef, useState } from 'react';
 
 const serviceId = process.env.REACT_APP_BASE_URL;
 
 const Invoice = (props) => {
   const { token } = useSelector((state) => state.token.token);
   const router = useNavigate();
+  const invoiceBody = useRef(null);
+  const userProfile = useSelector((state) => state.profile);
+  const filename = `${userProfile?.firstName.firstName}_${userProfile?.middleName.middleName ?? ''}_${
+    userProfile?.lastName.lastName
+  }-invoice`;
+  const [hidePdfBtn, setHidePdfBtn] = useState(false);
 
   const axios = customaxios.create({
     baseURL: serviceId,
@@ -23,6 +32,35 @@ const Invoice = (props) => {
       Authorization: token ? token : ''
     }
   });
+
+  const generatePdf = () => {
+    setHidePdfBtn(() => true);
+    html2pdf()
+      .from(invoiceBody.current)
+      .set({
+        margin: 0.6,
+        filename: filename + '.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      })
+      .toPdf()
+      .get('pdf')
+      .then((pdf) => {
+        const totalPages = pdf.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+          pdf.setFontSize(1);
+          pdf.setTextColor(150);
+          pdf.text(`page ${i} of ${totalPages}`, pdf.internal.pageSize.getWidth() / 1.15, pdf.internal.pageSize.getHeight() / 1.02);
+        }
+      })
+      .save()
+      .finally(() => {
+        setHidePdfBtn(() => false);
+      });
+  };
+
   const cancelOrder = async (e) => {
     e.preventDefault();
 
@@ -45,7 +83,7 @@ const Invoice = (props) => {
     return sum + item.quantity * parseFloat(item.products.price);
   }, 0);
   return (
-    <Grid container spacing={1} sx={{ pl: 3, pt: 5 }}>
+    <Grid container spacing={1} sx={{ pl: 3, pt: 5 }} ref={invoiceBody}>
       <Grid container>
         <Grid item xs={12} md={6}>
           <img src="/asset/oxiaire.png" alt="main-logo" width={300} height={150} />
@@ -136,6 +174,14 @@ const Invoice = (props) => {
                 <TableRow>
                   <TableCell rowSpan={4} colSpan={2}>
                     Some Notes...
+                    {!hidePdfBtn && (
+                      <Box component="div" sx={{ width: '30%', float: 'right', display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontWeight: 'bold' }}>Save As</span>
+                        <Button onClick={generatePdf} component="label" variant="outlined" color="warning" startIcon={<FilePdfOutlined />}>
+                          PDF
+                        </Button>
+                      </Box>
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow>

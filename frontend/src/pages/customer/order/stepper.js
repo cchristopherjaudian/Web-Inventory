@@ -1,4 +1,5 @@
 import { Box, Stepper, Step, StepButton, StepLabel, Stack, Grid, Typography } from '@mui/material';
+// import { withStyles } from '@mui/style';
 import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
 import Cart from './cart';
@@ -66,7 +67,16 @@ const InvoiceStepper = (props) => {
   return (
     <>
       <Box sx={{ mt: 3, width: '100%' }}>
-        <Stepper nonLinear activeStep={activeStep} alternativeLabel>
+        <Stepper
+          nonLinear
+          activeStep={activeStep}
+          alternativeLabel
+          sx={{
+            '& .MuiButtonBase-root.Mui-disabled > .MuiStepLabel-root > .MuiStepLabel-iconContainer > .MuiSvgIcon-root': {
+              color: 'red'
+            }
+          }}
+        >
           {steps.map((label, index) => {
             const labelProps = {};
 
